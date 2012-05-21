@@ -1,5 +1,5 @@
 =========
-Symposion
+Chipy.org
 =========
 
 This repository stores the Pinax Symposion conference starter project. 
@@ -9,7 +9,7 @@ This project is open source and the license can be found in LICENSE.
 Installation
 ============
 
-To get setup with symposion_project code you must have the following
+To get setup with chipy.org code you must have the following
 installed:
 
  * Python 2.6+

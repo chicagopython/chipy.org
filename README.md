@@ -21,17 +21,21 @@ Setting up environment
 
 Create a virtual environment where your dependencies will live::
 
-    $ virtualenv --no-site-packages myconference
-    $ source myconference/bin/activate
-    (myconference)$
+    $ virtualenv venv
+    $ source venv/bin/activate
+    (venv)$
+
+Clone the repo
+
+    (venv)$ git clone git://github.com/chicagopython/chipy.org.git chipy.org
 
 Make the project directory your working directory::
 
-    $ cd symposion_project
+    (venv)$ cd chipy.org
 
-Install conference project dependencies::
+Install project dependencies::
 
-    (myconference)$ pip install -r requirements/project.txt
+    (venv)$ pip install -r requirements/project.txt
 
 Setting up the database
 -----------------------
@@ -41,14 +45,14 @@ up to run on a SQLite database. If you are setting up a production database
 see the Configuration section below for where to place settings and get the
 database running. Now you can run::
 
-    (myconference)$ python manage.py syncdb
+    (venv)$ python manage.py syncdb
 
 Running a web server
 --------------------
 
 In development you should run::
 
-    (myconference)$ python manage.py runserver
+    (venv)$ python manage.py runserver
 
 For production, this project comes with a WSGI entry point located in
 ``deploy/wsgi.py`` and can be referenced by gunicorn with

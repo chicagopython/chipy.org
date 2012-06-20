@@ -1,55 +1,68 @@
 {% extends "site_base.html" %}
 
-{% load i18n %}
-{% load ifsetting_tag %}
+{% load i18n ifsetting_tag boxes_tags %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
 
 {% block body %}
-    
-    <h1>{% trans "Welcome to Pinax" %}</h1>
-    
-    <p>
-        {% blocktrans %}
-        <b>Pinax</b> is a <a href="http://djangoproject.com/">Django</a>
-        project intended to provide a starting point for websites. By
-        integrating numerous reusable Django apps to take care of the
-        things that many sites have in common, it lets you focus on what
-        makes your site different.
-        {% endblocktrans %}
-    </p>
-    
-    <p>
-        {% blocktrans %}
-        For more information about Pinax, see
-        <a href="http://pinaxproject.com/">http://pinaxproject.com/</a>.
-        {% endblocktrans %}
-    </p>
-    
-    <h2>{% trans "About this project" %}</h2>
-    
-    <p>
-        {% blocktrans %}
-        This project lays the foundation for all other Pinax starter projects. It
-        provides the project directory layout and some key infrastructure apps on
-        which the other starter projects are based.
-        {% endblocktrans %}
-    </p>
-    
-    <hr />
-    {% if user.is_authenticated %}
-        {% url what_next as what_next_url %}
-        <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}">What Next</a>?{% endblocktrans %}</p>
-    {% else %}
-        {% url acct_login as login_url %}
-        {% ifsetting ACCOUNT_OPEN_SIGNUP %}
-            {% url acct_signup as signup_url %}
-            <p>{% blocktrans %}You can <a href="{{ signup_url }}">Sign up</a> and <a href="{{ login_url }}">Log in</a> to try out the site.{% endblocktrans %}</p>
-        {% else %}
-            <p>{% blocktrans %}You can <a href="{{ login_url }}">Log in</a> to try out the site.{% endblocktrans %}</p>
-        {% endifsetting %}
-    {% endif %}
-    
+    <header id="home-header" class="row-fluid">
+        <div class="span6">
+            <div id="home-content">
+              <h1>Welcome to ChiPy</h1>
+              <p>Maecenas adipiscing, nisi at pharetra luctus, massa massa gravida neque, ut facilisis nulla orci vitae metus. Etiam at ligula eu metus euismod rhoncus. Ut commodo augue nec enim lobortis convallis. Nunc interdum tortor vitae ante venenatis accumsan. In porttitor ornare arcu ut vulputate. Aenean semper dictum est vel commodo.</p>
+              <a class="btn" href="#">Learn more &raquo;</a>
+            </div>
+        </div>
+        <div class="span6">
+            <img src="{{ STATIC_URL }}img/chipmunk.png" alt="ChiPy">
+        </div>
+    </header>
+
+    <div class="row-fluid">
+        <div class="module span4">
+            <h2>In the Loop</h2>
+            <p>Meetings happen in the downtown area the second Thursday of every month.</p>
+
+            <h3>Next Meeting</h3>
+            <p><strong>When:</strong> Thursday, June 14 2012. 7 p.m.</p>
+            <p><strong>Where:</strong> 1871 in Merchandise Mart</p>
+            <p><strong>RSVP:</strong> <a class="btn btn-mini" href="#">Maybe</a> <a class="btn btn-mini" href="#">Yes</a></p>
+            <p>xx going so far</p>
+            <p><a class="btn" href="#">Past meetings &raquo;</a></p>
+        </div><!--/span-->
+        <div class="module span4">
+            <h2>This Month's Topics</h2>
+            <ul>
+                <li>
+                    <strong>Cras convallis risus ut neque molestie at tincidun</strong><br />
+                    (:10 Ten Minutes)<br />
+                    By: Alan Smithee<br />
+                    Phasellus congue lorem vitae turpis auctor fringilla gravida tortor aliquam.
+                </li>
+                <li>
+                    <strong>Cras convallis risus ut neque molestie at tincidun</strong><br />
+                    (:10 Ten Minutes)<br />
+                    By: Alan Smithee<br />
+                    Phasellus congue lorem vitae turpis auctor fringilla gravida tortor aliquam.
+                </li>
+                <li>
+                    <strong>Cras convallis risus ut neque molestie at tincidun</strong><br />
+                    (:10 Ten Minutes)<br />
+                    By: Alan Smithee<br />
+                    Phasellus congue lorem vitae turpis auctor fringilla gravida tortor aliquam.
+                </li>
+            </ul>
+        </div><!--/span-->
+        <div class="module span4">
+            <h2>IRC</h2>
+            <p>Some of us like to hang out in the IRC #chipy channel on irc.freenode.net</p>
+            <p><a class="btn" href="#">Start chatting &raquo;</a></p>
+            <h2>Mailing List</h2>
+            <p>Sign up to join the discussion.</p>
+            <p><a class="btn" href="#">Sign up &raquo;</a></p>
+        </div><!--/span-->
+    </div><!-- #row-fluid -->
+    <hr>
 {% endblock %}

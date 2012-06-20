@@ -89,7 +89,14 @@ STATICFILES_FINDERS = [
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
 
 # Subdirectory of COMPRESS_ROOT to store the cached media files in
-COMPRESS_OUTPUT_DIR = "cache"
+COMPRESS_OUTPUT_DIR = ""
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+)
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.cssmin.CSSMinFilter'
+]
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "2(e@(*+ykqa_)%cl-rzw6#4ah2by=d=f^+l9s1@^jlpnfuqp%e"
@@ -112,7 +119,7 @@ MIDDLEWARE_CLASSES = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = "symposion_project.urls"
+ROOT_URLCONF = "chipy.urls"
 
 TEMPLATE_DIRS = [
     os.path.join(PROJECT_ROOT, "templates"),

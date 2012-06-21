@@ -1,0 +1,106 @@
+@import "../bootstrap/less/bootstrap.less";
+@import "../bootstrap/less/responsive.less";
+@import "chipy-variables.less";
+
+h1 {
+  color: @blue;
+  font-family: @sanshdFontFamily;
+  font-size: 36px;
+  margin-bottom: .2em;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+h2 {
+  color: @bluehd;
+  font-family: @sanshdFontFamily;
+}
+
+a {
+  .transition(all .1s linear);
+}
+
+li {
+  margin-bottom: .4em;
+}
+
+hr {
+  border-top: 1px solid @blueLight;
+}
+
+#content {
+  margin-bottom: 30px;
+}
+
+.navbar {
+  .brand {
+    background: url('../img/chipmunk-sm.png') no-repeat left;
+    padding-left: 100px;
+  }
+  .navbar-inner {
+    .border-radius(0);
+    min-height: 42px;
+    padding-top: 4px;
+  }
+  .navbar-text {
+    line-height: 36px;
+  }
+  .nav {
+    font-weight: bold;
+    margin: 0;
+    text-transform: lowercase;
+    &.pull-right {
+      font-weight: normal;
+      > li, > li > a {
+        display: inline;
+        line-height: 40px!important;
+        padding: 0 3px;
+      }
+      a {
+        text-transform: uppercase;
+      }
+    }
+  }
+  .dropdown .caret {
+    margin-top: 18px;
+  }
+}
+
+#home-header {
+  border: 1px solid #FAF3D8;
+  .border-radius(6px);
+  .box-shadow(0 1px 3px #adadad);
+  font-size: 18px;
+  #gradient > .vertical (#f4efd7, @yellowLight);
+  margin-bottom: 24px;
+  #home-content {
+    padding: 20px;
+    p {
+      letter-spacing: 1px;
+      line-height: 1.2em;
+    }
+  }
+  img {
+    float: right;
+    max-width: 90%;
+    padding: 10% 5% 20px;
+  }
+  .boxes_links {
+    font-size: 13px;
+  }
+}
+
+#footer {
+  margin-top: 0;
+}
+
+@media (max-width: 979px) {
+.navbar {
+  .brand {
+    padding-right: 40px;
+  }
+  .btn-navbar {
+    position: absolute;
+    right: 30px;
+  }
+}
+}

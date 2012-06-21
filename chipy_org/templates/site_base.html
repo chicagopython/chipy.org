@@ -1,0 +1,54 @@
+{% extends "theme_base.html" %}
+
+{% load i18n compress %}
+
+{% block head_title %}{% block title %}{% endblock %}{% endblock %}
+
+{% block style_base %}
+    <link href='http://fonts.googleapis.com/css?family=Signika:600' rel='stylesheet' type='text/css'>
+    {% compress css %}  
+    <link href="{{ STATIC_URL }}pinax/css/theme.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}less/chipy.less" type="text/less" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/conference.css" rel="stylesheet">
+    {% endcompress %}
+    {% block extra_style %}{% endblock %}
+{% endblock %}
+
+{% block navbar_class %}{% endblock %}
+
+{% block nav %}
+    <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Recent Topics</a></li>
+        <li><a href="#">Give a Talk</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Members</a></li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <div class="row-fluid">
+        <div id="sidebar" class="span3">
+            {% block sidebar %}
+            <div class="well sidebar-nav">
+                {% block sidebar_nav %}{% endblock %}
+            </div><!--/.well -->
+            {% endblock %}
+        </div><!--/span-->
+
+        <div id="body" class="span9">
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div><!-- #content -->
+        </div><!-- #body-->
+
+    </div><!-- #row-fluid -->
+    <hr>
+{% endblock body %}
+
+{% block footer %}
+    <div class="legal">
+        {% include "_footer.html" %}
+    </div>
+{% endblock %}

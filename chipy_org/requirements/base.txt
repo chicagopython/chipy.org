@@ -21,3 +21,5 @@ django-openid==0.3a1
 python-openid==2.2.5
 
 -e git+git://github.com/pinax/pinax-theme-bootstrap.git@2.0-less#egg=pinax-theme-bootstrap
+
+dj-database-url

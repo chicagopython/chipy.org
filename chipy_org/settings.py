@@ -141,6 +141,8 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.humanize",
+
+    "gunicorn",
     
     "pinax.templatetags",
     

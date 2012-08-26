@@ -7120,6 +7120,9 @@ a.badge:hover {
     overflow: visible !important;
   }
 }
+body {
+  padding-top: 0px;
+}
 h1 {
   color: #0e61b4;
   font-family: "Signika", "Helvetica Neue", Helvetica, Arial, sans-serif;

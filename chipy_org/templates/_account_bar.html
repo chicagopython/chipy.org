@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load url from future %}
+
+<div class="pull-right">
+    {% if user.is_authenticated %}
+        <p class="navbar-text pull-left">{% trans "Logged in as:" %}</p>
+    {% endif %}
+    <ul class="nav pull-right">
+        {% if user.is_authenticated %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{ user }}
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    {% block user_links %}
+                        <li><a href="{% url "acct_email" %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="{% url "admin:index" %}"><i class="icon-cog"></i> {% trans "Admin" %}</a></li>
+                        {% endif %}
+                        <li class="divider"></li>
+                        <li><a href="{% url "acct_logout" %}"><i class="icon-off"></i> {% trans "Log out" %}</a></li>
+                    {% endblock %}
+                </ul>
+            </li>
+        {% else %}
+            <li><a href="#">{% trans "Log in" %}</a></li>
+                <li class="navbar-text">{% trans "or" %}</li>
+                <li><a href="#">{% trans "Sign up" %}</a></li>
+        {% endif %}
+    </ul>
+</div>

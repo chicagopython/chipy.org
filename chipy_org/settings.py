@@ -2,20 +2,21 @@
 # Django settings for account project
 
 import os.path
+import sys
+import random
+from os import environ as env
 import posixpath
 import dj_database_url
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
-DEBUG = True
+
+DEBUG = bool(env.get('DEBUG', False))
 TEMPLATE_DEBUG = DEBUG
 
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = DEBUG
-
-# django-compressor is turned off by default due to deployment overhead for
-# most users. See <URL> for more information
-COMPRESS = False
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -27,7 +28,7 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -69,34 +70,22 @@ STATICFILES_DIRS = [
 ]
 
 STATICFILES_FINDERS = [
-    "staticfiles.finders.FileSystemFinder",
-    "staticfiles.finders.AppDirectoriesFinder",
-    "staticfiles.finders.LegacyAppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
-
-# Subdirectory of COMPRESS_ROOT to store the cached media files in
-COMPRESS_OUTPUT_DIR = ""
-
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-)
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.cssmin.CSSMinFilter'
-]
+ADMIN_MEDIA_PREFIX = os.path.join(STATIC_URL, "admin/")
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = "2(e@(*+ykqa_)%cl-rzw6#4ah2by=d=f^+l9s1@^jlpnfuqp%e"
+SECRET_KEY = env.get('SECRET_KEY', "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = [
-    "django.template.loaders.filesystem.load_template_source",
-    "django.template.loaders.app_directories.load_template_source",
+    "django.template.loaders.filesystem.Loader",
+    "django.template.loaders.app_directories.Loader",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -104,11 +93,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django_openid.consumer.SessionConsumer",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "pinax.apps.account.middleware.LocaleMiddleware",
-    "pinax.middleware.security.HideSensistiveFieldsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "chipy_org.urls"
@@ -123,13 +108,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
+    "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
-    
-    "staticfiles.context_processors.static",
-    
-    "pinax.core.context_processors.pinax_settings",
-    
-    "pinax.apps.account.context_processors.account",
 ]
 
 INSTALLED_APPS = [
@@ -141,38 +121,12 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.humanize",
-
+    "django.contrib.staticfiles",
+    
     "gunicorn",
-    
-    "pinax.templatetags",
-    
+
     # theme
-    "pinax_theme_bootstrap",
     'django_forms_bootstrap',
-    
-    # external
-    "staticfiles",
-    "compressor",
-    "debug_toolbar",
-    "mailer",
-    "django_openid",
-    "timezones",
-    "emailconfirmation",
-    "biblion",
-    "boxes",
-    "sorl.thumbnail",
-    "metron",
-    
-    # Pinax
-    "pinax.apps.account",
-    "pinax.apps.signup_codes",
-    
-    # symposion
-    "symposion.proposals",
-    "symposion.speakers",
-    "symposion.sponsors",
-    "symposion.review",
-    "symposion.schedule",
     
     # project
     "about",
@@ -186,36 +140,3 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 
-ACCOUNT_OPEN_SIGNUP = True
-ACCOUNT_REQUIRED_EMAIL = False
-ACCOUNT_EMAIL_VERIFICATION = False
-ACCOUNT_EMAIL_AUTHENTICATION = False
-ACCOUNT_UNIQUE_EMAIL = EMAIL_CONFIRMATION_UNIQUE_EMAIL = False
-
-AUTHENTICATION_BACKENDS = [
-    "pinax.apps.account.auth_backends.AuthenticationBackend",
-]
-
-LOGIN_URL = "/account/login/" # @@@ any way this can be a url name?
-LOGIN_REDIRECT_URLNAME = "what_next"
-
-EMAIL_CONFIRMATION_DAYS = 2
-EMAIL_DEBUG = DEBUG
-
-DEBUG_TOOLBAR_CONFIG = {
-    "INTERCEPT_REDIRECTS": False,
-}
-
-MARKITUP_FILTER = ("markdown.markdown", {"safe_mode": True})
-
-THUMBNAIL_EXTENSION = "PNG"
-
-ACCEPTING_PROPOSALS = True
-SCHEDULE_TIMEZONE = "US/Pacific"
-
-# local_settings.py can be used to override environment-specific settings
-# like database and email that differ between development and production.
-try:
-    from local_settings import *
-except ImportError:
-    pass

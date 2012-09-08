@@ -1,33 +1,6 @@
---extra-index-url=http://dist.pinaxproject.com/alpha/
---extra-index-url=http://dist.pinaxproject.com/dev/
-
-Django==1.3.1
+Django
 gunicorn
-psycopg2
-Pinax==0.9b1.dev7
-
-django-debug-toolbar==0.9.4
-django-staticfiles==1.1.2
-django_compressor==1.1.2
-
-django-mailer==0.2a1.dev3
-django-email-confirmation==0.2
-django-timezones==0.2
-pytz==2011n
-django-openid==0.3a1
-python-openid==2.2.5
-
--e git+git://github.com/pinax/pinax-theme-bootstrap.git#egg=pinax-theme-bootstrap
-
 dj-database-url
+django_forms_bootstrap
+django-social-auth
 
-Pillow==1.7.6
-sorl-thumbnail==3.2.5
-biblion==0.1.dev11
-creole==1.2
-Pygments==1.4
-icalendar==2.2
-django-boxes==1.0b1.dev1005
-metron==0.1
-markdown==2.1.0
-django-markitup==1.0.0

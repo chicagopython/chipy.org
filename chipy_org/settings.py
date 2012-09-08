@@ -124,13 +124,19 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
-    
-    "staticfiles.context_processors.static",
-    
-    "pinax.core.context_processors.pinax_settings",
-    
-    "pinax.apps.account.context_processors.account",
+    "social_auth.context_processors.social_auth_login_redirect",
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleBackend',
+    'social_auth.backends.browserid.BrowserIDBackend',
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 INSTALLED_APPS = [
     # Django
@@ -141,38 +147,15 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.humanize",
+    "django.contrib.staticfiles",
 
+    # Deployment
     "gunicorn",
-    
-    "pinax.templatetags",
-    
-    # theme
-    "pinax_theme_bootstrap",
+
     'django_forms_bootstrap',
-    
-    # external
-    "staticfiles",
-    "compressor",
-    "debug_toolbar",
-    "mailer",
-    "django_openid",
-    "timezones",
-    "emailconfirmation",
-    "biblion",
-    "boxes",
-    "sorl.thumbnail",
-    "metron",
-    
-    # Pinax
-    "pinax.apps.account",
-    "pinax.apps.signup_codes",
-    
-    # symposion
-    "symposion.proposals",
-    "symposion.speakers",
-    "symposion.sponsors",
-    "symposion.review",
-    "symposion.schedule",
+
+    # Third party
+    'social_auth',
     
     # project
     "about",
@@ -192,10 +175,6 @@ ACCOUNT_EMAIL_VERIFICATION = False
 ACCOUNT_EMAIL_AUTHENTICATION = False
 ACCOUNT_UNIQUE_EMAIL = EMAIL_CONFIRMATION_UNIQUE_EMAIL = False
 
-AUTHENTICATION_BACKENDS = [
-    "pinax.apps.account.auth_backends.AuthenticationBackend",
-]
-
 LOGIN_URL = "/account/login/" # @@@ any way this can be a url name?
 LOGIN_REDIRECT_URLNAME = "what_next"
 
@@ -213,9 +192,3 @@ THUMBNAIL_EXTENSION = "PNG"
 ACCEPTING_PROPOSALS = True
 SCHEDULE_TIMEZONE = "US/Pacific"
 
-# local_settings.py can be used to override environment-specific settings
-# like database and email that differ between development and production.
-try:
-    from local_settings import *
-except ImportError:
-    pass

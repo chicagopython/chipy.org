@@ -11,7 +11,8 @@
 
         {% block style %}
             <link href="{% static "css/flick/jquery-ui-1.8.23.custom.css" %}" rel="stylesheet">
-        {% endblock %}
+            <link href="{% static "css/zocial.css" %}" rel="stylesheet">
+        {% endblock style %}
 
         {% block html5shim %}
             <!-- HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,7 +81,7 @@
             <script type="text/javascript">
               $(document).ready(function() {
                   $('#login-link').click(function() {
-                      $('#login-dialog').dialog();
+                      $('#login-dialog').dialog({ width: 217, modal: true });
                       return false;
                   });
               });

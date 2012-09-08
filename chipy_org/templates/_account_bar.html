@@ -19,7 +19,7 @@
                             <li><a href="{% url "admin:index" %}"><i class="icon-cog"></i> {% trans "Admin" %}</a></li>
                         {% endif %}
                         <li class="divider"></li>
-                        <li><a href="#"><i class="icon-off"></i> {% trans "Log out" %}</a></li>
+                        <li><a href="/logout"><i class="icon-off"></i> {% trans "Log out" %}</a></li>
                     {% endblock %}
                 </ul>
             </li>
@@ -29,6 +29,6 @@
                 <li class="navbar-text">{% trans "or" %}</li>
                 <li><a href="#">{% trans "Sign up" %}</a></li>
           </ul>
-          <div id="login-dialog" title="Login" style="display:none"><a href="{% url 'socialauth_begin' 'google' %}?{{ redirect_querystring }}">Google</a></div>
+          <div id="login-dialog" title="Login" style="display:none"><a href="{% url 'socialauth_begin' 'google' %}?{{ redirect_querystring }}"><button class="zocial google">Sign in with Google</button></a></div>
         {% endif %}
 </div>

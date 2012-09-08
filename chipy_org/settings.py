@@ -15,6 +15,9 @@ sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 DEBUG = bool(env.get('DEBUG', False))
 TEMPLATE_DEBUG = DEBUG
 
+GITHUB_APP_ID = env.get('GITHUB_APP_ID')
+GITHUB_API_SECRET = env.get('GITHUB_API_SECRET')
+
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = DEBUG
 
@@ -124,6 +127,11 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.github.GithubBackend',
     'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_ENABLED_BACKENDS = (
+    'google',
+    'github',
 )
 
 INSTALLED_APPS = [

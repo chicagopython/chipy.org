@@ -29,6 +29,10 @@
                 <li class="navbar-text">{% trans "or" %}</li>
                 <li><a href="#">{% trans "Sign up" %}</a></li>
           </ul>
-          <div id="login-dialog" title="Login" style="display:none"><a href="{% url 'socialauth_begin' 'google' %}?{{ redirect_querystring }}"><button class="zocial google">Sign in with Google</button></a></div>
+          <div id="login-dialog" title="Login" style="display:none">
+            Sign in with <br>
+            <a href="{% url 'socialauth_begin' 'google' %}?{{ redirect_querystring }}"><button class="zocial google">Google</button></a><br>
+            <a href="{% url 'socialauth_begin' 'github' %}?{{ redirect_querystring }}"><button class="zocial github">Github</button></a><br>
+          </div>
         {% endif %}
 </div>

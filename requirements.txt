@@ -1,6 +1,6 @@
-Django
+Django>=1.4
 gunicorn
 dj-database-url
 django_forms_bootstrap
 django-social-auth
-
+k>>>>>>> develop

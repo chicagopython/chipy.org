@@ -7233,3 +7233,7 @@ hr {
 .ui-dialog .ui-dialog-titlebar {
   padding: 0.15em 1em;
 }
+#login-dialog .zocial {
+  width: 153px;
+  margin-top: 0.5em;
+}

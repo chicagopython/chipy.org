@@ -15,6 +15,9 @@ sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 DEBUG = bool(env.get('DEBUG', False))
 TEMPLATE_DEBUG = DEBUG
 
+GITHUB_APP_ID = env.get('GITHUB_APP_ID')
+GITHUB_API_SECRET = env.get('GITHUB_API_SECRET')
+
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = DEBUG
 
@@ -35,7 +38,9 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost:543
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = "US/Eastern"
+TIME_ZONE = "US/Central"
+
+LOGIN_REDIRECT_URL = '/'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -110,7 +115,24 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.request",
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
+    "social_auth.context_processors.social_auth_login_redirect",
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleBackend',
+    'social_auth.backends.browserid.BrowserIDBackend',
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_ENABLED_BACKENDS = (
+    'google',
+    'github',
+)
 
 INSTALLED_APPS = [
     # Django
@@ -122,7 +144,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.humanize",
     "django.contrib.staticfiles",
-    
+
+    # Third party
+    'social_auth',
     "gunicorn",
 
     # theme

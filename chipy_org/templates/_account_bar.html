@@ -9,24 +9,31 @@
         {% if user.is_authenticated %}
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    {{ user }}
+                    {{ user.first_name }} {{ user.last_name }}
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                     {% block user_links %}
-                        <li><a href="{% url "acct_email" %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
+                        <li><a href="#"><i class="icon-user"></i> {% trans "Account" %}</a></li>
                         {% if user.is_staff %}
                             <li><a href="{% url "admin:index" %}"><i class="icon-cog"></i> {% trans "Admin" %}</a></li>
                         {% endif %}
                         <li class="divider"></li>
-                        <li><a href="{% url "acct_logout" %}"><i class="icon-off"></i> {% trans "Log out" %}</a></li>
+                        <li><a href="/logout"><i class="icon-off"></i> {% trans "Log out" %}</a></li>
                     {% endblock %}
                 </ul>
             </li>
+          </ul>
         {% else %}
-            <li><a href="#">{% trans "Log in" %}</a></li>
+            <li><a href="#" id="login-link">{% trans "Log in" %}</a></li>
                 <li class="navbar-text">{% trans "or" %}</li>
                 <li><a href="#">{% trans "Sign up" %}</a></li>
+          </ul>
+          <div id="login-dialog" title="Login" style="display:none">
+            Sign in with <br>
+            <a href="{% url 'socialauth_begin' 'google' %}?{{ redirect_querystring }}"><button class="zocial google">Google</button></a><br>
+            <a href="{% url 'socialauth_begin' 'github' %}?{{ redirect_querystring }}"><button class="zocial github">Github</button></a><br>
+            <button class="zocial openid" id="openid-button">OpenID</button><br>
+          </div>
         {% endif %}
-    </ul>
 </div>

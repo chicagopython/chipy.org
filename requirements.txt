@@ -1,4 +1,6 @@
 Django>=1.4
-dj-database-url
 gunicorn
+dj-database-url
 django_forms_bootstrap
+django-social-auth
+

@@ -10,8 +10,11 @@ urlpatterns = patterns("",
     url(r"^$", direct_to_template, {
         "template": "homepage.html",
     }, name="home"),
-    url(r"^admin/", include(admin.site.urls)),
-    url(r"^about/", include("about.urls")),
+    url(r'', include('social_auth.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^about/', include('about.urls')),
+    url(r'^logout/$', 'django.contrib.auth.views.logout',
+                          {'next_page': '/'}),
 )
 
 

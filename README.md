@@ -2,22 +2,30 @@
 Chipy.org
 =========
 
-This repository stores the Pinax Symposion conference starter project. 
+The code for the Chipy.org website
 This project is open source and the license can be found in LICENSE.
 
 
 Installation
 ============
 
-To get setup with chipy.org code you must have the following
-installed:
+To get setup with chipy.org code it is recommended that you use the following:
 
  * Python 2.6+
- * virtualenv 1.4.7+
+ * virtualenv
+ * [Autoenv](https://github.com/kennethreitz/autoenv)
  * C compiler (for PIL)
 
 Setting up environment
 ----------------------
+
+Chipy.org is setup using [12factor](http://12factor.net), which means that it takes local settings from the environment. For this reason it is recommended that you use autoenv and a .env file. The example .env is::
+
+    export DEBUG=True
+    export GITHUB_APP_ID=youridhere
+    export GITHUB_API_SECRET=supersecretkeyhere
+
+If using autoenv, the above will be in your environment when you cd to the project directory
 
 Create a virtual environment where your dependencies will live::
 
@@ -35,7 +43,7 @@ Make the project directory your working directory::
 
 Install project dependencies::
 
-    (venv)$ pip install -r requirements/project.txt
+    (venv)$ pip install -r requirements.txt
 
 Setting up the database
 -----------------------
@@ -54,13 +62,4 @@ In development you should run::
 
     (venv)$ python manage.py runserver
 
-For production, this project comes with a WSGI entry point located in
-``deploy/wsgi.py`` and can be referenced by gunicorn with
-``deploy.wsgi:application``.
 
-Configuration
-=============
-
-You can create a ``local_settings.py`` file alongside ``settings.py`` to
-override any setting that may be environment/instance specific. This file is
-ignored in ``.gitignore``.

@@ -11,7 +11,6 @@ import dj_database_url
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
-
 DEBUG = bool(env.get('DEBUG', False))
 TEMPLATE_DEBUG = DEBUG
 
@@ -135,6 +134,8 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 )
 
 INSTALLED_APPS = [
+    'grappelli',
+    
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -148,12 +149,13 @@ INSTALLED_APPS = [
     # Third party
     'social_auth',
     "gunicorn",
-
+    
     # theme
     'django_forms_bootstrap',
     
     # project
     "about",
+    "meetings",
 ]
 
 FIXTURE_DIRS = [

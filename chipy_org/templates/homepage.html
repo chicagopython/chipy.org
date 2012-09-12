@@ -26,10 +26,12 @@
             <p>Meetings happen in the downtown area the second Thursday of every month.</p>
 
             <h3>Next Meeting</h3>
-            <p><strong>When:</strong> Thursday, June 14 2012. 7 p.m.</p>
-            <p><strong>Where:</strong> 1871 in Merchandise Mart</p>
+            <p><strong>When:</strong> {{ next_meeting.when|default:'N/A'}}</p>
+            <p><strong>Where:</strong> {{ next_meeting.where|default:'N/A'}}</p>
+            {% if next_meeting %}
             <p><strong>RSVP:</strong> <a class="btn btn-mini" href="#">Maybe</a> <a class="btn btn-mini" href="#">Yes</a></p>
             <p>xx going so far</p>
+            {% endif %}
             <p><a class="btn" href="#">Past meetings &raquo;</a></p>
         </div><!--/span-->
         <div class="module span4">

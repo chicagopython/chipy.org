@@ -1,0 +1,11 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Past Meetings" %}{% endblock %}
+
+{% block body %}
+{% for meeting in meeting_list %}
+{{ meeting }}
+{% endfor %}
+{% endblock body %}

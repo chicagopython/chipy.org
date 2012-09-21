@@ -1,8 +1,11 @@
-from django.db import models
-from libs.models import CommonModel
-from django.contrib.auth.models import User
 import settings
 import datetime
+
+from django.db import models
+from django.contrib.auth.models import User
+from durationfield.db.models.fields.duration import DurationField
+
+from libs.models import CommonModel
 
 MAX_LENGTH = 255
 
@@ -62,7 +65,36 @@ class Meeting(CommonModel):
         return bool( self.when >=  ( datetime.datetime.now() - datetime.timedelta(hours = 3 )))
 
     def rsvp_user_yes(self):
-        raise NotImplimented
+        raise NotImplimentedError
 
     def rsvp_user_maybe(self):
-        raise NotImplimented
+        raise NotImplimentedError
+
+
+class Presentor(CommonModel):
+    def __unicode__(self):
+        return self.name
+
+    name = models.CharField(max_length = MAX_LENGTH)
+    email = models.EmailField(max_length = MAX_LENGTH, blank = True, null = True)
+    phone = models.CharField(max_length = MAX_LENGTH, blank = True, null = True)
+    release = models.BooleanField(default = False)
+    
+
+class Topic(CommonModel):
+
+    def __unicode__(self):
+        out = self.title
+        if self.by:
+            out += "By: %s" % self.presentor.name
+        return out
+
+    title = models.CharField(max_length=MAX_LENGTH)
+    presentor = models.ForeignKey(Presentor,blank=True,null=True)
+    meeting = models.ForeignKey( Meeting, blank=True, null=True)
+    length = DurationField()
+    embed_video = models.TextField(blank=True,null=True)
+    description = models.TextField(blank=True,null=True)
+    slides_link = models.URLField(verify_exists=True, blank=True, null=True)
+    start_time = models.DateTimeField(blank = True, null = True)
+

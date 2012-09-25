@@ -24,6 +24,9 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export DEBUG=True
     export GITHUB_APP_ID=youridhere
     export GITHUB_API_SECRET=supersecretkeyhere
+    export SECRET_KEY=somesecretkeyfordjangogoeshere
+
+Note that the only required config is the github stuff. The secret key will be random by default which will cause your session to wipe on every restart.
 
 If using autoenv, the above will be in your environment when you cd to the project directory
 

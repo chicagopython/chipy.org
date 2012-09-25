@@ -48,10 +48,9 @@ Install project dependencies::
 Setting up the database
 -----------------------
 
-This will vary for production and development. By default the project is set
-up to run on a SQLite database. If you are setting up a production database
-see the Configuration section below for where to place settings and get the
-database running. Now you can run::
+I recommend keeping your development DB as close to production as possible. If you're on a Mac, I recommend using [Postgress.app](http://postgresapp.com) 
+
+You will need to run::
 
     (venv)$ python manage.py syncdb
 

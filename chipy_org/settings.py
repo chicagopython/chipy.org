@@ -11,7 +11,7 @@ import dj_database_url
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
-DEBUG = bool(env.get('DEBUG', False))
+DEBUG = True if env.get('DEBUG', False) == 'True' else False
 TEMPLATE_DEBUG = DEBUG
 
 GITHUB_APP_ID = env.get('GITHUB_APP_ID')

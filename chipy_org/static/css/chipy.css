@@ -7247,3 +7247,7 @@ hr {
 #propose-topic select.btn {
   width: 200px;
 }
+#propose-topic .interval_label {
+  color: #999999;
+  font-size: 11.700000000000001px;
+}

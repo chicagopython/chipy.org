@@ -1,10 +1,7 @@
 from django.forms import ModelForm
-from durationfield.forms import DurationField as FDurationField
 from meetings.models import Topic
 
 class TopicForm(ModelForm):
-    length = FDurationField()
-    
     required = ('title',
                 'meeting',
                 'description',
@@ -23,4 +20,6 @@ class TopicForm(ModelForm):
         instance = super(TopicForm, self).save(commit)
         if request and not instance.presentor:
             instance.presentor = request.user
-        instance.save()
+        if commit:
+            instance.save()
+        return instance

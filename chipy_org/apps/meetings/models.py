@@ -3,7 +3,7 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
-from durationfield.db.models.fields.duration import DurationField
+from interval.fields import IntervalField
 
 from libs.models import CommonModel
 
@@ -85,14 +85,14 @@ class Topic(CommonModel):
 
     def __unicode__(self):
         out = self.title
-        if self.by:
+        if self.presentor:
             out += "By: %s" % self.presentor.name
         return out
 
     title = models.CharField(max_length=MAX_LENGTH)
     presentor = models.ForeignKey(Presentor,blank=True,null=True)
     meeting = models.ForeignKey( Meeting, blank=True, null=True)
-    length = DurationField(blank = True, null = True)
+    length = IntervalField(format="M", blank = True, null = True)
     embed_video = models.TextField(blank=True,null=True)
     description = models.TextField(blank=True,null=True)
     slides_link = models.URLField(verify_exists=True, blank=True, null=True)

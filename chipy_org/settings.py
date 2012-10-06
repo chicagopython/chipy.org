@@ -142,6 +142,7 @@ INSTALLED_APPS = [
     # Third party
     'social_auth',
     "gunicorn",
+    'interval',
     
     # theme
     'django_forms_bootstrap',

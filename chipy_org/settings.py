@@ -11,7 +11,7 @@ import dj_database_url
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
-DEBUG = bool(env.get('DEBUG', False))
+DEBUG = True if env.get('DEBUG', False) == 'True' else False
 TEMPLATE_DEBUG = DEBUG
 
 GITHUB_APP_ID = env.get('GITHUB_APP_ID')
@@ -38,6 +38,8 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost:543
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = "US/Central"
+
+LOGIN_URL = "/login/"
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -92,13 +94,6 @@ TEMPLATE_LOADERS = [
     "django.template.loaders.app_directories.Loader",
 ]
 
-MIDDLEWARE_CLASSES = [
-    "django.middleware.common.CommonMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-]
 
 ROOT_URLCONF = "chipy_org.urls"
 
@@ -149,6 +144,7 @@ INSTALLED_APPS = [
     # Third party
     'social_auth',
     "gunicorn",
+    'interval',
     
     # theme
     'django_forms_bootstrap',

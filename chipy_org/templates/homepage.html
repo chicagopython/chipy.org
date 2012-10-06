@@ -31,6 +31,12 @@
             {% if next_meeting %}
             <p><strong>RSVP:</strong> <a class="btn btn-mini" href="#">Maybe</a> <a class="btn btn-mini" href="#">Yes</a></p>
             <p>xx going so far</p>
+            {% else %}
+              {% if request.user.is_staff %}
+                <p>                
+                  <a class="btn btn-primary" href="{% url admin:meetings_meeting_add %}">Create Meeting</a>
+                </p>
+              {% endif %}              
             {% endif %}
             <p><a class="btn" href="{% url past_meetings %}">Past meetings &raquo;</a></p>
         </div><!--/span-->

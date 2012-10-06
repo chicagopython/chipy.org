@@ -30,10 +30,7 @@
                 <li><a href="#">{% trans "Sign up" %}</a></li>
           </ul>
           <div id="login-dialog" title="Login" style="display:none">
-            Sign in with <br>
-            <a href="{% url 'socialauth_begin' 'google' %}?{{ redirect_querystring }}"><button class="zocial google">Google</button></a><br>
-            <a href="{% url 'socialauth_begin' 'github' %}?{{ redirect_querystring }}"><button class="zocial github">Github</button></a><br>
-            <button class="zocial openid" id="openid-button">OpenID</button><br>
+            {% include "_login_options.html" %}            
           </div>
         {% endif %}
 </div>

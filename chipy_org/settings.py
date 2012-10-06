@@ -39,6 +39,8 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost:543
 # system time zone.
 TIME_ZONE = "US/Central"
 
+LOGIN_URL = "/login/"
+
 LOGIN_REDIRECT_URL = '/'
 
 # Language code for this installation. All choices can be found here:

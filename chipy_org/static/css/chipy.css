@@ -7237,3 +7237,13 @@ hr {
   width: 153px;
   margin-top: 0.5em;
 }
+#propose-topic input,
+#propose-topic textarea,
+#propose-topic select {
+  width: 300px;
+}
+#propose-topic input.btn,
+#propose-topic textarea.btn,
+#propose-topic select.btn {
+  width: 200px;
+}

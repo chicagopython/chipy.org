@@ -92,7 +92,7 @@ class Topic(CommonModel):
     title = models.CharField(max_length=MAX_LENGTH)
     presentor = models.ForeignKey(Presentor,blank=True,null=True)
     meeting = models.ForeignKey( Meeting, blank=True, null=True)
-    length = DurationField()
+    length = DurationField(blank = True, null = True)
     embed_video = models.TextField(blank=True,null=True)
     description = models.TextField(blank=True,null=True)
     slides_link = models.URLField(verify_exists=True, blank=True, null=True)

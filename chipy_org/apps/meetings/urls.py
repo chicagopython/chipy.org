@@ -1,8 +1,9 @@
 from django.conf.urls.defaults import *
+from django.contrib.auth.decorators import login_required
 from meetings.views import *
 
 urlpatterns = patterns("",
     url(r'^past/$', PastMeetings.as_view(), name='past_meetings'),
-    url(r'^topic/propose$', ProposeTopic.as_view(), name='propose_topic'),
+    url(r'^topic/propose$', login_required(ProposeTopic.as_view()), name='propose_topic'),
 
 )

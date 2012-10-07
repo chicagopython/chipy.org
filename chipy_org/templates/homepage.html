@@ -27,7 +27,25 @@
 
             <h3>Next Meeting</h3>
             <p><strong>When:</strong> {{ next_meeting.when|default:'N/A'}}</p>
-            <p><strong>Where:</strong> {{ next_meeting.where|default:'N/A'}}</p>
+
+            {% if next_meeting %}
+            <p><strong>Where:</strong> <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a></p>
+              <div id="where-dialog" title="Venue" style="display:none">
+                {{ next_meeting.where.name }}<br>
+                {{ next_meeting.where.address }}<br>              
+                {% if next_meeting.where.directions %}
+                  {{ next_meeting.where.directions }}<br>
+                {% endif %}
+                {% if next_meeting.where.phone %}
+                  {{ next_meeting.where.phone }}<br>
+                {% endif %}
+                {% if next_meeting.where.email %}
+                  {{ next_meeting.where.email }}<br>
+                {% endif %}
+              </div>              
+            {% else %}              
+            <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
+            {% endif %}            
             {% if next_meeting %}
             <p><strong>RSVP:</strong> <a class="btn btn-mini" href="#">Maybe</a> <a class="btn btn-mini" href="#">Yes</a></p>
             <p>xx going so far</p>
@@ -73,4 +91,11 @@
         </div><!--/span-->
     </div><!-- #row-fluid -->
     <hr>
+{% endblock %}
+
+{% block extra_jquery %}
+  $('#where-link').click(function() {
+    $('#where-dialog').dialog({ width: 182, modal: true });
+    return false;
+  });
 {% endblock %}

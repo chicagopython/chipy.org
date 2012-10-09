@@ -7251,3 +7251,18 @@ hr {
   color: #999999;
   font-size: 11.700000000000001px;
 }
+form .errorlist {
+  margin: 0px;
+  width: 314px;
+}
+form .errorlist li {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  list-style-type: none;
+  padding: 5px;
+  display: block;
+  background-color: #f2dede;
+  color: #b94a48;
+  border: #eed3d7;
+}

@@ -134,3 +134,20 @@ hr {
     font-size: @baseFontSize * 0.9;
     }
   }
+
+form {
+  .errorlist {
+    margin: 0px;
+    width: 314px;
+
+    li {
+      .border-radius(5px);
+      list-style-type:none;
+      padding: 5px;
+      display: block;
+      background-color: @errorBackground;
+      color: @errorText;
+      border: @errorBorder;
+      }
+    }
+  }

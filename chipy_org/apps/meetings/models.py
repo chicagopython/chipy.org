@@ -97,4 +97,4 @@ class Topic(CommonModel):
     description = models.TextField(blank=True,null=True)
     slides_link = models.URLField(verify_exists=True, blank=True, null=True)
     start_time = models.DateTimeField(blank = True, null = True)
-
+    approved = models.BooleanField(default = False)

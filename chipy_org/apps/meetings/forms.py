@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from meetings.models import Topic
+from meetings.models import Topic, Presentor
 
 class TopicForm(ModelForm):
     required = ('title',
@@ -25,7 +25,13 @@ class TopicForm(ModelForm):
     def save(self, commit=True, request=None):
         instance = super(TopicForm, self).save(commit)
         if request and not instance.presentor:
-            instance.presentor = request.user
+            instance.presentor = Presentor.objects.get_or_create(
+                user = request.user,
+                name = request.user.get_full_name(),
+                email = request.user.email,
+                release = True,
+            )
+
         if commit:
             instance.save()
         return instance

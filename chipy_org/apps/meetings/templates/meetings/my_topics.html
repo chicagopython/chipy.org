@@ -1,0 +1,21 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "My Talks" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="span12 talk-list">
+    <h1>My talks</h1>
+    {% for talk in object_list %}
+      <div class="talk">
+        {{ talk }}
+      </div>
+    {% endfor %}
+    <span class="count">{{ object_list|length }} talks</span>
+  </div>
+</div>
+{% endblock body %}

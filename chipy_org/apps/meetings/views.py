@@ -5,6 +5,10 @@ from django.views.generic.edit import CreateView
 from django.contrib import messages
 
 from meetings.models import Meeting
+from meetings.models import (Meeting,
+                             Topic,
+                             Presentor)
+
 from meetings.forms import TopicForm
 
 class PastMeetings(ListView):
@@ -27,3 +31,14 @@ class ProposeTopic(CreateView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+class MyTopics(ListView):
+    template_name = 'meetings/my_topics.html'
+
+    def get_queryset(self):
+        try:
+            presentor = Presentor.objects.filter(user = self.request.user)
+        except Presentor.DoesNotExist:
+            return Topic.objects.none()
+
+        return Topic.objects.filter(presentor = presentor)

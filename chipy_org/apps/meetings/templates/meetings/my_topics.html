@@ -11,11 +11,9 @@
   <div class="span12 talk-list">
     <h1>My talks</h1>
     {% for talk in object_list %}
-      <div class="talk">
-        {{ talk }}
-      </div>
+      {% include 'meetings/_talk.html' %}      
     {% endfor %}
-    <span class="count">{{ object_list|length }} talks</span>
+    <span class="count">{{ object_list|length }} talk{{ object_list|pluralize }}</span>
   </div>
 </div>
 {% endblock body %}

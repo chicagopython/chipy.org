@@ -4,7 +4,6 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.contrib import messages
 
-from meetings.models import Meeting
 from meetings.models import (Meeting,
                              Topic,
                              Presentor)
@@ -20,6 +19,11 @@ class ProposeTopic(CreateView):
     form_class = TopicForm
     success_url = '/'
 
+    def get_form_kwargs(self):
+        kwargs = super(ProposeTopic, self).get_form_kwargs()
+        kwargs.update({'request':self.request})
+        return kwargs
+    
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()

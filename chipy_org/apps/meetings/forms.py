@@ -7,11 +7,12 @@ class TopicForm(ModelForm):
                 'description',
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)
         self.fields['meeting'].required = True
         self.fields['description'].required = True
 
+        self.request = request
     
     class Meta:
         model = Topic
@@ -22,13 +23,13 @@ class TopicForm(ModelForm):
                    'slides_link',
                )
 
-    def save(self, commit=True, request=None):
+    def save(self, commit=True):
         instance = super(TopicForm, self).save(commit)
-        if request and not instance.presentor:
-            instance.presentor = Presentor.objects.get_or_create(
-                user = request.user,
-                name = request.user.get_full_name(),
-                email = request.user.email,
+        if self.request and not instance.presentor:
+            instance.presentor, created = Presentor.objects.get_or_create(
+                user = self.request.user,
+                name = self.request.user.get_full_name(),
+                email = self.request.user.email,
                 release = True,
             )
 

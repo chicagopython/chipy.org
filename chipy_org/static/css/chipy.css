@@ -7266,3 +7266,13 @@ form .errorlist li {
   color: #b94a48;
   border: #eed3d7;
 }
+.talk-list .talk {
+  -webkit-border-radius: 1;
+  -moz-border-radius: 1;
+  border-radius: 1;
+  border: 1px solid #bce8f1;
+  background-color: #d9edf7;
+}
+.talk-list .count {
+  font-style: italic;
+}

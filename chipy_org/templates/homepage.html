@@ -61,24 +61,16 @@
         <div class="module span4">
             <h2>This Month's Topics</h2>
             <ul>
+              {% for topic in next_meeting.topics %}
                 <li>
-                    <strong>Cras convallis risus ut neque molestie at tincidun</strong><br />
-                    (:10 Ten Minutes)<br />
-                    By: Alan Smithee<br />
-                    Phasellus congue lorem vitae turpis auctor fringilla gravida tortor aliquam.
+                  <strong>{{ topic.title }}</strong><br />
+                  {% if topic.length %}
+                    ({{ topic.minutes }} Minutes)<br />
+                  {% endif %}
+                  By: {{ topic.presentor }}<br />
+                  {{ topic.description }}
                 </li>
-                <li>
-                    <strong>Cras convallis risus ut neque molestie at tincidun</strong><br />
-                    (:10 Ten Minutes)<br />
-                    By: Alan Smithee<br />
-                    Phasellus congue lorem vitae turpis auctor fringilla gravida tortor aliquam.
-                </li>
-                <li>
-                    <strong>Cras convallis risus ut neque molestie at tincidun</strong><br />
-                    (:10 Ten Minutes)<br />
-                    By: Alan Smithee<br />
-                    Phasellus congue lorem vitae turpis auctor fringilla gravida tortor aliquam.
-                </li>
+              {% endfor %}
             </ul>
         </div><!--/span-->
         <div class="module span4">

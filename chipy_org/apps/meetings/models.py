@@ -99,3 +99,35 @@ class Topic(CommonModel):
     slides_link = models.URLField(verify_exists=True, blank=True, null=True)
     start_time = models.DateTimeField(blank = True, null = True)
     approved = models.BooleanField(default = False)
+
+class RSVP(CommonModel):
+    RSVP_CHOICES = (
+        ('Y', "Yes"),
+        ('N', "No"),
+        ('M', "Maybe"),
+    )
+
+    user = models.ForeignKey(User, blank = True, null = True)
+    name = models.CharField(max_length = MAX_LENGTH, blank = True, null = True)
+    meeting = models.ForeignKey(Meeting)
+    response = models.CharField(max_length = 1, choices = RSVP_CHOICES)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if not self.user and not self.name:
+            raise ValidationError('User or Name required')
+
+        # Check uniqueness
+        if not self.id:
+            if self.user:
+                if RSVP.objects.filter(meeting = self.meeting, user = self.user).exists():
+                    raise ValidationError('User has already RSVPed for meeting')
+            else:
+                if RSVP.objects.filter(meeting = self.meeting, name = self.name).exists():
+                    raise ValidationError('User has already RSVPed for meeting')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(RSVP, self).save(*args, **kwargs)
+        

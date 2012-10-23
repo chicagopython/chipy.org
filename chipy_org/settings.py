@@ -30,7 +30,7 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
+DATABASES = {'default': dj_database_url.config(default='postgres://postgres:postgres@localhost:5432/chipy_org')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

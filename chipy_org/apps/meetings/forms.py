@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from meetings.models import Topic, Presentor
+from meetings.models import Topic, Presentor, RSVP
 
 class TopicForm(ModelForm):
     required = ('title',
@@ -36,3 +36,12 @@ class TopicForm(ModelForm):
         if commit:
             instance.save()
         return instance
+
+class RSVPForm(ModelForm):
+    def __init__(self, request, *args, **kwargs):
+        super(RSVPForm, self).__init__(*args, **kwargs)
+        self.request = request
+
+    class Meta:
+        model = RSVP
+        fields = ('response',)

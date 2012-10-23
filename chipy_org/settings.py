@@ -154,6 +154,10 @@ INSTALLED_APPS = [
     "meetings",
 ]
 
+if DEBUG:
+    # Add the command extensions
+    INSTALLED_APPS += ['django_extensions']
+    
 FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
 ]

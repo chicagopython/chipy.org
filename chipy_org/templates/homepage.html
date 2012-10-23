@@ -47,7 +47,11 @@
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
             {% endif %}            
             {% if next_meeting %}
-            <p><strong>RSVP:</strong> <a class="btn btn-mini" href="#">Maybe</a> <a class="btn btn-mini" href="#">Yes</a></p>
+            <p><strong>RSVP:</strong> 
+              {% if rsvp %}
+                You have RSVPed <strong>{{ rsvp.response }}</strong>
+              {% endif %} 
+              <a class="btn btn-mini">Maybe</a> <a class="btn btn-mini" id="rsvp-yes" href="#">Yes</a></p>
             <p>xx going so far</p>
             {% else %}
               {% if request.user.is_staff %}
@@ -90,4 +94,15 @@
     $('#where-dialog').dialog({ width: 182, modal: true });
     return false;
   });
+
+  $('#rsvp-yes').click(function(){
+      $.ajax({
+          type: 'POST',
+          url: '{% url rsvp %}',
+          data: {response:'Y', csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
+          success: function(data){
+              location.reload();
+          },
+      });  
+  });  
 {% endblock %}

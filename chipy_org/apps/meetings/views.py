@@ -58,6 +58,9 @@ class RSVP(ProcessFormView, ModelFormMixin):
         kwargs.update({'request':self.request})
         return kwargs
 
+    def form_invalid(self, form):
+        import pdb; pdb.set_trace();
+
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()

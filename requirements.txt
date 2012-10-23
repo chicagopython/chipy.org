@@ -5,3 +5,4 @@ django_forms_bootstrap
 django-social-auth
 django-grappelli
 django-pgsql-interval-field
+psycopg2

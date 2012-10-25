@@ -51,7 +51,7 @@
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.response }}</strong>
               {% endif %} 
-              <a class="btn btn-mini">Maybe</a> <a class="btn btn-mini" id="rsvp-yes" href="#">Yes</a></p>
+              <a class="btn btn-mini" id="rsvp-maybe">Maybe</a> <a class="btn btn-mini" id="rsvp-yes" href="#">Yes</a></p>
             <p>xx going so far</p>
             {% else %}
               {% if request.user.is_staff %}
@@ -100,6 +100,16 @@
           type: 'POST',
           url: '{% url rsvp %}',
           data: {response:'Y', csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
+          success: function(data){
+              location.reload();
+          },
+      });
+  });  
+  $('#rsvp-maybe').click(function(){
+      $.ajax({
+          type: 'POST',
+          url: '{% url rsvp %}',
+          data: {response:'M', csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
           success: function(data){
               location.reload();
           },

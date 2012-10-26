@@ -6,3 +6,4 @@ django-social-auth
 django-grappelli
 django-pgsql-interval-field
 psycopg2
+django-extensions

@@ -8,6 +8,8 @@ from meetings.models import (Meeting,
                              Topic,
                              Presentor)
 
+from meetings.models import RSVP as RSVPModel
+
 from meetings.forms import TopicForm, RSVPForm
 
 class PastMeetings(ListView):
@@ -56,8 +58,17 @@ class RSVP(ProcessFormView, ModelFormMixin):
     def get_form_kwargs(self):
         kwargs = super(RSVP, self).get_form_kwargs()
         kwargs.update({'request':self.request})
+
+        if not kwargs.get('instance', False):
+            try:
+                meeting = Meeting.objects.get(pk = self.request.POST['meeting'])
+                kwargs['instance'] = RSVPModel.objects.get(user = self.request.user, meeting = meeting)
+            except RSVPModel.DoesNotExist:
+                pass
+
         return kwargs
 
+        
     def form_invalid(self, form):
         import pdb; pdb.set_trace();
 

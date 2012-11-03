@@ -49,7 +49,7 @@
             {% if next_meeting %}
             <p><strong>RSVP:</strong> 
               {% if rsvp %}
-                You have RSVPed <strong>{{ rsvp.response }}</strong>
+                You have RSVPed <strong>{{ rsvp.get_response_display }}</strong>
               {% endif %} 
               <a class="btn btn-mini" id="rsvp-maybe">Maybe</a> <a class="btn btn-mini" id="rsvp-yes">Yes</a></p>
             <p>xx going so far</p>

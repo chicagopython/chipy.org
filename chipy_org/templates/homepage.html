@@ -49,9 +49,10 @@
             {% if next_meeting %}
             <p><strong>RSVP:</strong> 
               {% if rsvp %}
-                You have RSVPed <strong>{{ rsvp.get_response_display }}</strong>
+                You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
+                <strong>Change your RSVP: </strong>                
               {% endif %} 
-              <a class="btn btn-mini" id="rsvp-maybe">Maybe</a> <a class="btn btn-mini" id="rsvp-yes">Yes</a></p>
+              <a class="btn btn-mini" id="rsvp-yes">Yes</a> <a class="btn btn-mini" id="rsvp-maybe">Maybe</a> <a class="btn btn-mini" id="rsvp-no">No</a></p>
             <p>xx going so far</p>
             {% else %}
               {% if request.user.is_staff %}
@@ -110,6 +111,16 @@
           type: 'POST',
           url: '{% url rsvp %}',
           data: {response:'M', csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
+          success: function(data){
+              location.reload();
+          },
+      });  
+  });  
+  $('#rsvp-no').click(function(){
+      $.ajax({
+          type: 'POST',
+          url: '{% url rsvp %}',
+          data: {response:'N', csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
           success: function(data){
               location.reload();
           },

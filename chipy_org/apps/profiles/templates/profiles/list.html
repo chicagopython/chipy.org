@@ -1,0 +1,19 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Members" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="span12">
+    <h1>Chipy Members</h1>
+    {% for profile in profiles %}
+      {% include 'profiles/_profile.html' %}<br>
+    {% endfor %}
+    <span class="count">{{ profiles|length }} profile{{ profiles|pluralize }}</span>
+  </div>
+</div>
+{% endblock body %}

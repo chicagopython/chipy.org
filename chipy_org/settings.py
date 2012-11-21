@@ -154,6 +154,7 @@ INSTALLED_APPS = [
     # project
     "about",
     "meetings",
+    "profiles",
 ]
 
 if DEBUG:

@@ -11,7 +11,7 @@
   <div class="span12">
     <h1>Chipy Members</h1>
     {% for profile in profiles %}
-      {% include 'profiles/_profile.html' %}<br>
+      {% include 'profiles/_profile.html' %}
     {% endfor %}
     <span class="count">{{ profiles|length }} profile{{ profiles|pluralize }}</span>
   </div>

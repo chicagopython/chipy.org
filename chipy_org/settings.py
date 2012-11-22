@@ -147,6 +147,7 @@ INSTALLED_APPS = [
     'social_auth',
     "gunicorn",
     'interval',
+    'gravatar',
     
     # theme
     'django_forms_bootstrap',

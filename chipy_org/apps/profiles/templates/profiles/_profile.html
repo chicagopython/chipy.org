@@ -1,3 +1,8 @@
+{% load gravatar %}
 <div class="profile">
-<h3>{{ profile.get_full_name }}</h3>
+  <div class="gravatar">  
+    {% gravatar_img_for_user profile %}
+  </div>    
+  <h3>{{ profile.get_full_name|default:'N/A' }}</h3>
+
 </div>

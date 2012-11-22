@@ -7276,3 +7276,17 @@ form .errorlist li {
 .talk-list .count {
   font-style: italic;
 }
+.profile {
+  clear: both;
+  padding: 5px;
+  min-height: 90px;
+}
+.profile h3 {
+  margin: 0px;
+  line-height: 32px;
+}
+.profile .gravatar {
+  float: left;
+  padding: 5px;
+  padding-right: 10px;
+}

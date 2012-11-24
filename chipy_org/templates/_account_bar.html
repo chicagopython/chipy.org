@@ -14,7 +14,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     {% block user_links %}
-                        <li><a href="#"><i class="icon-user"></i> {% trans "Account" %}</a></li>
+                        <li><a href="{% url "profiles:edit" %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
                         {% if user.is_staff %}
                             <li><a href="{% url "admin:index" %}"><i class="icon-cog"></i> {% trans "Admin" %}</a></li>
                         {% endif %}

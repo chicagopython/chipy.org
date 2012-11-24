@@ -1,0 +1,24 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Edit your account" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="offset4 span8">
+    <h1>Edit your account</h1>
+    <form action="{% url profiles:edit %}" method="post" id="edit-profile">{% csrf_token %}
+      {% for field in form %}
+      <div class="fieldWrapper">
+        {{ field.errors }}
+        {% if field.name not in form.required %}<label for="id_{{ field.html_name }}">{{ field.label }} (optional)</label>{% else %}{{ field.label_tag }}{% endif %}{{ field }}
+      </div>
+      {% endfor %}
+      <p><input type="submit" value="save" id="profile_submit" class="btn btn-primary"/></p>
+    </form>
+  </div>
+</div>
+{% endblock body %}

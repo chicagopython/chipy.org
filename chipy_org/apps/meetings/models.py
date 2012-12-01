@@ -51,8 +51,6 @@ class Venue(CommonModel):
 
 
 class Meeting(CommonModel):
-
-
     def __unicode__(self):
 	if self.where:
 	    return "%s at %s" % (self.when.strftime("%A, %B %d %Y at %I:%M %p"), self.where.name)

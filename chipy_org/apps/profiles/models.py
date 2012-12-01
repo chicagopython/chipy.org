@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User, unique=True, related_name = 'profiles')
     display_name = models.CharField(max_length = 200)
     show = models.BooleanField(default = False, verbose_name = "Show my information in the member list")
     

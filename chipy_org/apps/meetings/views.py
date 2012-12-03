@@ -84,4 +84,8 @@ class RSVP(ProcessFormView, ModelFormMixin):
         else:
             return self.form_invalid(form)
 
-    
+
+class PastTopics(ListView):
+    context_object_name = 'topics'
+    template_name = 'meetings/past_topics.html'
+    queryset = Topic.objects.filter(meeting__when__lt = datetime.date.today(), approved = True)

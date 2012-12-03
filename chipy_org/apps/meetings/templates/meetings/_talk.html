@@ -1,6 +1,10 @@
       <div class="talk">
         <span class="title">{{ talk.title }}</span>
-        <span class="presentor">{{ talk.presentor }}</span>
+        {% if talk.presentor.user.profile.show %}
+          <span class="presentor"><a href="#">{{ talk.presentor }}</a></span>
+        {% else %}          
+          <span class="presentor">{{ talk.presentor }}</span>
+        {% endif %}
         <div class="description">
           {{ talk.description }}
         </div>        

@@ -4,6 +4,7 @@ from meetings.views import (PastMeetings,
                             ProposeTopic,
                             MyTopics,
                             RSVP,
+                            PastTopics,
 )
 
 urlpatterns = patterns("",
@@ -11,4 +12,5 @@ urlpatterns = patterns("",
     url(r'^rsvp/$', RSVP.as_view(), name='rsvp'),
     url(r'^topics/propose$', login_required(ProposeTopic.as_view()), name='propose_topic'),
     url(r'^topics/mine$', login_required(MyTopics.as_view()), name='my_topics'),
+    url(r'^topics/past$', PastTopics.as_view(), name='past_topics'),
 )

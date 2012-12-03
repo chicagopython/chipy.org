@@ -7270,14 +7270,28 @@ form .errorlist li {
   border: #eed3d7;
 }
 .talk-list .talk {
-  -webkit-border-radius: 1;
-  -moz-border-radius: 1;
-  border-radius: 1;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px;
+  margin-bottom: 5px;
+  float: left;
+  clear: both;
   border: 1px solid #bce8f1;
   background-color: #d9edf7;
+  min-width: 500px;
+}
+.talk-list .talk .title {
+  display: block;
+  font-size: 1.4em;
+}
+.talk-list .talk .presentor {
+  font-style: italic;
 }
 .talk-list .count {
+  display: block;
   font-style: italic;
+  clear: both;
 }
 .profile {
   clear: both;

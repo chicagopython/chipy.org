@@ -160,13 +160,29 @@ form {
 
 .talk-list {
   .talk {
-    .border-radius(1);
+    .border-radius(3px);
+    padding: 5px;
+    margin-bottom: 5px;
+    float: left;
+    clear: both;
     border: 1px solid @infoBorder;
     background-color: @infoBackground;
+    min-width: 500px;
+
+    .title {
+      display:block;
+      font-size: 1.4em;
+      }
+
+    .presentor {
+      font-style: italic;
+      }
     }
 
   .count {
+    display: block;
     font-style: italic;
+    clear: both;
     }
 }
 

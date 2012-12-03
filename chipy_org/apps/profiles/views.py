@@ -8,7 +8,7 @@ from profiles.forms import ProfileForm
 class ProfilesList(ListView):
     context_object_name = 'profiles'
     template_name = 'profiles/list.html'
-    queryset = User.objects.filter(profiles__show = True)
+    queryset = User.objects.filter(profile__show = True)
     
 class ProfileEdit(UpdateView):
     form_class = ProfileForm

@@ -131,6 +131,7 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 )
 
 INSTALLED_APPS = [
+    # Fancy Admin
     'grappelli',
     
     # Django

@@ -143,13 +143,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.humanize",
     "django.contrib.staticfiles",
-
+    "django.contrib.flatpages",
+    
     # Third party
     'social_auth',
     "gunicorn",
     'interval',
     'gravatar',
     'flatblocks',
+    'tinymce',
+    'flatpages_tinymce',
     
     # theme
     'django_forms_bootstrap',

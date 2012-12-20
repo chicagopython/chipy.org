@@ -9,3 +9,5 @@ psycopg2
 django-extensions
 django-gravatar
 django-flatblocks
+django-flatpages-tinymce
+django-tinymce

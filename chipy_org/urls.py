@@ -19,8 +19,8 @@ urlpatterns = patterns("",
     url(r'^about/', include('about.urls')),
     url(r'^logout/$', 'django.contrib.auth.views.logout',
                           {'next_page': '/'}),
+    url(r'^tinymce/', include('tinymce.urls')),
 )
-
 
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",

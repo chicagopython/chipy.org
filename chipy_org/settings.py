@@ -149,6 +149,7 @@ INSTALLED_APPS = [
     "gunicorn",
     'interval',
     'gravatar',
+    'flatblocks',
     
     # theme
     'django_forms_bootstrap',

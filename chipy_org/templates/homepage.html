@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles %}
+{% load i18n staticfiles flatblock_tags %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
@@ -11,7 +11,7 @@
         <div class="span6">
             <div id="home-content">
               <h1>Welcome to ChiPy</h1>
-              <p>Maecenas adipiscing, nisi at pharetra luctus, massa massa gravida neque, ut facilisis nulla orci vitae metus. Etiam at ligula eu metus euismod rhoncus. Ut commodo augue nec enim lobortis convallis. Nunc interdum tortor vitae ante venenatis accumsan. In porttitor ornare arcu ut vulputate. Aenean semper dictum est vel commodo.</p>
+              <p>{% flatblock "homepage_welcome_text" %}</p>
               <a class="btn" href="#">Learn more &raquo;</a>
             </div>
         </div>

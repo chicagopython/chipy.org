@@ -17,7 +17,7 @@
 {% block nav %}
     <ul class="nav">
         <li><a href="{% url home %}">Home</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="{% url about %}">About</a></li>
         <li><a href="{% url past_topics %}">Recent Topics</a></li>
         {% if user.is_authenticated %}
           <li><a href="{% url my_topics %}">My Talks</a></li>

@@ -4,6 +4,8 @@ from django.views.generic.simple import direct_to_template
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 
+from contact.views import ChipyContactView
+
 admin.autodiscover()
 
 urlpatterns = patterns("",
@@ -19,6 +21,7 @@ urlpatterns = patterns("",
     url(r'^about/', include('about.urls')),
     url(r'^logout/$', 'django.contrib.auth.views.logout',
                           {'next_page': '/'}),
+    url(r'^contact/', ChipyContactView.as_view(), name="contact"),
     url(r'^tinymce/', include('tinymce.urls')),
 )
 

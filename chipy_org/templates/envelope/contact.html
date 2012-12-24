@@ -1,0 +1,14 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% block head_title %}{% trans 'Contact us' %}{% endblock %}
+
+{% block body %}
+  <h1>{% trans 'Contact us' %}</h1>
+  <div id="contact">
+    <form method="post" id="contact-us" action=".">
+      {{ form.as_p }}
+      <input class="btn btn-primary" type="submit" value="Send Email">    
+    </form>    
+  </div>  
+{% endblock %}

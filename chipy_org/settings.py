@@ -153,6 +153,7 @@ INSTALLED_APPS = [
     'flatblocks',
     'tinymce',
     'flatpages_tinymce',
+    'honeypot',
     
     # theme
     'django_forms_bootstrap',
@@ -161,6 +162,7 @@ INSTALLED_APPS = [
     "about",
     "meetings",
     "profiles",
+    "contact",
 ]
 
 if DEBUG:
@@ -174,4 +176,6 @@ FIXTURE_DIRS = [
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 EMAIL_BACKEND = "mailer.backend.DbBackend"
+
+ENVELOPE_EMAIL_RECIPIENTS = os.environ.get('ENVELOPE_EMAIL_RECIPIENTS').split(',')
 

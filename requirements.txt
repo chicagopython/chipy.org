@@ -11,3 +11,5 @@ django-gravatar
 django-flatblocks
 django-flatpages-tinymce
 django-tinymce
+django-envelope
+django-honeypot

@@ -53,7 +53,7 @@
                 <strong>Change your RSVP: </strong>                
               {% endif %} 
               <a class="btn btn-mini" id="rsvp-yes">Yes</a> <a class="btn btn-mini" id="rsvp-maybe">Maybe</a> <a class="btn btn-mini" id="rsvp-no">No</a></p>
-            <p>xx going so far</p>
+            <p>{{ next_meeting.number_rsvps }} going so far</p>
             {% else %}
               {% if request.user.is_staff %}
                 <p>                

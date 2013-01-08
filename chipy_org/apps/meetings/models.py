@@ -68,6 +68,8 @@ class Meeting(CommonModel):
     def rsvp_user_maybe(self):
         raise NotImplimentedError
 
+    def number_rsvps(self):
+        return self.rsvp_set.count()
 
 class Presentor(CommonModel):
     def __unicode__(self):

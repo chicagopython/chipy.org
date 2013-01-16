@@ -179,3 +179,11 @@ EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 ENVELOPE_EMAIL_RECIPIENTS = os.environ.get('ENVELOPE_EMAIL_RECIPIENTS').split(',')
 
+SOCIAL_AUTH_PIPELINE = (
+    'social_auth.backends.pipeline.social.social_auth_user',
+    'social_auth.backends.pipeline.user.get_username',
+    'libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details'
+)

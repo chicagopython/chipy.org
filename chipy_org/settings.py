@@ -8,6 +8,8 @@ from os import environ as env
 import posixpath
 import dj_database_url
 
+from django.conf.global_settings import MIDDLEWARE_CLASSES
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
@@ -113,6 +115,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.messages.context_processors.messages",
     "social_auth.context_processors.social_auth_login_redirect",
 ]
+
+MIDDLEWARE_CLASSES += ('social_auth.middleware.SocialAuthExceptionMiddleware',)
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',

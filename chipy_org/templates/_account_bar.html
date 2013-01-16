@@ -18,7 +18,7 @@
                         {% if user.is_staff %}
                             <li><a href="{% url "admin:index" %}"><i class="icon-cog"></i> {% trans "Admin" %}</a></li>
                         {% endif %}
-                        <li><a href="#" id="login-link"><i class="icon-plus"></i>{% trans "Add account" %}</a></li>
+                        <li><a href="#" id="login-link"><i class="icon-plus"></i> {% trans "Add account" %}</a></li>
                         <li class="divider"></li>
                         <li><a href="/logout"><i class="icon-off"></i> {% trans "Log out" %}</a></li>
                     {% endblock %}

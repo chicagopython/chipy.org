@@ -2,7 +2,7 @@ Django<1.5
 gunicorn
 dj-database-url
 django_forms_bootstrap
-django-social-auth
+django-social-auth>=0.7.18
 django-grappelli
 django-pgsql-interval-field
 psycopg2

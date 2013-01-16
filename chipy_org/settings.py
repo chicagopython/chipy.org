@@ -116,7 +116,9 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "social_auth.context_processors.social_auth_login_redirect",
 ]
 
+# Social Auth settings
 MIDDLEWARE_CLASSES += ('social_auth.middleware.SocialAuthExceptionMiddleware',)
+LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',

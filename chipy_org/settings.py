@@ -117,7 +117,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 ]
 
 # Social Auth settings
-MIDDLEWARE_CLASSES += ('social_auth.middleware.SocialAuthExceptionMiddleware',)
+MIDDLEWARE_CLASSES += ('libs.middleware.ChipySocialAuthExceptionMiddleware',)
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (

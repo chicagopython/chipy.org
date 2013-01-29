@@ -47,12 +47,20 @@
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
             {% endif %}
             {% if next_meeting %}
-            <p><strong>RSVP:</strong>
+            <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
                 <strong>Change your RSVP: </strong>
               {% endif %}
               <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
+            <div id="anonymous-rsvp-dialog" style="display:none;">
+              <form id="anonymous-rsvp-form">
+                <label for="name">Enter the name on your ID</label>
+                <input type="text" name="name" placeholder="John Smith">
+                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="john@example.com">
+              </form>
+            </div>
             <p>{{ next_meeting.number_rsvps }} going so far</p>
             {% else %}
               {% if request.user.is_staff %}
@@ -96,8 +104,9 @@
     return false;
   });
 
-  {% if request.user.is_authenticated %}
+
   $('.rsvp').click(function(){
+  {% if request.user.is_authenticated %}
       $.ajax({
           type: 'POST',
           url: '{% url rsvp %}',
@@ -106,7 +115,12 @@
               location.reload();
           },
       });
+  {% else %}
+       $('#anonymous-rsvp-dialog').dialog();
+       return false;
+  {% endif %}
   });
 
-  {% endif %}
+
+
 {% endblock %}

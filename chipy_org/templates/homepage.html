@@ -32,7 +32,7 @@
             <p><strong>Where:</strong> <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a></p>
               <div id="where-dialog" title="Venue" style="display:none">
                 {{ next_meeting.where.name }}<br>
-                {{ next_meeting.where.address }}<br>              
+                {{ next_meeting.where.address }}<br>
                 {% if next_meeting.where.directions %}
                   {{ next_meeting.where.directions }}<br>
                 {% endif %}
@@ -42,24 +42,24 @@
                 {% if next_meeting.where.email %}
                   {{ next_meeting.where.email }}<br>
                 {% endif %}
-              </div>              
-            {% else %}              
+              </div>
+            {% else %}
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
-            {% endif %}            
+            {% endif %}
             {% if next_meeting %}
-            <p><strong>RSVP:</strong> 
+            <p><strong>RSVP:</strong>
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
-                <strong>Change your RSVP: </strong>                
-              {% endif %} 
+                <strong>Change your RSVP: </strong>
+              {% endif %}
               <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
             <p>{{ next_meeting.number_rsvps }} going so far</p>
             {% else %}
               {% if request.user.is_staff %}
-                <p>                
+                <p>
                   <a class="btn btn-primary" href="{% url admin:meetings_meeting_add %}">Create Meeting</a>
                 </p>
-              {% endif %}              
+              {% endif %}
             {% endif %}
             <p><a class="btn" href="{% url past_meetings %}">Past meetings &raquo;</a></p>
         </div><!--/span-->
@@ -95,7 +95,7 @@
     $('#where-dialog').dialog({ width: 182, modal: true });
     return false;
   });
-  
+
   {% if request.user.is_authenticated %}
   $('.rsvp').click(function(){
       $.ajax({
@@ -106,6 +106,7 @@
               location.reload();
           },
       });
-  });  
+  });
+
   {% endif %}
 {% endblock %}

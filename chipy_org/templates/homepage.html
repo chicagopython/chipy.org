@@ -12,7 +12,7 @@
             <div id="home-content">
               <h1>Welcome to ChiPy</h1>
               <p>{% flatblock "homepage_welcome_text" %}</p>
-              <a class="btn" href="#">Learn more &raquo;</a>
+              <a class="btn" href="/about/">Learn more &raquo;</a>
             </div>
         </div>
         <div class="span6">
@@ -104,7 +104,6 @@
     return false;
   });
 
-
   $('.rsvp').click(function(){
   {% if request.user.is_authenticated %}
       $.ajax({
@@ -120,7 +119,4 @@
        return false;
   {% endif %}
   });
-
-
-
 {% endblock %}

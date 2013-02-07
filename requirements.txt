@@ -13,6 +13,7 @@ django-flatpages-tinymce
 django-tinymce
 django-envelope
 django-honeypot
+South
 
 # For Dev
 Werkzeug

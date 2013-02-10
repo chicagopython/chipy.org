@@ -109,6 +109,7 @@ class RSVP(CommonModel):
 
     user = models.ForeignKey(User, blank = True, null = True)
     name = models.CharField(max_length = MAX_LENGTH, blank = True, null = True)
+    email = models.EmailField(max_length = 255, blank = True, null = True)
     meeting = models.ForeignKey(Meeting)
     response = models.CharField(max_length = 1, choices = RSVP_CHOICES)
 

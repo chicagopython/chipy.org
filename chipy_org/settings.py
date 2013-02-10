@@ -170,6 +170,7 @@ INSTALLED_APPS = [
     'tinymce',
     'flatpages_tinymce',
     'honeypot',
+    'south',
     
     # theme
     'django_forms_bootstrap',

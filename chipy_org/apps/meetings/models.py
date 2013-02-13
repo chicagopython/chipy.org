@@ -33,7 +33,7 @@ class Venue(CommonModel):
     longitude = property(get_longitude)
     latitude = property(get_latitude)
 
-        
+
     @property
     def jsonLatLng(self):
         '''
@@ -43,7 +43,7 @@ class Venue(CommonModel):
             return "%.6f,%.6f" % (self.latitude,self.longitude)
         else:
             return None
-    
+
     directions = models.TextField(blank=True,null=True)
     embed_map = models.TextField(blank=True,null=True)
     link = models.URLField(verify_exists=True, blank=True, null=True)
@@ -80,7 +80,7 @@ class Presentor(CommonModel):
     email = models.EmailField(max_length = MAX_LENGTH, blank = True, null = True)
     phone = models.CharField(max_length = MAX_LENGTH, blank = True, null = True)
     release = models.BooleanField(default = False)
-    
+
 
 class Topic(CommonModel):
 
@@ -112,6 +112,7 @@ class RSVP(CommonModel):
     email = models.EmailField(max_length = 255, blank = True, null = True)
     meeting = models.ForeignKey(Meeting)
     response = models.CharField(max_length = 1, choices = RSVP_CHOICES)
+    key = models.CharField(max_length = MAX_LENGTH, blank = True, null = True)
 
     def clean(self):
         from django.core.exceptions import ValidationError

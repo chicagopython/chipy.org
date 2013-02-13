@@ -26,7 +26,7 @@ class ProposeTopic(CreateView):
         kwargs = super(ProposeTopic, self).get_form_kwargs()
         kwargs.update({'request':self.request})
         return kwargs
-    
+
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
@@ -56,7 +56,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     form_class = RSVPForm
     success_url = '/'
     template_name = 'meetings/_rsvp_form_response.html'
-    
+
     def get_form_kwargs(self):
         kwargs = super(RSVP, self).get_form_kwargs()
         kwargs.update({'request':self.request})
@@ -67,6 +67,10 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 kwargs['instance'] = RSVPModel.objects.get(user = self.request.user, meeting = meeting)
             except RSVPModel.DoesNotExist:
                 pass
+        elif not self.request.user.is_authenticated():
+            # Try and pull it from its key
+            if 'rsvp_key' in self.kwargs:
+                kwargs['instance'] = RSVPModel.objects.get(key = self.kwargs['rsvp_key'])
 
         return kwargs
 

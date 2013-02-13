@@ -146,7 +146,7 @@ class RSVP(CommonModel):
             plaintext = get_template('meetings/rsvp_email.txt')
             htmly     = get_template('meetings/rsvp_email.html')
 
-            d = Context({ 'key': key, })
+            d = Context({ 'key': self.key, })
 
             subject = 'Chipy: Link to Change your RSVP'
             from_email = 'DoNotReply@chipy.org'

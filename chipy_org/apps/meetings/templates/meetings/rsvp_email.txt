@@ -1,1 +1,1 @@
-To change your rsvp, go to http://chipy.herokuapp.com/rsvp/anonymous/{{ key }}/
+To change your rsvp, go to http://{{ site.domain }}{% url anonymous_rsvp_with_key key %}

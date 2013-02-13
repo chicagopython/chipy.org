@@ -1,6 +1,7 @@
 import datetime
 
 from django.views.generic import ListView
+from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
 from django.contrib import messages
 

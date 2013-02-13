@@ -149,7 +149,7 @@ SOCIAL_AUTH_PIPELINE = (
 INSTALLED_APPS = [
     # Fancy Admin
     'grappelli',
-    
+
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -160,7 +160,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django.contrib.staticfiles",
     "django.contrib.flatpages",
-    
+
     # Third party
     'social_auth',
     "gunicorn",
@@ -171,10 +171,10 @@ INSTALLED_APPS = [
     'flatpages_tinymce',
     'honeypot',
     'south',
-    
+
     # theme
     'django_forms_bootstrap',
-    
+
     # project
     "about",
     "meetings",
@@ -185,7 +185,7 @@ INSTALLED_APPS = [
 if DEBUG:
     # Add the command extensions
     INSTALLED_APPS += ['django_extensions']
-    
+
 FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
 ]
@@ -195,3 +195,9 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 ENVELOPE_EMAIL_RECIPIENTS = os.environ.get('ENVELOPE_EMAIL_RECIPIENTS').split(',')
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', None)
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', None)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

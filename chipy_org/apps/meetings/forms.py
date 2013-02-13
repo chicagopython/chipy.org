@@ -44,9 +44,9 @@ class RSVPForm(ModelForm):
 
     class Meta:
         model = RSVP
-        fields = ('response','user','name','meeting')
+        fields = ('response','user','name','meeting','email')
 
     def clean_user(self):
-        if not self.cleaned_data['user']:
+        if not self.cleaned_data['user'] and self.request.user.is_authenticated():
             return self.request.user
         

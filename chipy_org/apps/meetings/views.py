@@ -50,16 +50,17 @@ class MyTopics(ListView):
         return Topic.objects.filter(presentor = presentor)
 
 
-class RSVP(ProcessFormView, ModelFormMixin):
+class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post']
     form_class = RSVPForm
     success_url = '/'
+    template_name = 'meetings/_rsvp_form_response.html'
     
     def get_form_kwargs(self):
         kwargs = super(RSVP, self).get_form_kwargs()
         kwargs.update({'request':self.request})
 
-        if not kwargs.get('instance', False):
+        if not kwargs.get('instance', False) and self.request.user.is_authenticated():
             try:
                 meeting = Meeting.objects.get(pk = self.request.POST['meeting'])
                 kwargs['instance'] = RSVPModel.objects.get(user = self.request.user, meeting = meeting)

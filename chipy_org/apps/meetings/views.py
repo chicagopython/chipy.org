@@ -52,25 +52,32 @@ class MyTopics(ListView):
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
-    http_method_names = ['post']
+    http_method_names = ['post', 'get']
     form_class = RSVPForm
     success_url = '/'
-    template_name = 'meetings/_rsvp_form_response.html'
+
+    def get_template_names(self):
+        if self.request.method == 'POST':
+            return ['meetings/_rsvp_form_response.html']
+        elif  self.request.method == 'GET':
+            return ['meetings/rsvp_form.html']
 
     def get_form_kwargs(self):
-        kwargs = super(RSVP, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
-
+        kwargs = {}
         if not kwargs.get('instance', False) and self.request.user.is_authenticated():
             try:
                 meeting = Meeting.objects.get(pk = self.request.POST['meeting'])
-                kwargs['instance'] = RSVPModel.objects.get(user = self.request.user, meeting = meeting)
+                self.object = RSVPModel.objects.get(user = self.request.user, meeting = meeting)
             except RSVPModel.DoesNotExist:
                 pass
         elif not self.request.user.is_authenticated():
             # Try and pull it from its key
             if 'rsvp_key' in self.kwargs:
-                kwargs['instance'] = RSVPModel.objects.get(key = self.kwargs['rsvp_key'])
+                self.object = RSVPModel.objects.get(key = self.kwargs['rsvp_key'])
+
+
+        kwargs.update(super(RSVP, self).get_form_kwargs())
+        kwargs.update({'request':self.request})
 
         return kwargs
 

@@ -145,6 +145,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.user.update_user_details'
 )
 
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email','first_name','last_name']
+
 
 INSTALLED_APPS = [
     # Fancy Admin

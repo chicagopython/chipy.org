@@ -7218,6 +7218,10 @@ hr {
 #home-header .boxes_links {
   font-size: 13px;
 }
+#home-header .content {
+  line-height: 1.5em;
+  font-size: 0.9em;
+}
 #footer {
   margin-top: 0;
 }

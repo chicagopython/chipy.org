@@ -26,9 +26,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-ADMINS = [
-    # ("Your Name", "your_email@domain.com"),
-]
+ADMINS = [(admin.split('@')[0], admin) for admin in env.get('ADMINS').split(',')]
 
 MANAGERS = ADMINS
 

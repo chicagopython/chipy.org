@@ -70,10 +70,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 self.object = RSVPModel.objects.get(user = self.request.user, meeting = meeting)
             except RSVPModel.DoesNotExist:
                 pass
-        elif not self.request.user.is_authenticated():
-            # Try and pull it from its key
-            if 'rsvp_key' in self.kwargs:
-                self.object = RSVPModel.objects.get(key = self.kwargs['rsvp_key'])
+        elif 'rsvp_key' in self.kwargs:
+            self.object = RSVPModel.objects.get(key = self.kwargs['rsvp_key'])
 
         kwargs.update(super(RSVP, self).get_form_kwargs())
         kwargs.update({'request':self.request})

@@ -77,7 +77,7 @@ class Meeting(CommonModel):
         raise NotImplimentedError
 
     def number_rsvps(self):
-        return self.rsvp_set.count()
+        return self.rsvp_set.exclude(response = 'N').count()
 
 class Presentor(CommonModel):
     def __unicode__(self):

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
+import string
+import random
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -13,6 +15,10 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.CharField')(default='', max_length=40, blank=True),
                       keep_default=False)
 
+        for meeting in orm.Meeting.objects.all():
+            if meeting.key == '':
+                meeting.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
+                meeting.save()
 
     def backwards(self, orm):
         # Deleting field 'Meeting.key'

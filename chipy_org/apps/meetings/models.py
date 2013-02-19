@@ -66,7 +66,7 @@ class Meeting(CommonModel):
 
     when = models.DateTimeField()
     where = models.ForeignKey(Venue,blank=True,null=True)
-    key = models.CharField(max_length = 40, blank=True)
+    key = models.CharField(max_length = 40, blank=True) # Used for anonymous access to meeting information like RSVPs
 
     def is_future(self):
         return bool( self.when >=  ( datetime.datetime.now() - datetime.timedelta(hours = 3 )))

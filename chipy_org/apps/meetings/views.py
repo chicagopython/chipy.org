@@ -96,6 +96,18 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         else:
             return self.form_invalid(form)
 
+class RSVPlist(ListView):
+    context_object_name = 'attendees'
+    template_name = 'meetings/rsvp_list.html'
+
+    def get_queryset(self):
+        self.meeting = Meeting.objects.get(key = self.kwargs['rsvp_key'])
+        return RSVPModel.objects.filter(meeting = self.meeting).exclude(response = 'N')
+
+    def get_context_data(self, **kwargs):
+        context = {'meeting': self.meeting}
+        context.update(super(RSVPlist, self).get_context_data(**kwargs))
+        return context
 
 class PastTopics(ListView):
     context_object_name = 'topics'

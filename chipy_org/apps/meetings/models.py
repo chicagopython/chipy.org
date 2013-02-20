@@ -168,7 +168,12 @@ class RSVP(CommonModel):
 
         return super(RSVP, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    @property
+    def users_name(self):
         if not self.name:
             self.name = self.user.get_full_name()
+        return self.name
+
+    def __unicode__(self):
+        self.users_name
         return "{}: {}".format(self.meeting, self.name)

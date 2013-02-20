@@ -1,0 +1,19 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "RSVPs" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="span12 rsvp-list">
+    <h1>RSVPs for {{ meeting }}</h1>
+    {% for rsvp in attendees  %}
+    {{ rsvp.users_name }}<br>
+    {% endfor %}
+    <span class="count">{{ attendees|length }} rsvp{{ attendees|pluralize }}</span>
+  </div>
+</div>
+{% endblock body %}

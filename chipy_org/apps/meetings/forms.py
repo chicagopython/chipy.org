@@ -1,5 +1,6 @@
-from django.forms import ModelForm
-from meetings.models import Topic, Presentor, RSVP
+from django.forms import ModelForm, ModelChoiceField
+from meetings.models import Topic, Presentor, RSVP, Meeting
+import datetime
 
 class TopicForm(ModelForm):
     required = ('title',
@@ -7,13 +8,15 @@ class TopicForm(ModelForm):
                 'description',
     )
 
+    meeting = ModelChoiceField(queryset = Meeting.objects.filter(when__gt = datetime.datetime.now()))
+
     def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)
         self.fields['meeting'].required = True
         self.fields['description'].required = True
 
         self.request = request
-    
+
     class Meta:
         model = Topic
         fields = ('title',
@@ -49,4 +52,3 @@ class RSVPForm(ModelForm):
     def clean_user(self):
         if not self.cleaned_data['user'] and self.request.user.is_authenticated():
             return self.request.user
-        

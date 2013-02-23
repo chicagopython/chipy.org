@@ -174,6 +174,13 @@ class RSVP(CommonModel):
             self.name = self.user.get_full_name()
         return self.name
 
+    @property
+    def users_email(self):
+        if self.user:
+            return self.user.email
+        else:
+            return self.email
+
     def __unicode__(self):
         self.users_name
         return "{}: {}".format(self.meeting, self.name)

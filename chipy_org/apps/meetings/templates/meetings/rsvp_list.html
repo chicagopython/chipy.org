@@ -11,7 +11,7 @@
   <div class="span12 rsvp-list">
     <h1>RSVPs for {{ meeting }}</h1>
     {% for rsvp in attendees  %}
-    {{ rsvp.users_name }}<br>
+    {{ rsvp.users_name }} <a href="mailto:{{ rsvp.users_email }}">{{ rsvp.users_email }}</a><br>
     {% endfor %}
     <span class="count">{{ attendees|length }} rsvp{{ attendees|pluralize }}</span>
   </div>

@@ -203,3 +203,5 @@ EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = env.get('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
 HONEYPOT_FIELD_NAME = 'email2'
+
+PREPEND_WWW = True

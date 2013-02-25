@@ -205,3 +205,15 @@ DEFAULT_FROM_EMAIL = env.get('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
 HONEYPOT_FIELD_NAME = 'email2'
 
 PREPEND_WWW = True
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': "500",
+    # custom plugins
+    'plugins': "table,spellchecker,paste,searchreplace",
+    # editor theme
+    'theme': "advanced",
+    # custom CSS file for styling editor area
+    'content_css': MEDIA_URL + "css/custom_tinymce.css",
+    # use absolute urls when inserting links/images
+    'relative_urls': False,
+}

@@ -11,7 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns("",
     url(r'', include('main.urls')),
     url(r'', include('social_auth.urls')),
-    url(r'^login/$',  direct_to_template, {
+    url(r'^login$',  direct_to_template, {
         'template': 'login.html'
     }),
     (r'^grappelli/', include('grappelli.urls')),
@@ -19,10 +19,11 @@ urlpatterns = patterns("",
     url(r'^profiles/', include('profiles.urls', namespace="profiles")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^about/', include('about.urls')),
-    url(r'^logout/$', 'django.contrib.auth.views.logout',
+    url(r'^logout', 'django.contrib.auth.views.logout',
                           {'next_page': '/'}),
     url(r'^contact/', ChipyContactView.as_view(), name="contact"),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^', include('django.contrib.flatpages.urls')),
 )
 
 if settings.SERVE_MEDIA:

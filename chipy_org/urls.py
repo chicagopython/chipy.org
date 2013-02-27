@@ -23,6 +23,7 @@ urlpatterns = patterns("",
                           {'next_page': '/'}),
     url(r'^contact/', ChipyContactView.as_view(), name="contact"),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
 )
 
 if settings.SERVE_MEDIA:
@@ -31,7 +32,3 @@ if settings.SERVE_MEDIA:
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
     )
     urlpatterns += staticfiles_urlpatterns()
-
-urlpatterns += ("",
-    url(r'^', include('django.contrib.flatpages.urls')),
-)

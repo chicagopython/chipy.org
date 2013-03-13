@@ -20,7 +20,7 @@ GITHUB_APP_ID = env.get('GITHUB_APP_ID')
 GITHUB_API_SECRET = env.get('GITHUB_API_SECRET')
 
 # tells Pinax to serve media through the staticfiles app.
-SERVE_MEDIA = DEBUG
+SERVE_MEDIA = env.get('SERVE_MEDIA', DEBUG)
 
 INTERNAL_IPS = [
     "127.0.0.1",

@@ -11,7 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns("",
     url(r'', include('main.urls')),
     url(r'', include('social_auth.urls')),
-    url(r'^login',  direct_to_template, {
+    url(r'^login/{0,1}$',  direct_to_template, {
         'template': 'login.html'
     }),
     (r'^grappelli/', include('grappelli.urls')),

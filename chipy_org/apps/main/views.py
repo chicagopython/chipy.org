@@ -15,7 +15,7 @@ class Home(TemplateView):
         if future_meetings.count() == 0:
             context['next_meeting'] = False
         else:
-            next_meeting = future_meetings.order_by('+when')[0]
+            next_meeting = future_meetings.order_by('when')[0]
             next_meeting.topics = list()
             for topic in next_meeting.topic_set.filter(approved = True):
                 topic.minutes = topic.length.seconds / 60

@@ -83,7 +83,7 @@ class Meeting(CommonModel):
     def save(self, *args, **kwargs):
         if not self.key:
             self.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
-        return super(Subject, self).save(*args, **kwargs)
+        return super(Meeting, self).save(*args, **kwargs)
 
 
 class Presentor(CommonModel):

@@ -66,7 +66,7 @@ class Meeting(CommonModel):
 
     when = models.DateTimeField()
     where = models.ForeignKey(Venue,blank=True,null=True)
-    key = models.CharField(max_length = 40, unique = True) # Used for anonymous access to meeting information like RSVPs
+    key = models.CharField(max_length = 40, unique = True, blank = True) # Used for anonymous access to meeting information like RSVPs
 
     def is_future(self):
         return bool( self.when >=  ( datetime.datetime.now() - datetime.timedelta(hours = 3 )))
@@ -79,12 +79,6 @@ class Meeting(CommonModel):
 
     def number_rsvps(self):
         return self.rsvp_set.exclude(response = 'N').count()
-
-    def save(self, *args, **kwargs):
-        if not self.key:
-            self.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
-        return super(Meeting, self).save(*args, **kwargs)
-
 
 class Presentor(CommonModel):
     def __unicode__(self):

@@ -29,7 +29,9 @@
             <p><strong>When:</strong> {{ next_meeting.when|default:'N/A'}}</p>
 
             {% if next_meeting %}
-            <p><strong>Where:</strong> <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a></p>
+            <p><strong>Where:</strong> <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a></p><p>
+                {{ next_meeting.where.address }}
+              </p>
               <div id="where-dialog" title="Venue" style="display:none">
                 {{ next_meeting.where.name }}<br>
                 {{ next_meeting.where.address }}<br>

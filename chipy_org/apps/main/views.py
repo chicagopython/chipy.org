@@ -10,7 +10,7 @@ class Home(TemplateView):
         context = {}
         context.update(kwargs)
 
-        future_meetings = Meeting.objects.filter(when__gt = datetime.datetime.now() - datetime.timedelta(hours = 3))
+        future_meetings = Meeting.objects.filter(when__gt = datetime.datetime.now() - datetime.timedelta(hours = 24))
 
         if future_meetings.count() == 0:
             context['next_meeting'] = False

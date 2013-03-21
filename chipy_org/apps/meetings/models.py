@@ -165,7 +165,10 @@ class RSVP(CommonModel):
     @property
     def users_name(self):
         if not self.name:
-            self.name = self.user.get_full_name()
+            if self.user.profile.display_name:
+                self.name = self.user.profile.display_name
+            else:
+                self.name = self.user.get_full_name()
         return self.name
 
     @property

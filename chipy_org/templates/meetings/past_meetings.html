@@ -8,7 +8,18 @@
 {% for meeting in meeting_list %}
 <div>
 <h1>{{ meeting }}</h1>
-Topics will go here.
+{% for topic in meeting.topic_set.all %}
+  {% if topic.approved %}
+    <div class="topic">
+      <strong>{{ topic.title }}</strong><br />
+      {% if topic.length %}
+        ({{ topic.length }} Minutes)<br />
+      {% endif %}
+      By: {{ topic.presentor }}<br />
+      {{ topic.description }}
+    </div>
+  {% endif %}
+{% endfor %}
 </div>
 {% endfor %}
 {% endblock body %}

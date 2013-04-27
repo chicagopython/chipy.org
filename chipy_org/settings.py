@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 # Django settings for account project
 
+from os import environ as env
 import os.path
 import sys
-import random
-from os import environ as env
-import posixpath
-import dj_database_url
 
+import dj_database_url
 from django.conf.global_settings import MIDDLEWARE_CLASSES
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))

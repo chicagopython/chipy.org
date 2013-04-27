@@ -169,6 +169,7 @@ INSTALLED_APPS = [
     'interval',
     'social_auth',
     'south',
+    'storages',
     'tinymce',
 
     # theme
@@ -216,3 +217,9 @@ TINYMCE_DEFAULT_CONFIG = {
     # use absolute urls when inserting links/images
     'relative_urls': False,
 }
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = env.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env.get('AWS_STORAGE_BUCKET_NAME')

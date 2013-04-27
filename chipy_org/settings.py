@@ -202,7 +202,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = env.get('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
 HONEYPOT_FIELD_NAME = 'email2'
 
-if not DEBUG:
+if env.get('PRODUCTION', False) == 'True':
     PREPEND_WWW = True
 
 TINYMCE_DEFAULT_CONFIG = {

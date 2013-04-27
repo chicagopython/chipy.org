@@ -53,23 +53,6 @@ SITE_ID = env.get('SITE_ID', 1)
 # to load the internationalization machinery.
 USE_I18N = False
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, "site_media", "media")
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = "/site_media/media/"
-
-# Absolute path to the directory that holds static files like app media.
-# Example: "/home/media/media.lawrence.com/apps/"
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "site_media", "static")
-
-# URL that handles the static files like app media.
-# Example: "http://media.lawrence.com"
-STATIC_URL = "/site_media/static/"
-
 # Additional directories which hold static files
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, "static"),
@@ -223,3 +206,6 @@ STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_ACCESS_KEY_ID = env.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env.get('AWS_STORAGE_BUCKET_NAME')
+
+STATIC_URL = 'http://s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = STATIC_URL

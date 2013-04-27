@@ -1,19 +1,20 @@
-Django==1.4.3
-gunicorn
 dj-database-url
-django_forms_bootstrap
-django-social-auth>=0.7.18
-django-grappelli
-django-pgsql-interval-field
-psycopg2
+django-envelope
 django-extensions
-django-gravatar
 django-flatblocks
 django-flatpages-tinymce
-django-tinymce
-django-envelope
+django-grappelli
+django-gravatar
 django-honeypot
-South
+django-pgsql-interval-field
+django-social-auth>=0.7.18
+django-storages
+django-tinymce
+django==1.4.3
+django_forms_bootstrap
+gunicorn
+psycopg2
+south
 
 # For Dev
 Werkzeug

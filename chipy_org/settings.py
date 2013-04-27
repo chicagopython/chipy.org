@@ -149,36 +149,36 @@ INSTALLED_APPS = [
     'grappelli',
 
     # Django
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.sites",
-    "django.contrib.messages",
-    "django.contrib.humanize",
-    "django.contrib.staticfiles",
-    "django.contrib.flatpages",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.flatpages',
+    'django.contrib.humanize',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.staticfiles',
 
     # Third party
-    'social_auth',
-    "gunicorn",
-    'interval',
-    'gravatar',
-    'flatblocks',
-    'tinymce',
-    'flatpages_tinymce',
-    'honeypot',
-    'south',
     'envelope',
+    'flatblocks',
+    'flatpages_tinymce',
+    'gravatar',
+    'gunicorn',
+    'honeypot',
+    'interval',
+    'social_auth',
+    'south',
+    'tinymce',
 
     # theme
     'django_forms_bootstrap',
 
     # project
-    "about",
-    "meetings",
-    "profiles",
-    "contact",
+    'about',
+    'contact',
+    'meetings',
+    'profiles',
 ]
 
 if DEBUG:

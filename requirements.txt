@@ -1,3 +1,4 @@
+boto==2.9.0
 dj-database-url
 django-envelope
 django-extensions

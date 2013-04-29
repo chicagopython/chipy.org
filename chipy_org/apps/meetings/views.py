@@ -67,6 +67,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
     def get_form_kwargs(self):
         kwargs = {}
+        self.object = None
         if not kwargs.get('instance', False) and self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
             try:
                 meeting = Meeting.objects.get(pk=self.request.POST['meeting'])

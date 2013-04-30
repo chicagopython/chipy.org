@@ -70,7 +70,7 @@ AWS_SECRET_ACCESS_KEY = env.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env.get('AWS_STORAGE_BUCKET_NAME')
 
 STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
-MEDIA_URL = STATIC_URL
+MEDIA_URL = STATIC_URL + 'media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.

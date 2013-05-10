@@ -15,7 +15,7 @@ $('.rsvp').click(function(){
     });
     {% else %}
     $('#anonymous-rsvp-dialog').dialog();
-    $('#anonymous-rsvp-form input[name=response]').val($(this).data('response'))    
+    $('#anonymous-rsvp-form input[name=response]').val($(this).data('response'))
     return false;
     {% endif %}
 });
@@ -33,4 +33,8 @@ $('#anonymous-rsvp-form1').submit(function(event){
             alert(status, e);
         }
     });
+});
+$('#live-stream-link').click(function() {
+    $('#live-stream-dialog').dialog({ width: 800, modal: true });
+    return false;
 });

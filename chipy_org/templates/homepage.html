@@ -19,16 +19,16 @@
             <img src="{{ STATIC_URL }}img/chipmunk.png" alt="ChiPy">
         </div>
     </header>
-        <div class="row-fluid">
-          <h2>Tonights video</h2>
+    {% if next_meeting.live_stream %}
+        <div class="row-fluid" id="live-stream-dialog" style="display:none;">
+          <h2>Tonight's video</h2>
           <video width="792" height="576" controls>
-            <source src="http://ec2-54-224-159-216.compute-1.amazonaws.com:8080/webcast-high.webm" type="video/webm">
-
-  Your browser does not support the video tag.
+            <source src="{{ next_meeting.live_stream }}" type="video/webm">
+            Your browser does not support the video tag.
           </video>
           <br><a href="http://timvideos.us/">Alternative link</a>
         </div>
-
+    {% endif %}
     <div class="row-fluid">
         <div class="module span4">
             <h2>In the Loop</h2>
@@ -58,6 +58,7 @@
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
             {% endif %}
             {% if next_meeting %}
+            <p><strong><a href="#" id="live-stream-link">Watch online</a></strong></p>
             <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>

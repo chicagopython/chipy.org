@@ -127,13 +127,13 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
-    'libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
+    'libs.social_auth_pipelines.create_user',  # Custom pipeline addition. Located in libs/
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details'
 )
 
-SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email','first_name','last_name']
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
 
 
 INSTALLED_APPS = [

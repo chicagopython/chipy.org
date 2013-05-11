@@ -159,6 +159,7 @@ INSTALLED_APPS = [
     'gunicorn',
     'honeypot',
     'interval',
+    'rest_framework'
     'social_auth',
     'south',
     'storages',

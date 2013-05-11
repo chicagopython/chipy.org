@@ -13,9 +13,9 @@ django-storages
 django-tinymce
 django==1.4.3
 django_forms_bootstrap
+djangorestframework
 gunicorn
 psycopg2
 south
-
 # For Dev
 Werkzeug

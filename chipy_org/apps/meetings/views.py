@@ -5,13 +5,16 @@ from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
 from django.contrib import messages
 
-from meetings.models import (Meeting,
-                             Topic,
-                             Presentor)
+from rest_framework.generics import ListAPIView
 
-from meetings.models import RSVP as RSVPModel
-
-from meetings.forms import TopicForm, RSVPForm
+from .forms import TopicForm, RSVPForm
+from .models import (
+    Meeting,
+    Topic,
+    Presentor
+)
+from .models import RSVP as RSVPModel
+from .serializers import MeetingSerializer
 
 
 class PastMeetings(ListView):
@@ -119,3 +122,8 @@ class PastTopics(ListView):
     context_object_name = 'topics'
     template_name = 'meetings/past_topics.html'
     queryset = Topic.objects.filter(meeting__when__lt=datetime.date.today(), approved=True)
+
+
+class MeetingListAPIView(ListAPIView):
+    queryset = Meeting.objects.all()
+    serializer_class = MeetingSerializer

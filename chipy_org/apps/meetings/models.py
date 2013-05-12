@@ -100,7 +100,7 @@ class Topic(CommonModel):
 
     title = models.CharField(max_length=MAX_LENGTH)
     presentor = models.ForeignKey(Presentor, blank=True, null=True)
-    meeting = models.ForeignKey(Meeting, blank=True, null=True)
+    meeting = models.ForeignKey(Meeting, blank=True, null=True, related_name='topics')
     length = IntervalField(format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)

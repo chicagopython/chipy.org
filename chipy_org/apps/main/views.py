@@ -17,7 +17,7 @@ class Home(TemplateView):
         else:
             next_meeting = future_meetings.order_by('when')[0]
             next_meeting.topics = list()
-            for topic in next_meeting.topic_set.filter(approved = True).order_by('start_time'):
+            for topic in next_meeting.topics.filter(approved = True).order_by('start_time'):
                 topic.minutes = topic.length.seconds / 60
                 next_meeting.topics.append(topic)
 

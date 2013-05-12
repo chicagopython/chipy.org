@@ -5,10 +5,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 
 from contact.views import ChipyContactView
+from meetings.views import MeetingListAPIView
 
 admin.autodiscover()
 
-urlpatterns = patterns("",
+urlpatterns = patterns(
+    "",
     url(r'', include('main.urls')),
     url(r'', include('social_auth.urls')),
     url(r'^login/{0,1}$',  direct_to_template, {
@@ -20,10 +22,17 @@ urlpatterns = patterns("",
     url(r'^admin/', include(admin.site.urls)),
     url(r'^about/', include('about.urls')),
     url(r'^logout', 'django.contrib.auth.views.logout',
-                          {'next_page': '/'}),
+        {'next_page': '/'}
+    ),
     url(r'^contact/', ChipyContactView.as_view(), name="contact"),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
+)
+
+# Would love a back tracking url resolver
+urlpatterns += patterns(
+    "",
+    url(r'^api/meetings/', MeetingListAPIView.as_view()),
 )
 
 if settings.SERVE_MEDIA:

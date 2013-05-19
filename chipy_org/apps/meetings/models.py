@@ -89,6 +89,15 @@ class Presentor(CommonModel):
     phone = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     release = models.BooleanField(default=False)
 
+LICENSE_CHOISES = (
+    ('CC BY', 'Creative Commons: Attribution'),
+    ('CC BY-SA', 'Creative Commons: Attribution-ShareAlike'),
+    ('CC BY-ND', 'Creative Commons: Attribution-NoDerivs'),
+    ('CC BY-NC', 'Creative Commons: Attribution-NonCommercial'),
+    ('CC BY-NC-SA', 'Creative Commons: Attribution-NonCommercial-ShareAlike'),
+    ('CC BY-NC-ND', 'Creative Commons: Attribution-NonCommercial-NoDerivs'),
+)
+
 
 class Topic(CommonModel):
 
@@ -101,6 +110,7 @@ class Topic(CommonModel):
     title = models.CharField(max_length=MAX_LENGTH)
     presentor = models.ForeignKey(Presentor, blank=True, null=True)
     meeting = models.ForeignKey(Meeting, blank=True, null=True, related_name='topics')
+    license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default='CC BY')
     length = IntervalField(format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)

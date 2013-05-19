@@ -96,6 +96,7 @@ LICENSE_CHOISES = (
     ('CC BY-NC', 'Creative Commons: Attribution-NonCommercial'),
     ('CC BY-NC-SA', 'Creative Commons: Attribution-NonCommercial-ShareAlike'),
     ('CC BY-NC-ND', 'Creative Commons: Attribution-NonCommercial-NoDerivs'),
+    ('All Rights Reserved', 'All Rights Reserved')
 )
 
 

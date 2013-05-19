@@ -26,6 +26,7 @@ class TopicForm(ModelForm):
             'meeting',
             'length',
             'description',
+            'license',
             'slides_link',
         )
 

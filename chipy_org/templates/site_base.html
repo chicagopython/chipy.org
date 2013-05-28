@@ -10,6 +10,7 @@
     <link href="{{ STATIC_URL }}css/theme.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/chipy.css" type="text/css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/conference.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/gh-fork-ribbon.css"  rel="stylesheet">
 {% endblock %}
 
 {% block navbar_class %}{% endblock %}
@@ -29,23 +30,11 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row-fluid">
-        <div id="sidebar" class="span3">
-            {% block sidebar %}
-            <div class="well sidebar-nav">
-                {% block sidebar_nav %}{% endblock %}
-            </div><!--/.well -->
-            {% endblock %}
-        </div><!--/span-->
-
-        <div id="body" class="span9">
-            <div id="content">
-                {% block content %}{% endblock %}
-            </div><!-- #content -->
-        </div><!-- #body-->
-
-    </div><!-- #row-fluid -->
-    <hr>
+    <div class="github-fork-ribbon-wrapper right-bottom">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/chicagopython/chipy.org">Fork me on GitHub</a>
+        </div>
+    </div>
 {% endblock body %}
 
 {% block footer %}

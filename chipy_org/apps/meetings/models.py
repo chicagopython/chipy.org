@@ -109,7 +109,7 @@ class Topic(CommonModel):
         return out
 
     title = models.CharField(max_length=MAX_LENGTH)
-    presentor = models.ForeignKey(Presentor, blank=True, null=True)
+    presentors = models.ManyToManyField(Presentor, blank=True, null=True)
     meeting = models.ForeignKey(Meeting, blank=True, null=True, related_name='topics')
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default='CC BY')
     length = IntervalField(format="M", blank=True, null=True)

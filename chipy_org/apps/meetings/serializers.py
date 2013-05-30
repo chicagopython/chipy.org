@@ -10,13 +10,13 @@ class PresentorSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    presentor = PresentorSerializer()
+    presentors = PresentorSerializer()
 
     class Meta:
         model = Topic
         fields = (
             'title',
-            'presentor',
+            'presentors',
             'length',
             'description',
             'embed_video',

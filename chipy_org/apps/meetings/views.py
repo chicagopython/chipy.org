@@ -1,5 +1,6 @@
 import datetime
 
+from django.http import HttpResponse
 from django.views.generic import ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
@@ -54,7 +55,7 @@ class MyTopics(ListView):
         except Presentor.DoesNotExist:
             return Topic.objects.none()
 
-        return Topic.objects.filter(presentor=presentor)
+        return Topic.objects.filter(presentors=presentor)
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):

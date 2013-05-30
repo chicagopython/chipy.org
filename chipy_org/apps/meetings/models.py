@@ -104,8 +104,8 @@ class Topic(CommonModel):
 
     def __unicode__(self):
         out = self.title
-        if self.presentor:
-            out += " By: %s" % self.presentor.name
+        if self.presentors.count():
+            out += " By: %s" % self.presentors.all()[0].name
         return out
 
     title = models.CharField(max_length=MAX_LENGTH)

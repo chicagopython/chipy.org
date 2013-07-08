@@ -1,30 +1,40 @@
 # -*- coding: utf-8 -*-
 # Django settings for account project
 
-from os import environ as env
-import os.path
+import os
 import sys
 
 import dj_database_url
 from django.conf.global_settings import MIDDLEWARE_CLASSES
 
+
+def env_var(key, default=None):
+    """Retrieves env vars and makes Python boolean replacements"""
+    val = os.environ.get(key, default)
+    if val == 'True':
+        val = True
+    elif val == 'False':
+        val = False
+    return val
+
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
-DEBUG = True if env.get('DEBUG', False) == 'True' else False
+DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
-GITHUB_APP_ID = env.get('GITHUB_APP_ID')
-GITHUB_API_SECRET = env.get('GITHUB_API_SECRET')
+GITHUB_APP_ID = env_var('GITHUB_APP_ID')
+GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 
 # tells Pinax to serve media through the staticfiles app.
-SERVE_MEDIA = True if env.get('SERVE_MEDIA', DEBUG) == 'True' else False
+SERVE_MEDIA = env_var('SERVE_MEDIA', DEBUG)
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-ADMINS = [(admin.split('@')[0], admin) for admin in env.get('ADMINS').split(',')]
+ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')]
 
 MANAGERS = ADMINS
 
@@ -47,7 +57,7 @@ LOGIN_REDIRECT_URL = '/'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = "en-us"
 
-SITE_ID = env.get('SITE_ID', 1)
+SITE_ID = env_var('SITE_ID', 1)
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -63,13 +73,17 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = env.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = env.get('AWS_STORAGE_BUCKET_NAME')
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = env_var('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env_var('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env_var('AWS_STORAGE_BUCKET_NAME')
 
-STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+else:
+    STATIC_URL = 'http://localhost:8000/static/'
+
 MEDIA_URL = STATIC_URL + 'media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
@@ -78,14 +92,13 @@ MEDIA_URL = STATIC_URL + 'media/'
 ADMIN_MEDIA_PREFIX = os.path.join(STATIC_URL, "admin/")
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = env.get('SECRET_KEY')
+SECRET_KEY = env_var('SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = [
     "django.template.loaders.filesystem.Loader",
     "django.template.loaders.app_directories.Loader",
 ]
-
 
 ROOT_URLCONF = "chipy_org.urls"
 
@@ -127,14 +140,13 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
-    'libs.social_auth_pipelines.create_user',  # Custom pipeline addition. Located in libs/
+    'libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details'
 )
 
 SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
-
 
 INSTALLED_APPS = [
     # Fancy Admin
@@ -185,18 +197,18 @@ FIXTURE_DIRS = [
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
-ENVELOPE_EMAIL_RECIPIENTS = os.environ.get('ENVELOPE_EMAIL_RECIPIENTS').split(',')
+ENVELOPE_EMAIL_RECIPIENTS = env_var('ENVELOPE_EMAIL_RECIPIENTS').split(',')
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', None)
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', None)
+EMAIL_HOST_USER = env_var('SENDGRID_USERNAME', None)
+EMAIL_HOST_PASSWORD = env_var('SENDGRID_PASSWORD', None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = env.get('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
+DEFAULT_FROM_EMAIL = env_var('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
 HONEYPOT_FIELD_NAME = 'email2'
 
-if env.get('PRODUCTION', False) == 'True':
+if env_var('PRODUCTION', False):
     PREPEND_WWW = True
 
 TINYMCE_DEFAULT_CONFIG = {

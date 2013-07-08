@@ -25,6 +25,8 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export GITHUB_APP_ID=youridhere
     export GITHUB_API_SECRET=supersecretkeyhere
     export SECRET_KEY=somesecretkeyfordjangogoeshere
+    export ADMINS=admin@example.com
+    export ENVELOPE_EMAIL_RECIPIENTS=admin@example.com
 
 Note that the only required config is the github stuff. The secret key will be random by default which will cause your session to wipe on every restart.
 
@@ -51,7 +53,7 @@ Install project dependencies::
 Setting up the database
 -----------------------
 
-I recommend keeping your development DB as close to production as possible. If you're on a Mac, I recommend using [Postgress.app](http://postgresapp.com) 
+I recommend keeping your development DB as close to production as possible. If you're on a Mac, I recommend using [Postgress.app](http://postgresapp.com)
 
 You will need to run::
 
@@ -63,5 +65,3 @@ Running a web server
 In development you should run::
 
     (venv)$ python manage.py runserver
-
-

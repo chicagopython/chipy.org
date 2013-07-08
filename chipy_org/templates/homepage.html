@@ -96,7 +96,9 @@
                   {% if topic.length %}
                     ({{ topic.length }} Minutes)<br />
                   {% endif %}
-                  By: {{ topic.presentor }}<br />
+                  By: {% for presentor in topic.presentors.all %}
+                        {{presentor}} {% if not forloop.last %}, {% endif %}
+                      {% endfor %}<br />
                   {{ topic.description }}
                 </li>
               {% endfor %}

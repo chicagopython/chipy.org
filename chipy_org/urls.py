@@ -41,8 +41,3 @@ if settings.SERVE_MEDIA:
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
     )
     urlpatterns += staticfiles_urlpatterns()
-
-if settings.DEBUG:
-    urlpatterns += patterns('django.contrib.staticfiles.views',
-        url(r'^static/(?P<path>.*)$', 'serve'),
-    )

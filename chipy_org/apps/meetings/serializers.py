@@ -6,7 +6,7 @@ from .models import Meeting, Topic, Presentor
 class PresentorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Presentor
-        fields = ('name', 'release', 'email')
+        fields = ('id', 'name', 'release', 'email')
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -15,6 +15,7 @@ class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
         fields = (
+            'id',
             'title',
             'presentors',
             'length',
@@ -33,5 +34,5 @@ class MeetingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meeting
-        fields = ('when', 'where', 'live_stream', 'topics')
+        fields = ('id', 'when', 'where', 'live_stream', 'topics')
         depth = 2

@@ -82,7 +82,7 @@ if not DEBUG:
 
     STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 else:
-    STATIC_URL = 'http://localhost:8000/static/'
+    STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
 

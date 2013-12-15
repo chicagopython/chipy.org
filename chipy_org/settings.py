@@ -222,3 +222,6 @@ TINYMCE_DEFAULT_CONFIG = {
     # use absolute urls when inserting links/images
     'relative_urls': False,
 }
+
+RECAPTCHA_PUBLIC_KEY = env_var('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env_var('RECAPTCHA_PRIVATE_KEY')

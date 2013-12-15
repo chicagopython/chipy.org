@@ -8,6 +8,7 @@ django-grappelli
 django-gravatar
 django-honeypot
 django-pgsql-interval-field
+django-recaptcha
 django-social-auth>=0.7.18
 django-storages
 django-tinymce

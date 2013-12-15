@@ -82,7 +82,7 @@ if not DEBUG:
 
     STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 else:
-    STATIC_URL = 'http://localhost:8000/static/'
+    STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
 
@@ -164,6 +164,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party
+    'captcha',
     'envelope',
     'flatblocks',
     'flatpages_tinymce',
@@ -222,3 +223,6 @@ TINYMCE_DEFAULT_CONFIG = {
     # use absolute urls when inserting links/images
     'relative_urls': False,
 }
+
+RECAPTCHA_PUBLIC_KEY = env_var('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env_var('RECAPTCHA_PRIVATE_KEY')

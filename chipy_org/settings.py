@@ -164,6 +164,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party
+    'captcha',
     'envelope',
     'flatblocks',
     'flatpages_tinymce',

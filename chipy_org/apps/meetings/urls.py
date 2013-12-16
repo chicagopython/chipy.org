@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from meetings.views import (
+from apps.meetings.views import (
     PastMeetings,
     ProposeTopic,
     MyTopics,

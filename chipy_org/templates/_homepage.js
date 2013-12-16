@@ -14,7 +14,7 @@ $('.rsvp').click(function(){
         },
     });
     {% else %}
-    $('#anonymous-rsvp-dialog').dialog();
+    $('#anonymous-rsvp-dialog').dialog({width: '500'});
     $('#anonymous-rsvp-form input[name=response]').val($(this).data('response'))
     return false;
     {% endif %}

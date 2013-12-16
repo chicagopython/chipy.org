@@ -74,6 +74,9 @@
                 <input type="text" name="email" placeholder="john@example.com">
                 <input type="hidden" name="meeting" value="{{ next_meeting.pk }}">
                 <input type="hidden" name="response" value="Y">
+                {% if not request.user.is_authenticated %}
+                  {{ rsvp_form.captcha }}
+                {% endif %}
                 <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
               </form>
             </div>

@@ -1,3 +1,4 @@
+from captcha.fields import ReCaptchaField
 from django.forms import ModelForm, ModelChoiceField
 from meetings.models import Topic, Presentor, RSVP, Meeting
 import datetime
@@ -45,9 +46,14 @@ class TopicForm(ModelForm):
 
 
 class RSVPForm(ModelForm):
+    captcha = ReCaptchaField(attrs={'theme': 'clean'})
+
     def __init__(self, request, *args, **kwargs):
         super(RSVPForm, self).__init__(*args, **kwargs)
         self.request = request
+        if self.request.user.is_authenticated():
+            # Don't need captcha for authenticated users
+            del self.fields['captcha']
 
     class Meta:
         model = RSVP

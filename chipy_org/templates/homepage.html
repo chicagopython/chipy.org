@@ -58,7 +58,7 @@
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
             {% endif %}
             {% if next_meeting %}
-            <p><strong><a href="#" id="live-stream-link">Watch online</a></strong></p>
+            <p><strong><a href="http://timvideos.us/chipy" id="live-stream-link">Watch online</a></strong></p>
             <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>

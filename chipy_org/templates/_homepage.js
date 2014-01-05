@@ -34,7 +34,8 @@ $('#anonymous-rsvp-form1').submit(function(event){
         }
     });
 });
-$('#live-stream-link').click(function() {
-    $('#live-stream-dialog').dialog({ width: 800, modal: true });
-    return false;
-});
+//$('#live-stream-link').click(function() {
+//    $('#live-stream-dialog').dialog({ width: 800, modal: true });
+//    return false;
+//});
+

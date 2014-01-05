@@ -4,6 +4,16 @@ from .models import Meeting, Topic, Presentor
 
 
 class PresentorSerializer(serializers.ModelSerializer):
+    email = serializers.SerializerMethodField('get_email')
+
+    def get_email(self, obj):
+        request = self.context.get('request')
+
+        if request and request.user.is_staff:
+            return obj.email
+        else:
+            return ''
+
     class Meta:
         model = Presentor
         fields = ('id', 'name', 'release', 'email')

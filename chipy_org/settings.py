@@ -148,6 +148,10 @@ SOCIAL_AUTH_PIPELINE = (
 
 SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
 
+GITHUB_EXTRA_DATA = [
+    ('email', 'email'),
+]
+
 INSTALLED_APPS = [
     # Fancy Admin
     'grappelli',

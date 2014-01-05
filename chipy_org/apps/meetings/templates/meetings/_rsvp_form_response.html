@@ -1,9 +1,21 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "RSVPs" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+
 {% for field in form %}
   {% if field.errors %}
-    {{ field.name }} has the errors:
+    <h1>{{ field.name|capfirst }} has errors:</h1>
     {% for error in field.errors %}
-      {{ error }}
+      <h2>{{ error }}</h2>
     {% endfor %}
   {% endif %}
 {% endfor %}
 {{ form.non_field_errors }}
+
+{% endblock body %}

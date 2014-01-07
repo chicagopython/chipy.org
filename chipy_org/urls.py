@@ -13,6 +13,7 @@ urlpatterns = patterns(
     "",
     url(r'', include('main.urls')),
     url(r'', include('social_auth.urls')),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^login/{0,1}$',  direct_to_template, {
         'template': 'login.html'
     }),

@@ -8,6 +8,10 @@ from django import forms
 
 admin.site.register(Venue)
 
+class TopicAdmin(admin.ModelAdmin):
+    list_display = ('approved', 'title', 'meeting')
+
+
 class MeetingForm(forms.ModelForm):
     def clean_key(self):
         if not self.cleaned_data['key']:
@@ -23,6 +27,6 @@ class MeetingAdmin(admin.ModelAdmin):
     form = MeetingForm
 
 admin.site.register(Meeting, MeetingAdmin)
-admin.site.register(Topic)
+admin.site.register(Topic, TopicAdmin)
 admin.site.register(Presentor)
 admin.site.register(RSVP)

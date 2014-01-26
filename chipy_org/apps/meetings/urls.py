@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
+from apps.meetings.feeds import MeetingFeed
 from apps.meetings.views import (
     PastMeetings,
     ProposeTopic,
@@ -10,6 +11,7 @@ from apps.meetings.views import (
 )
 
 urlpatterns = patterns("",
+    url(r'^ical/$', MeetingFeed()),
     url(r'^past/$', PastMeetings.as_view(), name='past_meetings'),
     url(r'^rsvp/$', RSVP.as_view(), name='rsvp'),
     url(r'^rsvp/anonymous/$', RSVP.as_view(), name='anonymous_rsvp'),

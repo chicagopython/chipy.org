@@ -12,11 +12,8 @@ django-forms-bootstrap==2.0.3.post1
 django-grappelli==2.4.4
 django-gravatar==0.1.0
 django-honeypot==0.3.0
-<<<<<<< HEAD
-=======
 django-ical==1.2.0
 django-mailer==0.1.0
->>>>>>> 1707fda... Added email reminders and django-mailer package
 django-pgsql-interval-field==0.9.3
 django-recaptcha==0.0.6
 django-social-auth==0.7.23

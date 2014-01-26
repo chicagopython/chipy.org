@@ -169,6 +169,7 @@ INSTALLED_APPS = [
 
     # Third party
     'captcha',
+    'django_ical',
     'envelope',
     'flatblocks',
     'flatpages_tinymce',

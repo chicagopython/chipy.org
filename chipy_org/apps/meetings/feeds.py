@@ -15,7 +15,7 @@ class MeetingFeed(ICalFeed):
     def item_description(self, item):
         description = 'RSVP at http://chipy.org\n\n'
         for topic in item.topics.all():
-            description += '{title} by {speaker}\n{description}\n\n'.format(
+            description += u'{title} by {speaker}\n{description}\n\n'.format(
                 title=topic.title, 
                 speaker=topic.presentors.all()[0].name,
                 description=topic.description)

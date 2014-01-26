@@ -8,6 +8,12 @@ from django import forms
 
 admin.site.register(Venue)
 
+
+class TopicInline(admin.StackedInline):
+    model = Topic
+    extra = 1
+
+
 class MeetingForm(forms.ModelForm):
     def clean_key(self):
         if not self.cleaned_data['key']:
@@ -21,6 +27,10 @@ class MeetingForm(forms.ModelForm):
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('when','where','created','modified')
     form = MeetingForm
+    inlines = [
+        TopicInline,
+    ]
+
 
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic)

@@ -14,6 +14,10 @@ class TopicInline(admin.StackedInline):
     extra = 1
 
 
+class TopicAdmin(admin.ModelAdmin):
+    list_display = ('approved', 'title', 'meeting')
+
+
 class MeetingForm(forms.ModelForm):
     def clean_key(self):
         if not self.cleaned_data['key']:
@@ -33,6 +37,6 @@ class MeetingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Meeting, MeetingAdmin)
-admin.site.register(Topic)
+admin.site.register(Topic, TopicAdmin)
 admin.site.register(Presentor)
 admin.site.register(RSVP)

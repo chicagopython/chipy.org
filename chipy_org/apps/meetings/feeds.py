@@ -29,7 +29,10 @@ class MeetingFeed(ICalFeed):
         return ''
 
     def item_location(self, item):
-        return item.where.address
+        if item.where:
+            return item.where.address
+        else:
+            return 'To be determined...'
 
     def item_start_datetime(self, item):
         return item.when

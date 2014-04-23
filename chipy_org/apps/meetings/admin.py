@@ -11,7 +11,7 @@ admin.site.register(Venue)
 
 class TopicInline(admin.StackedInline):
     model = Topic
-    extra = 1
+    extra = 0
 
 
 class TopicAdmin(admin.ModelAdmin):

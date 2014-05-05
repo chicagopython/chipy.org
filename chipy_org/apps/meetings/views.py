@@ -1,4 +1,5 @@
 import datetime
+from django.core.exceptions import ValidationError
 
 from django.views.generic import ListView
 from django.views.generic.base import TemplateResponseMixin
@@ -72,6 +73,9 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         kwargs = {}
         self.object = None
         if not kwargs.get('instance', False) and self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
+            if not self.request.POST.get('meeting'):
+                raise ValidationError('Meeting missing from POST')
+
             try:
                 meeting = Meeting.objects.get(pk=self.request.POST['meeting'])
                 self.object = RSVPModel.objects.get(user=self.request.user, meeting=meeting)

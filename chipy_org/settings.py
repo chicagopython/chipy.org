@@ -80,7 +80,7 @@ if not DEBUG:
     AWS_SECRET_ACCESS_KEY = env_var('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env_var('AWS_STORAGE_BUCKET_NAME')
 
-    STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = 'http://{}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
 else:
     STATIC_URL = '/static/'
 

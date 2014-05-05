@@ -220,7 +220,7 @@ if env_var('PRODUCTION', False):
 TINYMCE_DEFAULT_CONFIG = {
     'height': "500",
     # custom plugins
-    'plugins': "table,spellchecker,paste,searchreplace",
+    'plugins': "table,spellchecker,paste,searchreplace,inlinepopups",
     # editor theme
     'theme': "advanced",
     # custom CSS file for styling editor area

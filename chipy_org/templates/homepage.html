@@ -19,9 +19,6 @@
             <img src="{{ STATIC_URL }}img/chipmunk.png" alt="ChiPy">
         </div>
     </header>
-    {% if next_meeting.live_stream %}
-      <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
-    {% endif %}
     <div class="row-fluid">
         <div class="module span4">
             <h2>In the Loop</h2>
@@ -51,7 +48,11 @@
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
             {% endif %}
             {% if next_meeting %}
-            <p><strong><a href="http://timvideos.us/chipy" id="live-stream-link">Watch online</a></strong></p>
+
+                {% if next_meeting.live_stream %}
+                  <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
+                {% endif %}
+
             <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>

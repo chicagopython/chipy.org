@@ -20,14 +20,7 @@
         </div>
     </header>
     {% if next_meeting.live_stream %}
-        <div class="row-fluid" id="live-stream-dialog" style="display:none;">
-          <h2>Tonight's video</h2>
-          <video width="792" height="576" controls>
-            <source src="{{ next_meeting.live_stream }}" type="video/webm">
-            Your browser does not support the video tag.
-          </video>
-          <br><a href="http://timvideos.us/">Alternative link</a>
-        </div>
+      <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
     {% endif %}
     <div class="row-fluid">
         <div class="module span4">

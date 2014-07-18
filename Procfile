@@ -1,1 +1,1 @@
-web: python chipy_org/manage.py run_gunicorn -b "0.0.0.0:$PORT" -w 3
+web: gunicorn chipy_org.deploy.wsgi --log-file -

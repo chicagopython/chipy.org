@@ -1,4 +1,4 @@
-from django.core.handlers.wsgi import WSGIHandler
+from django.core.wsgi import get_wsgi_application
 
 import pinax.env
 
@@ -8,4 +8,6 @@ pinax.env.setup_environ(__file__)
 
 
 # set application for WSGI processing
-application = WSGIHandler()
+from dj_static import Cling
+
+application = Cling(get_wsgi_application())

@@ -73,16 +73,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    AWS_ACCESS_KEY_ID = env_var('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = env_var('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = env_var('AWS_STORAGE_BUCKET_NAME')
-
-    STATIC_URL = 'http://{}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
-else:
-    STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
 

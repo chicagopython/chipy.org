@@ -77,6 +77,8 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
 
+STATIC_ROOT = 'staticfiles'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".

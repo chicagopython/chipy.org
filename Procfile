@@ -1,1 +1,1 @@
-web: cd chipy_org; gunicorn deploy.wsgi --log-file -
+web: gunicorn deploy.wsgi --pythonpath chipy_org --log-file -

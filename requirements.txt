@@ -13,6 +13,8 @@ django-grappelli==2.4.4
 django-gravatar==0.1.0
 django-honeypot==0.3.0
 django-ical==1.2.0
+--allow-external django-pgsql-interval-field
+--allow-unverified django-pgsql-interval-field
 django-pgsql-interval-field==0.9.3
 django-recaptcha==0.0.6
 django-social-auth==0.7.23

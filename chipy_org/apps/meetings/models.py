@@ -133,6 +133,7 @@ class RSVP(CommonModel):
     meeting = models.ForeignKey(Meeting)
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+    meetup_user_id = models.IntegerField(blank=True, null=True)
 
     def clean(self):
         from django.core.exceptions import ValidationError

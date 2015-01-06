@@ -11,7 +11,7 @@ from django.template import Context
 
 from interval.fields import IntervalField
 
-from libs.models import CommonModel
+from chipy_org.libs.models import CommonModel
 
 MAX_LENGTH = 255
 

@@ -1,5 +1,12 @@
 import datetime
+
+from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
+from django.core.mail import EmailMultiAlternatives
+from django.template import Context
+from django.template.loader import get_template
+from django.shortcuts import get_object_or_404
 
 from django.views.generic import ListView
 from django.views.generic.base import TemplateResponseMixin
@@ -103,6 +110,21 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         if form.is_valid():
             # Set message
             messages.success(request, 'RSVP Successful.')
+
+            if not self.object.user:
+                plaintext = get_template('meetings/rsvp_email.txt')
+                htmly = get_template('meetings/rsvp_email.html')
+
+                d = Context({'key': self.object.key, 'site': Site.objects.get_current()})
+
+                subject = 'Chipy: Link to Change your RSVP'
+                from_email = 'DoNotReply@chipy.org'
+                text_content = plaintext.render(d)
+                html_content = htmly.render(d)
+                msg = EmailMultiAlternatives(subject, text_content, from_email, [self.email])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

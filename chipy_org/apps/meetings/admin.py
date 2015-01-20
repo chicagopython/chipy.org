@@ -1,5 +1,6 @@
 import random
 import string
+from django.utils.safestring import mark_safe
 
 from models import Meeting, Venue, Topic, Presentor, RSVP
 from django.contrib import admin
@@ -29,12 +30,22 @@ class MeetingForm(forms.ModelForm):
 
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('when','where','created','modified')
+    list_display = ('when', 'where', 'created', 'modified', 'action')
     form = MeetingForm
     inlines = [
         TopicInline,
     ]
 
+    def action(self, obj):
+        if obj.meetup_id:
+            return '<input type="submit" value="Sync Meetup" class="meetup-sync-button" data-meeting-pk="{}">'.format(
+                obj.pk)
+        return ''
+
+    action.allow_tags = True
+
+    class Media:
+        js = ("js/meetup_sync.js",)
 
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic, TopicAdmin)

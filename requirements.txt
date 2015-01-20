@@ -4,6 +4,7 @@ Werkzeug==0.8.3
 boto==2.9.0
 distribute==0.6.36
 dj-database-url==0.2.1
+django-admin-tools==0.5.2
 django-envelope==0.6
 django-extensions==1.1.1
 django-flatblocks==0.6.0

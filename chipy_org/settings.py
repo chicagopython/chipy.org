@@ -146,8 +146,11 @@ GITHUB_EXTRA_DATA = [
 ]
 
 INSTALLED_APPS = [
-    # Fancy Admin
-    'grappelli',
+    # Admin Tools
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
 
     # Django
     'django.contrib.admin',

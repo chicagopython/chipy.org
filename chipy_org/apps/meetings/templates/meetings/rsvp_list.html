@@ -10,9 +10,24 @@
 <div class="row-fluid">
   <div class="span12 rsvp-list">
     <h1>RSVPs for {{ meeting }}</h1>
+    <table>
     {% for rsvp in attendees  %}
-    {{ rsvp.users_name }}{% if request.user.is_staff %} <a href="mailto:{{ rsvp.users_email }}">{{ rsvp.users_email }}</a>{% endif %}<br>
+      <tr>
+        <td>
+          {{ rsvp.users_name }}
+        </td>
+        <td>
+          {% if request.user.is_staff %}
+            {% if rsvp.meetup_user_id %}
+              From Meetup
+            {% else %}
+              <a href="mailto:{{ rsvp.users_email }}">{{ rsvp.users_email }}</a>
+            {% endif %}<br>
+          {% endif %}
+        </td>
+      </tr>
     {% endfor %}
+    </table>
     <span class="count">{{ attendees|length }} rsvp{{ attendees|pluralize }}</span>
   </div>
 </div>

@@ -14,6 +14,12 @@ from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixi
 from django.contrib import messages
 
 from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from apps.meetings.utils import meetup_meeting_sync
+
+
 
 from .forms import TopicForm, RSVPForm
 from .models import (
@@ -153,3 +159,12 @@ class PastTopics(ListView):
 class MeetingListAPIView(ListAPIView):
     queryset = Meeting.objects.all()
     serializer_class = MeetingSerializer
+
+
+class MeetingMeetupSync(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def post(self, request, meeting_id):
+        meeting = get_object_or_404(Meeting, pk=meeting_id)
+        meetup_meeting_sync(settings.MEETUP_API_KEY, meeting.meetup_id)
+        return Response()

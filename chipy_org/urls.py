@@ -5,7 +5,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 
 from apps.contact.views import ChipyContactView
-from apps.meetings.views import MeetingListAPIView
+from apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
 admin.autodiscover()
 
@@ -33,7 +33,8 @@ urlpatterns = patterns(
 # Would love a back tracking url resolver
 urlpatterns += patterns(
     "",
-    url(r'^api/meetings/', MeetingListAPIView.as_view()),
+    url(r'^api/meetings/$', MeetingListAPIView.as_view()),
+    url(r'^api/meetings/(?P<meeting_id>\d+)/meetup/sync$', MeetingMeetupSync.as_view())
 )
 
 if settings.SERVE_MEDIA:

@@ -48,7 +48,7 @@ class Venue(CommonModel):
 
     directions = models.TextField(blank=True, null=True)
     embed_map = models.TextField(blank=True, null=True)
-    link = models.URLField(verify_exists=True, blank=True, null=True)
+    link = models.URLField(blank=True, null=True)
 
 
 class Meeting(CommonModel):
@@ -112,7 +112,7 @@ class Topic(CommonModel):
     length = IntervalField(format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    slides_link = models.URLField(verify_exists=True, blank=True, null=True)
+    slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
     approved = models.BooleanField(default=False)
 

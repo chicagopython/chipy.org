@@ -24,6 +24,11 @@ sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = ['chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com']
+
+if DEBUG:
+    ALLOWED_HOSTS.append('localhost:8000')
+
 GITHUB_APP_ID = env_var('GITHUB_APP_ID')
 GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 

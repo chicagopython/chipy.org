@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
-from apps.meetings.feeds import MeetingFeed
-from apps.meetings.views import (
+from chipy_org.apps.meetings.feeds import MeetingFeed
+from chipy_org.apps.meetings.views import (
     PastMeetings,
     ProposeTopic,
     MyTopics,

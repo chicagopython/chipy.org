@@ -1,9 +1,9 @@
 from captcha.fields import ReCaptchaField
 from envelope.views import ContactView
-from envelope.forms import BaseContactForm
+from envelope.forms import ContactForm
 
 
-class ChipyContactForm(BaseContactForm):
+class ChipyContactForm(ContactForm):
     captcha = ReCaptchaField(attrs={'theme': 'clean'})
 
 

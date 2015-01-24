@@ -1,7 +1,7 @@
 import datetime
 from django.views.generic import TemplateView
-from apps.meetings.models import Meeting, RSVP
-from apps.meetings.forms import RSVPForm
+from chipy_org.apps.meetings.models import Meeting, RSVP
+from chipy_org.apps.meetings.forms import RSVPForm
 
 
 class Home(TemplateView):

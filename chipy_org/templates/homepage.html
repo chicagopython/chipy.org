@@ -60,7 +60,7 @@
               {% endif %}
               <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
             <div id="anonymous-rsvp-dialog" style="display:none;">
-              <form id="anonymous-rsvp-form" method="POST" action="{% url anonymous_rsvp %}">
+              <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
                 {% csrf_token %}
                 <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
                 <input type="text" name="name" placeholder="John Smith">
@@ -78,11 +78,11 @@
             {% else %}
               {% if request.user.is_staff %}
                 <p>
-                  <a class="btn btn-primary" href="{% url admin:meetings_meeting_add %}">Create Meeting</a>
+                  <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
                 </p>
               {% endif %}
             {% endif %}
-            <p><a class="btn" href="{% url past_meetings %}">Past meetings &raquo;</a></p>
+            <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
         </div><!--/span-->
         <div class="module span4">
             <h2>This Month's Topics</h2>

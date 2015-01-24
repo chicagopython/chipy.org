@@ -10,7 +10,7 @@
 <div class="row-fluid">
   <div class="offset4 span8">
     <h1>Give a talk</h1>
-    <form action="{% url propose_topic %}" method="post" id="propose-topic">{% csrf_token %}
+    <form action="{% url 'propose_topic' %}" method="post" id="propose-topic">{% csrf_token %}
       {% for field in form %}
       <div class="fieldWrapper">
         {{ field.errors }}

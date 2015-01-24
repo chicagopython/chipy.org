@@ -1,11 +1,11 @@
 from django.conf import settings
-from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
+from django.conf.urls import *
+from django.views.generic import TemplateView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 
-from apps.contact.views import ChipyContactView
-from apps.meetings.views import MeetingListAPIView
+from chipy_org.apps.contact.views import ChipyContactView
+from chipy_org.apps.meetings.views import MeetingListAPIView
 
 admin.autodiscover()
 
@@ -14,9 +14,7 @@ urlpatterns = patterns(
     url(r'', include('main.urls')),
     url(r'', include('social_auth.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^login/{0,1}$',  direct_to_template, {
-        'template': 'login.html'
-    }),
+    url(r'^login/{0,1}$',  TemplateView.as_view(template_name='login.html')),
     (r'^grappelli/', include('grappelli.urls')),
     url(r'^meetings/', include('meetings.urls')),
     url(r'^profiles/', include('profiles.urls', namespace="profiles")),

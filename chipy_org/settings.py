@@ -111,7 +111,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 ]
 
 # Social Auth settings
-MIDDLEWARE_CLASSES += ('libs.middleware.ChipySocialAuthExceptionMiddleware',)
+MIDDLEWARE_CLASSES += ('chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',)
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
@@ -125,6 +125,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
 SOCIAL_AUTH_ENABLED_BACKENDS = (
     'google',
     'github',
@@ -133,7 +135,7 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
-    'libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
+    'chipy_org.libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details'
@@ -166,7 +168,7 @@ INSTALLED_APPS = [
     'envelope',
     'flatblocks',
     'flatpages_tinymce',
-    'gravatar',
+    'django_gravatar',
     'gunicorn',
     'honeypot',
     'interval',

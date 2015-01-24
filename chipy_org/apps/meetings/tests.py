@@ -1,6 +1,6 @@
 import datetime
 
-import libs.test_utils as test_utils
+import chipy_org.libs.test_utils as test_utils
 from .models import RSVP, Meeting, Venue
 
 class MeetingsTest(test_utils.AuthenticatedTest):

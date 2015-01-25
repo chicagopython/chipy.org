@@ -39,6 +39,8 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 MANAGERS = ADMINS
 
 
+ALLOWED_HOSTS=env_var("ALLOWED_HOSTS".split(','), ['www.chipy.org', 'chipy.org'])
+
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
 

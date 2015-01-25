@@ -27,8 +27,17 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export SECRET_KEY=somesecretkeyfordjangogoeshere
     export ADMINS=admin@example.com
     export ENVELOPE_EMAIL_RECIPIENTS=admin@example.com
-    export RECAPTCHA_PUBLIC_KEY=your_recaptcha_public_key
-    export RECAPTCHA_PRIVATE_KEY=your_recaptcha_private_key
+    export NORECAPTCHA_SITE_KEY=your_recaptcha_public_key
+    export NORECAPTCHA_SECRET_KEY=your_recaptcha_private_key
+
+	# optional email settings and their defaults
+	export EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+	export EMAIL_HOST='smtp.sendgrid.net'
+	export EMAIL_PORT=587
+	export EMAIL_USE_TLS=True
+	export EMAIL_HOST_USER=""
+	export EMAIL_HOST_PASSWORD=""
+
 
 Note that the only required config is the github stuff. The secret key will be random by default which will cause your session to wipe on every restart.
 

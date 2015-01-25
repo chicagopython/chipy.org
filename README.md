@@ -22,6 +22,7 @@ Setting up environment
 Chipy.org is setup using [12factor](http://12factor.net), which means that it takes local settings from the environment. For this reason it is recommended that you use autoenv and a .env file. The example .env is::
 
     export DEBUG=True
+    export ALLOWED_HOSTS="chipy.org,www.chipy.org"
     export GITHUB_APP_ID=youridhere
     export GITHUB_API_SECRET=supersecretkeyhere
     export SECRET_KEY=somesecretkeyfordjangogoeshere

@@ -18,6 +18,14 @@ def env_var(key, default=None):
     return val
 
 
+def env_list(key, defaults=[], delimiter=','):
+    val_list = defaults
+    val = os.environ.get(key, None)
+    if val:
+        val_list = val.split(delimiter)
+    return val_list
+
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
@@ -39,7 +47,7 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 MANAGERS = ADMINS
 
 
-ALLOWED_HOSTS=env_var("ALLOWED_HOSTS".split(','), ['www.chipy.org', 'chipy.org'])
+ALLOWED_HOSTS=env_list("ALLOWED_HOSTS", ['www.chipy.org', 'chipy.org'])
 
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}

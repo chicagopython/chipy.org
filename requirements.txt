@@ -8,7 +8,7 @@ django-extensions==1.4.9
 django-flatblocks==0.8
 django-flatpages-tinymce==0.1.1
 django-forms-bootstrap==2.0.3.post1
-django-grappelli==2.6.3
+django-grappelli==2.5.6
 django-gravatar2==1.1.4
 django-honeypot==0.4.0
 django-ical==1.3

@@ -163,7 +163,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party
-    'captcha',
+    'nocaptcha_recaptcha',
     'django_ical',
     'envelope',
     'flatblocks',
@@ -200,11 +200,12 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 ENVELOPE_EMAIL_RECIPIENTS = env_var('ENVELOPE_EMAIL_RECIPIENTS').split(',')
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = env_var('SENDGRID_USERNAME', None)
-EMAIL_HOST_PASSWORD = env_var('SENDGRID_PASSWORD', None)
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = env_var('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env_var('EMAIL_HOST', 'smtp.sendgrid.net')
+EMAIL_HOST_USER = env_var('EMAIL_HOST_USER', env_var('SENDGRID_USERNAME', None))
+EMAIL_HOST_PASSWORD = env_var('EMAIL_HOST_PASSWORD', env_var('SENDGRID_PASSWORD', None))
+EMAIL_PORT = int(env_var('EMAIL_PORT', 587))
+EMAIL_USE_TLS = env_var('EMAIL_USE_TLS', True)
 
 DEFAULT_FROM_EMAIL = env_var('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
 HONEYPOT_FIELD_NAME = 'email2'
@@ -224,7 +225,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'relative_urls': False,
 }
 
-RECAPTCHA_PUBLIC_KEY = env_var('RECAPTCHA_PUBLIC_KEY')
-RECAPTCHA_PRIVATE_KEY = env_var('RECAPTCHA_PRIVATE_KEY')
+NORECAPTCHA_SITE_KEY = env_var('NORECAPTCHA_SITE_KEY')
+NORECAPTCHA_SECRET_KEY = env_var('NORECAPTCHA_SECRET_KEY')
 
 FLATPAGES_TINYMCE_ADMIN = True

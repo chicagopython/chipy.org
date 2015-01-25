@@ -4,10 +4,6 @@ import random
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
 
 from interval.fields import IntervalField
 
@@ -65,6 +61,7 @@ class Meeting(CommonModel):
     where = models.ForeignKey(Venue, blank=True, null=True)
     key = models.CharField(max_length=40, unique=True, blank=True)  # Used for anonymous access to meeting information like RSVPs
     live_stream = models.CharField(max_length=500, null=True, blank=True)
+    meetup_id = models.TextField(blank=True, null=True)
 
     def is_future(self):
         return bool(self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))
@@ -133,6 +130,7 @@ class RSVP(CommonModel):
     meeting = models.ForeignKey(Meeting)
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+    meetup_user_id = models.IntegerField(blank=True, null=True)
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -156,18 +154,6 @@ class RSVP(CommonModel):
         # generate a key and email it to the user
         if not self.pk and not self.user:
             self.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
-            plaintext = get_template('meetings/rsvp_email.txt')
-            htmly = get_template('meetings/rsvp_email.html')
-
-            d = Context({'key': self.key, 'site': Site.objects.get_current()})
-
-            subject = 'Chipy: Link to Change your RSVP'
-            from_email = 'DoNotReply@chipy.org'
-            text_content = plaintext.render(d)
-            html_content = htmly.render(d)
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [self.email])
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
 
         return super(RSVP, self).save(*args, **kwargs)
 

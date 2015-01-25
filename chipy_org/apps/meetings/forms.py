@@ -15,6 +15,7 @@ class TopicForm(ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)
+        self.fields['meeting'].required = False
         self.fields['description'].required = True
 
         self.request = request

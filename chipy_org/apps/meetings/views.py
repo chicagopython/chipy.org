@@ -117,7 +117,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             # Set message
             messages.success(request, 'RSVP Successful.')
 
-            if not self.object.user:
+            if not self.object or not self.object.user:
                 plaintext = get_template('meetings/rsvp_email.txt')
                 htmly = get_template('meetings/rsvp_email.html')
 

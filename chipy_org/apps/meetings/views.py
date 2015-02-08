@@ -114,7 +114,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         form = self.get_form(form_class)
 
         if form.is_valid():
-            # Set message
+            response = self.form_valid(form)
             messages.success(request, 'RSVP Successful.')
 
             if not self.object or not self.object.user:
@@ -131,7 +131,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
 
-            return self.form_valid(form)
+            return response
         else:
             return self.form_invalid(form)
 

@@ -32,7 +32,7 @@ def get_rsvp(meeting, meetup_member):
 
 def meetup_meeting_sync(api_key, meetup_event_id):
     url = "http://api.meetup.com/2/rsvps"
-    params = dict(key=api_key, event_id=meetup_event_id)
+    params = dict(key=api_key, event_id=meetup_event_id, page=1000)
     api_response = requests.get(url, params=params)
 
     meeting = Meeting.objects.get(meetup_id=meetup_event_id)

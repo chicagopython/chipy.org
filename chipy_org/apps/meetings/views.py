@@ -116,7 +116,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             response = self.form_valid(form)
             messages.success(request, 'RSVP Successful.')
 
-            if not self.object or not self.object.user:
+            if not self.object.user and self.object.email:
                 plaintext = get_template('meetings/rsvp_email.txt')
                 htmly = get_template('meetings/rsvp_email.html')
 
@@ -126,7 +126,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 from_email = 'DoNotReply@chipy.org'
                 text_content = plaintext.render(d)
                 html_content = htmly.render(d)
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [self.email])
+                msg = EmailMultiAlternatives(subject, text_content, from_email, [self.object.email])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
 

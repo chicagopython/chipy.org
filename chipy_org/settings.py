@@ -236,3 +236,17 @@ RECAPTCHA_PRIVATE_KEY = env_var('RECAPTCHA_PRIVATE_KEY')
 FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var('MEETUP_API_KEY')
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+        }
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO'
+    }
+}

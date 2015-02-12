@@ -1,6 +1,11 @@
+import logging
+
 from django.core.exceptions import ObjectDoesNotExist
 import requests
 from apps.meetings.models import Meeting, RSVP
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_rsvp(meeting, meetup_member):
@@ -39,10 +44,12 @@ def meetup_meeting_sync(api_key, meetup_event_id):
 
     response = api_response.json()
     results = response['results']
-
+    logger.info('Got {} results for Meetup sync'.format(len(results)))
     for result in results:
         rsvp = get_rsvp(meeting, result['member'])
 
         rsvp.response = 'Y' if result['response'] == 'yes' else 'N'
         rsvp.name = result['member']['name']
         rsvp.save()
+
+        logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'], rsvp.response))

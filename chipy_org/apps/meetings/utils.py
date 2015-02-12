@@ -20,7 +20,7 @@ def get_rsvp(meeting, meetup_member):
 
     meetup_user_id = meetup_member['member_id']
 
-    name_collisions = RSVP.objects.filter(name=meetup_member['name'])
+    name_collisions = RSVP.objects.filter(name=meetup_member['name'], meeting=meeting)
 
     if name_collisions:
         rsvp = name_collisions[0]

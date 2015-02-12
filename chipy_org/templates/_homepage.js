@@ -7,7 +7,7 @@ $('.rsvp').click(function(){
     {% if request.user.is_authenticated %}
     $.ajax({
         type: 'POST',
-        url: "{% url 'rsvp' %}',
+        url: "{% url 'rsvp' %}",
         data: {response:$(this).data('response'), csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
         success: function(data){
             location.reload();

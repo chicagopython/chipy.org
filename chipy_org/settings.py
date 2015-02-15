@@ -32,6 +32,11 @@ sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com']
+
+if DEBUG:
+    ALLOWED_HOSTS.append('localhost:8000')
+
 GITHUB_APP_ID = env_var('GITHUB_APP_ID')
 GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 
@@ -158,8 +163,11 @@ GITHUB_EXTRA_DATA = [
 ]
 
 INSTALLED_APPS = [
-    # Fancy Admin
-    'grappelli',
+    # Admin Tools
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
 
     # Django
     'django.contrib.admin',
@@ -241,3 +249,17 @@ NORECAPTCHA_SECRET_KEY = env_var('NORECAPTCHA_SECRET_KEY')
 FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var('MEETUP_API_KEY')
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+        }
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO'
+    }
+}

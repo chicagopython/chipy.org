@@ -150,9 +150,8 @@ class RSVP(CommonModel):
     def save(self, *args, **kwargs):
         self.full_clean()
 
-        # If rsvp only has an email and this is a create and not update
-        # generate a key and email it to the user
-        if not self.pk and not self.user:
+        # Generate a key for this RSVP
+        if not self.key:
             self.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
 
         return super(RSVP, self).save(*args, **kwargs)

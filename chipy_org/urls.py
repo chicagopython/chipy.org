@@ -4,8 +4,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from apps.contact.views import ChipyContactView
-from apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
+from chipy_org.apps.contact.views import ChipyContactView
+from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
 admin.autodiscover()
 

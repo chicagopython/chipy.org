@@ -50,6 +50,11 @@
     </div>
 {% endblock body %}
 
+{% block script %}{{ block.super }}
+<script src="https://www.google.com/recaptcha/api.js" async="" defer=""></script>	
+{% endblock script %}
+
+
 {% block footer %}
     <div class="legal">
         {% include "_footer.html" %}

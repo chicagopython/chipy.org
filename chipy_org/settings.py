@@ -18,6 +18,14 @@ def env_var(key, default=None):
     return val
 
 
+def env_list(key, defaults=[], delimiter=','):
+    val_list = defaults
+    val = os.environ.get(key, None)
+    if val:
+        val_list = val.split(delimiter)
+    return val_list
+
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
@@ -43,6 +51,8 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 
 MANAGERS = ADMINS
 
+
+ALLOWED_HOSTS=env_list("ALLOWED_HOSTS", ['www.chipy.org', 'chipy.org'])
 
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
@@ -116,7 +126,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 ]
 
 # Social Auth settings
-MIDDLEWARE_CLASSES += ('libs.middleware.ChipySocialAuthExceptionMiddleware',)
+MIDDLEWARE_CLASSES += ('chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',)
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
@@ -130,6 +140,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
 SOCIAL_AUTH_ENABLED_BACKENDS = (
     'google',
     'github',
@@ -138,7 +150,7 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
-    'libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
+    'chipy_org.libs.social_auth_pipelines.create_user', # Custom pipeline addition. Located in libs/
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details'
@@ -169,12 +181,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party
-    'captcha',
+    'nocaptcha_recaptcha',
     'django_ical',
     'envelope',
     'flatblocks',
     'flatpages_tinymce',
-    'gravatar',
+    'django_gravatar',
     'gunicorn',
     'honeypot',
     'interval',
@@ -206,11 +218,12 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 ENVELOPE_EMAIL_RECIPIENTS = env_var('ENVELOPE_EMAIL_RECIPIENTS').split(',')
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = env_var('SENDGRID_USERNAME', None)
-EMAIL_HOST_PASSWORD = env_var('SENDGRID_PASSWORD', None)
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = env_var('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env_var('EMAIL_HOST', 'smtp.sendgrid.net')
+EMAIL_HOST_USER = env_var('EMAIL_HOST_USER', env_var('SENDGRID_USERNAME', None))
+EMAIL_HOST_PASSWORD = env_var('EMAIL_HOST_PASSWORD', env_var('SENDGRID_PASSWORD', None))
+EMAIL_PORT = int(env_var('EMAIL_PORT', 587))
+EMAIL_USE_TLS = env_var('EMAIL_USE_TLS', True)
 
 DEFAULT_FROM_EMAIL = env_var('DEFAULT_FROM_EMAIL', 'DoNotReply@chipy.org')
 HONEYPOT_FIELD_NAME = 'email2'
@@ -230,9 +243,23 @@ TINYMCE_DEFAULT_CONFIG = {
     'relative_urls': False,
 }
 
-RECAPTCHA_PUBLIC_KEY = env_var('RECAPTCHA_PUBLIC_KEY')
-RECAPTCHA_PRIVATE_KEY = env_var('RECAPTCHA_PRIVATE_KEY')
+NORECAPTCHA_SITE_KEY = env_var('NORECAPTCHA_SITE_KEY')
+NORECAPTCHA_SECRET_KEY = env_var('NORECAPTCHA_SECRET_KEY')
 
 FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var('MEETUP_API_KEY')
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+        }
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO'
+    }
+}

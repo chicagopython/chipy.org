@@ -1,6 +1,11 @@
+import logging
+
 from django.core.exceptions import ObjectDoesNotExist
 import requests
-from apps.meetings.models import Meeting, RSVP
+from chipy_org.apps.meetings.models import Meeting, RSVP
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_rsvp(meeting, meetup_member):
@@ -15,7 +20,7 @@ def get_rsvp(meeting, meetup_member):
 
     meetup_user_id = meetup_member['member_id']
 
-    name_collisions = RSVP.objects.filter(name=meetup_member['name'])
+    name_collisions = RSVP.objects.filter(name=meetup_member['name'], meeting=meeting)
 
     if name_collisions:
         rsvp = name_collisions[0]
@@ -32,17 +37,19 @@ def get_rsvp(meeting, meetup_member):
 
 def meetup_meeting_sync(api_key, meetup_event_id):
     url = "http://api.meetup.com/2/rsvps"
-    params = dict(key=api_key, event_id=meetup_event_id)
+    params = dict(key=api_key, event_id=meetup_event_id, page=1000)
     api_response = requests.get(url, params=params)
 
     meeting = Meeting.objects.get(meetup_id=meetup_event_id)
 
     response = api_response.json()
     results = response['results']
-
+    logger.info('Got {} results for Meetup sync'.format(len(results)))
     for result in results:
         rsvp = get_rsvp(meeting, result['member'])
 
         rsvp.response = 'Y' if result['response'] == 'yes' else 'N'
         rsvp.name = result['member']['name']
         rsvp.save()
+
+        logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'], rsvp.response))

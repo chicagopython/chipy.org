@@ -7,7 +7,6 @@ django-admin-tools==0.5.2
 django-envelope==1.0
 django-extensions==1.4.9
 django-flatblocks==0.9
-django-flatpages-tinymce==0.1.1
 django-forms-bootstrap==2.0.3.post1
 django-grappelli==2.5.6
 django-gravatar2==1.1.4

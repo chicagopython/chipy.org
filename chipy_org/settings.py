@@ -92,7 +92,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = STATIC_URL + 'media/'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
+STATIC_ROOT = "static"
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.

@@ -132,7 +132,7 @@ LOGIN_ERROR_URL = '/'
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
     'social_auth.backends.browserid.BrowserIDBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
     'social_auth.backends.contrib.github.GithubBackend',
@@ -249,6 +249,9 @@ NORECAPTCHA_SECRET_KEY = env_var('NORECAPTCHA_SECRET_KEY')
 FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var('MEETUP_API_KEY')
+
+GOOGLE_OAUTH2_CLIENT_ID = env_var('GOOGLE_OAUTH2_CLIENT_ID')
+GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
 
 # LOGGING = {
 #     'version': 1,

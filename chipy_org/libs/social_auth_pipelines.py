@@ -7,7 +7,7 @@ from social_auth.backends.pipeline.associate import associate_by_email as super_
 def associate_by_email(*args, **kwargs):
     """Check if a user with this email already exists. If they do, don't create an account."""
     backend = kwargs['backend']
-    if backend.name in ['google-oauth2', 'github']:
+    if backend.name in ['google-oauth2', 'github'] or kwargs.get('user'):
         # We provide and exception here for users upgrading.
         return super_associate_by_email(*args, **kwargs)
 

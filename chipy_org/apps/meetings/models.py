@@ -1,8 +1,10 @@
+from __future__ import unicode_literals
 import datetime
 import string
 import random
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 
 from interval.fields import IntervalField
@@ -17,9 +19,10 @@ MEETING = (
 )
 
 
+@python_2_unicode_compatible
 class Venue(CommonModel):
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     name = models.CharField(max_length=MAX_LENGTH)
@@ -51,8 +54,10 @@ class Venue(CommonModel):
     link = models.URLField(blank=True, null=True)
 
 
+@python_2_unicode_compatible
 class Meeting(CommonModel):
-    def __unicode__(self):
+
+    def __str__(self):
         if self.where:
             return "%s at %s" % (self.when.strftime("%A, %B %d %Y at %I:%M %p"), self.where.name)
         return "%s location TBD" % self.when
@@ -62,6 +67,7 @@ class Meeting(CommonModel):
     key = models.CharField(max_length=40, unique=True, blank=True)  # Used for anonymous access to meeting information like RSVPs
     live_stream = models.CharField(max_length=500, null=True, blank=True)
     meetup_id = models.TextField(blank=True, null=True)
+    sponsors = models.ManyToManyField("sponsors.Sponsor", blank=True, null=True)
 
     def is_future(self):
         return bool(self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))
@@ -76,8 +82,10 @@ class Meeting(CommonModel):
         return self.rsvp_set.exclude(response='N').count()
 
 
+@python_2_unicode_compatible
 class Presentor(CommonModel):
-    def __unicode__(self):
+
+    def __str__(self):
         return self.name
 
     user = models.ForeignKey(User, blank=True, null=True)
@@ -97,9 +105,10 @@ LICENSE_CHOISES = (
 )
 
 
+@python_2_unicode_compatible
 class Topic(CommonModel):
 
-    def __unicode__(self):
+    def __str__(self):
         out = self.title
         if self.presentors.count():
             out += " By: %s" % self.presentors.all()[0].name
@@ -117,7 +126,9 @@ class Topic(CommonModel):
     approved = models.BooleanField(default=False)
 
 
+@python_2_unicode_compatible
 class RSVP(CommonModel):
+
     RSVP_CHOICES = (
         ('Y', "Yes"),
         ('N', "No"),
@@ -152,7 +163,8 @@ class RSVP(CommonModel):
 
         # Generate a key for this RSVP
         if not self.key:
-            self.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
+            self.key = ''.join(
+                random.choice(string.digits + string.ascii_lowercase) for x in range(40))
 
         return super(RSVP, self).save(*args, **kwargs)
 
@@ -172,6 +184,6 @@ class RSVP(CommonModel):
         else:
             return self.email
 
-    def __unicode__(self):
+    def __str__(self):
         self.users_name
         return "{}: {}".format(self.meeting, self.name)

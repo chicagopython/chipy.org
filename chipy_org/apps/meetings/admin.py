@@ -1,10 +1,9 @@
 import random
 import string
-
 from django.contrib import admin
 from django.contrib.admin import widgets
 from django import forms
-
+from sponsors.admin import MeetingSponsorInline
 from models import Meeting, Venue, Topic, Presentor, RSVP
 
 admin.site.register(Venue)
@@ -36,9 +35,11 @@ class MeetingForm(forms.ModelForm):
 
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('when', 'where', 'created', 'modified', 'action')
+    filter_horizontal = ["sponsors"]
     form = MeetingForm
     inlines = [
         TopicInline,
+        MeetingSponsorInline,
     ]
 
     def action(self, obj):

@@ -30,6 +30,8 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export ENVELOPE_EMAIL_RECIPIENTS=admin@example.com
     export NORECAPTCHA_SITE_KEY=your_recaptcha_public_key
     export NORECAPTCHA_SECRET_KEY=your_recaptcha_private_key
+    export DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
+
 
     # optional email settings and their defaults
     export EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

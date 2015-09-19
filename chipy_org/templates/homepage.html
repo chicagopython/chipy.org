@@ -96,6 +96,8 @@
               {% endif %}
             {% endif %}
             <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
+
+            {% if general_sponsors %}
             <h2>General Sponsors</h2>
             {% for general_sponsor in general_sponsors %}
                <div class="sponsor-home-block">
@@ -108,6 +110,7 @@
                </span>
                </div>
             {% endfor %}
+            {% endif %}
 
         </div><!--/span-->
         <div class="module span4">

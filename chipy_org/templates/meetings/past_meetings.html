@@ -23,6 +23,8 @@
   {% endif %}
 {% endfor %}
 
+<div>{{meeting.number_rsvps}} {% trans " Python enthusiasts attended this meeting." %}</div><br>
+
 <div class="sponsors">
     {% with meeting.meeting_sponsors.all as meeting_sponsors %}
     {% if meeting_sponsors %}
@@ -51,7 +53,7 @@
     {% endwith %}
 </div>
 
-{{meeting.number_rsvps}} {% trans " Python enthusiasts attended this meeting." %}
+
 </div>
 <hr>
 {% endfor %}

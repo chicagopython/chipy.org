@@ -21,7 +21,7 @@ MEETING = (
 
 class Venue(CommonModel):
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     name = models.CharField(max_length=MAX_LENGTH)
@@ -55,7 +55,7 @@ class Venue(CommonModel):
 
 class Meeting(CommonModel):
 
-    def __str__(self):
+    def __unicode__(self):
         if self.where:
             return "%s at %s" % (self.when.strftime("%A, %B %d %Y at %I:%M %p"), self.where.name)
         return "%s location TBD" % self.when
@@ -81,7 +81,7 @@ class Meeting(CommonModel):
 
 class Presentor(CommonModel):
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     user = models.ForeignKey(User, blank=True, null=True)
@@ -103,7 +103,7 @@ LICENSE_CHOISES = (
 
 class Topic(CommonModel):
 
-    def __str__(self):
+    def __unicode__(self):
         out = self.title
         if self.presentors.count():
             out += " By: %s" % self.presentors.all()[0].name
@@ -178,6 +178,6 @@ class RSVP(CommonModel):
         else:
             return self.email
 
-    def __str__(self):
+    def __unicode__(self):
         self.users_name
         return "{}: {}".format(self.meeting, self.name)

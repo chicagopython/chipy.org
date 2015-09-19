@@ -23,6 +23,23 @@ class MeetingSponsor(models.Model):
         ordering = ["sponsor__name"]
 
 
+class GeneralSponsor(models.Model):
+    sponsor = models.ForeignKey("sponsors.Sponsor")
+    about = models.TextField(u"About this sponsorship", blank=True, null=True)
+    about_short = models.CharField(
+        "Brief description of sponsorship",
+        max_length=128, blank=True, null=True)
+
+    def __str__(self):
+        return "{name} sponsored".format(
+            name=self.sponsor.name)
+
+    class Meta:
+        verbose_name = "General Sponsor"
+        verbose_name_plural = "General Sponsors"
+        ordering = ["sponsor__name"]
+
+
 class Sponsor(models.Model):
 
     name = models.CharField(max_length=80)

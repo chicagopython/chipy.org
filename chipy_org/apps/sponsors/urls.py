@@ -3,7 +3,7 @@ from .views import SponsorDetailView, SponsorListView
 
 
 urlpatterns = patterns("",
-    url(r'^detail/(?P<slug>[\w]+)/$',
+    url(r'^detail/(?P<slug>[\w\-\_]+)/$',
         SponsorDetailView.as_view(), name='sponsor_detail'),
     url(r'^list/$',
         SponsorListView.as_view(), name='sponsor_list'),

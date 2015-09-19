@@ -48,12 +48,12 @@
                   {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
                      <div class="sponsor-home-block">
                      {% thumbnail meeting_sponsor.sponsor.logo "60x40" crop="center" as im %}
-                      <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }}"></a>
+                      <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
                      {% endthumbnail %}
                      <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
-                     </div>
-                     <div class="sponsor-home-about">
-                         {% if meeting_sponsor.about_short %}{{ meeting_sponsor.about_short }}{% endif %}
+                     <span class="sponsor-home-about">
+                         {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
+                     </span>
                      </div>
                   {% endfor %}
               </div>
@@ -96,6 +96,19 @@
               {% endif %}
             {% endif %}
             <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
+            <h2>General Sponsors</h2>
+            {% for general_sponsor in general_sponsors %}
+               <div class="sponsor-home-block">
+               {% thumbnail general_sponsor.sponsor.logo "80x60" crop="center" as im %}
+                <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)"></a>
+               {% endthumbnail %}
+               <span><a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a></span>
+               <span class="sponsor-home-about">
+                   {% if general_sponsor.about %}: {{ general_sponsor.about }}{% endif %}
+               </span>
+               </div>
+            {% endfor %}
+
         </div><!--/span-->
         <div class="module span4">
             <h2>This Month's Topics</h2>

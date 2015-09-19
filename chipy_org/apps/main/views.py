@@ -2,6 +2,7 @@ import datetime
 from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting, RSVP
 from chipy_org.apps.meetings.forms import RSVPForm
+from chipy_org.apps.sponsors.models import GeneralSponsor
 
 
 class Home(TemplateView):
@@ -31,7 +32,7 @@ class Home(TemplateView):
                     context['rsvp'] = RSVP.objects.get(meeting=next_meeting, user=self.request.user)
                 else:
                     context['rsvp'] = None
-
+            context["general_sponsors"] = GeneralSponsor.objects.all().order_by('sponsor__name')       
             context['rsvp_form'] = RSVPForm(self.request)
 
         return context

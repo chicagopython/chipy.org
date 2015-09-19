@@ -44,6 +44,37 @@
                   {{ next_meeting.where.email }}<br>
                 {% endif %}
               </div>
+
+
+              {% if next_meeting.live_stream %}
+                <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
+              {% endif %}
+
+              <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
+                {% if rsvp %}
+                  You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
+                  <strong>Change your RSVP: </strong>
+                {% endif %}
+                <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
+              <div id="anonymous-rsvp-dialog" style="display:none;">
+                <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
+                  {% csrf_token %}
+                  <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
+                  <input type="text" name="name" placeholder="John Smith">
+                  <label for="email">Email</label>
+                  <input type="text" name="email" placeholder="john@example.com">
+                  <input type="hidden" name="meeting" value="{{ next_meeting.pk }}">
+                  <input type="hidden" name="response" value="Y">
+                  {% if not request.user.is_authenticated %}
+                    {{ rsvp_form.captcha }}
+                  {% endif %}
+                  <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
+                </form>
+              </div>
+              <p>{{ next_meeting.number_rsvps }} going so far</p>
+
+              <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
+
               <div><strong>Meeting Sponsors:</strong>
                   {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
                      <div class="sponsor-home-block">
@@ -57,45 +88,18 @@
                      </div>
                   {% endfor %}
               </div>
-            {% else %}
-            <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
-            {% endif %}
-            {% if next_meeting %}
 
-                {% if next_meeting.live_stream %}
-                  <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
+            {% else %}
+                <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
+
+                {% if request.user.is_staff %}
+                  <p>
+                    <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
+                  </p>
                 {% endif %}
 
-            <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
-              {% if rsvp %}
-                You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
-                <strong>Change your RSVP: </strong>
-              {% endif %}
-              <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
-            <div id="anonymous-rsvp-dialog" style="display:none;">
-              <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
-                {% csrf_token %}
-                <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
-                <input type="text" name="name" placeholder="John Smith">
-                <label for="email">Email</label>
-                <input type="text" name="email" placeholder="john@example.com">
-                <input type="hidden" name="meeting" value="{{ next_meeting.pk }}">
-                <input type="hidden" name="response" value="Y">
-                {% if not request.user.is_authenticated %}
-                  {{ rsvp_form.captcha }}
-                {% endif %}
-                <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
-              </form>
-            </div>
-            <p>{{ next_meeting.number_rsvps }} going so far</p>
-            {% else %}
-              {% if request.user.is_staff %}
-                <p>
-                  <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
-                </p>
-              {% endif %}
             {% endif %}
-            <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
+
 
             {% if general_sponsors %}
             <h2>General Sponsors</h2>

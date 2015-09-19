@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles %}
+{% load i18n staticfiles thumbnail %}
 
 {% block head_title %}{% trans "Past Meetings" %}{% endblock %}
 
@@ -23,13 +23,36 @@
   {% endif %}
 {% endfor %}
 
-<div class="span12 sponsors">
-    {% for sponsor in meetings.sponsors.all %}
-       <div>{{ sponsor }}</div>
+<div class="sponsors">
+    {% with meeting.meeting_sponsors.all as meeting_sponsors %}
+    {% if meeting_sponsors %}
+    This meeting sponsored by:
+    {% for meeting_sponsor in meeting_sponsors %}
+        <div class="row sponsor-block">
+            {% if meeting_sponsor.sponsor.logo %}
+            {% thumbnail meeting_sponsor.sponsor.logo "80x60" crop="center" as im %}
+            <div class="span2 sponsor-image">
+                <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">
+                    <img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }}"></a>
+            </div>
+            {% endthumbnail %}
+            {% else %}
+            <div class="span2 sponsor-image">&nbsp;</div>
+            {% endif %}
+            <div class="span3 sponsor-name">
+              <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a>
+            </div>
+            {% if meeting_sponsor.about %}
+            <div class="span6 sponsor-about">{{ meeting_sponsor.about }}</div>
+            {% endif %}
+        </div>
     {% endfor %}
+    {% endif %}
+    {% endwith %}
 </div>
 
 {{meeting.number_rsvps}} {% trans " Python enthusiasts attended this meeting." %}
 </div>
+<hr>
 {% endfor %}
 {% endblock body %}

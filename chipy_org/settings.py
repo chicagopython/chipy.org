@@ -213,7 +213,7 @@ INSTALLED_APPS = [
     'south',
     'storages',
     'tinymce',
-    'storages',
+    "sorl.thumbnail",
 
     # theme
     'django_forms_bootstrap',

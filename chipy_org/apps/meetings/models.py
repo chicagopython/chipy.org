@@ -19,7 +19,6 @@ MEETING = (
 )
 
 
-@python_2_unicode_compatible
 class Venue(CommonModel):
 
     def __str__(self):
@@ -80,7 +79,6 @@ class Meeting(CommonModel):
         return self.rsvp_set.exclude(response='N').count()
 
 
-@python_2_unicode_compatible
 class Presentor(CommonModel):
 
     def __str__(self):
@@ -103,7 +101,6 @@ LICENSE_CHOISES = (
 )
 
 
-@python_2_unicode_compatible
 class Topic(CommonModel):
 
     def __str__(self):
@@ -124,7 +121,6 @@ class Topic(CommonModel):
     approved = models.BooleanField(default=False)
 
 
-@python_2_unicode_compatible
 class RSVP(CommonModel):
 
     RSVP_CHOICES = (

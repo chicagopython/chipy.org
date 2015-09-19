@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 class MeetingSponsor(models.Model):
     sponsor = models.ForeignKey("sponsors.Sponsor")
-    meeting = models.ForeignKey("meetings.Meeting")
+    meeting = models.ForeignKey("meetings.Meeting", related_name="meeting_sponsors")
     about = models.TextField(u"About this sponsorship", blank=True, null=True)
 
     def __str__(self):
@@ -17,6 +17,7 @@ class MeetingSponsor(models.Model):
     class Meta:
         verbose_name = "Meeting Sponsor"
         verbose_name_plural = "Meeting Sponsors"
+        ordering = ["sponsor__name"]
 
 
 class Sponsor(models.Model):
@@ -25,7 +26,10 @@ class Sponsor(models.Model):
     slug = models.SlugField(max_length=80)
     url = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    logo = models.ImageField(upload_to="sponsor_logos", blank=True, null=True)
+    logo = models.ImageField(
+        upload_to="sponsor_logos", blank=True, null=True,
+        help_text=("All logos will be cropped to fit a 4 by 3 aspect ratio. "
+                   "Resolution should be at minimum 400x300."))
 
     def __str__(self):
         return "{name}".format(name=self.name)

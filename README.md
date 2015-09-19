@@ -77,6 +77,7 @@ I recommend keeping your development DB as close to production as possible. If y
 You will need to run::
 
     (venv)$ python manage.py syncdb
+    (venv)$ python manage.py migrate
 
 Running a web server
 --------------------

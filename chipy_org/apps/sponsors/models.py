@@ -8,6 +8,9 @@ class MeetingSponsor(models.Model):
     sponsor = models.ForeignKey("sponsors.Sponsor")
     meeting = models.ForeignKey("meetings.Meeting", related_name="meeting_sponsors")
     about = models.TextField(u"About this sponsorship", blank=True, null=True)
+    about_short = models.CharField(
+        "Brief description of sponsorship",
+        max_length=128, blank=True, null=True)
 
     def __str__(self):
         return "{name} sponsored {meeting}".format(

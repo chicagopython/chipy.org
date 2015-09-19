@@ -1,5 +1,9 @@
 {% load i18n %}
-<div><a href="{% url 'sponsor_list' %}">Sponsors</div>
+<div>
+    <a href="{% url 'sponsor_list' %}">Sponsors</a> &bull;
+    <a href="/pages/organizers/">Organizers</a> &bull;
+    <a href="/pages/conduct/">Code of Conduct</a>
+</div>
 <div class="legal">
     {% trans "&copy; 2014 Chicago Python User Group" %}: {% trans "Source code available at " %}<a href="https://github.com/chicagopython/chipy.org">Github</a>
 </div>

@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles flatblocks %}
+{% load i18n staticfiles flatblocks thumbnail %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
@@ -43,6 +43,19 @@
                 {% if next_meeting.where.email %}
                   {{ next_meeting.where.email }}<br>
                 {% endif %}
+              </div>
+              <div><strong>Meeting Sponsors:</strong>
+                  {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
+                     <div class="sponsor-home-block">
+                     {% thumbnail meeting_sponsor.sponsor.logo "60x40" crop="center" as im %}
+                      <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }}"></a>
+                     {% endthumbnail %}
+                     <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
+                     </div>
+                     <div class="sponsor-home-about">
+                         {% if meeting_sponsor.about_short %}{{ meeting_sponsor.about_short }}{% endif %}
+                     </div>
+                  {% endfor %}
               </div>
             {% else %}
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>

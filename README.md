@@ -11,7 +11,7 @@ Installation
 
 To get setup with chipy.org code it is recommended that you use the following:
 
- * Python 2.6+
+ * Python 2.7.x
  * virtualenv
  * [Autoenv](https://github.com/kennethreitz/autoenv)
  * C compiler (for PIL)
@@ -41,6 +41,11 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export EMAIL_HOST_USER=""
     export EMAIL_HOST_PASSWORD=""
 
+    # to enable S3, do the following
+    export USE_S3="True"
+    export AWS_ACCESS_KEY_ID=""
+    export AWS_SECRET_ACCESS_KEY=""
+    export AWS_STORAGE_BUCKET_NAME=""
 
 Note that the only required config is the github stuff. The secret key will be random by default which will cause your session to wipe on every restart.
 

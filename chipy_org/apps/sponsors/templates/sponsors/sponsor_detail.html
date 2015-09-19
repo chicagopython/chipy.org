@@ -1,0 +1,23 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Past Meetings" %}{% endblock %}
+
+{% block body %}
+<h2>Sponsored by:</h2>
+
+<h3>
+{{ sponsor.name }}
+</h3>
+{% if sponsor.logo %}
+<img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}">
+{% endif %}
+<p>
+ {{ sponsor.description }}
+</p>
+{% if sponsor.url %}
+<p><a href="{{ sponsor.url }}">Visit Site</a></p>
+{% endif %}
+
+{% endblock body %}

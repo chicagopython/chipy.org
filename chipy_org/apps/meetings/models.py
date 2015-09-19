@@ -54,7 +54,6 @@ class Venue(CommonModel):
     link = models.URLField(blank=True, null=True)
 
 
-@python_2_unicode_compatible
 class Meeting(CommonModel):
 
     def __str__(self):
@@ -67,7 +66,6 @@ class Meeting(CommonModel):
     key = models.CharField(max_length=40, unique=True, blank=True)  # Used for anonymous access to meeting information like RSVPs
     live_stream = models.CharField(max_length=500, null=True, blank=True)
     meetup_id = models.TextField(blank=True, null=True)
-    sponsors = models.ManyToManyField("sponsors.Sponsor", blank=True, null=True)
 
     def is_future(self):
         return bool(self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))

@@ -1,13 +1,13 @@
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
+from django.core.urlresolvers import reverse
 
 
-@python_2_unicode_compatible
 class MeetingSponsor(models.Model):
     sponsor = models.ForeignKey("sponsors.Sponsor")
     meeting = models.ForeignKey("meetings.Meeting")
-    about = models.TextField(blank=True, null=True)
+    about = models.TextField(u"About this sponsorship", blank=True, null=True)
 
     def __str__(self):
         return "{name} sponsored {meeting}".format(
@@ -19,7 +19,6 @@ class MeetingSponsor(models.Model):
         verbose_name_plural = "Meeting Sponsors"
 
 
-@python_2_unicode_compatible
 class Sponsor(models.Model):
 
     name = models.CharField(max_length=80)
@@ -27,7 +26,9 @@ class Sponsor(models.Model):
     url = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     logo = models.ImageField(upload_to="sponsor_logos", blank=True, null=True)
-    
+
     def __str__(self):
         return "{name}".format(name=self.name)
 
+    def get_absolute_url(self):
+        return reverse("sponsor_detail", args=[self.slug])

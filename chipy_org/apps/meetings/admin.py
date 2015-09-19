@@ -35,7 +35,6 @@ class MeetingForm(forms.ModelForm):
 
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('when', 'where', 'created', 'modified', 'action')
-    filter_horizontal = ["sponsors"]
     form = MeetingForm
     inlines = [
         TopicInline,

@@ -1,3 +1,5 @@
+--allow-all-external
+--allow-unverified django-pgsql-interval-field
 Django>=1.6.0,<1.7.0
 Pillow==2.9.0
 South==1.0.2

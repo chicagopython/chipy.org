@@ -32,6 +32,12 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export NORECAPTCHA_SECRET_KEY=your_recaptcha_private_key
     export DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
 
+    # settings needed for social authentication
+    export GITHUB_API_SECRET=""
+    export GITHUB_APP_ID=""
+    export GOOGLE_OAUTH2_CLIENT_ID=""
+    export GOOGLE_OAUTH2_CLIENT_SECRET=""
+
     # optional email settings and their defaults
     export EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
     export EMAIL_HOST='smtp.sendgrid.net'
@@ -93,14 +99,14 @@ Heroku Commands
     git push heroku master
 
     # Deploy feature branch  
-    git push heroku feature/mybranch:master 
+    git push heroku feature/mybranch:master
 
     # Collectstatic
     heroku run python manage.py collectstatic --noinput
 
     # Set sync and migrate the database
     heroku run python manage.py syncdb
-    heroku run python manage.py migrate 
+    heroku run python manage.py migrate
 
     # Set environment variable on Heroku
     heroku config:set DEBUG=True

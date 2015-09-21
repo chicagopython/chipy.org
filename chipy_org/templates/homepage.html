@@ -92,6 +92,8 @@
             {% else %}
                 <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
 
+                <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
+
                 {% if request.user.is_staff %}
                   <p>
                     <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>

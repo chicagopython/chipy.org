@@ -37,8 +37,9 @@
           <li><a href="{% url 'my_topics' %}">My Talks</a></li>
         {% endif %}
         <li><a href="{% url 'propose_topic' %}">Give a Talk</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
         <li><a href="{% url 'profiles:list' %}">Members</a></li>
+        <li><a href="{% url 'sponsor_list' %}">Sponsors</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
     </ul>
 {% endblock %}
 

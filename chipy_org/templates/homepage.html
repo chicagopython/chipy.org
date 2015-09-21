@@ -106,15 +106,15 @@
             {% if general_sponsors %}
             <h2>General Sponsors</h2>
             {% for general_sponsor in general_sponsors %}
-               <div class="sponsor-home-block">
-               {% thumbnail general_sponsor.sponsor.logo "80x60" crop="center" as im %}
-                <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)"></a>
-               {% endthumbnail %}
-               <span><a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a></span>
-               <span class="sponsor-home-about">
+              <div class="sponsor-home-block">
+                 {% thumbnail general_sponsor.sponsor.logo "80x60" crop="center" as im %}
+                 <span class="sponsor-home-image"><a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)"></a>
+                 {% endthumbnail %}
+                 <span class="sponsor-home-name"><a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a></span>
+                 <span class="sponsor-home-about">
                    {% if general_sponsor.about %}: {{ general_sponsor.about }}{% endif %}
-               </span>
-               </div>
+                 </span>
+              </div>
             {% endfor %}
             {% endif %}
 

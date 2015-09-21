@@ -16,8 +16,8 @@ To get setup with chipy.org code it is recommended that you use the following:
  * [Autoenv](https://github.com/kennethreitz/autoenv)
  * C compiler (for PIL)
 
-Setting up environment
-----------------------
+Setting up a Local environment
+------------------------------
 
 Chipy.org is setup using [12factor](http://12factor.net), which means that it takes local settings from the environment. For this reason it is recommended that you use autoenv and a .env file. The example .env is::
 
@@ -31,7 +31,6 @@ Chipy.org is setup using [12factor](http://12factor.net), which means that it ta
     export NORECAPTCHA_SITE_KEY=your_recaptcha_public_key
     export NORECAPTCHA_SECRET_KEY=your_recaptcha_private_key
     export DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
-
 
     # optional email settings and their defaults
     export EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
@@ -85,3 +84,23 @@ Running a web server
 In development you should run::
 
     (venv)$ python manage.py runserver
+
+
+Heroku Commands
+-------------------------------
+
+    # Deploy changes to master
+    git push heroku master
+
+    # Deploy feature branch  
+    git push heroku feature/mybranch:master 
+
+    # Collectstatic
+    heroku run python manage.py collectstatic --noinput
+
+    # Set sync and migrate the database
+    heroku run python manage.py syncdb
+    heroku run python manage.py migrate 
+
+    # Set environment variable on Heroku
+    heroku config:set DEBUG=True

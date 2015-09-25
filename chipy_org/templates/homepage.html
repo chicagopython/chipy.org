@@ -6,6 +6,32 @@
 
 {% block body_class %}home{% endblock %}
 
+{% block style %}{{ block.super }}
+<style>
+.sponsor-home-block {
+  height: 60px;
+}
+
+.sponsor-home-text {
+    padding-top: 5px;
+}
+
+.sponsor-home-about- {
+  float: left;
+  padding-top: 5px;
+}
+.sponsor-home-image {
+  width: 80px;
+  float: left;
+}
+.sponsor-home-name- {
+ float: left;
+}
+
+</style>
+
+{% endblock style %}
+
 {% block body %}
     <header id="home-header" class="row-fluid">
         <div class="span6">
@@ -78,13 +104,13 @@
               <div><strong>Meeting Sponsors:</strong>
                   {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
                      <div class="sponsor-home-block">
-                     {% thumbnail meeting_sponsor.sponsor.logo "60x40" crop="center" as im %}
-                      <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
-                     {% endthumbnail %}
-                     <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
-                     <span class="sponsor-home-about">
-                         {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
-                     </span>
+                         {% thumbnail meeting_sponsor.sponsor.logo "60x40" crop="center" as im %}
+                          <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
+                         {% endthumbnail %}
+                         <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
+                         <span class="sponsor-home-about">
+                             {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
+                         </span>
                      </div>
                   {% endfor %}
               </div>
@@ -102,17 +128,24 @@
 
             {% endif %}
 
-
             {% if general_sponsors %}
-            <h2>General Sponsors</h2>
+            <h2>Platinum Sponsors</h2>
             {% for general_sponsor in general_sponsors %}
               <div class="sponsor-home-block">
                  {% thumbnail general_sponsor.sponsor.logo "80x60" crop="center" as im %}
-                 <span class="sponsor-home-image"><a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)"></a>
+                 <div class="sponsor-home-image">
+                     <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
+                         <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
+                     </a>
+                 </div>
                  {% endthumbnail %}
-                 <span class="sponsor-home-name"><a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a></span>
-                 <span class="sponsor-home-about">
-                   {% if general_sponsor.about %}: {{ general_sponsor.about }}{% endif %}
+                 <span class="sponsor-home-text">
+                     <span class="sponsor-home-name">
+                         <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a>
+                     </span>
+                     <span class="sponsor-home-about">
+                       {% if general_sponsor.about %}: {{ general_sponsor.about }}{% endif %}
+                     </span>
                  </span>
               </div>
             {% endfor %}

@@ -29,7 +29,6 @@ def env_list(key, defaults=[], delimiter=','):
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = env_var('DEBUG', False)
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com']
 
@@ -118,27 +117,29 @@ MEDIA_URL = "/media/"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env_var('SECRET_KEY')
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = [
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-]
 
 ROOT_URLCONF = "chipy_org.urls"
 
-TEMPLATE_DIRS = [
-    os.path.join(PROJECT_ROOT, "templates"),
-]
 
-TEMPLATE_CONTEXT_PROCESSORS = [
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages",
-    "social_auth.context_processors.social_auth_login_redirect",
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'debug': DEBUG,
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.core.context_processors.debug",
+                "django.core.context_processors.i18n",
+                "django.core.context_processors.media",
+                "django.core.context_processors.request",
+                "django.core.context_processors.static",
+                "django.contrib.messages.context_processors.messages",
+                "social_auth.context_processors.social_auth_login_redirect",
+            ],
+        },
+    },
 ]
 
 MIDDLEWARE_CLASSES = (

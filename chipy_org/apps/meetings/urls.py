@@ -9,6 +9,7 @@ from .views import (
     RSVPlist,
     PastTopics)
 
+
 urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^ical/$', MeetingFeed()),

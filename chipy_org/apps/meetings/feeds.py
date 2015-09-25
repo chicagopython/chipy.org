@@ -2,6 +2,7 @@ from django_ical.views import ICalFeed
 from .models import Meeting
 from datetime import timedelta
 
+
 class MeetingFeed(ICalFeed):
     """
     A iCal feed for meetings
@@ -18,12 +19,12 @@ class MeetingFeed(ICalFeed):
             presentor_name = 'None Given'
             if topic.presentors.count() > 0:
                 presentor_name = topic.presentors.all()[0].name
-                
+
             description += u'{title} by {speaker}\n{description}\n\n'.format(
-                title=topic.title, 
+                title=topic.title,
                 speaker=presentor_name,
                 description=topic.description)
-        return description 
+        return description
 
     def item_link(self, item):
         return ''
@@ -36,7 +37,7 @@ class MeetingFeed(ICalFeed):
 
     def item_start_datetime(self, item):
         return item.when
-    
+
     def item_end_datetime(self, item):
         return item.when + timedelta(hours=1)
 

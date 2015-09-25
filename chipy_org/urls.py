@@ -9,6 +9,7 @@ from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
 admin.autodiscover()
 
+
 urlpatterns = [
     url(r'', include('chipy_org.apps.main.urls')),
     url(r'', include('social_auth.urls')),

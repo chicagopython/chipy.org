@@ -92,7 +92,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
             try:
                 meeting = Meeting.objects.get(pk=self.request.POST['meeting'])
-                self.object = RSVPModel.objects.get(user=self.request.user, meeting=meeting)
+                self.object = RSVPModel.objects.get(
+                    user=self.request.user, meeting=meeting)
             except RSVPModel.DoesNotExist:
                 pass
         elif 'rsvp_key' in self.kwargs:
@@ -127,7 +128,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 from_email = 'DoNotReply@chipy.org'
                 text_content = plaintext.render(d)
                 html_content = htmly.render(d)
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [self.object.email])
+                msg = EmailMultiAlternatives(
+                    subject, text_content, from_email, [self.object.email])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
 
@@ -142,7 +144,8 @@ class RSVPlist(ListView):
 
     def get_queryset(self):
         self.meeting = Meeting.objects.get(key=self.kwargs['rsvp_key'])
-        return RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N')
+        return RSVPModel.objects.filter(
+            meeting=self.meeting).exclude(response='N')
 
     def get_context_data(self, **kwargs):
         context = {'meeting': self.meeting}
@@ -153,7 +156,8 @@ class RSVPlist(ListView):
 class PastTopics(ListView):
     context_object_name = 'topics'
     template_name = 'meetings/past_topics.html'
-    queryset = Topic.objects.filter(meeting__when__lt=datetime.date.today(), approved=True)
+    queryset = Topic.objects.filter(
+        meeting__when__lt=datetime.date.today(), approved=True)
 
 
 class MeetingListAPIView(ListAPIView):

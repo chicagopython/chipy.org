@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.admin import widgets
 from django import forms
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
-from models import Meeting, Venue, Topic, Presentor, RSVP
+from .models import Meeting, Venue, Topic, Presentor, RSVP
 
 admin.site.register(Venue)
 

@@ -2,7 +2,7 @@ import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 import requests
-from chipy_org.apps.meetings.models import Meeting, RSVP
+from .models import Meeting, RSVP
 
 
 logger = logging.getLogger(__name__)

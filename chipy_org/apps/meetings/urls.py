@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.decorators import login_required
-from chipy_org.apps.meetings.feeds import MeetingFeed
-from chipy_org.apps.meetings.views import (
+from .feeds import MeetingFeed
+from .views import (
     PastMeetings,
     ProposeTopic,
     MyTopics,
@@ -9,7 +9,7 @@ from chipy_org.apps.meetings.views import (
     RSVPlist,
     PastTopics)
 
-urlpatterns = patterns("",
+urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^ical/$', MeetingFeed()),
     url(r'^past/$', PastMeetings.as_view(), name='past_meetings'),
@@ -20,4 +20,4 @@ urlpatterns = patterns("",
     url(r'^topics/propose$', login_required(ProposeTopic.as_view()), name='propose_topic'),
     url(r'^topics/mine$', login_required(MyTopics.as_view()), name='my_topics'),
     url(r'^topics/past$', PastTopics.as_view(), name='past_topics'),
-)
+]

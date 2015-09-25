@@ -27,7 +27,6 @@ def env_list(key, defaults=[], delimiter=','):
 
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-#sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
 DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG

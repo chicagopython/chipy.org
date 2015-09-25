@@ -27,7 +27,7 @@ def env_list(key, defaults=[], delimiter=','):
 
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
+#sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
 DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
@@ -142,8 +142,18 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "social_auth.context_processors.social_auth_login_redirect",
 ]
 
-# Social Auth settings
-MIDDLEWARE_CLASSES += ('chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',)
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware', # social auth settings
+)
+
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
@@ -203,14 +213,12 @@ INSTALLED_APPS = [
     'django_ical',
     'envelope',
     'flatblocks',
-    'flatpages_tinymce',
     'django_gravatar',
     'gunicorn',
     'honeypot',
     'interval',
     'rest_framework',
     'social_auth',
-    'south',
     'storages',
     'tinymce',
     "sorl.thumbnail",
@@ -219,11 +227,11 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
 
     # project
-    'about',
-    'contact',
-    'meetings',
-    'profiles',
-    'sponsors',
+    'chipy_org.apps.about',
+    'chipy_org.apps.contact',
+    'chipy_org.apps.meetings',
+    'chipy_org.apps.profiles',
+    'chipy_org.apps.sponsors',
 ]
 
 if DEBUG:

@@ -1,87 +1,62 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    depends_on = (
-        ("meetings", "0010_auto__add_field_meeting_meetup_id"),
-    )
+    dependencies = [
+        ('meetings', '0001_initial'),
+    ]
 
-    def forwards(self, orm):
-        # Adding model 'MeetingSponsor'
-        db.create_table(u'sponsors_meetingsponsor', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('sponsor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sponsors.Sponsor'])),
-            ('meeting', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['meetings.Meeting'])),
-            ('about', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'sponsors', ['MeetingSponsor'])
-
-        # Adding model 'Sponsor'
-        db.create_table(u'sponsors_sponsor', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=80)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=80)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('logo', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
-        ))
-        db.send_create_signal(u'sponsors', ['Sponsor'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'MeetingSponsor'
-        db.delete_table(u'sponsors_meetingsponsor')
-
-        # Deleting model 'Sponsor'
-        db.delete_table(u'sponsors_sponsor')
-
-
-    models = {
-        u'meetings.meeting': {
-            'Meta': {'object_name': 'Meeting'},
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '40', 'blank': 'True'}),
-            'live_stream': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
-            'meetup_id': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'when': ('django.db.models.fields.DateTimeField', [], {}),
-            'where': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['meetings.Venue']", 'null': 'True', 'blank': 'True'})
-        },
-        u'meetings.venue': {
-            'Meta': {'object_name': 'Venue'},
-            'address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'directions': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'embed_map': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'phone': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
-        },
-        u'sponsors.meetingsponsor': {
-            'Meta': {'object_name': 'MeetingSponsor'},
-            'about': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'meeting': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['meetings.Meeting']"}),
-            'sponsor': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sponsors.Sponsor']"})
-        },
-        u'sponsors.sponsor': {
-            'Meta': {'object_name': 'Sponsor'},
-            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'logo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '80'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '80'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['sponsors']
+    operations = [
+        migrations.CreateModel(
+            name='GeneralSponsor',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('about', models.TextField(null=True, verbose_name='About this sponsorship', blank=True)),
+                ('about_short', models.CharField(max_length=128, null=True, verbose_name='Brief description of sponsorship', blank=True)),
+            ],
+            options={
+                'ordering': ['sponsor__name'],
+                'verbose_name': 'General Sponsor',
+                'verbose_name_plural': 'General Sponsors',
+            },
+        ),
+        migrations.CreateModel(
+            name='MeetingSponsor',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('about', models.TextField(null=True, verbose_name='About this sponsorship', blank=True)),
+                ('about_short', models.CharField(max_length=128, null=True, verbose_name='Brief description of sponsorship', blank=True)),
+                ('meeting', models.ForeignKey(related_name='meeting_sponsors', to='meetings.Meeting')),
+            ],
+            options={
+                'ordering': ['sponsor__name'],
+                'verbose_name': 'Meeting Sponsor',
+                'verbose_name_plural': 'Meeting Sponsors',
+            },
+        ),
+        migrations.CreateModel(
+            name='Sponsor',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=80)),
+                ('slug', models.SlugField(max_length=80)),
+                ('url', models.URLField(null=True, blank=True)),
+                ('description', models.TextField(null=True, blank=True)),
+                ('logo', models.ImageField(help_text='All logos will be cropped to fit a 4 by 3 aspect ratio. Resolution should be at minimum 400x300.', null=True, upload_to='sponsor_logos', blank=True)),
+            ],
+        ),
+        migrations.AddField(
+            model_name='meetingsponsor',
+            name='sponsor',
+            field=models.ForeignKey(to='sponsors.Sponsor'),
+        ),
+        migrations.AddField(
+            model_name='generalsponsor',
+            name='sponsor',
+            field=models.ForeignKey(to='sponsors.Sponsor'),
+        ),
+    ]

@@ -12,7 +12,8 @@ class Home(TemplateView):
         context = {}
         context.update(kwargs)
 
-        future_meetings = Meeting.objects.filter(when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
+        future_meetings = Meeting.objects.filter(
+            when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
 
         if future_meetings.count() == 0:
             context['next_meeting'] = False
@@ -28,11 +29,16 @@ class Home(TemplateView):
             # Check if user and get rsvp
             if self.request.user.is_authenticated():
                 # Is there already an RSVP
-                if RSVP.objects.filter(meeting=next_meeting, user=self.request.user).exists():
-                    context['rsvp'] = RSVP.objects.get(meeting=next_meeting, user=self.request.user)
+                if RSVP.objects.filter(
+                    meeting=next_meeting,
+                    user=self.request.user).exists():
+                    context['rsvp'] = RSVP.objects.get(
+                        meeting=next_meeting,
+                        user=self.request.user)
                 else:
                     context['rsvp'] = None
-            context["general_sponsors"] = GeneralSponsor.objects.all().order_by('sponsor__name')       
+            context["general_sponsors"] = GeneralSponsor.objects.all(
+                ).order_by('sponsor__name')
             context['rsvp_form'] = RSVPForm(self.request)
 
         return context

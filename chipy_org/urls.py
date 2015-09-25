@@ -11,15 +11,15 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     "",
-    url(r'', include('main.urls')),
+    url(r'', include('chipy_org.apps.main.urls')),
     url(r'', include('social_auth.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^login/{0,1}$', TemplateView.as_view(template_name='login.html')),
     (r'^grappelli/', include('grappelli.urls')),
-    url(r'^meetings/', include('meetings.urls')),
-    url(r'^profiles/', include('profiles.urls', namespace="profiles")),
+    url(r'^meetings/', include('chipy_org.apps.meetings.urls')),
+    url(r'^profiles/', include('chipy_org.apps.profiles.urls', namespace="profiles")),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^about/', include('about.urls')),
+    url(r'^about/', include('chipy_org.apps.about.urls')),
     url(r'^logout', 'django.contrib.auth.views.logout',
         {'next_page': '/'}
     ),

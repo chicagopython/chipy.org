@@ -3,7 +3,7 @@ import string
 from django.contrib import admin
 from django.contrib.admin import widgets
 from django import forms
-from sponsors.admin import MeetingSponsorInline
+from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from models import Meeting, Venue, Topic, Presentor, RSVP
 
 admin.site.register(Venue)
@@ -31,6 +31,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
+        exclude = []
 
 
 class MeetingAdmin(admin.ModelAdmin):

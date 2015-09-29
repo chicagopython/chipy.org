@@ -2,7 +2,6 @@
 # Django settings for account project
 
 import os
-import sys
 
 import dj_database_url
 from django.conf.global_settings import MIDDLEWARE_CLASSES
@@ -52,7 +51,8 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 MANAGERS = ADMINS
 
 # dj_database_url will pull from the DATABASE_URL environment variable
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -151,7 +151,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware', # social auth settings
+    'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
 )
 
 LOGIN_ERROR_URL = '/'

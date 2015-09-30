@@ -34,14 +34,14 @@ class TopicForm(ModelForm):
     def save(self, commit=True):
         instance = super(TopicForm, self).save(commit=commit)
         if self.request and not instance.presentors.count():
-            presentor, created = Presentor.objects.get_or_create(
+            presenter, created = Presentor.objects.get_or_create(
                 user=self.request.user,
                 name=self.request.user.get_full_name(),
                 email=self.request.user.email,
                 release=True,
             )
 
-        instance.presentors.add(presentor)
+        instance.presentors.add(presenter)
         return instance
 
 

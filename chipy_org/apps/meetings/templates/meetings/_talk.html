@@ -1,11 +1,14 @@
       <div class="talk">
-        <span class="title">{{ talk.title }}</span>
-        {% if talk.presentor.user.profile.show %}
-          <span class="presentor"><a href="#">{{ talk.presentor }}</a></span>
-        {% else %}          
-          <span class="presentor">{{ talk.presentor }}</span>
-        {% endif %}
+        <span class="title"><a href="{% url 'past_topic' talk.id %}">{{ talk.title }}</a></span>
+        {% for presenter in talk.presentors.all %}
+            {% if presenter.user.profile.show %}
+              By: <span class="presentor"><a href="#">{{ presenter }}</a></span>
+            {% else %}
+              By: <span class="presentor">{{ presenter }}</span>
+            {% endif %}
+        {% endfor %}
+        <div class="topic-date">Date: {% firstof talk.start_time talk.meeting.when %}</div>
         <div class="description">
           {{ talk.description }}
-        </div>        
+        </div>
       </div>

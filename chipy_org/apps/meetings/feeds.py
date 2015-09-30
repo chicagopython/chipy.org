@@ -16,13 +16,13 @@ class MeetingFeed(ICalFeed):
     def item_description(self, item):
         description = 'RSVP at http://chipy.org\n\n'
         for topic in item.topics.all():
-            presentor_name = 'None Given'
+            presenter_name = 'None Given'
             if topic.presentors.count() > 0:
-                presentor_name = topic.presentors.all()[0].name
+                presenter_name = topic.presentors.all()[0].name
 
             description += u'{title} by {speaker}\n{description}\n\n'.format(
                 title=topic.title,
-                speaker=presentor_name,
+                speaker=presenter_name,
                 description=topic.description)
         return description
 

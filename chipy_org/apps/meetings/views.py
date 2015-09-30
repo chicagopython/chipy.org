@@ -8,7 +8,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.shortcuts import get_object_or_404
 
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
 from django.contrib import messages
@@ -65,11 +65,11 @@ class MyTopics(ListView):
 
     def get_queryset(self):
         try:
-            presentor = Presentor.objects.filter(user=self.request.user)
+            presenter = Presentor.objects.filter(user=self.request.user)
         except Presentor.DoesNotExist:
             return Topic.objects.none()
 
-        return Topic.objects.filter(presentors=presentor)
+        return Topic.objects.filter(presentors=presenter)
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
@@ -160,6 +160,13 @@ class PastTopics(ListView):
     template_name = 'meetings/past_topics.html'
     queryset = Topic.objects.filter(
         meeting__when__lt=datetime.date.today(), approved=True)
+
+
+class PastTopic(DetailView):
+    model = Topic
+    template_name = "meetings/past_topic.html"
+    context_object_name = "topic"
+    pk_url_kwarg = 'id'
 
 
 class MeetingListAPIView(ListAPIView):

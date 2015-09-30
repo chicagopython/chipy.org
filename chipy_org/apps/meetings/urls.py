@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
 from .feeds import MeetingFeed
 from .views import (

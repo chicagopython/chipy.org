@@ -86,7 +86,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     def get_form_kwargs(self):
         kwargs = {}
         self.object = None
-        if not kwargs.get('instance', False) and self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
+        if not kwargs.get('instance', False) and self.request.user.is_authenticated() \
+           and 'rsvp_key' not in self.kwargs:
             if not self.request.POST.get('meeting'):
                 raise ValidationError('Meeting missing from POST')
 
@@ -122,7 +123,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 plaintext = get_template('meetings/rsvp_email.txt')
                 htmly = get_template('meetings/rsvp_email.html')
 
-                d = Context({'key': self.object.key, 'site': Site.objects.get_current()})
+                d = Context(
+                    {'key': self.object.key, 'site': Site.objects.get_current()})
 
                 subject = 'Chipy: Link to Change your RSVP'
                 from_email = 'DoNotReply@chipy.org'

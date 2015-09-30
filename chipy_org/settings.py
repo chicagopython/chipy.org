@@ -227,6 +227,7 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
 
     # project
+    'chipy_org.apps.main',
     'chipy_org.apps.about',
     'chipy_org.apps.contact',
     'chipy_org.apps.meetings',

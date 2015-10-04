@@ -104,13 +104,9 @@
               <div><strong>Meeting Sponsors:</strong>
                   {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
                      <div class="sponsor-home-block">
-                         {% thumbnail meeting_sponsor.sponsor.logo "60x40" crop="center" as im %}
+                         {% thumbnail meeting_sponsor.sponsor.logo "80x" crop="center" as im %}
                           <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
                          {% endthumbnail %}
-                         <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
-                         <span class="sponsor-home-about">
-                             {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
-                         </span>
                      </div>
                   {% endfor %}
               </div>
@@ -132,21 +128,13 @@
             <h2>Platinum Sponsors</h2>
             {% for general_sponsor in general_sponsors %}
               <div class="sponsor-home-block">
-                 {% thumbnail general_sponsor.sponsor.logo "80x60" crop="center" as im %}
+                 {% thumbnail general_sponsor.sponsor.logo "100x" crop="center" as im %}
                  <div class="sponsor-home-image">
                      <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
                          <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
                      </a>
                  </div>
                  {% endthumbnail %}
-                 <span class="sponsor-home-text">
-                     <span class="sponsor-home-name">
-                         <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a>
-                     </span>
-                     <span class="sponsor-home-about">
-                       {% if general_sponsor.about %}: {{ general_sponsor.about }}{% endif %}
-                     </span>
-                 </span>
               </div>
             {% endfor %}
             {% endif %}

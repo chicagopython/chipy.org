@@ -2,14 +2,17 @@
 
 {% load i18n staticfiles %}
 
-{% block head_title %}{% trans "Past Topics" %}{% endblock %}
+{% block head_title %}{% trans "Recent Topics" %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
 
 {% block body %}
 <div class="row-fluid">
   <div class="span12 talk-list">
-    <h1>Past Topics</h1>
+    <h1>
+        <a href="{% url 'past_meetings' %}">Past Meetings</a> &bull;
+        Recent Topics
+    </h1>
     {% for talk in topics %}
       {% include 'meetings/_talk.html' %}
     {% endfor %}

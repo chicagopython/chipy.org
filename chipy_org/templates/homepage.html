@@ -83,7 +83,7 @@
               <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
 
               {% with next_meeting.meeting_sponsors.all as sponsors %}
-              {% if sponosrs %}
+              {% if sponsors %}
               <div><strong>Meeting Sponsors:</strong>
                   {% for meeting_sponsor in sponsors %}
                      <div class="sponsor-home-block">

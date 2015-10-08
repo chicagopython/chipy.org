@@ -8,43 +8,9 @@
 
 {% block style %}{{ block.super }}
 <style>
-.sponsor-home-block {
-  height: 60px;
-}
 
-.sponsor-home-text {
-    padding-top: 5px;
-}
-
-.sponsor-home-about- {
-  float: left;
-  padding-top: 5px;
-}
-.sponsor-home-image {
-  width: 80px;
-  float: left;
-}
-.sponsor-home-name- {
- float: left;
-}
-
-
-.google-maps {
-    position: relative;
-    padding-bottom: 75%; // This is the aspect ratio
-    height: 0;
-    overflow: hidden;
-}
-.google-maps iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-}
 
 </style>
-
 {% endblock style %}
 
 {% block body %}
@@ -101,7 +67,7 @@
               </div>
 
               {% if next_meeting.live_stream %}
-                <p><a href="{{ next_meeting.live_stream }}" >Live Stream</a><p>
+                <p><a href="{{ next_meeting.live_stream }}">Live Stream</a><p>
               {% endif %}
 
               <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
@@ -129,11 +95,15 @@
                 </form>
               </div>
               <p>{{ next_meeting.number_rsvps }} going so far</p>
-              <p><a href="{% url 'past_meetings' %}">Past Meetings</a></p>
+
+              <p><a href="{% url 'past_meetings' %}">Past Meetings &raquo;</a></p>
+
+              {% with next_meeting.meeting_sponsors.all as sponsors %}
+              {% if sponsors %}
               <div><strong>Meeting Sponsors:</strong>
-                  {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
+                  {% for meeting_sponsor in sponsors %}
                      <div class="sponsor-home-block">
-                         {% thumbnail meeting_sponsor.sponsor.logo "60x40" crop="center" as im %}
+                         {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
                           <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
                          {% endthumbnail %}
                          <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
@@ -143,6 +113,9 @@
                      </div>
                   {% endfor %}
               </div>
+              {% endif %}
+              {% endwith %}
+
             {% else %}
                 <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
                 <p><a href="{% url 'past_meetings' %}">Past Meetings</a></p>
@@ -157,21 +130,13 @@
             <h2>Platinum Sponsors</h2>
             {% for general_sponsor in general_sponsors %}
               <div class="sponsor-home-block">
-                 {% thumbnail general_sponsor.sponsor.logo "80x60" crop="center" as im %}
+                 {% thumbnail general_sponsor.sponsor.logo "150" crop="center" as im %}
                  <div class="sponsor-home-image">
                      <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
                          <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
                      </a>
                  </div>
                  {% endthumbnail %}
-                 <span class="sponsor-home-text">
-                     <span class="sponsor-home-name">
-                         <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">{{ general_sponsor.sponsor.name }}</a>
-                     </span>
-                     <span class="sponsor-home-about">
-                       {% if general_sponsor.about %}: {{ general_sponsor.about }}{% endif %}
-                     </span>
-                 </span>
               </div>
             {% endfor %}
             {% endif %}

@@ -36,7 +36,7 @@
     {% for meeting_sponsor in meeting_sponsors %}
         <div class="row sponsor-block">
             {% if meeting_sponsor.sponsor.logo %}
-            {% thumbnail meeting_sponsor.sponsor.logo "80x60" crop="center" as im %}
+            {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
             <div class="span2 sponsor-image">
                 <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">
                     <img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }}"></a>

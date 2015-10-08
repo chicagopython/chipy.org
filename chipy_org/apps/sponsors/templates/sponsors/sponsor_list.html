@@ -11,7 +11,7 @@
 <div class="row">
 
     {% if sponsor.logo %}
-    {% thumbnail sponsor.logo "100x75" crop="center" as im %}
+    {% thumbnail sponsor.logo "100" crop="center" as im %}
     <div class="span2 sponsor-image">
         <a href="{% url 'sponsor_detail' sponsor.slug %}"><img src="{{ im.url }}" alt="{{ sponsor.name }}"></a>
     </div>

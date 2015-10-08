@@ -82,8 +82,10 @@
 
               <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
 
+              {% with next_meeting.meeting_sponsors.all as sponsors %}
+              {% if sponosrs %}
               <div><strong>Meeting Sponsors:</strong>
-                  {% for meeting_sponsor in next_meeting.meeting_sponsors.all %}
+                  {% for meeting_sponsor in sponsors %}
                      <div class="sponsor-home-block">
                          {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
                           <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
@@ -91,6 +93,8 @@
                      </div>
                   {% endfor %}
               </div>
+              {% endif %}
+              {% endwith %}
 
             {% else %}
                 <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>

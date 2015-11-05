@@ -286,3 +286,5 @@ GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
 #         'level': 'INFO'
 #     }
 # }
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

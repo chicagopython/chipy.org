@@ -11,9 +11,9 @@ from django.conf.global_settings import MIDDLEWARE_CLASSES
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
-    if val == 'True':
+    if val in ('True', 'true'):
         val = True
-    elif val == 'False':
+    elif val in ('False', 'false'):
         val = False
     return val
 

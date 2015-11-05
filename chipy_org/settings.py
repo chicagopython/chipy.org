@@ -101,13 +101,12 @@ if USE_S3:
     #STATIC_URL = "https://%s.s3.amazonaws.com/static/" % os.environ['AWS_STORAGE_BUCKET_NAME']
 else:
     MEDIA_ROOT = os.path.abspath(
-        os.path.join(PROJECT_ROOT, "..", "htdocs", "media/"))
+        os.path.join(PROJECT_ROOT, "mediafiles"))
 
 STATIC_ROOT = os.path.abspath(
-    os.path.join(PROJECT_ROOT, "..", "htdocs", "static/"))
+    os.path.join(PROJECT_ROOT, "..", "staticfiles"))
 STATIC_URL = '/static/'
 MEDIA_URL = "/media/"
-
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.

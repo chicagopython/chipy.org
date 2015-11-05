@@ -32,10 +32,8 @@ sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com']
-
-if DEBUG:
-    ALLOWED_HOSTS.append('localhost:8000')
+ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com',
+                 'localhost:8000', 'www.localhost:8000', 'www.localhost']
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
 

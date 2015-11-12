@@ -11,9 +11,9 @@ from django.conf.global_settings import MIDDLEWARE_CLASSES
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
-    if val == 'True':
+    if val in ('True', 'true'):
         val = True
-    elif val == 'False':
+    elif val in ('False', 'false'):
         val = False
     return val
 
@@ -32,10 +32,10 @@ sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 DEBUG = env_var('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com']
+ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com',
+                 'localhost:8000', 'www.localhost:8000', 'www.localhost']
 
-if DEBUG:
-    ALLOWED_HOSTS.append('localhost:8000')
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
 
 GITHUB_APP_ID = env_var('GITHUB_APP_ID')
 GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
@@ -50,9 +50,6 @@ INTERNAL_IPS = [
 ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')]
 
 MANAGERS = ADMINS
-
-
-ALLOWED_HOSTS=env_list("ALLOWED_HOSTS", ['www.chipy.org', 'chipy.org'])
 
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
@@ -88,16 +85,33 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
+USE_S3 = env_var("USE_S3", True)
+
+if USE_S3:
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_QUERYSTRING_AUTH = False
+    AWS_HEADERS = {
+        'Cache-Control': 'max-age=86400',
+    }
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    # these next two aren't used, but staticfiles will complain without them
+    #STATIC_URL = "https://%s.s3.amazonaws.com/static/" % os.environ['AWS_STORAGE_BUCKET_NAME']
+else:
+    MEDIA_ROOT = os.path.abspath(
+        os.path.join(PROJECT_ROOT, "mediafiles"))
+
+STATIC_ROOT = os.path.abspath(
+    os.path.join(PROJECT_ROOT, "..", "staticfiles"))
 STATIC_URL = '/static/'
-
-MEDIA_URL = STATIC_URL + 'media/'
-
-STATIC_ROOT = "static"
+MEDIA_URL = "/media/"
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = os.path.join(STATIC_URL, "admin/")
+# ADMIN_MEDIA_PREFIX = os.path.join(STATIC_URL, "admin/")
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env_var('SECRET_KEY')
@@ -196,6 +210,7 @@ INSTALLED_APPS = [
     'south',
     'storages',
     'tinymce',
+    "sorl.thumbnail",
 
     # theme
     'django_forms_bootstrap',
@@ -205,6 +220,7 @@ INSTALLED_APPS = [
     'contact',
     'meetings',
     'profiles',
+    'sponsors',
 ]
 
 if DEBUG:
@@ -267,3 +283,5 @@ GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
 #         'level': 'INFO'
 #     }
 # }
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

@@ -33,7 +33,9 @@ from .serializers import MeetingSerializer
 
 class PastMeetings(ListView):
     template_name = 'meetings/past_meetings.html'
-    queryset = Meeting.objects.filter(when__lt=datetime.datetime.now() - datetime.timedelta(hours=3))
+    queryset = Meeting.objects.filter(
+        when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+    ).order_by("-when")
 
 
 class ProposeTopic(CreateView):

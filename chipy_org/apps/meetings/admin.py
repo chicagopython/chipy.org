@@ -1,10 +1,9 @@
 import random
 import string
-
 from django.contrib import admin
 from django.contrib.admin import widgets
 from django import forms
-
+from sponsors.admin import MeetingSponsorInline
 from models import Meeting, Venue, Topic, Presentor, RSVP
 
 admin.site.register(Venue)
@@ -39,6 +38,7 @@ class MeetingAdmin(admin.ModelAdmin):
     form = MeetingForm
     inlines = [
         TopicInline,
+        MeetingSponsorInline,
     ]
 
     def action(self, obj):

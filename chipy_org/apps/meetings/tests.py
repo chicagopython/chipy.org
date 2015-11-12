@@ -1,6 +1,6 @@
 import datetime
 
-import libs.test_utils as test_utils
+import chipy_org.libs.test_utils as test_utils
 from .models import RSVP, Meeting, Venue
 
 class MeetingsTest(test_utils.AuthenticatedTest):
@@ -39,12 +39,14 @@ class MeetingsTest(test_utils.AuthenticatedTest):
             name_rsvp = RSVP.objects.create(name = 'Test Name',
                                             meeting = meeting,
                                             response = 'Y',
+                                            email = 'dummy@example.com',
             )
 
             # Can't have two of the same name
             duplicate_name_rsvp = RSVP.objects.create(name = 'Test Name',
                                                       meeting = meeting,
                                                       response = 'Y',
+                                                      email = 'dummy@example.com',
             )
 
             

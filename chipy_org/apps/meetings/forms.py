@@ -1,4 +1,4 @@
-from captcha.fields import ReCaptchaField
+from nocaptcha_recaptcha.fields import NoReCaptchaField
 from django.forms import ModelForm, ModelChoiceField
 from .models import Topic, Presentor, RSVP, Meeting
 import datetime
@@ -15,6 +15,7 @@ class TopicForm(ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)
+        self.fields['meeting'].required = False
         self.fields['description'].required = True
 
         self.request = request
@@ -45,7 +46,7 @@ class TopicForm(ModelForm):
 
 
 class RSVPForm(ModelForm):
-    captcha = ReCaptchaField(attrs={'theme': 'clean'})
+    captcha = NoReCaptchaField()
 
     def __init__(self, request, *args, **kwargs):
         super(RSVPForm, self).__init__(*args, **kwargs)

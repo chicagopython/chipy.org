@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles flatblock_tags %}
+{% load i18n staticfiles flatblocks %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
@@ -19,16 +19,6 @@
             <img src="{{ STATIC_URL }}img/chipmunk.png" alt="ChiPy">
         </div>
     </header>
-    {% if next_meeting.live_stream %}
-        <div class="row-fluid" id="live-stream-dialog" style="display:none;">
-          <h2>Tonight's video</h2>
-          <video width="792" height="576" controls>
-            <source src="{{ next_meeting.live_stream }}" type="video/webm">
-            Your browser does not support the video tag.
-          </video>
-          <br><a href="http://timvideos.us/">Alternative link</a>
-        </div>
-    {% endif %}
     <div class="row-fluid">
         <div class="module span4">
             <h2>In the Loop</h2>
@@ -58,7 +48,11 @@
             <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
             {% endif %}
             {% if next_meeting %}
-            <p><strong><a href="http://timvideos.us/chipy" id="live-stream-link">Watch online</a></strong></p>
+
+                {% if next_meeting.live_stream %}
+                  <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
+                {% endif %}
+
             <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
               {% if rsvp %}
                 You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
@@ -66,7 +60,7 @@
               {% endif %}
               <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
             <div id="anonymous-rsvp-dialog" style="display:none;">
-              <form id="anonymous-rsvp-form" method="POST" action="{% url anonymous_rsvp %}">
+              <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
                 {% csrf_token %}
                 <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
                 <input type="text" name="name" placeholder="John Smith">
@@ -84,11 +78,11 @@
             {% else %}
               {% if request.user.is_staff %}
                 <p>
-                  <a class="btn btn-primary" href="{% url admin:meetings_meeting_add %}">Create Meeting</a>
+                  <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
                 </p>
               {% endif %}
             {% endif %}
-            <p><a class="btn" href="{% url past_meetings %}">Past meetings &raquo;</a></p>
+            <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
         </div><!--/span-->
         <div class="module span4">
             <h2>This Month's Topics</h2>

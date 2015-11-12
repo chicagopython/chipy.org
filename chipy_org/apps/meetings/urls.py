@@ -1,16 +1,16 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from django.contrib.auth.decorators import login_required
-from apps.meetings.feeds import MeetingFeed
-from apps.meetings.views import (
+from chipy_org.apps.meetings.feeds import MeetingFeed
+from chipy_org.apps.meetings.views import (
     PastMeetings,
     ProposeTopic,
     MyTopics,
     RSVP,
     RSVPlist,
-    PastTopics,
-)
+    PastTopics)
 
 urlpatterns = patterns("",
+    url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^ical/$', MeetingFeed()),
     url(r'^past/$', PastMeetings.as_view(), name='past_meetings'),
     url(r'^rsvp/$', RSVP.as_view(), name='rsvp'),

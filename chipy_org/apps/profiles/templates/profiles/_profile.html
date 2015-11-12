@@ -1,7 +1,7 @@
 {% load gravatar %}
 <div class="profile">
   <div class="gravatar">  
-    {% gravatar_img_for_user profile %}
+    <img src="{% gravatar_url profile.user %}">
   </div>    
   <h3>{{ profile.get_full_name|default:'N/A' }}</h3>
 

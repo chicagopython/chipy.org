@@ -1,4 +1,10 @@
 import datetime
+
+import sys
+import traceback
+
+from django.http import HttpResponseServerError
+from django.template import loader, Context
 from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting, RSVP
 from chipy_org.apps.meetings.forms import RSVPForm
@@ -42,3 +48,13 @@ class Home(TemplateView):
             context['rsvp_form'] = RSVPForm(self.request)
 
         return context
+
+def custom_500(request):
+    t = loader.get_template('500.html')
+
+    print sys.exc_info()
+    type, value, tb = sys.exc_info()
+    return HttpResponseServerError(t.render(Context({
+        'exception_value': value,
+        'value': type,
+        'tb': traceback.format_exception(type, value, tb)})))

@@ -10,9 +10,9 @@ from django.conf.global_settings import MIDDLEWARE_CLASSES
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
-    if val == 'True':
+    if val in ('True', 'true'):
         val = True
-    elif val == 'False':
+    elif val in ('False', 'false'):
         val = False
     return val
 
@@ -29,10 +29,8 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = env_var('DEBUG', False)
 
-ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com']
-
-if DEBUG:
-    ALLOWED_HOSTS.append('localhost:8000')
+ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com',
+                 'localhost:8000', 'www.localhost:8000', 'www.localhost']
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
 
@@ -101,13 +99,12 @@ if USE_S3:
     #STATIC_URL = "https://%s.s3.amazonaws.com/static/" % os.environ['AWS_STORAGE_BUCKET_NAME']
 else:
     MEDIA_ROOT = os.path.abspath(
-        os.path.join(PROJECT_ROOT, "..", "htdocs", "media/"))
+        os.path.join(PROJECT_ROOT, "mediafiles"))
 
 STATIC_ROOT = os.path.abspath(
-    os.path.join(PROJECT_ROOT, "..", "htdocs", "static/"))
+    os.path.join(PROJECT_ROOT, "..", "staticfiles"))
 STATIC_URL = '/static/'
 MEDIA_URL = "/media/"
-
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -295,3 +292,5 @@ GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
 #         'level': 'INFO'
 #     }
 # }
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

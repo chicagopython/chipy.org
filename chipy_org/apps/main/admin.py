@@ -24,7 +24,7 @@ admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, CustomFlatPageAdmin)
 
 
-class CustomFlatBlockForm(FlatBlockForm):
+class CustomFlatBlockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomFlatBlockForm, self).__init__(*args, **kwargs)
         self.fields['content'].widget = TinyMCE(

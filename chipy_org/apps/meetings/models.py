@@ -131,6 +131,7 @@ class RSVP(CommonModel):
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)
+    guests = models.IntegerField(default=0)
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -172,6 +173,13 @@ class RSVP(CommonModel):
             return self.user.email
         else:
             return self.email
+
+    @property
+    def users_guests(self):
+        if self.user:
+            return self.user.guests
+        else:
+            return self.guests
 
     def __unicode__(self):
         self.users_name

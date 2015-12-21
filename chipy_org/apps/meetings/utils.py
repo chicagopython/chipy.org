@@ -23,4 +23,5 @@ def meetup_meeting_sync(api_key, meetup_event_id):
 
         rsvp.response = 'Y' if result['response'] == 'yes' else 'N'
         rsvp.name = result['member']['name']
+        rsvp.guests = int(result['guests'])
         rsvp.save()

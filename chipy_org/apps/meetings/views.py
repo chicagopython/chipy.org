@@ -142,7 +142,7 @@ class RSVPlist(ListView):
 
     def get_queryset(self):
         self.meeting = Meeting.objects.get(key=self.kwargs['rsvp_key'])
-        return RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N')
+        return RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N').order_by('name')
 
     def get_context_data(self, **kwargs):
         context = {'meeting': self.meeting}

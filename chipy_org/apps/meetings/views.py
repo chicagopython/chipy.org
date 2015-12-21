@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models import Sum
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
@@ -145,7 +146,13 @@ class RSVPlist(ListView):
         return RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N').order_by('name')
 
     def get_context_data(self, **kwargs):
-        context = {'meeting': self.meeting}
+        context = {
+            'meeting': self.meeting,
+            'guests': (
+                RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N').len() +
+                RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N').aggregate(Sum('guests'))
+            )
+        }
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context
 

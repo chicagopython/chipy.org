@@ -1,0 +1,29 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles thumbnail %}
+
+{% block head_title %}{% trans "Sponsor List" %}{% endblock %}
+
+{% block body %}
+<h2>ChiPy Sponsors</h2>
+
+{% for sponsor in sponsors %}
+<div class="row">
+
+    {% if sponsor.logo %}
+    {% thumbnail sponsor.logo "100" crop="center" as im %}
+    <div class="span2 sponsor-image">
+        <a href="{% url 'sponsor_detail' sponsor.slug %}"><img src="{{ im.url }}" alt="{{ sponsor.name }}"></a>
+    </div>
+    {% endthumbnail %}
+    {% else %}
+    <div class="span2 sponsor-image">&nbsp;</div>
+    {% endif %}
+    <h4 class="span3">{{ sponsor.name }}</h4>
+    <div class="span6"><a href="{% url 'sponsor_detail' sponsor.slug %}">More Info</a></div>
+
+</div>
+<hr>
+{% endfor %}
+
+{% endblock body %}

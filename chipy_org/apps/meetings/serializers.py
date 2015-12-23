@@ -4,7 +4,7 @@ from .models import Meeting, Topic, Presentor
 
 
 class PresentorSerializer(serializers.ModelSerializer):
-    email = serializers.SerializerMethodField('get_email')
+    email = serializers.SerializerMethodField()
 
     def get_email(self, obj):
         request = self.context.get('request')
@@ -20,7 +20,7 @@ class PresentorSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    presentors = PresentorSerializer()
+    presentors = PresentorSerializer(many=True)
 
     class Meta:
         model = Topic

@@ -1,7 +1,14 @@
 import datetime
+
+import sys
+import traceback
+
+from django.http import HttpResponseServerError
+from django.template import loader, Context
 from django.views.generic import TemplateView
-from apps.meetings.models import Meeting, RSVP
-from apps.meetings.forms import RSVPForm
+from chipy_org.apps.meetings.models import Meeting, RSVP
+from chipy_org.apps.meetings.forms import RSVPForm
+from chipy_org.apps.sponsors.models import GeneralSponsor
 
 
 class Home(TemplateView):
@@ -31,7 +38,17 @@ class Home(TemplateView):
                     context['rsvp'] = RSVP.objects.get(meeting=next_meeting, user=self.request.user)
                 else:
                     context['rsvp'] = None
-
+            context["general_sponsors"] = GeneralSponsor.objects.all().order_by('sponsor__name')       
             context['rsvp_form'] = RSVPForm(self.request)
 
         return context
+
+def custom_500(request):
+    t = loader.get_template('500.html')
+
+    print sys.exc_info()
+    type, value, tb = sys.exc_info()
+    return HttpResponseServerError(t.render(Context({
+        'exception_value': value,
+        'value': type,
+        'tb': traceback.format_exception(type, value, tb)})))

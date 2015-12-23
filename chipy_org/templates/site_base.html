@@ -1,6 +1,6 @@
 {% extends "theme_base.html" %}
 
-{% load i18n %}
+{% load i18n staticfiles %}
 
 {% block head_title %}{% block title %}{% endblock %}{% endblock %}
 
@@ -20,10 +20,10 @@
 {% block style %}
     {{ block.super }}
     <link href='http://fonts.googleapis.com/css?family=Signika:600' rel='stylesheet' type='text/css'>
-    <link href="{{ STATIC_URL }}css/theme.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/chipy.css" type="text/css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/conference.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/gh-fork-ribbon.css"  rel="stylesheet">
+    <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+    <link href="{% static 'css/chipy.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/conference.css' %}" rel="stylesheet">
+    <link href="{% static 'css/gh-fork-ribbon.css' %}"  rel="stylesheet">
 {% endblock %}
 
 {% block navbar_class %}{% endblock %}
@@ -37,8 +37,9 @@
           <li><a href="{% url 'my_topics' %}">My Talks</a></li>
         {% endif %}
         <li><a href="{% url 'propose_topic' %}">Give a Talk</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
         <li><a href="{% url 'profiles:list' %}">Members</a></li>
+        <li><a href="{% url 'sponsor_list' %}">Sponsors</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
     </ul>
 {% endblock %}
 
@@ -49,6 +50,11 @@
         </div>
     </div>
 {% endblock body %}
+
+{% block script %}{{ block.super }}
+<script src="https://www.google.com/recaptcha/api.js" async="" defer=""></script>
+{% endblock script %}
+
 
 {% block footer %}
     <div class="legal">

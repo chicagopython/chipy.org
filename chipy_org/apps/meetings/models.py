@@ -1,8 +1,10 @@
+from __future__ import unicode_literals
 import datetime
 import string
 import random
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 
 from interval.fields import IntervalField
@@ -52,6 +54,7 @@ class Venue(CommonModel):
 
 
 class Meeting(CommonModel):
+
     def __unicode__(self):
         if self.where:
             return "%s at %s" % (self.when.strftime("%A, %B %d %Y at %I:%M %p"), self.where.name)
@@ -77,6 +80,7 @@ class Meeting(CommonModel):
 
 
 class Presentor(CommonModel):
+
     def __unicode__(self):
         return self.name
 
@@ -118,6 +122,7 @@ class Topic(CommonModel):
 
 
 class RSVP(CommonModel):
+
     RSVP_CHOICES = (
         ('Y', "Yes"),
         ('N', "No"),
@@ -151,10 +156,10 @@ class RSVP(CommonModel):
     def save(self, *args, **kwargs):
         self.full_clean()
 
-        # If rsvp only has an email and this is a create and not update
-        # generate a key and email it to the user
-        if not self.pk and not self.user:
-            self.key = ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
+        # Generate a key for this RSVP
+        if not self.key:
+            self.key = ''.join(
+                random.choice(string.digits + string.ascii_lowercase) for x in range(40))
 
         return super(RSVP, self).save(*args, **kwargs)
 

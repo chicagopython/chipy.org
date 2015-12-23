@@ -18,7 +18,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from apps.meetings.utils import meetup_meeting_sync
+from chipy_org.apps.meetings.utils import meetup_meeting_sync
 
 
 
@@ -34,7 +34,9 @@ from .serializers import MeetingSerializer
 
 class PastMeetings(ListView):
     template_name = 'meetings/past_meetings.html'
-    queryset = Meeting.objects.filter(when__lt=datetime.datetime.now() - datetime.timedelta(hours=3))
+    queryset = Meeting.objects.filter(
+        when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+    ).order_by("-when")
 
 
 class ProposeTopic(CreateView):
@@ -110,15 +112,14 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         return form
 
     def post(self, request, *args, **kwargs):
-        self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
 
         if form.is_valid():
-            # Set message
+            response = self.form_valid(form)
             messages.success(request, 'RSVP Successful.')
 
-            if not self.object.user:
+            if not self.object.user and self.object.email:
                 plaintext = get_template('meetings/rsvp_email.txt')
                 htmly = get_template('meetings/rsvp_email.html')
 
@@ -128,11 +129,11 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 from_email = 'DoNotReply@chipy.org'
                 text_content = plaintext.render(d)
                 html_content = htmly.render(d)
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [self.email])
+                msg = EmailMultiAlternatives(subject, text_content, from_email, [self.object.email])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
 
-            return self.form_valid(form)
+            return response
         else:
             return self.form_invalid(form)
 

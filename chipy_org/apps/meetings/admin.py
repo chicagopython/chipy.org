@@ -1,11 +1,10 @@
 import random
 import string
-from django.utils.safestring import mark_safe
-
-from models import Meeting, Venue, Topic, Presentor, RSVP
 from django.contrib import admin
-
+from django.contrib.admin import widgets
 from django import forms
+from sponsors.admin import MeetingSponsorInline
+from models import Meeting, Venue, Topic, Presentor, RSVP
 
 admin.site.register(Venue)
 
@@ -20,6 +19,11 @@ class TopicAdmin(admin.ModelAdmin):
 
 
 class MeetingForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MeetingForm, self).__init__(*args, **kwargs)
+
+        self.fields['meetup_id'].widget = admin.widgets.AdminTextInputWidget()
+
     def clean_key(self):
         if not self.cleaned_data['key']:
             return ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
@@ -34,6 +38,7 @@ class MeetingAdmin(admin.ModelAdmin):
     form = MeetingForm
     inlines = [
         TopicInline,
+        MeetingSponsorInline,
     ]
 
     def action(self, obj):

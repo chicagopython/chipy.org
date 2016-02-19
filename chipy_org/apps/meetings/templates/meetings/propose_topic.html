@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles %}
+{% load i18n staticfiles flatblocks %}
 
 {% block head_title %}{% trans "Propose a meeting topic" %}{% endblock %}
 
@@ -10,6 +10,7 @@
 <div class="row-fluid">
   <div class="offset4 span8">
     <h1>Give a talk</h1>
+    <p>{% flatblock "speaker_text" %}</p>
     <form action="{% url 'propose_topic' %}" method="post" id="propose-topic">{% csrf_token %}
       {% for field in form %}
       <div class="fieldWrapper">
@@ -31,12 +32,12 @@
       <p>Author waives the exclusive right to collect, whether individually or via a performance-rights society, royalties for the public digital performance of the User Submission, subject to the compulsory license created by 17 U.S.C. Section 114 (or the equivalent in other jurisdictions).</p>
       <p>Author specifically affirms the right to perform the User Submissions on the ChiPy's web sites or on other web sites designated by ChiPy (including, but not necessarily limited to YouTube and Google Video).</p>
       <p>Author also hereby grants each person receiving the User Submissions distributed by ChiPy a non-exclusive license to access, use, display, and perform the User Submissions in a non-commercial, private context.</p>
-      <button class="btn btn-primary" id="agree">I agree</button> <button class="btn" id="cancel">Cancel</button>      
-    </div>    
+      <button class="btn btn-primary" id="agree">I agree</button> <button class="btn" id="cancel">Cancel</button>
+    </div>
   </div>
 </div>
 {% endblock body %}
 {% block extra_jquery %}
 {{ block.super }}
-{% include "meetings/_tos_dialog.js" %}  
+{% include "meetings/_tos_dialog.js" %}
 {% endblock %}

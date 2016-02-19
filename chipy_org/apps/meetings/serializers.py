@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Meeting, Topic, Presentor
 
 
-class PresentorSerializer(serializers.ModelSerializer):
+class PresenterSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
 
     def get_email(self, obj):
@@ -20,14 +20,14 @@ class PresentorSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    presentors = PresentorSerializer(many=True)
+    presenters = PresenterSerializer(many=True)
 
     class Meta:
         model = Topic
         fields = (
             'id',
             'title',
-            'presentors',
+            'presenters',
             'length',
             'description',
             'embed_video',

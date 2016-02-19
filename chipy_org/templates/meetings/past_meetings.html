@@ -5,9 +5,13 @@
 {% block head_title %}{% trans "Past Meetings" %}{% endblock %}
 
 {% block body %}
+<h1>Past Meetings &bull;
+    <a href="{% url 'past_topics' %}">Recent Topics</a>
+    </h1>
+<hr>
 {% for meeting in meeting_list %}
 <div>
-<h1>{{ meeting }}</h1>
+<h2>{{ meeting }}</h2>
 {% for topic in meeting.topics.all %}
   {% if topic.approved %}
     <div class="topic">

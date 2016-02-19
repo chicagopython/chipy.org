@@ -2,7 +2,6 @@
 # Django settings for account project
 
 import os
-import sys
 
 import dj_database_url
 from django.conf.global_settings import MIDDLEWARE_CLASSES
@@ -27,10 +26,8 @@ def env_list(key, defaults=[], delimiter=','):
 
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(os.path.join(PROJECT_ROOT, 'apps'))
 
 DEBUG = env_var('DEBUG', False)
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com',
                  'localhost:8000', 'www.localhost:8000', 'www.localhost']
@@ -52,7 +49,8 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 MANAGERS = ADMINS
 
 # dj_database_url will pull from the DATABASE_URL environment variable
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -116,31 +114,43 @@ MEDIA_URL = "/media/"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env_var('SECRET_KEY')
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = [
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-]
 
 ROOT_URLCONF = "chipy_org.urls"
 
-TEMPLATE_DIRS = [
-    os.path.join(PROJECT_ROOT, "templates"),
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'debug': DEBUG,
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.core.context_processors.debug",
+                "django.core.context_processors.i18n",
+                "django.core.context_processors.media",
+                "django.core.context_processors.request",
+                "django.core.context_processors.static",
+                "django.contrib.messages.context_processors.messages",
+                "social_auth.context_processors.social_auth_login_redirect",
+            ],
+        },
+    },
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS = [
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages",
-    "social_auth.context_processors.social_auth_login_redirect",
-]
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
+)
 
-# Social Auth settings
-MIDDLEWARE_CLASSES += ('chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',)
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
@@ -200,14 +210,12 @@ INSTALLED_APPS = [
     'django_ical',
     'envelope',
     'flatblocks',
-    'flatpages_tinymce',
     'django_gravatar',
     'gunicorn',
     'honeypot',
     'interval',
     'rest_framework',
     'social_auth',
-    'south',
     'storages',
     'tinymce',
     "sorl.thumbnail",
@@ -216,11 +224,12 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
 
     # project
-    'about',
-    'contact',
-    'meetings',
-    'profiles',
-    'sponsors',
+    'chipy_org.apps.main',
+    'chipy_org.apps.about',
+    'chipy_org.apps.contact',
+    'chipy_org.apps.meetings',
+    'chipy_org.apps.profiles',
+    'chipy_org.apps.sponsors',
 ]
 
 if DEBUG:

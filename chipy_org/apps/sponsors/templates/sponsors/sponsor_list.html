@@ -1,11 +1,12 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles thumbnail %}
+{% load i18n staticfiles thumbnail flatblocks %}
 
 {% block head_title %}{% trans "Sponsor List" %}{% endblock %}
 
 {% block body %}
 <h2>ChiPy Sponsors</h2>
+<p>{% flatblock "sponsor_info_text" %}</p>
 
 {% for sponsor in sponsors %}
 <div class="row">

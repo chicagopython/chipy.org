@@ -35,9 +35,23 @@
             <p><strong>When:</strong> {{ next_meeting.when|default:'N/A'}}</p>
 
             {% if next_meeting %}
-            <p><strong>Where:</strong> <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a></p><p>
-                {{ next_meeting.where.address }}
-              </p>
+            <p><strong>Where:</strong>
+                <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a>
+            </p>
+            <p>{{ next_meeting.where.address }}</p>
+
+            {% if next_meeting.where.embed_map %}
+            <div class="google-maps">
+            <p>{{ next_meeting.where.embed_map|safe }}</p>
+            </div>
+            {% endif %}
+
+            {% if next_meeting.where.directions %}
+            <p><strong>Directions:</strong></p>
+            <p>{{ next_meeting.where.directions }}</p>
+            {% endif %}
+
+
               <div id="where-dialog" title="Venue" style="display:none">
                 {{ next_meeting.where.name }}<br>
                 {{ next_meeting.where.address }}<br>
@@ -52,9 +66,8 @@
                 {% endif %}
               </div>
 
-
               {% if next_meeting.live_stream %}
-                <a href="{{ next_meeting.live_stream }}" >Live Stream</a>
+                <p><a href="{{ next_meeting.live_stream }}">Live Stream</a><p>
               {% endif %}
 
               <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
@@ -62,7 +75,10 @@
                   You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
                   <strong>Change your RSVP: </strong>
                 {% endif %}
-                <a class="btn btn-mini rsvp" data-response="Y">Yes</a> <a class="btn btn-mini rsvp" data-response="M">Maybe</a> <a class="btn btn-mini rsvp" data-response="N">No</a></p>
+                <a class="btn btn-mini rsvp" data-response="Y">Yes</a>
+                <a class="btn btn-mini rsvp" data-response="M">Maybe</a>
+                <a class="btn btn-mini rsvp" data-response="N">No</a>
+              </p>
               <div id="anonymous-rsvp-dialog" style="display:none;">
                 <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
                   {% csrf_token %}
@@ -80,7 +96,7 @@
               </div>
               <p>{{ next_meeting.number_rsvps }} going so far</p>
 
-              <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
+              <p><a href="{% url 'past_meetings' %}">Past Meetings &raquo;</a></p>
 
               {% with next_meeting.meeting_sponsors.all as sponsors %}
               {% if sponsors %}
@@ -90,6 +106,10 @@
                          {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
                           <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
                          {% endthumbnail %}
+                         <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
+                         <span class="sponsor-home-about">
+                             {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
+                         </span>
                      </div>
                   {% endfor %}
               </div>
@@ -98,15 +118,12 @@
 
             {% else %}
                 <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
-
-                <p><a class="btn" href="{% url 'past_meetings' %}">Past meetings &raquo;</a></p>
-
+                <p><a href="{% url 'past_meetings' %}">Past Meetings</a></p>
                 {% if request.user.is_staff %}
                   <p>
                     <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
                   </p>
                 {% endif %}
-
             {% endif %}
 
             {% if general_sponsors %}
@@ -134,8 +151,8 @@
                   {% if topic.length %}
                     ({{ topic.length }} Minutes)<br />
                   {% endif %}
-                  By: {% for presentor in topic.presentors.all %}
-                        {{presentor}} {% if not forloop.last %}, {% endif %}
+                  By: {% for presenter in topic.presentors.all %}
+                        {{presenter}} {% if not forloop.last %}, {% endif %}
                       {% endfor %}<br />
                   {{ topic.description }}
                 </li>

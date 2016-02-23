@@ -15,7 +15,8 @@ class TopicInline(admin.StackedInline):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('approved', 'title', 'meeting')
+    list_display = ('approved', 'title', 'python_level', 'meeting')
+    list_filter = ('approved', 'python_level')
 
 
 class MeetingForm(forms.ModelForm):

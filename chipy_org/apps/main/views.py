@@ -22,7 +22,7 @@ class Home(TemplateView):
             when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
 
         context["general_sponsors"] = GeneralSponsor.objects.all(
-            ).order_by('sponsor__name')
+            ).order_by('sponsor__name').order_by('?')
 
         if future_meetings.count() == 0:
             context['next_meeting'] = False

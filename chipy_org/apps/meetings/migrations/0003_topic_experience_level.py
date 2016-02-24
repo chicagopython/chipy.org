@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='topic',
-            name='python_level',
-            field=models.CharField(blank=True, max_length=10, null=True, choices=[('novice', 'Novice'), ('intermediate', 'Intermediate'), ('advanced', 'Advanced')]),
+            name='experience_level',
+            field=models.CharField(blank=True, max_length=10, null=True, verbose_name='Audience Experience Level', choices=[('novice', 'Novice'), ('intermediate', 'Intermediate'), ('advanced', 'Advanced')]),
         ),
     ]

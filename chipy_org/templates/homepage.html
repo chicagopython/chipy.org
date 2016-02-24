@@ -154,6 +154,9 @@
                   By: {% for presenter in topic.presentors.all %}
                         {{presenter}} {% if not forloop.last %}, {% endif %}
                       {% endfor %}<br />
+                  {% if topic.experience_level %}
+                  Experience Level: {{ topic.get_experience_level_display }}<br />
+                  {% endif %}
                   {{ topic.description }}
                 </li>
               {% endfor %}

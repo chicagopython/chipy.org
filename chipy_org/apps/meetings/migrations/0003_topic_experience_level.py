@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='topic',
             name='experience_level',
-            field=models.CharField(blank=True, max_length=10, null=True, verbose_name='Audience Experience Level', choices=[('novice', 'Novice'), ('intermediate', 'Intermediate'), ('advanced', 'Advanced')]),
+            field=models.CharField(blank=True, max_length=15, null=True, verbose_name='Audience Experience Level', choices=[('novice', 'Novice'), ('intermediate', 'Intermediate'), ('advanced', 'Advanced')]),
         ),
     ]

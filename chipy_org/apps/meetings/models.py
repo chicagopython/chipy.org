@@ -120,7 +120,7 @@ class Topic(CommonModel):
     meeting = models.ForeignKey(Meeting, blank=True, null=True, related_name='topics')
     experience_level = models.CharField(
         "Audience Experience Level",
-        max_length=10, blank=True, null=True, choices=EXPERIENCE_LEVELS)
+        max_length=15, blank=True, null=True, choices=EXPERIENCE_LEVELS)
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default='CC BY')
     length = IntervalField(format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)

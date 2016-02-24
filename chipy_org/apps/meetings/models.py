@@ -100,7 +100,7 @@ LICENSE_CHOISES = (
     ('All Rights Reserved', 'All Rights Reserved')
 )
 
-PYTHON_LEVELS = (
+EXPERIENCE_LEVELS = (
     ('novice', 'Novice'),
     ('intermediate', 'Intermediate'),
     ('advanced', 'Advanced'),
@@ -118,9 +118,9 @@ class Topic(CommonModel):
     title = models.CharField(max_length=MAX_LENGTH)
     presentors = models.ManyToManyField(Presentor, blank=True)
     meeting = models.ForeignKey(Meeting, blank=True, null=True, related_name='topics')
-    python_level = models.CharField(
-        "Python Level",
-        max_length=10, blank=True, null=True, choices=PYTHON_LEVELS)
+    experience_level = models.CharField(
+        "Audience Experience Level",
+        max_length=10, blank=True, null=True, choices=EXPERIENCE_LEVELS)
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default='CC BY')
     length = IntervalField(format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)

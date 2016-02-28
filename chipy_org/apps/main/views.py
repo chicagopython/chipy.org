@@ -21,6 +21,9 @@ class Home(TemplateView):
         future_meetings = Meeting.objects.filter(
             when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
 
+        context["general_sponsors"] = GeneralSponsor.objects.all(
+            ).order_by('?')
+
         if future_meetings.count() == 0:
             context['next_meeting'] = False
         else:
@@ -43,8 +46,7 @@ class Home(TemplateView):
                         user=self.request.user)
                 else:
                     context['rsvp'] = None
-            context["general_sponsors"] = GeneralSponsor.objects.all(
-                ).order_by('sponsor__name')
+
             context['rsvp_form'] = RSVPForm(self.request)
 
         return context

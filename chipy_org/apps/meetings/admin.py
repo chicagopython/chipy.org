@@ -15,7 +15,9 @@ class TopicInline(admin.StackedInline):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('approved', 'title', 'meeting')
+    list_display = ('id', 'approved', 'title', 'meeting', 'created')
+    readonly_fields = ['modified', 'created', ]
+    list_filter = ['approved']
 
 
 class MeetingForm(forms.ModelForm):

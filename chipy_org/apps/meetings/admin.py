@@ -61,6 +61,8 @@ class MeetingAdmin(admin.ModelAdmin):
     class Media:
         js = ("js/meetup_sync.js",)
 
+    ordering = ('-when',)
+
 
 class PresentorAdmin(admin.ModelAdmin):
     list_display = [

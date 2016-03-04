@@ -3,6 +3,8 @@ import string
 from django.contrib import admin
 from django.contrib.admin import widgets
 from django import forms
+from django.core.urlresolvers import reverse
+from django.utils.html import format_html
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, Presentor, RSVP
 
@@ -15,14 +17,25 @@ class VenueAdmin(admin.ModelAdmin):
 
 class TopicInline(admin.StackedInline):
     model = Topic
+    filter_horizontal = ['presentors']
+    readonly_fields = ['modified', 'created', ]
     extra = 0
 
 
 class TopicAdmin(admin.ModelAdmin):
     list_display = ('id', 'approved', 'title', 'meeting', 'created')
-    readonly_fields = ['modified', 'created', ]
+    readonly_fields = ['get_presenters', 'modified', 'created', ]
     list_filter = ['approved']
     search_fields = ['title']
+    filter_horizontal = ['presentors']
+
+    def get_presenters(self, obj):
+        return format_html(" &bull; ".join(
+            ["<a href='%s'>%s</a>" % (
+                reverse("admin:meetings_presentor_change", args=[p.id]), p)
+             for p
+             in obj.presentors.all()]))
+    get_presenters.short_description = "Presenter Links"
 
 
 class MeetingForm(forms.ModelForm):

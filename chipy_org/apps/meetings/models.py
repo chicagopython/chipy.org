@@ -15,7 +15,7 @@ MAX_LENGTH = 255
 
 MEETING = (
     ('Loop', 'Loop Meeting - 2nd Thursday'),
-    ('North', 'North Meeting - 3rd Thursday')
+    ('North', 'North Meeting - 3rd Thursday'),
 )
 
 

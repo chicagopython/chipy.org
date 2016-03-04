@@ -15,7 +15,7 @@ MAX_LENGTH = 255
 
 MEETING = (
     ('Loop', 'Loop Meeting - 2nd Thursday'),
-    ('North', 'North Meeting - 3rd Thursday')
+    ('North', 'North Meeting - 3rd Thursday'),
 )
 
 
@@ -57,7 +57,7 @@ class Meeting(CommonModel):
 
     def __unicode__(self):
         if self.where:
-            return "%s at %s" % (self.when.strftime("%A, %B %d %Y at %I:%M %p"), self.where.name)
+            return "%s at %s" % (self.when.strftime("%a, %b %d %Y at %I:%M %p"), self.where.name)
         return "%s location TBD" % self.when
 
     when = models.DateTimeField()
@@ -82,7 +82,7 @@ class Meeting(CommonModel):
 class Presentor(CommonModel):
 
     def __unicode__(self):
-        return self.name
+        return "%s | (%s)" % (self.name, self.email)
 
     user = models.ForeignKey(User, blank=True, null=True)
     name = models.CharField(max_length=MAX_LENGTH)

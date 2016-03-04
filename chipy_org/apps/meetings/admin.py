@@ -6,7 +6,11 @@ from django import forms
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, Presentor, RSVP
 
-admin.site.register(Venue)
+
+class VenueAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'phone', 'address']
+    search_fields = ['name', 'email', 'phone', 'address']
+    readonly_fields = ['created', 'modified']
 
 
 class TopicInline(admin.StackedInline):
@@ -18,6 +22,7 @@ class TopicAdmin(admin.ModelAdmin):
     list_display = ('id', 'approved', 'title', 'meeting', 'created')
     readonly_fields = ['modified', 'created', ]
     list_filter = ['approved']
+    search_fields = ['title']
 
 
 class MeetingForm(forms.ModelForm):
@@ -43,6 +48,7 @@ class MeetingAdmin(admin.ModelAdmin):
         TopicInline,
         MeetingSponsorInline,
     ]
+    readonly_fields = ['created', 'modified']
 
     def action(self, obj):
         if obj.meetup_id:
@@ -55,7 +61,26 @@ class MeetingAdmin(admin.ModelAdmin):
     class Media:
         js = ("js/meetup_sync.js",)
 
+
+class PresentorAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'user', 'email', 'phone']
+    search_fields = [
+        'user__username', 'user__first_name', 'user__last_name',
+        'email', 'phone']
+    readonly_fields = ['created', 'modified']
+
+
+class RSVPAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'user', 'name', 'email', 'meeting', 'response', 'created']
+    readonly_fields = ['created', 'modified']
+    search_fields = ['id', 'name', 'email']
+    list_filter = ['response']
+
+
+admin.site.register(Venue, VenueAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic, TopicAdmin)
-admin.site.register(Presentor)
-admin.site.register(RSVP)
+admin.site.register(Presentor, PresentorAdmin)
+admin.site.register(RSVP, RSVPAdmin)

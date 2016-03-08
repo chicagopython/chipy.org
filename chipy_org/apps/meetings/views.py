@@ -155,7 +155,7 @@ class RSVPlist(ListView):
             'meeting': self.meeting,
             'guests': (
                 RSVPModel.objects.filter(
-                    meeting=self.meeting).exclude(response='N').len() +
+                    meeting=self.meeting).exclude(response='N').count() +
                 RSVPModel.objects.filter(
                     meeting=self.meeting).exclude(response='N').aggregate(Sum('guests'))
             )

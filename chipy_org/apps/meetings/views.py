@@ -157,7 +157,8 @@ class RSVPlist(ListView):
                 RSVPModel.objects.filter(
                     meeting=self.meeting).exclude(response='N').count() +
                 RSVPModel.objects.filter(
-                    meeting=self.meeting).exclude(response='N').aggregate(Sum('guests'))
+                    meeting=self.meeting).exclude(
+                        response='N').aggregate(Sum('guests'))['guests__sum']
             )
         }
         context.update(super(RSVPlist, self).get_context_data(**kwargs))

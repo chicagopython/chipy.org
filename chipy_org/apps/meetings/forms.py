@@ -64,7 +64,7 @@ class AnonymousRSVPForm(ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
-        if getattr(self, 'instance', False):
+        if self.instance.pk:
             # On an update we don't want to make any changes to the email.
             del self.fields['email']
             del self.fields['captcha']

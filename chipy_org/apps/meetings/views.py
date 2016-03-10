@@ -111,12 +111,6 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
         return kwargs
 
-    def get_form(self, form_class):
-        form = super(RSVP, self).get_form(form_class)
-        if 'rsvp_key' in self.kwargs:
-            del form.fields['meeting']
-        return form
-
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)

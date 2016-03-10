@@ -21,7 +21,7 @@ from rest_framework.views import APIView
 from .utils import meetup_meeting_sync
 
 
-from .forms import TopicForm, RSVPForm
+from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
 from .models import (
     Meeting,
     Topic,
@@ -75,8 +75,13 @@ class MyTopics(ListView):
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
-    form_class = RSVPForm
     success_url = '/'
+
+    def get_form_class(self):
+        if self.request.user.is_authenticated():
+            return RSVPForm
+        else:
+            return AnonymousRSVPForm
 
     def get_template_names(self):
         if self.request.method == 'POST':

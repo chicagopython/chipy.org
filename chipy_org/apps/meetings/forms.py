@@ -67,7 +67,9 @@ class AnonymousRSVPForm(ModelForm):
         if getattr(self, 'instance', False):
             # On an update we don't want to make any changes to the email.
             del self.fields['email']
+            del self.fields['captcha']
+            del self.fields['meeting']
 
     class Meta:
         model = RSVP
-        fields = ('response', 'meeting', 'email')
+        fields = ('response', 'meeting', 'name', 'email')

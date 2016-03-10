@@ -7,7 +7,7 @@ from django.http import HttpResponseServerError
 from django.template import loader, Context
 from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting, RSVP
-from chipy_org.apps.meetings.forms import RSVPForm
+from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
 from chipy_org.apps.sponsors.models import GeneralSponsor
 
 
@@ -47,7 +47,9 @@ class Home(TemplateView):
                 else:
                     context['rsvp'] = None
 
-            context['rsvp_form'] = RSVPForm(self.request)
+                context['rsvp_form'] = RSVPForm(self.request)
+            else:
+                context['rsvp_form'] = AnonymousRSVPForm(self.request)
 
         return context
 

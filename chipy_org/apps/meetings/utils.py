@@ -97,7 +97,7 @@ def meetup_meeting_sync(api_key, meetup_event_id):
         try:
             rsvp.save()
         except ValidationError as exc:
-            logger.waring('Error saving RSVP for {} with response of {}. Error is {}'.format(
+            logger.warning('Error saving RSVP for {} with response of {}. Error is {}'.format(
                 result['member']['name'], rsvp.response, exc))
         else:
             logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'],

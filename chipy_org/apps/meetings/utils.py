@@ -94,6 +94,11 @@ def meetup_meeting_sync(api_key, meetup_event_id):
         rsvp.response = 'Y' if result['response'] == 'yes' else 'N'
         rsvp.name = get_best_name_available(result, real_names)
         rsvp.guests = int(result['guests'])
-        rsvp.save()
-
-        logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'], rsvp.response))
+        try:
+            rsvp.save()
+        except ValueError as exc:
+            logger.waring('Error saving RSVP for {} with response of {}. Error is {}'.format(
+                result['member']['name'], rsvp.response, exc))
+        else:
+            logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'],
+                                                                       rsvp.response))

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 import requests
 from .models import Meeting, RSVP
 
@@ -96,7 +96,7 @@ def meetup_meeting_sync(api_key, meetup_event_id):
         rsvp.guests = int(result['guests'])
         try:
             rsvp.save()
-        except ValueError as exc:
+        except ValidationError as exc:
             logger.waring('Error saving RSVP for {} with response of {}. Error is {}'.format(
                 result['member']['name'], rsvp.response, exc))
         else:

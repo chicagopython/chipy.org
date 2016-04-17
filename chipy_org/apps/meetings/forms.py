@@ -49,17 +49,9 @@ class TopicForm(ModelForm):
 
 
 class RSVPForm(ModelForm):
-    captcha = NoReCaptchaField()
-
     def __init__(self, request, *args, **kwargs):
         super(RSVPForm, self).__init__(*args, **kwargs)
         self.request = request
-        if self.request.user.is_authenticated():
-            # Don't need captcha for authenticated users
-            del self.fields['captcha']
-        else:
-            # Require an email for anonymous rsvps
-            self.fields['email'].required = True
 
     class Meta:
         model = RSVP
@@ -68,3 +60,19 @@ class RSVPForm(ModelForm):
     def clean_user(self):
         if not self.cleaned_data['user'] and self.request.user.is_authenticated():
             return self.request.user
+
+
+class AnonymousRSVPForm(ModelForm):
+    captcha = NoReCaptchaField()
+
+    def __init__(self, request, *args, **kwargs):
+        super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            # On an update we don't want to make any changes to the email.
+            del self.fields['email']
+            del self.fields['captcha']
+            del self.fields['meeting']
+
+    class Meta:
+        model = RSVP
+        fields = ('response', 'meeting', 'name', 'email')

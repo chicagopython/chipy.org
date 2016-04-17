@@ -130,7 +130,7 @@
             <h2>Platinum Sponsors</h2>
             {% for general_sponsor in general_sponsors %}
               <div class="sponsor-home-block">
-                 {% thumbnail general_sponsor.sponsor.logo "150" crop="center" as im %}
+                 {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
                  <div class="sponsor-home-image">
                      <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
                          <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
@@ -152,7 +152,7 @@
                     ({{ topic.length }} Minutes)<br />
                   {% endif %}
                   By: {% for presenter in topic.presentors.all %}
-                        {{presenter}} {% if not forloop.last %}, {% endif %}
+                        {{presenter.name}} {% if not forloop.last %}, {% endif %}
                       {% endfor %}<br />
                   {% if topic.experience_level %}
                   Experience Level: {{ topic.get_experience_level_display }}<br />

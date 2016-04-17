@@ -21,7 +21,7 @@ from rest_framework.views import APIView
 from .utils import meetup_meeting_sync
 
 
-from .forms import TopicForm, RSVPForm
+from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
 from .models import (
     Meeting,
     Topic,
@@ -75,8 +75,13 @@ class MyTopics(ListView):
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
-    form_class = RSVPForm
     success_url = '/'
+
+    def get_form_class(self):
+        if self.request.user.is_authenticated():
+            return RSVPForm
+        else:
+            return AnonymousRSVPForm
 
     def get_template_names(self):
         if self.request.method == 'POST':
@@ -105,12 +110,6 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         kwargs.update({'request': self.request})
 
         return kwargs
-
-    def get_form(self, form_class):
-        form = super(RSVP, self).get_form(form_class)
-        if 'rsvp_key' in self.kwargs:
-            del form.fields['meeting']
-        return form
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
@@ -155,9 +154,10 @@ class RSVPlist(ListView):
             'meeting': self.meeting,
             'guests': (
                 RSVPModel.objects.filter(
-                    meeting=self.meeting).exclude(response='N').len() +
+                    meeting=self.meeting).exclude(response='N').count() +
                 RSVPModel.objects.filter(
-                    meeting=self.meeting).exclude(response='N').aggregate(Sum('guests'))
+                    meeting=self.meeting).exclude(
+                        response='N').aggregate(Sum('guests'))['guests__sum']
             )
         }
         context.update(super(RSVPlist, self).get_context_data(**kwargs))

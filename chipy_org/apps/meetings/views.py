@@ -8,6 +8,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import Context
 from django.template.loader import get_template
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
@@ -19,7 +20,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .utils import meetup_meeting_sync
-
+from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
 from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
 from .models import (
@@ -48,17 +49,11 @@ class ProposeTopic(CreateView):
         kwargs.update({'request': self.request})
         return kwargs
 
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
-        if form.is_valid():
-            # Set message
-            messages.success(request, 'Topic has been submitted.')
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    def form_valid(self, form):
+        self.object = form.save()
+        messages.success(self.request, 'Topic has been submitted.')
+        send_meeting_topic_submitted_email(self.object)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class MyTopics(ListView):
@@ -120,20 +115,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             messages.success(request, 'RSVP Successful.')
 
             if not self.object.user and self.object.email:
-                plaintext = get_template('meetings/rsvp_email.txt')
-                htmly = get_template('meetings/rsvp_email.html')
-
-                d = Context(
-                    {'key': self.object.key, 'site': Site.objects.get_current()})
-
-                subject = 'Chipy: Link to Change your RSVP'
-                from_email = 'DoNotReply@chipy.org'
-                text_content = plaintext.render(d)
-                html_content = htmly.render(d)
-                msg = EmailMultiAlternatives(
-                    subject, text_content, from_email, [self.object.email])
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
+                send_rsvp_email(self.object)
 
             return response
         else:

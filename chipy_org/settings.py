@@ -48,6 +48,8 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 
 MANAGERS = ADMINS
 
+CHIPY_TOPIC_SUBMIT_EMAILS = [e for e in env_var('CHIPY_TOPIC_SUBMIT_EMAILS', "").split(',')]
+
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {
     'default': dj_database_url.config(default='postgres://localhost:5432/chipy_org')}
@@ -292,5 +294,40 @@ GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
 #         'level': 'INFO'
 #     }
 # }
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        }
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'chipy_org': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
+
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

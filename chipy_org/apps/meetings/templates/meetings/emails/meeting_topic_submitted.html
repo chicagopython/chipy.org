@@ -1,0 +1,8 @@
+<p>A meeting topic has been submitted:<p>
+
+<p><a href="https://{{ site.domain }}{% url 'admin:meetings_rsvp_change' topic.id %}">https://{{ site.domain }}{% url 'admin:meetings_rsvp_change' topic.id %}</a></p>
+<p>Title: {{ topic.title }}</p>
+<p>Presentors: {% for presentor in topic.presentors.all %}{{ presentor.email }} {% endfor %}</p>
+<p>Meeting: {{ topic.meeting }}</p>
+<p>Length: {{ topic.length }}</p>
+<p>Description: {{ topic.description }}</p>

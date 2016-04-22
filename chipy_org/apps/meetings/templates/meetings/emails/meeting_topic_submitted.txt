@@ -1,6 +1,6 @@
 A meeting topic has been submitted:
 
- https://{{ site.domain }}{% url 'admin:meetings_rsvp_change' topic.id %}
+ https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}
  Title: {{ topic.title }}
  Presentors: {% for presentor in topic.presentors.all %}{{ presentor.email }} {% endfor %}
  Meeting: {{ topic.meeting }}

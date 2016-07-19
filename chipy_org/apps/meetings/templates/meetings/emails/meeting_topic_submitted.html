@@ -2,7 +2,7 @@
 
 <p><a href="https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}">https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}</a></p>
 <p>Title: {{ topic.title }}</p>
-<p>Presentors: {% for presentor in topic.presentors.all %}{{ presentor.email }} {% endfor %}</p>
+<p>Presenters: {% for presenter in topic.presentors.all %}{{ presenter.name }} ({{ presenter.email }}) - {{ presenter.user.id }} {% endfor %}</p>
 <p>Meeting: {{ topic.meeting }}</p>
 <p>Length: {{ topic.length }}</p>
 <p>Description: {{ topic.description }}</p>

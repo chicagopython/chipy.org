@@ -9,6 +9,7 @@ class TopicForm(ModelForm):
         'title',
         'meeting',
         'description',
+        'experience_level',
     )
 
     meeting = ModelChoiceField(queryset=Meeting.objects.filter(when__gt=datetime.datetime.now()))
@@ -17,6 +18,7 @@ class TopicForm(ModelForm):
         super(TopicForm, self).__init__(*args, **kwargs)
         self.fields['meeting'].required = False
         self.fields['description'].required = True
+        self.fields['experience_level'].required = True
 
         self.request = request
 
@@ -26,6 +28,7 @@ class TopicForm(ModelForm):
             'title',
             'meeting',
             'length',
+            'experience_level',
             'description',
             'license',
             'slides_link',

@@ -23,9 +23,9 @@ class TopicInline(admin.StackedInline):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('id', 'approved', 'title', 'meeting', 'created')
+    list_display = ('id', 'approved', 'title', 'experience_level', 'meeting', 'created')
     readonly_fields = ['get_presenters', 'modified', 'created', ]
-    list_filter = ['approved']
+    list_filter = ['approved', 'experience_level']
     search_fields = ['title']
     filter_horizontal = ['presentors']
 

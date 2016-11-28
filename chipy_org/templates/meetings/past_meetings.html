@@ -22,6 +22,9 @@
       By: {% for presentor in topic.presentors.all %}
             {{presentor.name}}{% if not forloop.last %}, {% endif %}
           {% endfor %}<br />
+      {% if topic.experience_level %}
+      Experience Level: {{ topic.get_experience_level_display }}<br />
+      {% endif %}
       {% if topic.slides_link %}<a href="{{ topic.slides_link }}">Slides Link</a>{% endif %}<br />
       {{ topic.description }}
     </div>

@@ -90,6 +90,7 @@ class Presentor(CommonModel):
     phone = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     release = models.BooleanField(default=False)
 
+
 LICENSE_CHOISES = (
     ('CC BY', 'Creative Commons: Attribution'),
     ('CC BY-SA', 'Creative Commons: Attribution-ShareAlike'),

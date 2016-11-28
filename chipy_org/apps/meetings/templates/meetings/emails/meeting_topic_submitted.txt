@@ -1,0 +1,8 @@
+A meeting topic has been submitted:
+
+ https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}
+ Title: {{ topic.title }}
+ Presenters: {% for presenter in topic.presentors.all %}{{ presenter.name}} ({{ presenter.email }}) - {{ presenter.user.id  }} {% endfor %}
+ Meeting: {{ topic.meeting }}
+ Length: {{ topic.length }}
+ Description: {{ topic.description }}

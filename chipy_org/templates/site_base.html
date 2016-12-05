@@ -40,10 +40,7 @@
         <li><a href="{% url 'propose_topic' %}">Give a Talk</a></li>
         <li><a href="{% url 'profiles:list' %}">Members</a></li>
         <li><a href="{% url 'sponsor_list' %}">Sponsors</a></li>
-        {% get_flatpages '/sigs/mentorship/' as mentorship_pages %}
-        {% for page in mentorship_pages %}
-          <li><a href="/pages{{ page.url }}">{{ page.title }}</a></li>
-        {% endfor %}
+        <li><a href="http://www.chipymentor.org/">Mentorship Program</a></li>
         <li><a href="{% url 'contact' %}">Contact</a></li>
     </ul>
 {% endblock %}

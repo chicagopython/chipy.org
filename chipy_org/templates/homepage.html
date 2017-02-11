@@ -32,11 +32,20 @@
             <p>Meetings happen in the downtown area the second Thursday of every month.</p>
 
             <h3>Next Meeting</h3>
-            <p><strong>When:</strong> {{ next_meeting.when|default:'N/A'}}</p>
+            {% if next_meeting %}
+
+            {% if next_meeting.description %}
+            <p>{{ next_meeting.description }}</p>
+            {% endif %}
+
+            {% endif %}
+
+            <p><strong>When: </strong> {{ next_meeting.when|default:'N/A'}}</p>
 
             {% if next_meeting %}
-            <p><strong>Where:</strong>
-                <a id="where-link" href="#">{{ next_meeting.where|default:'N/A'}}</a>
+
+            <p><strong>Where: </strong>
+                <a id="where-link" href="#"> {{ next_meeting.where|default:'N/A'}}</a>
             </p>
             <p>{{ next_meeting.where.address }}</p>
 
@@ -50,7 +59,6 @@
             <p><strong>Directions:</strong></p>
             <p>{{ next_meeting.where.directions }}</p>
             {% endif %}
-
 
               <div id="where-dialog" title="Venue" style="display:none">
                 {{ next_meeting.where.name }}<br>

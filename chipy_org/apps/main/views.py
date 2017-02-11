@@ -19,6 +19,7 @@ class Home(TemplateView):
         context.update(kwargs)
 
         future_meetings = Meeting.objects.filter(
+            meeting_type__isnull=True).filter(
             when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
 
         context["general_sponsors"] = GeneralSponsor.objects.all(

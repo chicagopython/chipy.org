@@ -4,7 +4,6 @@ import string
 import random
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 
 from interval.fields import IntervalField
@@ -53,18 +52,65 @@ class Venue(CommonModel):
     link = models.URLField(blank=True, null=True)
 
 
+class SubGroup(CommonModel):
+
+    name = models.CharField(max_length=64)
+    slug = models.SlugField(max_length=64, unique=True)
+    description = models.TextField(blank=True, null=True)
+    organizers = models.ManyToManyField(User, blank=True)
+
+    def __unicode__(self):
+        return "%s | (%s)" % (self.id, self.name)
+
+    class Meta(object):
+        verbose_name = "Sub Group (SIG)"
+        verbose_name_plural = "Sub Groups (SIGs)"
+
+
+class MeetingType(CommonModel):
+    """
+    This model contains entries for different meeting types.
+    Example:
+      - SIG Meetings
+      - Mentorship Meetings
+      - Holiday Party
+    """
+
+    subgroup = models.ForeignKey(
+        SubGroup, blank=True, null=True,
+        help_text='Optional Sub-group (i.e. SIG)')
+    name = models.CharField(max_length=64)
+    slug = models.SlugField(max_length=64, unique=True)
+    description = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return "%s | (%s)" % (self.id, self.name)
+
+    class Meta(object):
+        verbose_name = "Meeting Type"
+        verbose_name_plural = "Meeting Types"
+
+
 class Meeting(CommonModel):
 
     def __unicode__(self):
         if self.where:
-            return "%s at %s" % (self.when.strftime("%a, %b %d %Y at %I:%M %p"), self.where.name)
+            return "%s at %s" % (
+                self.when.strftime("%a, %b %d %Y at %I:%M %p"), self.where.name)
         return "%s location TBD" % self.when
 
     when = models.DateTimeField()
     where = models.ForeignKey(Venue, blank=True, null=True)
-    key = models.CharField(max_length=40, unique=True, blank=True)  # Used for anonymous access to meeting information like RSVPs
+    # Used for anonymous access to meeting information like RSVPs
+    key = models.CharField(max_length=40, unique=True, blank=True)
     live_stream = models.CharField(max_length=500, null=True, blank=True)
     meetup_id = models.TextField(blank=True, null=True)
+    meeting_type = models.ForeignKey(
+        MeetingType, blank=True, null=True,
+        help_text=("Type of meeting (i.e. SIG Meeting, "
+                   "Mentorship Meeting, Startup Row, etc.). "
+                   "Leave this empty for the main meeting."))
+    description = models.TextField(blank=True, null=True)
 
     def is_future(self):
         return bool(self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))
@@ -116,14 +162,19 @@ class Topic(CommonModel):
             out += " By: %s" % self.presentors.all()[0].name
         return out
 
-    title = models.CharField(max_length=MAX_LENGTH)
-    presentors = models.ManyToManyField(Presentor, blank=True)
-    meeting = models.ForeignKey(Meeting, blank=True, null=True, related_name='topics')
+    title = models.CharField(
+        max_length=MAX_LENGTH)
+    presentors = models.ManyToManyField(
+        Presentor, blank=True)
+    meeting = models.ForeignKey(
+        Meeting, blank=True, null=True, related_name='topics')
     experience_level = models.CharField(
         "Audience Experience Level",
         max_length=15, blank=True, null=True, choices=EXPERIENCE_LEVELS)
-    license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default='CC BY')
-    length = IntervalField(format="M", blank=True, null=True)
+    license = models.CharField(
+        max_length=50, choices=LICENSE_CHOISES, default='CC BY')
+    length = IntervalField(
+        format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     slides_link = models.URLField(blank=True, null=True)

@@ -5,7 +5,7 @@ import random
 
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.urlresolvers import reverse
 from interval.fields import IntervalField
 
 from chipy_org.libs.models import CommonModel
@@ -123,6 +123,9 @@ class Meeting(CommonModel):
 
     def number_rsvps(self):
         return self.rsvp_set.exclude(response='N').count()
+
+    def get_absolute_url(self):
+        return reverse("meeting", args=[self.id])
 
 
 class Presentor(CommonModel):

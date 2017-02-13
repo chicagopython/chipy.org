@@ -18,9 +18,17 @@ class Home(TemplateView):
         context = {}
         context.update(kwargs)
 
+        # get upcoming main meeting
         future_meetings = Meeting.objects.filter(
             meeting_type__isnull=True).filter(
             when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
+
+        # get next 3 non-main meetings
+        other_meetings = Meeting.objects.filter(
+            meeting_type__isnull=False).filter(
+            when__gt=datetime.datetime.now() - datetime.timedelta(hours=24)
+            ).order_by('when')[:3]
+        context['other_meetings'] = other_meetings
 
         context["general_sponsors"] = GeneralSponsor.objects.all(
             ).order_by('?')

@@ -55,7 +55,8 @@ class MeetingForm(forms.ModelForm):
 
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('when', 'where', 'created', 'modified', 'action')
+    list_display = ['when', 'where', 'created', 'modified', 'action', 'meeting_type']
+    list_filter = ['meeting_type']
     form = MeetingForm
     inlines = [
         TopicInline,

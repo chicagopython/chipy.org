@@ -2,11 +2,7 @@ import datetime
 
 from django.db.models import Sum
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.core.mail import EmailMultiAlternatives
-from django.template import Context
-from django.template.loader import get_template
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
@@ -37,6 +33,12 @@ class PastMeetings(ListView):
     queryset = Meeting.objects.filter(
         when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
+
+
+class MeetingDetail(DetailView):
+    template_name = 'meetings/meetings.html'
+    pk_url_kwarg = 'pk'
+    model = Meeting
 
 
 class ProposeTopic(CreateView):

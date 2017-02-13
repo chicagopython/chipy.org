@@ -9,6 +9,40 @@
 {% block style %}{{ block.super }}
 <style>
 
+section {
+  padding-top: 20px;
+   padding-bottom: 20px;
+}
+
+#section-other-events {
+
+}
+
+.box-button {
+    text-align: center;
+    //font-size: 80px;
+    display: block;
+    height: 120px;
+    width: 120px;
+    margin: 0 auto 10px auto;
+    border: 1px solid #e2e6eb;
+    -webkit-border-radius: 34px;
+    -moz-border-radius: 34px;
+    -ms-border-radius: 34px;
+    border-radius: 34px;
+}
+
+.box-feature {
+
+    display: block;
+    margin: 0 auto 10px auto;
+    border: 1px solid #e2e6eb;
+    -webkit-border-radius: 34px;
+    -moz-border-radius: 34px;
+    -ms-border-radius: 34px;
+    border-radius: 34px;
+    padding: 30px 30px;
+}
 
 </style>
 {% endblock style %}
@@ -26,162 +60,258 @@
             <img src="{% static 'img/chipmunk.png' %}" alt="ChiPy">
         </div>
     </header>
-    <div class="row-fluid">
-        <div class="module span4">
-            <h2>In the Loop</h2>
-            <p>Meetings happen in the downtown area the second Thursday of every month.</p>
 
-            <h3>Next Meeting</h3>
-            {% if next_meeting %}
+    <section>
 
-            {% if next_meeting.description %}
-            <p>{{ next_meeting.description }}</p>
-            {% endif %}
+        <div class="row-fluid">
+            <div class="module span12"><h2>Next Main Meeting</h2></div>
+        </div><!-- #row-fluid -->
 
-            {% endif %}
+        <div class="row-fluid">
+            <div class="module span6">
+                <h3>In the Loop</h3>
+                <p>Meetings happen in the downtown area the second Thursday of every month.</p>
 
-            <p><strong>When: </strong> {{ next_meeting.when|default:'N/A'}}</p>
+                {% if next_meeting %}
 
-            {% if next_meeting %}
-
-            <p><strong>Where: </strong>
-                <a id="where-link" href="#"> {{ next_meeting.where|default:'N/A'}}</a>
-            </p>
-            <p>{{ next_meeting.where.address }}</p>
-
-            {% if next_meeting.where.embed_map %}
-            <div class="google-maps">
-            <p>{{ next_meeting.where.embed_map|safe }}</p>
-            </div>
-            {% endif %}
-
-            {% if next_meeting.where.directions %}
-            <p><strong>Directions:</strong></p>
-            <p>{{ next_meeting.where.directions }}</p>
-            {% endif %}
-
-              <div id="where-dialog" title="Venue" style="display:none">
-                {{ next_meeting.where.name }}<br>
-                {{ next_meeting.where.address }}<br>
-                {% if next_meeting.where.directions %}
-                  {{ next_meeting.where.directions }}<br>
+                {% if next_meeting.description %}
+                <p>{{ next_meeting.description }}</p>
                 {% endif %}
-                {% if next_meeting.where.phone %}
-                  {{ next_meeting.where.phone }}<br>
+
                 {% endif %}
-                {% if next_meeting.where.email %}
-                  {{ next_meeting.where.email }}<br>
-                {% endif %}
-              </div>
 
-              {% if next_meeting.live_stream %}
-                <p><a href="{{ next_meeting.live_stream }}">Live Stream</a><p>
-              {% endif %}
+                <p><strong>When: </strong> {{ next_meeting.when|default:'N/A'}}</p>
 
-              <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
-                {% if rsvp %}
-                  You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
-                  <strong>Change your RSVP: </strong>
-                {% endif %}
-                <a class="btn btn-mini rsvp" data-response="Y">Yes</a>
-                <a class="btn btn-mini rsvp" data-response="M">Maybe</a>
-                <a class="btn btn-mini rsvp" data-response="N">No</a>
-              </p>
-              <div id="anonymous-rsvp-dialog" style="display:none;">
-                <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
-                  {% csrf_token %}
-                  <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
-                  <input type="text" name="name" placeholder="John Smith">
-                  <label for="email">Email</label>
-                  <input type="text" name="email" placeholder="john@example.com">
-                  <input type="hidden" name="meeting" value="{{ next_meeting.pk }}">
-                  <input type="hidden" name="response" value="Y">
-                  {% if not request.user.is_authenticated %}
-                    {{ rsvp_form.captcha }}
-                  {% endif %}
-                  <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
-                </form>
-              </div>
-              <p>{{ next_meeting.number_rsvps }} going so far</p>
+                {% if next_meeting %}
 
-              <p><a href="{% url 'past_meetings' %}">Past Meetings &raquo;</a></p>
-
-              {% with next_meeting.meeting_sponsors.all as sponsors %}
-              {% if sponsors %}
-              <div><strong>Meeting Sponsors:</strong>
-                  {% for meeting_sponsor in sponsors %}
-                     <div class="sponsor-home-block">
-                         {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
-                          <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
-                         {% endthumbnail %}
-                         <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
-                         <span class="sponsor-home-about">
-                             {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
-                         </span>
-                     </div>
-                  {% endfor %}
-              </div>
-              {% endif %}
-              {% endwith %}
-
-            {% else %}
-                <p><strong>Where:</strong>{{ next_meeting.where|default:'N/A'}}</p>
-                <p><a href="{% url 'past_meetings' %}">Past Meetings</a></p>
-                {% if request.user.is_staff %}
-                  <p>
-                    <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
+                  <p><strong>Where: </strong>
+                    <a id="where-link" href="#"> {{ next_meeting.where|default:'N/A'}}</a>
                   </p>
+                  <p>{{ next_meeting.where.address }}</p>
+
+                  {% if next_meeting.where.embed_map %}
+                  <div class="google-maps">
+                  <p>{{ next_meeting.where.embed_map|safe }}</p>
+                  </div>
+                  {% endif %}
+
+                  {% if next_meeting.where.directions %}
+                  <p><strong>Directions:</strong></p>
+                  <p>{{ next_meeting.where.directions }}</p>
+                  {% endif %}
+
+                  <div id="where-dialog" title="Venue" style="display:none">
+                    {{ next_meeting.where.name }}<br>
+                    {{ next_meeting.where.address }}<br>
+                    {% if next_meeting.where.directions %}
+                      {{ next_meeting.where.directions }}<br>
+                    {% endif %}
+                    {% if next_meeting.where.phone %}
+                      {{ next_meeting.where.phone }}<br>
+                    {% endif %}
+                    {% if next_meeting.where.email %}
+                      {{ next_meeting.where.email }}<br>
+                    {% endif %}
+                  </div>
+
+                  {% if next_meeting.live_stream %}
+                    <p><a href="{{ next_meeting.live_stream }}">Live Stream</a><p>
+                  {% endif %}
+
+                  <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
+                    {% if rsvp %}
+                      You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
+                      <strong>Change your RSVP: </strong>
+                    {% endif %}
+                    <a class="btn btn-mini rsvp" data-response="Y">Yes</a>
+                    <a class="btn btn-mini rsvp" data-response="M">Maybe</a>
+                    <a class="btn btn-mini rsvp" data-response="N">No</a>
+                  </p>
+                  <div id="anonymous-rsvp-dialog" style="display:none;">
+                    <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
+                      {% csrf_token %}
+                      <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
+                      <input type="text" name="name" placeholder="John Smith">
+                      <label for="email">Email</label>
+                      <input type="text" name="email" placeholder="john@example.com">
+                      <input type="hidden" name="meeting" value="{{ next_meeting.pk }}">
+                      <input type="hidden" name="response" value="Y">
+                      {% if not request.user.is_authenticated %}
+                        {{ rsvp_form.captcha }}
+                      {% endif %}
+                      <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
+                      <a class="btn btn-primary" href="{% url 'meeting' next_meeting.id %}">Details</a>
+                    </form>
+                  </div>
+                  <p>{{ next_meeting.number_rsvps }} going so far</p>
+
+                  <p>
+                      <a class="btn btn-primary" href="{% url 'meeting' next_meeting.pk %}">Details</a>
+                      <a class="btn btn-primary" href="{% url 'past_meetings' %}">Past Meetings &raquo;</a>
+                  </p>
+                  {% with next_meeting.meeting_sponsors.all as sponsors %}
+                  {% if sponsors %}
+                  <div><strong>Meeting Sponsors:</strong>
+                      {% for meeting_sponsor in sponsors %}
+                         <div class="sponsor-home-block">
+                             {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
+                              <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}"><img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }} (Sponsor)"></a>
+                             {% endthumbnail %}
+                             <span><a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a></span>
+                             <span class="sponsor-home-about">
+                                 {% if meeting_sponsor.about_short %}: {{ meeting_sponsor.about_short }}{% endif %}
+                             </span>
+                         </div>
+                      {% endfor %}
+                  </div>
+                  {% endif %}
+                  {% endwith %}
+
+                {% else %}
+                    <p><strong>Where: </strong>{{ next_meeting.where|default:'N/A'}}</p>
+                    <p><a href="{% url 'past_meetings' %}">Past Meetings</a></p>
+                    {% if request.user.is_staff %}
+                      <p>
+                        <a class="btn btn-primary" href="{% url 'admin:meetings_meeting_add' %}">Create Meeting</a>
+                      </p>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
 
-            {% if general_sponsors %}
-            <h2>Platinum Sponsors</h2>
-            {% for general_sponsor in general_sponsors %}
-              <div class="sponsor-home-block">
-                 {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
-                 <div class="sponsor-home-image">
-                     <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
-                         <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
-                     </a>
-                 </div>
-                 {% endthumbnail %}
-              </div>
+
+            </div><!--/span-->
+
+            <div class="module span6">
+                <h3>This Month's Topics</h3>
+                <ul>
+                  {% for topic in next_meeting.topics_list %}
+                    <li>
+                      <strong>{{ topic.title }}</strong><br />
+                      {% if topic.length %}
+                        ({{ topic.length }} Minutes)<br />
+                      {% endif %}
+                      By: {% for presenter in topic.presentors.all %}
+                            {{presenter.name}} {% if not forloop.last %}, {% endif %}
+                          {% endfor %}<br />
+                      {% if topic.experience_level %}
+                      Experience Level: {{ topic.get_experience_level_display }}<br />
+                      {% endif %}
+                      {{ topic.description }}
+                    </li>
+                  {% endfor %}
+                </ul>
+            </div><!--/span-->
+        </div><!-- #row-fluid -->
+    </section>
+
+
+    <section id="section-other-events">
+        <div class="row-fluid">
+            <div class="module span12"><h2>Other Events</h2></div>
+        </div><!-- #row-fluid -->
+
+        <div class="row-fluid">
+            {% for meeting in other_meetings %}
+            <div class="module span4 box-feature">
+
+                {% if meeting.description %}
+                <p>{{ meeting.description }}</p>
+                {% endif %}
+
+                <p><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
+                <p><strong>Where: </strong>
+                  <a id="where-link" href="#"> {{ meeting.where|default:'N/A'}}</a>
+                </p>
+
+                {% if meeting.where %}
+
+                    {% if meeting.where.directions %}
+                    <p><strong>Directions:</strong></p>
+                    <p>{{ meeting.where.directions }}</p>
+                    {% endif %}
+
+                    <p>
+                      {{ meeting.where.address }}<br>
+                      {% if meeting.where.directions %}
+                        {{ meeting.where.directions }}<br>
+                      {% endif %}
+                      {% if meeting.where.phone %}
+                        {{ meeting.where.phone }}<br>
+                      {% endif %}
+                      {% if meeting.where.email %}
+                        {{ meeting.where.email }}<br>
+                      {% endif %}
+                  </p>
+
+                {% endif %}
+
+                <a class="btn btn-primary" href="{% url 'meeting' meeting.id %}">Details</a>
+
+            </div>
             {% endfor %}
-            {% endif %}
+        </div><!-- #row-fluid -->
+    </section>
 
-        </div><!--/span-->
-        <div class="module span4">
-            <h2>This Month's Topics</h2>
-            <ul>
-              {% for topic in next_meeting.topics_list %}
-                <li>
-                  <strong>{{ topic.title }}</strong><br />
-                  {% if topic.length %}
-                    ({{ topic.length }} Minutes)<br />
-                  {% endif %}
-                  By: {% for presenter in topic.presentors.all %}
-                        {{presenter.name}} {% if not forloop.last %}, {% endif %}
-                      {% endfor %}<br />
-                  {% if topic.experience_level %}
-                  Experience Level: {{ topic.get_experience_level_display }}<br />
-                  {% endif %}
-                  {{ topic.description }}
-                </li>
-              {% endfor %}
-            </ul>
-        </div><!--/span-->
-        <div class="module span4">
-            <h2>IRC</h2>
-            <p>Some of us like to hang out in the IRC #chipy channel on irc.freenode.net</p>
-            <p><a class="btn" href="irc://irc.freenode.net/chipy">Start chatting &raquo;</a></p>
-            <h2>Mailing List</h2>
-            <p>Sign up to join the discussion.</p>
-            <p><a class="btn" href="http://mail.python.org/mailman/listinfo/chicago">Sign up &raquo;</a></p>
-            <a class="twitter-timeline"  href="https://twitter.com/search?q=%40ChicagoPython+%23ChiPy"  data-widget-id="426812787017281536">Tweets about "@brianray #ChiPy"</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div><!--/span-->
-    </div><!-- #row-fluid -->
-    <hr>
+
+    <section>
+        <div class="row-fluid">
+            <div class="module span12"><h2>Participate</h2></div>
+        </div><!-- #row-fluid -->
+
+        <div class="row-fluid">
+            <div class="module span3"><a class="box-button" href="https://github.com/chicagopython/chipy.org">Github</a></div>
+            <div class="module span3"><a class="box-button" href="https://mail.python.org/mailman/listinfo/chicago">Mailing List</a></div>
+            <div class="module span3"><a class="box-button" href="https://www.meetup.com/_ChiPy_/">Meetup</a></div>
+            <div class="module span3"><a class="box-button" href="https://twitter.com/chicagopython">Twitter</a></div>
+        </div>
+
+    </section>
+    <section>
+
+        <div class="row-fluid">
+            <div class="module span6">
+                <h3>IRC</h3>
+                <p>Some of us like to hang out in the IRC #chipy channel on irc.freenode.net</p>
+                <p><a class="btn" href="irc://irc.freenode.net/chipy">Start chatting &raquo;</a></p>
+                <h3>Mailing List</h3>
+                <p>Sign up to join the discussion.</p>
+                <p><a class="btn" href="http://mail.python.org/mailman/listinfo/chicago">Sign up &raquo;</a></p>
+            </div>
+            <div class="module span6">
+                <a class="twitter-timeline"  href="https://twitter.com/search?q=%40ChicagoPython+%23ChiPy"  data-widget-id="426812787017281536">Tweets about "@brianray #ChiPy"</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </div><!--/span-->
+        </div><!-- #row-fluid -->
+    </section>
+
+
+    <section>
+        <div class="row-fluid">
+            <div class="module span12"><h2>Sponsors</h2></div>
+        </div><!-- #row-fluid -->
+
+        <div class="row-fluid">
+            <div class="module span12">
+
+                {% if general_sponsors %}
+                <h3>Platinum Sponsors</h3>
+                {% for general_sponsor in general_sponsors %}
+                  <div class="sponsor-home-block">
+                     {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
+                     <div class="sponsor-home-image">
+                         <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
+                             <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
+                         </a>
+                     </div>
+                     {% endthumbnail %}
+                  </div>
+                {% endfor %}
+                {% endif %}
+
+            </div><!--/span-->
+        </div><!-- #row-fluid -->
+    </section>
+
+<hr>
 {% endblock %}
 {% block extra_jquery %}
 {% include "_homepage.js" %}

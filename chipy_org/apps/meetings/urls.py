@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .feeds import MeetingFeed
 from .views import (
     PastMeetings,
+    MeetingDetail,
     ProposeTopic,
     MyTopics,
     RSVP,
@@ -17,6 +18,10 @@ urlpatterns = [
         MeetingFeed()),
     url(r'^past/$',
         PastMeetings.as_view(), name='past_meetings'),
+
+    url(r'^(?P<pk>[0-9]*)/$',
+        MeetingDetail.as_view(), name='meeting'),
+
     url(r'^rsvp/$',
         RSVP.as_view(), name='rsvp'),
     url(r'^rsvp/anonymous/$',

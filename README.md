@@ -81,7 +81,6 @@ I recommend keeping your development DB as close to production as possible. If y
 
 You will need to run::
 
-    (venv)$ python manage.py syncdb
     (venv)$ python manage.py migrate
 
 Running a web server
@@ -105,7 +104,6 @@ Heroku Commands
     heroku run python manage.py collectstatic --noinput
 
     # Set sync and migrate the database
-    heroku run python manage.py syncdb
     heroku run python manage.py migrate
 
     # Set environment variable on Heroku

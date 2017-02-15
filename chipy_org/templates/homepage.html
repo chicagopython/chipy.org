@@ -18,6 +18,32 @@ section {
 
 }
 
+hr {
+    border-top: #d8e6ff;
+}
+
+.icon {
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+    background-position: center center;
+}
+
+#icon-github {
+    background-image: url('/static/icons/github-square-social-media.svg');
+}
+
+#icon-mail {
+    background-image: url('/static/icons/mail-square-social-media.svg');
+}
+
+#icon-twitter {
+    background-image: url('/static/icons/twitter-square-social-media.svg');
+}
+
+#icon-meetup {
+    background-image: url('/static/icons/meetup-logo.svg');
+}
+
 .box-button {
     text-align: center;
     //font-size: 80px;
@@ -26,17 +52,33 @@ section {
     width: 120px;
     margin: 0 auto 10px auto;
     border: 1px solid #e2e6eb;
+    background-color: #eff5ff;
+    text-decoration: none;
+
+    //display: table-cell;
+    vertical-align: middle;
+
     -webkit-border-radius: 34px;
     -moz-border-radius: 34px;
     -ms-border-radius: 34px;
     border-radius: 34px;
 }
 
+.box-button span {
+    background-color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    padding: 2px;
+}
+
 .box-feature {
 
     display: block;
     margin: 0 auto 10px auto;
-    border: 1px solid #e2e6eb;
+    border: 1px solid #d8e6ff;
+    background-color: #eff5ff;
     -webkit-border-radius: 34px;
     -moz-border-radius: 34px;
     -ms-border-radius: 34px;
@@ -206,13 +248,17 @@ section {
 
     <section id="section-other-events">
         <div class="row-fluid">
-            <div class="module span12"><h2>Other Events</h2></div>
+            <div class="module span12"><h2>Upcoming Events</h2></div>
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">
             {% for meeting in other_meetings %}
             <div class="module span4 box-feature">
 
+                {% if meeting.meeting_type %}
+                <h4>{{ meeting.meeting_type.name }}</h4>
+                {% endif %}
+                <hr />
                 {% if meeting.description %}
                 <p>{{ meeting.description }}</p>
                 {% endif %}
@@ -258,10 +304,10 @@ section {
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">
-            <div class="module span3"><a class="box-button" href="https://github.com/chicagopython/chipy.org">Github</a></div>
-            <div class="module span3"><a class="box-button" href="https://mail.python.org/mailman/listinfo/chicago">Mailing List</a></div>
-            <div class="module span3"><a class="box-button" href="https://www.meetup.com/_ChiPy_/">Meetup</a></div>
-            <div class="module span3"><a class="box-button" href="https://twitter.com/chicagopython">Twitter</a></div>
+            <div class="module span3"><a id="icon-github" class="icon box-button" href="https://github.com/chicagopython/chipy.org"></a></div>
+            <div class="module span3"><a id="icon-mail" class="icon box-button" href="https://mail.python.org/mailman/listinfo/chicago"></a></div>
+            <div class="module span3"><a id="icon-meetup" class="icon box-button" href="https://www.meetup.com/_ChiPy_/"></a></div>
+            <div class="module span3"><a id="icon-twitter" class="icon box-button" href="https://twitter.com/chicagopython"></a></div>
         </div>
 
     </section>

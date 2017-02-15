@@ -21,6 +21,9 @@ section {
 hr {
     border-top: #d8e6ff;
 }
+h2 a {
+    text-decoration: none;
+}
 
 .icon {
     background-repeat: no-repeat;
@@ -93,9 +96,16 @@ hr {
     <header id="home-header" class="row-fluid">
         <div class="span6">
             <div id="home-content">
-              <h1>Welcome to ChiPy</h1>
-              <p>{% flatblock "homepage_welcome_text" %}</p>
-              <a class="btn" href="/about/">Learn more &raquo;</a>
+              {% if announcement %}
+                  <h4>{{ announcement.headline }}</h4>
+                  <p>
+                      {{ announcement.text|safe }}
+                  </p>
+                  {% if announcement.link %}
+                  <a class="btn" href="{{ announcement.link }}">Learn more &raquo;</a>
+                  {% endif %}
+              {% endif %}
+              <a class="btn" href="{% url 'announcements_list' %}">Past Announcements &raquo;</a>
             </div>
         </div>
         <div class="span6">
@@ -106,7 +116,7 @@ hr {
     <section>
 
         <div class="row-fluid">
-            <div class="module span12"><h2>Next Main Meeting</h2></div>
+            <div class="module span12"><h2><a name="next-meeting">Next Main Meeting</a></h2></div>
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">
@@ -183,13 +193,16 @@ hr {
                       {% endif %}
                       <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
                       <a class="btn btn-primary" href="{% url 'meeting' next_meeting.id %}">Details</a>
+                      <a class="btn btn-primary" href="{% url 'propose_topic' %}">Present</a>
                     </form>
                   </div>
                   <p>{{ next_meeting.number_rsvps }} going so far</p>
 
                   <p>
                       <a class="btn btn-primary" href="{% url 'meeting' next_meeting.pk %}">Details</a>
+                      <a class="btn btn-primary" href="{% url 'propose_topic' %}">Present</a>
                       <a class="btn btn-primary" href="{% url 'past_meetings' %}">Past Meetings &raquo;</a>
+
                   </p>
                   {% with next_meeting.meeting_sponsors.all as sponsors %}
                   {% if sponsors %}
@@ -248,7 +261,7 @@ hr {
 
     <section id="section-other-events">
         <div class="row-fluid">
-            <div class="module span12"><h2>Upcoming Events</h2></div>
+            <div class="module span12"><h2><a name="upcoming-events">Upcoming Events</a></h2></div>
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">
@@ -297,10 +310,16 @@ hr {
         </div><!-- #row-fluid -->
     </section>
 
+    <section>
+        <div class="row-fluid">
+            <div class="module span12"><h2><a name="about">About</a></h2></div>
+        </div><!-- #row-fluid -->
+        <p>{% flatblock "homepage_welcome_text" %}</p>
+    </section>
 
     <section>
         <div class="row-fluid">
-            <div class="module span12"><h2>Participate</h2></div>
+            <div class="module span12"><h2><a name="participate">Participate</a></h2></div>
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">
@@ -309,10 +328,9 @@ hr {
             <div class="module span3"><a id="icon-meetup" class="icon box-button" href="https://www.meetup.com/_ChiPy_/"></a></div>
             <div class="module span3"><a id="icon-twitter" class="icon box-button" href="https://twitter.com/chicagopython"></a></div>
         </div>
-
     </section>
-    <section>
 
+    <section>
         <div class="row-fluid">
             <div class="module span6">
                 <h3>IRC</h3>
@@ -332,7 +350,7 @@ hr {
 
     <section>
         <div class="row-fluid">
-            <div class="module span12"><h2>Sponsors</h2></div>
+            <div class="module span12"><h2><a name="sponsors">Sponsors</a></h2></div>
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">

@@ -1,0 +1,25 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Recent Topics" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="span12 talk-list">
+    <h1>
+        Past Announcements
+    </h1>
+    {% for announcement in announcements %}
+        <h4>{{ announcement.headline }}</h4>
+        <h5>{{ announcement.created }}</h5>
+        <p>
+            {{ announcement.text|safe }}
+        </p>
+        <hr />
+    {% endfor %}
+  </div>
+</div>
+{% endblock body %}

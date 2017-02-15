@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting, RSVP
 from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
 from chipy_org.apps.sponsors.models import GeneralSponsor
+from chipy_org.apps.announcements.models import Announcement
 
 
 class Home(TemplateView):
@@ -60,7 +61,12 @@ class Home(TemplateView):
             else:
                 context['rsvp_form'] = AnonymousRSVPForm(self.request)
 
+        try:
+            context['announcement'] = Announcement.objects.all().order_by('-created')[0]
+        except IndexError:
+            context['announcement'] = None
         return context
+
 
 def custom_500(request):
     t = loader.get_template('500.html')

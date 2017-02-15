@@ -13,6 +13,9 @@
                 </a>
                 <ul class="dropdown-menu">
                     {% block user_links %}
+                        {% if user.is_authenticated %}
+                          <li><a href="{% url 'my_topics' %}"><i class="icon-certificate"></i> {% trans "My Talks" %}</a></li>
+                        {% endif %}
                         <li><a href="{% url "profiles:edit" %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
                         {% if user.is_staff %}
                             <li><a href="{% url "admin:index" %}"><i class="icon-cog"></i> {% trans "Admin" %}</a></li>

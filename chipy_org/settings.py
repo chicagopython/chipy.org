@@ -221,12 +221,14 @@ INSTALLED_APPS = [
     'storages',
     'tinymce',
     "sorl.thumbnail",
+    "ckeditor",
 
     # theme
     'django_forms_bootstrap',
 
     # project
     'chipy_org.apps.main',
+    'chipy_org.apps.announcements',
     'chipy_org.apps.about',
     'chipy_org.apps.contact',
     'chipy_org.apps.meetings',

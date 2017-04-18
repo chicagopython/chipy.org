@@ -113,10 +113,10 @@ h2 a {
         </div>
     </header>
 
-    <section>
+    <section itemscope itemtype="http://schema.org/Event">
 
         <div class="row-fluid">
-            <div class="module span12"><h2><a name="next-meeting">Next Main Meeting</a></h2></div>
+            <div itemprop="name" class="module span12"><h2><a name="next-meeting">Next Main Meeting</a></h2></div>
         </div><!-- #row-fluid -->
 
         <div class="row-fluid">
@@ -127,16 +127,16 @@ h2 a {
                 {% if next_meeting %}
 
                 {% if next_meeting.description %}
-                <p>{{ next_meeting.description }}</p>
+                <p itemprop="description">{{ next_meeting.description }}</p>
                 {% endif %}
 
                 {% endif %}
 
-                <p><strong>When: </strong> {{ next_meeting.when|default:'N/A'}}</p>
+                <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ next_meeting.when|default:'N/A'}}</p>
 
                 {% if next_meeting %}
 
-                  <p><strong>Where: </strong>
+                  <p itemprop="address"><strong>Where: </strong>
                     <a id="where-link" href="#"> {{ next_meeting.where|default:'N/A'}}</a>
                   </p>
                   <p>{{ next_meeting.where.address }}</p>
@@ -266,18 +266,18 @@ h2 a {
 
         <div class="row-fluid">
             {% for meeting in other_meetings %}
-            <div class="module span4 box-feature">
+            <div class="module span4 box-feature" itemscope itemtype="http://schema.org/Event">
 
                 {% if meeting.meeting_type %}
-                <h4>{{ meeting.meeting_type.name }}</h4>
+                <h4 itemprop="name">{{ meeting.meeting_type.name }}</h4>
                 {% endif %}
                 <hr />
                 {% if meeting.description %}
-                <p>{{ meeting.description }}</p>
+                <p itemprop="description">{{ meeting.description }}</p>
                 {% endif %}
 
-                <p><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
-                <p><strong>Where: </strong>
+                <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
+                <p itemprop="address"><strong>Where: </strong>
                   <a id="where-link" href="#"> {{ meeting.where|default:'N/A'}}</a>
                 </p>
 

@@ -11,7 +11,7 @@
 
 section {
   padding-top: 20px;
-   padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 #section-other-events {
@@ -89,10 +89,19 @@ h2 a {
     padding: 30px 30px;
 }
 
+.morecontent span {
+    display: none;
+}
+.morelink {
+    display: block;
+}
+
 </style>
 {% endblock style %}
 
 {% block body %}
+<div id="homepage">
+
     <header id="home-header" class="row-fluid">
         <div class="span6">
             <div id="home-content">
@@ -241,16 +250,13 @@ h2 a {
                   {% for topic in next_meeting.topics_list %}
                     <li>
                       <strong>{{ topic.title }}</strong><br />
-                      {% if topic.length %}
-                        ({{ topic.length }} Minutes)<br />
-                      {% endif %}
                       By: {% for presenter in topic.presentors.all %}
                             {{presenter.name}} {% if not forloop.last %}, {% endif %}
                           {% endfor %}<br />
                       {% if topic.experience_level %}
                       Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
-                      {{ topic.description }}
+                      <span  class="more">{{ topic.description }}</span>
                     </li>
                   {% endfor %}
                 </ul>
@@ -270,6 +276,9 @@ h2 a {
 
                 {% if meeting.meeting_type %}
                 <h4 itemprop="name">{{ meeting.meeting_type.name }}</h4>
+
+                {% if meeting.meeting_type.subgroup %}<p><a href="{% url 'groups' meeting.meeting_type.subgroup.slug %}">{{ meeting.meeting_type.subgroup.name }}</a></p>{% endif %}
+
                 {% endif %}
                 <hr />
                 {% if meeting.description %}
@@ -304,7 +313,7 @@ h2 a {
                 {% endif %}
 
                 <a class="btn btn-primary" href="{% url 'meeting' meeting.id %}">Details</a>
-
+                {% if meeting.meetup_id %}<a class="btn btn-primary" href="{{ meeting.meetup_url }}">Meetup</a>{% endif %}
             </div>
             {% endfor %}
         </div><!-- #row-fluid -->
@@ -333,6 +342,10 @@ h2 a {
     <section>
         <div class="row-fluid">
             <div class="module span6">
+                <h3>Slack</h3>
+                <p>
+                    ChiPy has an official <a href="https://chipy.slack.com">Slack group</a>.
+                </p>
                 <h3>IRC</h3>
                 <p>Some of us like to hang out in the IRC #chipy channel on irc.freenode.net</p>
                 <p><a class="btn" href="irc://irc.freenode.net/chipy">Start chatting &raquo;</a></p>
@@ -376,7 +389,48 @@ h2 a {
     </section>
 
 <hr>
+
+</div>
 {% endblock %}
 {% block extra_jquery %}
 {% include "_homepage.js" %}
+
+$(document).ready(function() {
+    // Source: https://codepen.io/maxds/pen/jgeoA
+    // Configure/customize these variables.
+    var showChar = 140;  // How many characters are shown by default
+    var ellipsestext = "...";
+    var moretext = "[more]";
+    var lesstext = "[less]";
+
+
+    $('.more').each(function() {
+        var content = $(this).html();
+
+        if(content.length > showChar) {
+
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar, content.length - showChar);
+
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+
+            $(this).html(html);
+        }
+
+    });
+
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+
 {% endblock %}

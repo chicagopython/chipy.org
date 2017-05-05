@@ -22,8 +22,9 @@ from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
 from .models import (
     Meeting,
     Topic,
-    Presentor
+    Presentor,
 )
+
 from .models import RSVP as RSVPModel
 from .serializers import MeetingSerializer
 
@@ -36,7 +37,7 @@ class PastMeetings(ListView):
 
 
 class MeetingDetail(DetailView):
-    template_name = 'meetings/meetings.html'
+    template_name = 'meetings/meeting.html'
     pk_url_kwarg = 'pk'
     model = Meeting
 

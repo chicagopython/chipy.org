@@ -53,21 +53,6 @@ class Venue(CommonModel):
     link = models.URLField(blank=True, null=True)
 
 
-class SubGroup(CommonModel):
-
-    name = models.CharField(max_length=64)
-    slug = models.SlugField(max_length=64, unique=True)
-    description = models.TextField(blank=True, null=True)
-    organizers = models.ManyToManyField(User, blank=True)
-
-    def __unicode__(self):
-        return "%s | (%s)" % (self.id, self.name)
-
-    class Meta(object):
-        verbose_name = "Sub Group (SIG)"
-        verbose_name_plural = "Sub Groups (SIGs)"
-
-
 class MeetingType(CommonModel):
     """
     This model contains entries for different meeting types.
@@ -78,7 +63,7 @@ class MeetingType(CommonModel):
     """
 
     subgroup = models.ForeignKey(
-        SubGroup, blank=True, null=True,
+        'subgroups.SubGroup', blank=True, null=True,
         help_text='Optional Sub-group (i.e. SIG)')
     name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, unique=True)
@@ -127,6 +112,9 @@ class Meeting(CommonModel):
 
     def get_absolute_url(self):
         return reverse("meeting", args=[self.id])
+
+    def meetup_url(self):
+        return "https://www.meetup.com/_ChiPy_/events/{}/".format(self.meetup_id)
 
 
 class Presentor(CommonModel):

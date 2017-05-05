@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import (
-    Meeting, Venue, Topic, Presentor, RSVP, SubGroup, MeetingType)
+    Meeting, Venue, Topic, Presentor, RSVP, MeetingType)
 
 
 class VenueAdmin(admin.ModelAdmin):
@@ -95,10 +95,9 @@ class RSVPAdmin(admin.ModelAdmin):
     list_filter = ['response']
 
 
-class SubGroupAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'slug']
+class MeetingTypeAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'slug']
-    filter_horizontal = ['organizers']
+    prepopulated_fields = {"slug": ("name",)}
 
 
 admin.site.register(Venue, VenueAdmin)
@@ -106,5 +105,4 @@ admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Presentor, PresentorAdmin)
 admin.site.register(RSVP, RSVPAdmin)
-admin.site.register(MeetingType)
-admin.site.register(SubGroup, SubGroupAdmin)
+admin.site.register(MeetingType, MeetingTypeAdmin)

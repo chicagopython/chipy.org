@@ -11,7 +11,7 @@
 <hr>
 {% for meeting in meeting_list %}
 <div>
-<h2>{{ meeting }}</h2>
+<h2><a href="{% url 'meeting' meeting.id %}">{{ meeting }}</a></h2>
 {% for topic in meeting.topics.all %}
   {% if topic.approved %}
     <div class="topic">

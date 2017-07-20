@@ -146,6 +146,12 @@ EXPERIENCE_LEVELS = (
 )
 
 
+class TopicsQuerySet(models.QuerySet):
+
+    def active(self):
+        return self.filter(approved=True).order_by('start_time')
+
+
 class Topic(CommonModel):
 
     def __unicode__(self):
@@ -172,6 +178,8 @@ class Topic(CommonModel):
     slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
     approved = models.BooleanField(default=False)
+
+    objects = TopicsQuerySet.as_manager()
 
 
 class RSVP(CommonModel):

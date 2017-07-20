@@ -57,7 +57,7 @@
             <h4>Topics</h4>
             <hr />
             <ul>
-              {% for topic in meeting.topics_list %}
+              {% for topic in meeting.topics.active %}
                 <li>
                   <strong>{{ topic.title }}</strong><br />
                   {% if topic.length %}

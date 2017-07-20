@@ -201,8 +201,6 @@ h2 a {
                         {{ rsvp_form.captcha }}
                       {% endif %}
                       <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
-                      <a class="btn btn-primary" href="{% url 'meeting' next_meeting.id %}">Details</a>
-                      <a class="btn btn-primary" href="{% url 'propose_topic' %}">Present</a>
                     </form>
                   </div>
                   <p>{{ next_meeting.number_rsvps }} going so far</p>
@@ -247,7 +245,7 @@ h2 a {
             <div class="module span6">
                 <h3>This Month's Topics</h3>
                 <ul>
-                  {% for topic in next_meeting.topics_list %}
+                  {% for topic in next_meeting.topics.active %}
                     <li>
                       <strong>{{ topic.title }}</strong><br />
                       By: {% for presenter in topic.presentors.all %}

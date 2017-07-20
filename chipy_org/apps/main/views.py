@@ -38,19 +38,14 @@ class Home(TemplateView):
             context['next_meeting'] = False
         else:
             next_meeting = future_meetings.order_by('when')[0]
-            next_meeting.topics_list = list()
-            for topic in next_meeting.topics.filter(approved=True).order_by('start_time'):
-                topic.minutes = topic.length.seconds / 60
-                next_meeting.topics_list.append(topic)
-
             context['next_meeting'] = next_meeting
 
             # Check if user and get rsvp
             if self.request.user.is_authenticated():
                 # Is there already an RSVP
                 if RSVP.objects.filter(
-                    meeting=next_meeting,
-                    user=self.request.user).exists():
+                        meeting=next_meeting,
+                        user=self.request.user).exists():
                     context['rsvp'] = RSVP.objects.get(
                         meeting=next_meeting,
                         user=self.request.user)

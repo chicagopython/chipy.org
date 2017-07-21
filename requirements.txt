@@ -1,7 +1,7 @@
 Django>=1.7.0,<1.9.0
 Pillow==4.1.1
 Werkzeug==0.10.4
-boto==1.11.3
+boto==2.48.0
 dj-database-url==0.4.2
 django-admin-tools==0.8.1
 django-ckeditor==5.2.2

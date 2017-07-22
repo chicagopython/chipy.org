@@ -12,7 +12,8 @@ class TopicForm(ModelForm):
         'experience_level',
     )
 
-    meeting = ModelChoiceField(queryset=Meeting.objects.filter(when__gt=datetime.datetime.now()))
+    meeting = ModelChoiceField(queryset=Meeting.objects.filter(
+        when__gt=datetime.datetime.now()))
 
     def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)

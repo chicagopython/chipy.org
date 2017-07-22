@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
-import interval.fields
 
 
 class Migration(migrations.Migration):
@@ -70,7 +69,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=255)),
                 ('license', models.CharField(default='CC BY', max_length=50, choices=[('CC BY', 'Creative Commons: Attribution'), ('CC BY-SA', 'Creative Commons: Attribution-ShareAlike'), ('CC BY-ND', 'Creative Commons: Attribution-NoDerivs'), ('CC BY-NC', 'Creative Commons: Attribution-NonCommercial'), ('CC BY-NC-SA', 'Creative Commons: Attribution-NonCommercial-ShareAlike'), ('CC BY-NC-ND', 'Creative Commons: Attribution-NonCommercial-NoDerivs'), ('All Rights Reserved', 'All Rights Reserved')])),
-                ('length', interval.fields.IntervalField(null=True, blank=True)),
+                ('length', models.DurationField(null=True, blank=True)),
                 ('embed_video', models.TextField(null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),
                 ('slides_link', models.URLField(null=True, blank=True)),

@@ -6,7 +6,6 @@ import random
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from interval.fields import IntervalField
 
 
 from chipy_org.libs.models import CommonModel
@@ -99,7 +98,8 @@ class Meeting(CommonModel):
     description = models.TextField(blank=True, null=True)
 
     def is_future(self):
-        return bool(self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))
+        return bool(
+            self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))
 
     def rsvp_user_yes(self):
         raise NotImplementedError
@@ -154,11 +154,11 @@ class TopicsQuerySet(models.QuerySet):
 
 class Topic(CommonModel):
 
-    def __unicode__(self):
-        out = self.title
-        if self.presentors.count():
-            out += " By: %s" % self.presentors.all()[0].name
-        return out
+    # def __unicode__(self):
+    #     out = self.title
+    #     if self.presentors.count():
+    #         out += " By: %s" % self.presentors.all()[0].name
+    #     return out
 
     title = models.CharField(
         max_length=MAX_LENGTH)
@@ -171,8 +171,8 @@ class Topic(CommonModel):
         max_length=15, blank=True, null=True, choices=EXPERIENCE_LEVELS)
     license = models.CharField(
         max_length=50, choices=LICENSE_CHOISES, default='CC BY')
-    length = IntervalField(
-        format="M", blank=True, null=True)
+    length = models.DurationField(
+        blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     slides_link = models.URLField(blank=True, null=True)

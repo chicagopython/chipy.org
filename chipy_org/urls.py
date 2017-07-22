@@ -3,7 +3,8 @@ from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.views.generic import TemplateView
-
+from django.contrib.auth.views import login, logout
+from django.views.static import serve
 from chipy_org.apps.contact.views import ChipyContactView
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
@@ -12,17 +13,16 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'', include('chipy_org.apps.main.urls')),
-    url(r'', include('social_auth.urls')),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^accounts/login/$', login),
     url(r'^login/{0,1}$', TemplateView.as_view(template_name='login.html')),
-    url(r'^grappelli/', include('grappelli.urls')),
+    url(r'^logout', logout, {'next_page': '/'}),
     url(r'^meetings/', include('chipy_org.apps.meetings.urls')),
     url(r'^groups/', include('chipy_org.apps.subgroups.urls')),
     url(r'^announcements/', include('chipy_org.apps.announcements.urls')),
     url(r'^profiles/', include('chipy_org.apps.profiles.urls', namespace="profiles")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^about/', include('chipy_org.apps.about.urls')),
-    url(r'^logout', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^contact/', ChipyContactView.as_view(), name="contact"),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
@@ -38,7 +38,7 @@ urlpatterns += [
 
 if settings.SERVE_MEDIA:
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        url(r'^media/(?P<path>.*)$', serve,
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
     ]
     urlpatterns += staticfiles_urlpatterns()

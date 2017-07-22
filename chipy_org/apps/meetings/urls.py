@@ -15,7 +15,7 @@ from .views import (
 urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^ical/$',
-        MeetingFeed()),
+        MeetingFeed(), name="ical_feed"),
     url(r'^past/$',
         PastMeetings.as_view(), name='past_meetings'),
 

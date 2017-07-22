@@ -23,13 +23,16 @@ class TopicInline(admin.StackedInline):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('id', 'approved', 'title', 'experience_level', 'meeting', 'created')
+    list_display = (
+        'id', 'approved', 'title', 'experience_level', 'meeting', 'created')
     readonly_fields = ['get_presenters', 'modified', 'created', ]
     list_filter = ['approved', 'experience_level']
     search_fields = ['title']
-    filter_horizontal = ['presentors']
+    filter_horizontal = ['presentors', ]
 
     def get_presenters(self, obj):
+        if not obj:
+            return ""
         return format_html(" &bull; ".join(
             ["<a href='%s'>%s</a>" % (
                 reverse("admin:meetings_presentor_change", args=[p.id]), p)
@@ -46,7 +49,9 @@ class MeetingForm(forms.ModelForm):
 
     def clean_key(self):
         if not self.cleaned_data['key']:
-            return ''.join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
+            return ''.join(
+                random.choice(
+                    string.digits + string.ascii_lowercase) for x in range(40))
         return self.cleaned_data['key']
 
     class Meta:
@@ -55,7 +60,8 @@ class MeetingForm(forms.ModelForm):
 
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ['when', 'where', 'created', 'modified', 'action', 'meeting_type']
+    list_display = [
+        'when', 'where', 'created', 'modified', 'action', 'meeting_type']
     list_filter = ['meeting_type']
     form = MeetingForm
     inlines = [

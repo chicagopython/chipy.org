@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
-from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.core.urlresolvers import reverse
 
 
 class MeetingSponsor(models.Model):
-    sponsor = models.ForeignKey("sponsors.Sponsor")
-    meeting = models.ForeignKey("meetings.Meeting", related_name="meeting_sponsors")
+    sponsor = models.ForeignKey(
+        "sponsors.Sponsor")
+    meeting = models.ForeignKey(
+        "meetings.Meeting", related_name="meeting_sponsors")
     about = models.TextField(u"About this sponsorship", blank=True, null=True)
     about_short = models.CharField(
         "Brief description of sponsorship",

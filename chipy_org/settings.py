@@ -28,13 +28,12 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = env_var('DEBUG', False)
 
-ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com',
-                 'localhost:8000', 'www.localhost:8000', 'www.localhost']
+ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com',
+                 'chipy-149.herokuapp.com',
+                 'localhost:8000', 'locahost',
+                 'www.localhost:8000', 'www.localhost']
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
-
-GITHUB_APP_ID = env_var('GITHUB_APP_ID')
-GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = env_var('SERVE_MEDIA', DEBUG)
@@ -105,6 +104,7 @@ else:
 
 STATIC_ROOT = os.path.abspath(
     os.path.join(PROJECT_ROOT, "..", "staticfiles"))
+
 STATIC_URL = '/static/'
 MEDIA_URL = "/media/"
 
@@ -128,13 +128,14 @@ TEMPLATES = [
             'debug': DEBUG,
             'context_processors': [
                 "django.contrib.auth.context_processors.auth",
-                "django.core.context_processors.debug",
-                "django.core.context_processors.i18n",
-                "django.core.context_processors.media",
-                "django.core.context_processors.request",
-                "django.core.context_processors.static",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.request",
+                "django.template.context_processors.static",
                 "django.contrib.messages.context_processors.messages",
-                "social_auth.context_processors.social_auth_login_redirect",
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
             'loaders': [
                 'admin_tools.template_loaders.Loader',
@@ -155,37 +156,34 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
+    #'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
 ]
 
 LOGIN_ERROR_URL = '/'
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_var('GOOGLE_OAUTH2_CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
+SOCIAL_AUTH_GITHUB_KEY = env_var('GITHUB_APP_ID')
+SOCIAL_AUTH_GITHUB_SECRET = env_var('GITHUB_API_SECRET')
+
 AUTHENTICATION_BACKENDS = [
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.browserid.BrowserIDBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.OpenIDBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.open_id.OpenIdAuth',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-
-SOCIAL_AUTH_ENABLED_BACKENDS = (
-    'google',
-    'github',
-)
 
 SOCIAL_AUTH_PIPELINE = (
-    'social_auth.backends.pipeline.social.social_auth_user',
+    'social_core.backends.pipeline.social.social_auth_user',
     'chipy_org.libs.social_auth_pipelines.associate_by_email',
-    'social_auth.backends.pipeline.user.get_username',
-    'social_auth.backends.pipeline.user.create_user',
-    'social_auth.backends.pipeline.social.associate_user',
-    'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details'
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
 )
 
 SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
@@ -220,9 +218,8 @@ INSTALLED_APPS = [
     'django_gravatar',
     'gunicorn',
     'honeypot',
-    'interval',
     'rest_framework',
-    'social_auth',
+    'social_django',
     'storages',
     'tinymce',
     "sorl.thumbnail",
@@ -288,8 +285,7 @@ FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var('MEETUP_API_KEY')
 
-GOOGLE_OAUTH2_CLIENT_ID = env_var('GOOGLE_OAUTH2_CLIENT_ID')
-GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
+
 
 # LOGGING = {
 #     'version': 1,

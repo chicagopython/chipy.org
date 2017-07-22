@@ -15,22 +15,25 @@ def get_rsvp(meeting, meetup_member):
     Handles getting the rsvp instance to update from Meetup.
     Will return a new instance if needed.
 
-    If there is a name collision, it will update the current RSVP with the Meetup Info. This isn't perfect by any
+    If there is a name collision, it will update the current RSVP with the
+    Meetup Info. This isn't perfect by any
     stretch, but for our uses it should be good enough.
 
     """
 
     meetup_user_id = meetup_member['member_id']
 
-    name_collisions = RSVP.objects.filter(name=meetup_member['name'], meeting=meeting)
+    name_collisions = RSVP.objects.filter(
+        name=meetup_member['name'], meeting=meeting)
 
     if name_collisions:
         rsvp = name_collisions[0]
-        rsvp.meetup_user_id=meetup_user_id
+        rsvp.meetup_user_id = meetup_user_id
 
     else:
         try:
-            rsvp = RSVP.objects.get(meetup_user_id=meetup_user_id, meeting=meeting)
+            rsvp = RSVP.objects.get(
+                meetup_user_id=meetup_user_id, meeting=meeting)
         except ObjectDoesNotExist:
             rsvp = RSVP(meetup_user_id=meetup_user_id, meeting=meeting)
 
@@ -61,7 +64,9 @@ def get_real_names(api_key, results):
     url = "https://api.meetup.com/2/profiles"
     realname_question_id = 8181568
     attendee_ids = ','.join(str(r['member']['member_id']) for r in results)
-    params = dict(member_id=attendee_ids, group_urlname = '_ChiPy_', key=api_key)
+    params = dict(member_id=attendee_ids,
+                  group_urlname='_ChiPy_',
+                  key=api_key)
     api_response = requests.get(url, params=params)
     response = api_response.json()
     results = response['results']
@@ -78,7 +83,10 @@ def get_real_names(api_key, results):
 
 def meetup_meeting_sync(api_key, meetup_event_id):
     url = "http://api.meetup.com/2/rsvps"
-    params = dict(key=api_key, event_id=meetup_event_id, fields='answer_info', page=1000)
+    params = dict(key=api_key,
+                  event_id=meetup_event_id,
+                  fields='answer_info',
+                  page=1000)
     api_response = requests.get(url, params=params)
 
     meeting = Meeting.objects.get(meetup_id=meetup_event_id)
@@ -100,5 +108,5 @@ def meetup_meeting_sync(api_key, meetup_event_id):
             logger.warning('Error saving RSVP for {} with response of {}. Error is {}'.format(
                 result['member']['name'], rsvp.response, exc))
         else:
-            logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'],
-                                                                       rsvp.response))
+            logger.info('Saved RSVP for {} with response of {}'.format(
+                result['member']['name'], rsvp.response))

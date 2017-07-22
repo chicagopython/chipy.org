@@ -8,7 +8,8 @@ from django.http import HttpResponseRedirect
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
+from django.views.generic.edit import (
+    CreateView, ProcessFormView, ModelFormMixin)
 from django.contrib import messages
 
 from rest_framework.generics import ListAPIView
@@ -90,7 +91,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     def get_form_kwargs(self):
         kwargs = {}
         self.object = None
-        if not kwargs.get('instance', False) and self.request.user.is_authenticated() \
+        if not kwargs.get('instance', False) \
+           and self.request.user.is_authenticated() \
            and 'rsvp_key' not in self.kwargs:
             if not self.request.POST.get('meeting'):
                 raise ValidationError('Meeting missing from POST')

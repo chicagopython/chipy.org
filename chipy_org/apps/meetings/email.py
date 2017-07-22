@@ -8,6 +8,7 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+
 def send_rsvp_email(rsvp):
     try:
         plaintext = get_template('meetings/emails/rsvp_email.txt')

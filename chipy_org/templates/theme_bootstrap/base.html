@@ -98,7 +98,7 @@
                   $('#openid-button').click(function(){
                       openid_identifier = prompt("Please enter your OpenID identifier URL");
                       if(openid_identifier){
-                          window.location = "{% url 'socialauth_begin' 'openid' %}?openid_identifier=" + openid_identifier + "&{{ redirect_querystring }}";
+                          window.location = "{% url 'social:begin' 'openid' %}?openid_identifier=" + openid_identifier + "&{{ redirect_querystring }}";
                       } else {
                           return false;
                       }

@@ -11,11 +11,11 @@ class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-    def test__home_url__GET(self):
+    def test__announcements_list_url__GET(self):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('home'))
+        response = self.client.get(reverse_lazy('announcements_list'))
 
         # CHECK
         self.assertEqual(response.status_code, 200)

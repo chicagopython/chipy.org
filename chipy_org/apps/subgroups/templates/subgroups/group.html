@@ -1,0 +1,24 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Topic" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div>
+
+    <div class="row-fluid">
+         <div class="span12">
+          <h3>{{ group.name }}</h3>
+        </div>
+        <div class="span12">
+          <p>{{ group.description }}</p>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock body %}

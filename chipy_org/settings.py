@@ -4,7 +4,6 @@
 import os
 
 import dj_database_url
-from django.conf.global_settings import MIDDLEWARE_CLASSES
 
 
 def env_var(key, default=None):
@@ -48,7 +47,8 @@ ADMINS = [(admin.split('@')[0], admin) for admin in env_var('ADMINS').split(',')
 
 MANAGERS = ADMINS
 
-CHIPY_TOPIC_SUBMIT_EMAILS = [e for e in env_var('CHIPY_TOPIC_SUBMIT_EMAILS', "").split(',')]
+CHIPY_TOPIC_SUBMIT_EMAILS = [
+    e for e in env_var('CHIPY_TOPIC_SUBMIT_EMAILS', "").split(',')]
 
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {
@@ -124,7 +124,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
-        'APP_DIRS': True,
         'OPTIONS': {
             'debug': DEBUG,
             'context_processors': [
@@ -137,11 +136,17 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "social_auth.context_processors.social_auth_login_redirect",
             ],
+            'loaders': [
+                'admin_tools.template_loaders.Loader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
         },
     },
 ]
 
-MIDDLEWARE_CLASSES = (
+
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,11 +156,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
-)
+]
 
 LOGIN_ERROR_URL = '/'
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
     'social_auth.backends.google.GoogleOAuth2Backend',
@@ -164,7 +169,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.github.GithubBackend',
     'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
-)
+]
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
@@ -221,17 +226,20 @@ INSTALLED_APPS = [
     'storages',
     'tinymce',
     "sorl.thumbnail",
+    "ckeditor",
 
     # theme
     'django_forms_bootstrap',
 
     # project
     'chipy_org.apps.main',
+    'chipy_org.apps.announcements',
     'chipy_org.apps.about',
     'chipy_org.apps.contact',
     'chipy_org.apps.meetings',
     'chipy_org.apps.profiles',
     'chipy_org.apps.sponsors',
+    'chipy_org.apps.subgroups',
 ]
 
 if DEBUG:
@@ -246,8 +254,10 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 ENVELOPE_EMAIL_RECIPIENTS = env_var('ENVELOPE_EMAIL_RECIPIENTS').split(',')
 
-EMAIL_BACKEND = env_var('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = env_var('EMAIL_HOST', 'smtp.sendgrid.net')
+EMAIL_BACKEND = env_var(
+    'EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env_var(
+    'EMAIL_HOST', 'smtp.sendgrid.net')
 EMAIL_HOST_USER = env_var('EMAIL_HOST_USER', env_var('SENDGRID_USERNAME', None))
 EMAIL_HOST_PASSWORD = env_var('EMAIL_HOST_PASSWORD', env_var('SENDGRID_PASSWORD', None))
 EMAIL_PORT = int(env_var('EMAIL_PORT', 587))
@@ -330,4 +340,4 @@ LOGGING = {
 }
 
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

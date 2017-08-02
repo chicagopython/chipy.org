@@ -1,0 +1,82 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles %}
+
+{% block head_title %}{% trans "Topic" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div itemscope itemtype="http://schema.org/Event">
+
+    <div class="row-fluid">
+      <div class="span12">
+
+          {% if meeting.meeting_type %}
+          <h3 itemprop="name">{{ meeting.meeting_type.name }}</h3>
+          {% if meeting.meeting_type.subgroup %}<p><a href="{% url 'groups' meeting.meeting_type.subgroup.slug %}">{{ meeting.meeting_type.subgroup.name }}</a></p>{% endif %}
+          {% endif %}
+          <hr />
+          {% if meeting.description %}
+          <p itemprop="description">{{ meeting.description }}</p>
+          {% endif %}
+
+          <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
+          <p><strong>Where: </strong>
+            <a id="where-link" href="#"> {{ meeting.where|default:'N/A'}}</a>
+          </p>
+
+          {% if meeting.where %}
+
+              {% if meeting.where.directions %}
+              <p><strong>Directions:</strong></p>
+              <p>{{ meeting.where.directions }}</p>
+              {% endif %}
+
+              <p>
+                {{ meeting.where.address }}<br>
+                {% if meeting.where.directions %}
+                  {{ meeting.where.directions }}<br>
+                {% endif %}
+                {% if meeting.where.phone %}
+                  {{ meeting.where.phone }}<br>
+                {% endif %}
+                {% if meeting.where.email %}
+                  {{ meeting.where.email }}<br>
+                {% endif %}
+            </p>
+
+          {% endif %}
+
+      </div>
+
+  </div>
+  <div class="row-fluid">
+
+      <div class="module span12">
+            <h4>Topics</h4>
+            <hr />
+            <ul>
+              {% for topic in meeting.topics.active %}
+                <li>
+                  <strong>{{ topic.title }}</strong><br />
+                  {% if topic.length %}
+                    ({{ topic.length }} Minutes)<br />
+                  {% endif %}
+                  By: {% for presenter in topic.presentors.all %}
+                        {{presenter.name}} {% if not forloop.last %}, {% endif %}
+                      {% endfor %}<br />
+                  {% if topic.experience_level %}
+                  Experience Level: {{ topic.get_experience_level_display }}<br />
+                  {% endif %}
+                  {{ topic.description }}
+                </li>
+              {% endfor %}
+            </ul>
+       </div>
+
+    </div><!-- #row-fluid -->
+
+</div>
+
+{% endblock body %}

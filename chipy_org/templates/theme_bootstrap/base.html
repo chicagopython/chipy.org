@@ -1,12 +1,15 @@
 {% load staticfiles %}
-{% load url from future %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html itemscope itemprop="organization" itemtype="http://schema.org/Organization" lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="utf-8" />
         <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
         <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
-
+        <meta name="description" content="The official Chicago Area Python programming user group.">
+        <meta name="keywords" content="python, chicago, chipy, user group" />
+        <meta content="summary" name="twitter:card"/>
+        <meta content="@ChicagoPython" name="twitter:site"/>
+        <meta content="ChiPy.org" name="twitter:title"/>
         {% block viewport %}
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% endblock %}
@@ -28,7 +31,7 @@
         {% endblock %}
     </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
-
+        <span content="ChiPy.org" itemprop="name"></span>
         {% block topbar_base %}
             <div class="navbar {% block navbar_class %}navbar-fixed-top{% endblock %}">
                 <div class="navbar-inner">
@@ -72,13 +75,13 @@
         {% endblock %}
 
         {% block footer_base %}
-            <div id="footer">
+            <footer id="footer">
                 <div class="inner">
                     <div class="container">
                         {% block footer %}{% endblock %}
                     </div>
                 </div>
-            </div>
+            </footer>
         {% endblock %}
 
         {% block script %}

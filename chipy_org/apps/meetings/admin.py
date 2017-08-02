@@ -1,12 +1,12 @@
 import random
 import string
 from django.contrib import admin
-from django.contrib.admin import widgets
 from django import forms
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
-from .models import Meeting, Venue, Topic, Presentor, RSVP
+from .models import (
+    Meeting, Venue, Topic, Presentor, RSVP, MeetingType)
 
 
 class VenueAdmin(admin.ModelAdmin):
@@ -55,7 +55,8 @@ class MeetingForm(forms.ModelForm):
 
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('when', 'where', 'created', 'modified', 'action')
+    list_display = ['when', 'where', 'created', 'modified', 'action', 'meeting_type']
+    list_filter = ['meeting_type']
     form = MeetingForm
     inlines = [
         TopicInline,
@@ -94,8 +95,14 @@ class RSVPAdmin(admin.ModelAdmin):
     list_filter = ['response']
 
 
+class MeetingTypeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'slug']
+    prepopulated_fields = {"slug": ("name",)}
+
+
 admin.site.register(Venue, VenueAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Presentor, PresentorAdmin)
 admin.site.register(RSVP, RSVPAdmin)
+admin.site.register(MeetingType, MeetingTypeAdmin)

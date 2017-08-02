@@ -2,11 +2,7 @@ import datetime
 
 from django.db.models import Sum
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.core.mail import EmailMultiAlternatives
-from django.template import Context
-from django.template.loader import get_template
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
@@ -26,8 +22,9 @@ from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
 from .models import (
     Meeting,
     Topic,
-    Presentor
+    Presentor,
 )
+
 from .models import RSVP as RSVPModel
 from .serializers import MeetingSerializer
 
@@ -37,6 +34,12 @@ class PastMeetings(ListView):
     queryset = Meeting.objects.filter(
         when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
+
+
+class MeetingDetail(DetailView):
+    template_name = 'meetings/meeting.html'
+    pk_url_kwarg = 'pk'
+    model = Meeting
 
 
 class ProposeTopic(CreateView):

@@ -31,16 +31,15 @@
 
 {% block nav %}
     <ul class="nav">
-        <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'past_meetings' %}">Meetings</a></li>
-        {% if user.is_authenticated %}
-          <li><a href="{% url 'my_topics' %}">My Talks</a></li>
-        {% endif %}
-        <li><a href="{% url 'propose_topic' %}">Give a Talk</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="{% url 'sponsor_list' %}">Sponsor</a></li>
+        <li><a href="/pages/host/">Host</a></li>
+        <li><a href="/pages/referrals/">Referrals</a></li>
+        <li><a href="/pages/donate/">Donate</a></li>
+        <li><a href="{% url 'propose_topic' %}">Speak</a></li>
         <li><a href="{% url 'profiles:list' %}">Members</a></li>
-        <li><a href="{% url 'sponsor_list' %}">Sponsors</a></li>
-        <li><a href="http://www.chipymentor.org/">Mentorship Program</a></li>
+        <li><a href="http://www.chipymentor.org/">Mentorship</a></li>
+        <li><a href="/pages/sigs/">SIGs</a></li>
         <li><a href="{% url 'contact' %}">Contact</a></li>
     </ul>
 {% endblock %}

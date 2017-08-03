@@ -19,7 +19,6 @@ djangorestframework==3.6.3
 feedparser==5.2.1
 gunicorn==19.7.1
 httplib2==0.10.3
-oauth2==1.5.211
 psycopg2==2.7.1
 python-openid==2.2.5
 

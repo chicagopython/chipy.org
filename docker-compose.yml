@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+   db:
+     image: postgres:9.6
+     container_name: chipy-postgres
+     environment:
+       - POSTGRES_PASSWORD=1234
+       - POSTGRES_USER=chipy
+       - POSTGRES_DB=chipy
+     expose:
+       - "5432"
+     networks:
+       - chipy
+
+   app:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     container_name: chipy-app
+     command: /site/docker-utils/app-start.sh
+     volumes:
+       - .:/site/proj/
+       - static-volume:/site/htdocs/static/
+     expose:
+       - "8000"
+     ports:
+       - "8000:8000"
+     environment:
+       - DATABASE_URL=postgres://chipy:1234@db:5432/chipy
+     env_file:
+       - .env
+     networks:
+       - chipy
+
+networks:
+  chipy:
+
+volumes:
+  static-volume:

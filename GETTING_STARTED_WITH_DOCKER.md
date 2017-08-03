@@ -1,40 +1,51 @@
-=========
-Getting Started with Docker for Local Development:
+Getting Started with Docker for Local Development
 ============
 
 To get setup with chipy.org code using Docker it is recommended that you use the following:
 
- * Docker
- * virtualenv
+ * Docker = https://docs.docker.com/engine/installation/#cloud
+ * Docker Compose = https://docs.docker.com/compose/install/
 
 Setting up a Local environment
 ------------------------------
-
-Create a virtual environment where your dependencies will live::
-
-    $ virtualenv venv
-    $ source venv/bin/activate
 
 Clone the repo
 
     git clone git://github.com/chicagopython/chipy.org.git chipy.org
 
-Make the project directory your working directory::
+Make the project directory your working directory:
 
     cd chipy.org
 
-Install project dependencies::
+Build the environment:
 
-    pip install -r requirements.txt
+    docker-compose up --build
 
-Start [a docker instance for Postgres](https://hub.docker.com/_/postgres/):
 
-    docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+Initialize the application (migrate):
 
-Connect to the instance and set up a `chipy` database:
+    docker-compose run app init
 
-    docker run -it --rm --link some-postgres:postgres postgres psql -h postgres -U postgres
-     > create database chipy;
+Create a superuser:
+
+    docker-compose run app manage createsuperuser
+
+Open a browser:
+
+    http://localhost:8000/
+
+
+Other Docker Commands:
+------------------------------
+
+Run a bash shell (automatically activates virtualenv):
+
+    docker-compose run app /bin/bash
+
+Shortcut to run Management Command:
+
+    docker-compose run app manage help
+
 
 Create an env file in the root directory:
 
@@ -72,21 +83,3 @@ Create an env file in the root directory:
 Source your env:
 
     source .env
-
-Note that the only required config is the github stuff. The secret key will be random by default which will cause your session to wipe on every restart.
-
-
-Migrate the database to build your :
-
-    # first time (this command notoriously throws errors, don't panic)
-    python manage.py migrate auth
-
-    # after future migrations
-    python manage.py makemigrations
-    python manage.py makemigrations
-
-Now you can run the server!
-
-    (venv)$ python manage.py runserver
-
-Happy Dev'ing!

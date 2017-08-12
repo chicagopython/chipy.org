@@ -39,6 +39,7 @@ RUN env/bin/pip install uwsgi
 ENV NUM_THREADS=2
 ENV NUM_PROCS=2
 ENV DJANGO_DATABASE_URL=postgres://postgres@db/postgres
+ENV ADMINS=""
 
 # Copy in docker scripts
 COPY docker-utils/ docker-utils/

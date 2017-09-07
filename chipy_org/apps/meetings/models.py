@@ -161,11 +161,15 @@ class Topic(CommonModel):
     #     return out
 
     title = models.CharField(
+        help_text="This will be the public title for your talk.",
         max_length=MAX_LENGTH)
     presentors = models.ManyToManyField(
         Presentor, blank=True)
     meeting = models.ForeignKey(
-        Meeting, blank=True, null=True, related_name='topics')
+        Meeting, blank=True, null=True, related_name='topics',
+        help_text=(
+            "Please select the meeting that you'd like to "
+            "target your talk for."))
     experience_level = models.CharField(
         "Audience Experience Level",
         max_length=15, blank=True, null=True, choices=EXPERIENCE_LEVELS)
@@ -174,7 +178,15 @@ class Topic(CommonModel):
     length = models.DurationField(
         blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(
+        "Public Description", blank=True, null=True,
+        help_text="This will be the public talk description.")
+    notes = models.TextField(
+        "Private Submission Notes",
+        blank=True, null=True,
+        help_text=("Additional non-public information or context "
+                   "you want us to know about the talk submission."),
+    )
     slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
     approved = models.BooleanField(default=False)

@@ -1,25 +1,35 @@
 from nocaptcha_recaptcha.fields import NoReCaptchaField
-from django.forms import ModelForm, ModelChoiceField
+from django import forms
 from .models import Topic, Presentor, RSVP, Meeting
 import datetime
 
 
-class TopicForm(ModelForm):
+class TopicForm(forms.ModelForm):
     required = (
         'title',
-        'meeting',
+        "name",
+        "email",
         'description',
         'experience_level',
     )
 
+<<<<<<< HEAD
     meeting = ModelChoiceField(queryset=Meeting.objects.filter(
         when__gt=datetime.datetime.now()))
+=======
+    meeting = forms.ModelChoiceField(
+        queryset=Meeting.objects.filter(when__gt=datetime.datetime.now()))
+    name = forms.CharField(label="Your Name", required=True)
+    email = forms.EmailField(label="Your Email", required=True)
+>>>>>>> feature/talk-submission-fixes
 
     def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)
         self.fields['meeting'].required = False
         self.fields['description'].required = True
         self.fields['experience_level'].required = True
+        self.fields['email'].initial = request.user.email
+        self.fields['name'].initial = request.user.get_full_name()
 
         self.request = request
 
@@ -27,21 +37,29 @@ class TopicForm(ModelForm):
         model = Topic
         fields = (
             'title',
+            "name",
+            "email",
             'meeting',
             'length',
             'experience_level',
             'description',
+            'notes',
             'license',
             'slides_link',
         )
 
     def save(self, commit=True):
         instance = super(TopicForm, self).save(commit=commit)
+        user = self.request.user
+        if not user.email:
+            user.email = self.cleaned_data.get('email')
+            user.save()
+
         if self.request and not instance.presentors.count():
             presenter, created = Presentor.objects.get_or_create(
-                user=self.request.user,
-                name=self.request.user.get_full_name(),
-                email=self.request.user.email,
+                user=user,
+                name=self.cleaned_data.get('name'),
+                email=self.cleaned_data.get('email'),
                 release=True,
             )
 
@@ -49,7 +67,7 @@ class TopicForm(ModelForm):
         return instance
 
 
-class RSVPForm(ModelForm):
+class RSVPForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(RSVPForm, self).__init__(*args, **kwargs)
         self.request = request
@@ -63,7 +81,7 @@ class RSVPForm(ModelForm):
             return self.request.user
 
 
-class AnonymousRSVPForm(ModelForm):
+class AnonymousRSVPForm(forms.ModelForm):
     captcha = NoReCaptchaField()
 
     def __init__(self, request, *args, **kwargs):

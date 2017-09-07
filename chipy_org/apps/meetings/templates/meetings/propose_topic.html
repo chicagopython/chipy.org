@@ -8,14 +8,25 @@
 
 {% block body %}
 <div class="row-fluid">
-  <div class="offset4 span8">
+  <div class="span12">
     <h1>Give a talk</h1>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="span6">
     <p>{% flatblock "speaker_text" %}</p>
+  </div>
+  <div class="span6">
     <form action="{% url 'propose_topic' %}" method="post" id="propose-topic">{% csrf_token %}
       {% for field in form %}
       <div class="fieldWrapper">
+        {% if field.name not in form.required %}
+        <label for="id_{{ field.html_name }}"><strong>{{ field.label }}</strong> (optional)</label>
+        {% else %}
+        <strong><label for="id_{{ field.html_name }}"><strong>{{ field.label }}</strong></label></strong>
+        {% endif %}
         {{ field.errors }}
-        {% if field.name not in form.required %}<label for="id_{{ field.html_name }}">{{ field.label }} (optional)</label>{% else %}{{ field.label_tag }}{% endif %}{{ field }}
+        <div class="help-text">{{ field.help_text }}</div>{{ field }}
       </div>
       {% endfor %}
       <p><input type="submit" value="Submit topic" id="propose_submit" class="btn btn-primary"/></p>

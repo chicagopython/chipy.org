@@ -42,6 +42,7 @@ ENV DJANGO_DATABASE_URL=postgres://postgres@db/postgres
 ENV ADMINS=""
 ENV ENVELOPE_EMAIL_RECIPIENTS=""
 ENV SECRET_KEY="set-this-to-something-random-and-sercure-in-production"
+ENV DEBUG="True"
 
 # Copy in docker scripts
 COPY docker-utils/ docker-utils/

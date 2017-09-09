@@ -4,7 +4,7 @@ from .models import Announcement
 
 
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ['id', 'active', 'headline', 'created']
+    list_display = ['id', 'active', 'end_date', 'headline', 'created']
     search_fields = ['id', 'headline', 'body', ]
     readonly_fields = ['created', 'modified']
     list_filter = ['active']

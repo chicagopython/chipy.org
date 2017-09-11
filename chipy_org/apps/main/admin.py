@@ -2,9 +2,7 @@ from django.contrib.flatpages.admin import FlatPageAdmin, FlatpageForm
 from django.contrib.flatpages.models import FlatPage
 from django import forms
 from django.contrib import admin
-from django.db import models
 from flatblocks.models import FlatBlock
-from flatblocks.forms import FlatBlockForm
 from flatblocks.admin import FlatBlockAdmin
 from tinymce.widgets import TinyMCE
 

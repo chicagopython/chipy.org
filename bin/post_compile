@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source utils
+
 if [ ! "$DISABLE_COLLECTSTATIC" ]; then
     set +e
 

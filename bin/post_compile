@@ -11,6 +11,7 @@ if [ ! "$DISABLE_COLLECTSTATIC" ]; then
 
     echo "Python is"
     echo "$(python --version)"
+    echo "$(which python)"
     echo $PYTHONHOME
     echo $PYTHONPATH
 

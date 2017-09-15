@@ -10,7 +10,7 @@ if [ ! "$DISABLE_COLLECTSTATIC" ]; then
     # Run collectstatic, cleanup some of the noisy output.
 
     echo "Python is"
-    echo "$(python -v)"
+    echo "$(python --version)"
     echo $PYTHONHOME
     echo $PYTHONPATH
 

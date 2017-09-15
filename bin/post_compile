@@ -8,6 +8,12 @@ if [ ! "$DISABLE_COLLECTSTATIC" ]; then
     puts-step "$ python $BUILD_DIR/manage.py collectstatic --noinput"
 
     # Run collectstatic, cleanup some of the noisy output.
+
+    echo "Python is"
+    echo "$(python -v)"
+    echo $PYTHONHOME
+    echo $PYTHONPATH
+
     python "$BUILD_DIR/manage.py" collectstatic --noinput --traceback 2>&1 | sed '/^Post-processed/d;/^Copying/d;/^$/d' | indent
     COLLECTSTATIC_STATUS="${PIPESTATUS[0]}"
 

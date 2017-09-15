@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source utils
+source "bin/utils"
 
 if [ ! "$DISABLE_COLLECTSTATIC" ]; then
     set +e

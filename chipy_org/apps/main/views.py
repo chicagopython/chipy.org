@@ -56,10 +56,7 @@ class Home(TemplateView):
             else:
                 context['rsvp_form'] = AnonymousRSVPForm(self.request)
 
-        try:
-            context['announcement'] = Announcement.objects.all().order_by('-created')[0]
-        except IndexError:
-            context['announcement'] = None
+        context['announcement'] = Announcement.objects.featured()
         return context
 
 

@@ -156,7 +156,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    #'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
 ]
 
 LOGIN_ERROR_URL = '/'

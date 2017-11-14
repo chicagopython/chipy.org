@@ -7261,6 +7261,9 @@ hr {
 #edit-profile input[type="submit"] {
   margin-top: 10px;
 }
+form .help-text {
+      color: #888;
+}
 form .errorlist {
   margin: 0px;
   width: 314px;

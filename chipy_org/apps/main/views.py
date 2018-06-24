@@ -3,7 +3,7 @@ import datetime
 import sys
 import traceback
 
-from django.http import HttpResponseServerError
+from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader, Context
 from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting, RSVP
@@ -69,3 +69,6 @@ def custom_500(request):
         'exception_value': value,
         'value': type,
         'tb': traceback.format_exception(type, value, tb)})))
+
+def customer_404(request):
+    return HttpResponse('<h1>404 - Page Not Found</h1>', status_code=404)

@@ -71,4 +71,4 @@ def custom_500(request):
         'tb': traceback.format_exception(type, value, tb)})))
 
 def customer_404(request):
-    return HttpResponse('<h1>404 - Page Not Found</h1>', status_code=404)
+    return HttpResponse('<h1>404 - Page Not Found</h1>', status=404)

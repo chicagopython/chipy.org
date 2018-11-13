@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-import datetime
+from django.utils import timezone
 import string
 import random
 
@@ -86,6 +86,9 @@ class Meeting(CommonModel):
         return "%s location TBD" % self.when
 
     when = models.DateTimeField()
+    reg_close_date = models.DateTimeField(
+        "Registration Close Date",
+        blank=True, null=True)
     where = models.ForeignKey(Venue, blank=True, null=True)
     # Used for anonymous access to meeting information like RSVPs
     key = models.CharField(max_length=40, unique=True, blank=True)
@@ -98,8 +101,14 @@ class Meeting(CommonModel):
                    "Leave this empty for the main meeting."))
     description = models.TextField(blank=True, null=True)
 
+    def can_register(self):
+        can_reg = True
+        if self.reg_close_date and timezone.now() > self.reg_close_date:
+            can_reg = False
+        return can_reg
+
     def is_future(self):
-        return bool(self.when >= (datetime.datetime.now() - datetime.timedelta(hours=3)))
+        return bool(self.when >= (timezone.now() - datetime.timedelta(hours=3)))
 
     def rsvp_user_yes(self):
         raise NotImplementedError

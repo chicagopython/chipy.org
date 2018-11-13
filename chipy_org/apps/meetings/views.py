@@ -1,20 +1,25 @@
 import datetime
+import csv
 
 from django.db.models import Sum
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
+from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import probablepeople
 from .utils import meetup_meeting_sync
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
@@ -96,13 +101,13 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 raise ValidationError('Meeting missing from POST')
 
             try:
-                meeting = Meeting.objects.get(pk=self.request.POST['meeting'])
+                meeting = get_object_or_404(Meeting, pk=self.request.POST['meeting'])
                 self.object = RSVPModel.objects.get(
                     user=self.request.user, meeting=meeting)
             except RSVPModel.DoesNotExist:
                 pass
         elif 'rsvp_key' in self.kwargs:
-            self.object = RSVPModel.objects.get(key=self.kwargs['rsvp_key'])
+            self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
 
         kwargs.update(super(RSVP, self).get_form_kwargs())
         kwargs.update({'request': self.request})
@@ -130,23 +135,94 @@ class RSVPlist(ListView):
     template_name = 'meetings/rsvp_list.html'
 
     def get_queryset(self):
-        self.meeting = Meeting.objects.get(key=self.kwargs['rsvp_key'])
+        self.meeting = get_object_or_404(Meeting, key=self.kwargs['rsvp_key'])
         return RSVPModel.objects.filter(
             meeting=self.meeting).exclude(response='N').order_by('name')
 
     def get_context_data(self, **kwargs):
+        rsvp_yes = RSVPModel.objects.filter(
+            meeting=self.meeting).exclude(response='N').count()
+        rsvp_guest = RSVPModel.objects.filter(
+            meeting=self.meeting).exclude(
+                response='N').aggregate(Sum('guests'))['guests__sum']
+        if not rsvp_guest:
+            rsvp_guest = 0
         context = {
             'meeting': self.meeting,
-            'guests': (
-                RSVPModel.objects.filter(
-                    meeting=self.meeting).exclude(response='N').count() +
-                RSVPModel.objects.filter(
-                    meeting=self.meeting).exclude(
-                        response='N').aggregate(Sum('guests'))['guests__sum']
-            )
+            'guests': (rsvp_yes + rsvp_guest)
         }
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context
+
+
+class RSVPlistCSVBase(RSVPlist):
+
+    def _lookup_rsvps(self, rsvp):
+        if self.private:
+            yield ["User Id", "Username", "Full Name", "First Name", "Last Name", "Email", "Guests",]
+        else:
+            yield ["Full Name", "First Name", "Last Name", "Guests",]
+        for item in rsvp:
+            first_name = last_name = full_name = ""
+            if not item.name:
+                # if no name is defined and there is a db record for this user
+                if item.user:
+                    # lookup the user's name from the db
+                    first_name = item.user.first_name
+                    last_name = item.user.last_name
+                    try:
+                        full_name = item.user.profile.display_name
+                    except Exception as e:
+                        print("Unable to access user profile.")
+            else:
+                full_name = item.name
+                try:
+                    # try to parse out the user first/last name
+                    parsed = probablepeople.tag(full_name)
+                    first_name = parsed[0].get("GivenName")
+                    last_name = parsed[0].get("Surname")
+                except Exception as e:
+                    print("unable to parse person {}".format(full_name))
+            if self.private:
+                row = [item.user.id if item.user else "", 
+                    item.user.username if item.user else "",
+                    full_name,
+                    first_name,
+                    last_name,
+                    item.email,
+                    item.guests]
+            else:
+                row = [
+                    full_name,
+                    first_name,
+                    last_name,
+                    item.guests]
+            yield row
+
+    def render_to_response(self, context, **response_kwargs):
+        response = HttpResponse(content_type='text/csv')
+        file_name = slugify("chipy-export-{id}--{date}".format(
+            id=self.meeting.id, date=self.meeting.when))
+        response['Content-Disposition'] = 'attachment; filename="%s.csv"' % file_name
+
+        writer = csv.writer(response, quoting=csv.QUOTE_ALL)
+        for row in self._lookup_rsvps(context['attendees']):
+            writer.writerow(row)
+
+        return response
+
+
+class RSVPlistPrivate(RSVPlistCSVBase):
+
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RSVPlistPrivate, self).dispatch(*args, **kwargs)
+
+    private = True
+ 
+
+class RSVPlistHost(RSVPlistCSVBase):
+    private = False
 
 
 class PastTopics(ListView):

@@ -1,18 +1,37 @@
 version: '2'
 services:
-  chipy-db:
-    image: postgres
-    container_name: chipy-db
+
+  db:
+    image: postgres:10-alpine
     env_file:
       - docker/docker.env
-  chipy-web:
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD=insecure
+      - POSTGRES_USER=chipy
+      - POSTGRES_DB=chipy
+
+  web:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: chipy-web
     env_file:
       - docker/docker.env
     ports:
       - "8000:8000"
     volumes:
-      - .:/var/app/
+      - .:/site/proj/
+    depends_on:
+      - db
+    environment:
+      - CONNECT_METHOD=http
+      - ALLOWED_HOSTS=localhost
+      - DATABASE_URL=postgres://chipy:insecure@db/chipy
+    stdin_open: true
+    tty: true
+
+volumes:
+  pg_data:

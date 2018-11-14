@@ -31,4 +31,4 @@ class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):
 
             return redirect(url)
 
-        print traceback.print_exc()
+        print(traceback.print_exc())

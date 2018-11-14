@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse_lazy
 from django.utils.text import slugify
 
@@ -91,17 +91,17 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         def lookup_meeting():
             meeting_id = self.request.POST.get('meeting', None)
             if not meeting_id:
-                raise ValidationError('Meeting missing from POST')
+                raise Http404('Meeting missing from POST')
 
             try:
                 meeting_id = int(meeting_id)
             except (ValueError, TypeError):
-                raise ValidationError("The meeting must be an integer")
+                raise Http404("The meeting must be an integer")
 
             return get_object_or_404(Meeting, pk=meeting_id)
 
         if self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
-            # if the user is logged in
+            # If the user is logged in
             self.meeting = lookup_meeting()
             try:
                 # check to see if they already have registered
@@ -110,15 +110,17 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             except RSVPModel.DoesNotExist:
                 pass
         elif self.request.user.is_anonymous() and 'rsvp_key' not in self.kwargs:
-            # if the user is anonymous
+            # If the user is anonymous
             self.meeting = lookup_meeting()
         elif 'rsvp_key' in self.kwargs:
-            # if the user has a registration link (typically emailed to them)
+            # If the user has a registration link (typically emailed to them)
+            # This is to allow the user to possibly change their response.
             self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
             self.meeting = self.object.meeting
         else:
             raise Exception("should not get here")
 
+        # check to see if registration is closed
         if not self.meeting.can_register():
             messages.error(request, 'Registration for this meeting is closed.')
             return redirect(reverse_lazy("home"))

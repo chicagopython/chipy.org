@@ -1,11 +1,13 @@
 import datetime
 import csv
+import logging
 
 from django.db.models import Sum
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse_lazy
 from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
@@ -33,6 +35,8 @@ from .models import (
 from .models import RSVP as RSVPModel
 from .serializers import MeetingSerializer
 
+logger = logging.getLogger(__name__)
+
 
 class PastMeetings(ListView):
     template_name = 'meetings/past_meetings.html'
@@ -50,7 +54,7 @@ class MeetingDetail(DetailView):
 class ProposeTopic(CreateView):
     template_name = 'meetings/propose_topic.html'
     form_class = TopicForm
-    success_url = '/'
+    success_url = reverse_lazy("home")
 
     def get_form_kwargs(self):
         kwargs = super(ProposeTopic, self).get_form_kwargs()
@@ -78,7 +82,48 @@ class MyTopics(ListView):
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
-    success_url = '/'
+    success_url = reverse_lazy("home")
+
+    def dispatch(self, request, *args, **kwargs):
+
+        self.object = None
+
+        def lookup_meeting():
+            meeting_id = self.request.POST.get('meeting', None)
+            if not meeting_id:
+                raise ValidationError('Meeting missing from POST')
+
+            try:
+                meeting_id = int(meeting_id)
+            except (ValueError, TypeError):
+                raise ValidationError("The meeting must be an integer")
+
+            return get_object_or_404(Meeting, pk=meeting_id)
+
+        if self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
+            # if the user is logged in
+            self.meeting = lookup_meeting()
+            try:
+                # check to see if they already have registered
+                self.object = RSVPModel.objects.get(
+                    user=self.request.user, meeting=self.meeting)
+            except RSVPModel.DoesNotExist:
+                pass
+        elif self.request.user.is_anonymous() and 'rsvp_key' not in self.kwargs:
+            # if the user is anonymous
+            self.meeting = lookup_meeting()
+        elif 'rsvp_key' in self.kwargs:
+            # if the user has a registration link (typically emailed to them)
+            self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
+            self.meeting = self.object.meeting
+        else:
+            raise Exception("should not get here")
+
+        if not self.meeting.can_register():
+            messages.error(request, 'Registration for this meeting is closed.')
+            return redirect(reverse_lazy("home"))
+
+        return super(RSVP, self).dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
         if self.request.user.is_authenticated():
@@ -94,24 +139,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
     def get_form_kwargs(self):
         kwargs = {}
-        self.object = None
-        if not kwargs.get('instance', False) and self.request.user.is_authenticated() \
-           and 'rsvp_key' not in self.kwargs:
-            if not self.request.POST.get('meeting'):
-                raise ValidationError('Meeting missing from POST')
-
-            try:
-                meeting = get_object_or_404(Meeting, pk=self.request.POST['meeting'])
-                self.object = RSVPModel.objects.get(
-                    user=self.request.user, meeting=meeting)
-            except RSVPModel.DoesNotExist:
-                pass
-        elif 'rsvp_key' in self.kwargs:
-            self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
-
         kwargs.update(super(RSVP, self).get_form_kwargs())
         kwargs.update({'request': self.request})
-
         return kwargs
 
     def post(self, request, *args, **kwargs):
@@ -135,7 +164,7 @@ class RSVPlist(ListView):
     template_name = 'meetings/rsvp_list.html'
 
     def get_queryset(self):
-        self.meeting = get_object_or_404(Meeting, key=self.kwargs['rsvp_key'])
+        self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
         return RSVPModel.objects.filter(
             meeting=self.meeting).exclude(response='N').order_by('name')
 
@@ -173,7 +202,7 @@ class RSVPlistCSVBase(RSVPlist):
                     try:
                         full_name = item.user.profile.display_name
                     except Exception as e:
-                        print("Unable to access user profile.")
+                        logger.exception("Unable to access user profile.")
             else:
                 full_name = item.name
                 try:
@@ -182,7 +211,7 @@ class RSVPlistCSVBase(RSVPlist):
                     first_name = parsed[0].get("GivenName")
                     last_name = parsed[0].get("Surname")
                 except Exception as e:
-                    print("unable to parse person {}".format(full_name))
+                    logger.exception("unable to parse person {}".format(full_name))
             if self.private:
                 row = [item.user.id if item.user else "", 
                     item.user.username if item.user else "",

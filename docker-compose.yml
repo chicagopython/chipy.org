@@ -29,7 +29,6 @@ services:
     environment:
       - CONNECT_METHOD=http
       - ALLOWED_HOSTS=localhost
-      - DATABASE_URL=postgres://chipy:insecure@db/chipy
     stdin_open: true
     tty: true
 

@@ -105,6 +105,8 @@ class Meeting(CommonModel):
         can_reg = True
         if self.reg_close_date and timezone.now() > self.reg_close_date:
             can_reg = False
+        if timezone.now() > self.when:
+            can_reg = False
         return can_reg
 
     def is_future(self):

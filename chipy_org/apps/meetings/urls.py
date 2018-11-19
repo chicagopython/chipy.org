@@ -7,7 +7,8 @@ from .views import (
     ProposeTopic,
     MyTopics,
     RSVP,
-    RSVPlist,
+    RSVPlistPrivate,
+    RSVPlistHost,
     PastTopics,
     PastTopic,)
 
@@ -28,8 +29,13 @@ urlpatterns = [
         RSVP.as_view(), name='anonymous_rsvp'),
     url(r'^rsvp/anonymous/(?P<rsvp_key>[a-z0-9]{40})/$',
         RSVP.as_view(), name='anonymous_rsvp_with_key'),
-    url(r'^rsvp/list/(?P<rsvp_key>[a-z0-9]{40})/$',
-        RSVPlist.as_view(), name='rsvp_list'),
+    
+    url(r'^rsvp/list/(?P<meeting_key>[a-z0-9]{40})/private.csv$',
+        RSVPlistPrivate.as_view(), name='rsvp_list_csv'),
+    url(r'^rsvp/list/(?P<meeting_key>[a-z0-9]{40})/host.csv$',
+        RSVPlistHost.as_view(), name='rsvp_list_host_csv'),
+
+
     url(r'^topics/propose/$',
         login_required(ProposeTopic.as_view()), name='propose_topic'),
     url(r'^topics/mine/$',

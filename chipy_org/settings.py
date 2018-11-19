@@ -39,6 +39,8 @@ GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = env_var('SERVE_MEDIA', DEBUG)
 
+SECURE_SSL_REDIRECT = env_var("SECURE_SSL_REDIRECT", True)
+
 INTERNAL_IPS = [
     "127.0.0.1",
 ]

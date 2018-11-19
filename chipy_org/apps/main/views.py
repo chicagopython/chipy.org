@@ -63,7 +63,7 @@ class Home(TemplateView):
 def custom_500(request):
     t = loader.get_template('500.html')
 
-    print sys.exc_info()
+    print(sys.exc_info())
     type, value, tb = sys.exc_info()
     return HttpResponseServerError(t.render(Context({
         'exception_value': value,

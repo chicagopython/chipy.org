@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% block object-tools-items %}{{ block.super }}
+    <li>
+        <a href="{% url 'rsvp_list_csv' original.key %}" class="historylink">{% trans "Private Registrations" %}</a>
+    </li>
+    <li>
+        <a href="{% url 'rsvp_list_host_csv' original.key %}" class="historylink">{% trans "Host Registrations" %}</a>
+    </li>  
+{% endblock %}

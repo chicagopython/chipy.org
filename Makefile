@@ -1,8 +1,7 @@
-run_db:
-	docker-compose up -d chipy-db
+.PHONY: help
 
-setup_db:
-	docker exec -it chipy-db psql -h chipy-db -U postgres -c "create database chipy;" >/dev/null || echo "[skipping] DB already setup"
+help:
+	@echo "Type make, then hit tab to see make options"
 
 setup_env:
 	## Copy but don't overwrite the docker env
@@ -11,11 +10,13 @@ setup_env:
 build:
 	docker-compose build
 
-web:
-	docker-compose up chipy-db chipy-web
+run:
+	docker-compose up
+
+web: run
 
 migrate:
-	docker exec -it chipy-web python manage.py migrate auth || true
-	docker exec -it chipy-web python manage.py migrate
+	docker exec -it web python manage.py migrate auth || true
+	docker exec -it web python manage.py migrate
 
 setup: setup_env build run_db setup_db

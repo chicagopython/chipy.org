@@ -22,7 +22,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import probablepeople
-from .utils import meetup_meeting_sync
+from .utils import meetup_meeting_sync, unicode_convert
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
 from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
@@ -228,6 +228,7 @@ class RSVPlistCSVBase(RSVPlist):
                     first_name,
                     last_name,
                     item.guests]
+            row = [unicode_convert(x) for x in row]
             yield row
 
     def render_to_response(self, context, **response_kwargs):

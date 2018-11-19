@@ -159,6 +159,8 @@ MIDDLEWARE_CLASSES = [
     'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
 ]
 
+SECURE_SSL_REDIRECT = True
+
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = [

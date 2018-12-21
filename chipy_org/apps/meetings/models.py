@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 from interval.fields import IntervalField
 
 from chipy_org.libs.models import CommonModel
@@ -207,7 +208,6 @@ class RSVP(CommonModel):
     RSVP_CHOICES = (
         ('Y', "Yes"),
         ('N', "No"),
-        ('M', "Maybe"),
     )
 
     user = models.ForeignKey(User, blank=True, null=True)

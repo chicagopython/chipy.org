@@ -24,6 +24,9 @@ migrate:
 	docker-compose exec web python manage.py migrate auth || true
 	docker-compose exec web python manage.py migrate
 
+datamigration:
+	docker-compose exec web python manage.py makemigrations --name $(name) --empty $(app)
+
 migration:
 	docker-compose exec web python manage.py migrate auth || true
 	docker-compose exec web python manage.py migrate

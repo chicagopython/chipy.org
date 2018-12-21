@@ -72,3 +72,4 @@ chipy_org/mediafiles/
 venv/
 
 .vscode
+.envrc

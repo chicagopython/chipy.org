@@ -208,6 +208,7 @@ class RSVP(CommonModel):
     RSVP_CHOICES = (
         ('Y', "Yes"),
         ('N', "No"),
+        ('M', "Maybe"),
     )
 
     user = models.ForeignKey(User, blank=True, null=True)

@@ -21,7 +21,11 @@ down:
 	docker-compose down
 
 migrate:
-	docker exec -it `docker-compose ps -q web` python manage.py migrate auth || true
-	docker exec -it `docker-compose ps -q web` python manage.py migrate
+	docker-compose exec web python manage.py migrate auth || true
+	docker-compose exec web python manage.py migrate
+
+migration:
+	docker-compose exec web python manage.py migrate auth || true
+	docker-compose exec web python manage.py migrate
 
 setup: setup_env build run migrate

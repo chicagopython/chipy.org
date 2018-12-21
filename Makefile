@@ -11,12 +11,17 @@ build:
 	docker-compose build
 
 run:
-	docker-compose up
+	docker-compose up -d
 
 web: run
 
-migrate:
-	docker exec -it web python manage.py migrate auth || true
-	docker exec -it web python manage.py migrate
+up: run
 
-setup: setup_env build run_db setup_db
+down:
+	docker-compose down
+
+migrate:
+	docker exec -it `docker-compose ps -q web` python manage.py migrate auth || true
+	docker exec -it `docker-compose ps -q web` python manage.py migrate
+
+setup: setup_env build run migrate

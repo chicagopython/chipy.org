@@ -28,6 +28,6 @@ migration:
 	docker-compose exec web python manage.py makemigrations --name $(name) $(app)
 
 test:
-	docker-compose exec web python manage.py test $(app)
+	docker-compose exec web python manage.py test $(module)
 
 setup: setup_env build run migrate

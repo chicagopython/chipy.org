@@ -8,6 +8,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
 
+from django.core.exceptions import ValidationError
+
 import chipy_org.libs.test_utils as test_utils
 from .models import RSVP, Meeting, Venue, Topic
 
@@ -21,8 +23,6 @@ class MeetingsTest(test_utils.AuthenticatedTest):
         """
         Tests the uniqueness constraints on the rsvp model
         """
-
-        from django.core.exceptions import ValidationError
 
         test_venue = Venue.objects.create(name='Test')
         meeting = Meeting.objects.create(
@@ -51,6 +51,29 @@ class MeetingsTest(test_utils.AuthenticatedTest):
                 name='Test Name', meeting=meeting,
                 response='Y', email='dummy@example.com',
             )
+
+    def test_rsvp_response_yes(self):
+        test_venue = Venue.objects.create(name='Test')
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=test_venue)
+
+        RSVP.objects.create(user=self.user, meeting=meeting, response='Y')
+
+    def test_rsvp_response_no(self):
+        test_venue = Venue.objects.create(name='Test')
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=test_venue)
+
+        RSVP.objects.create(user=self.user, meeting=meeting, response='N')
+
+    def test_rsvp_response_maybe(self):
+        test_venue = Venue.objects.create(name='Test')
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=test_venue)
+
+        with self.assertRaises(ValidationError):
+            RSVP.objects.create(user=self.user, meeting=meeting, response='M')
+
 
 
 @override_settings(

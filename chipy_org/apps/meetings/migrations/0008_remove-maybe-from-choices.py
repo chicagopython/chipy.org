@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetings', '0008_change-all-maybes-to-yes'),
+        ('meetings', '0007_meeting_reg_close_date'),
     ]
 
     operations = [

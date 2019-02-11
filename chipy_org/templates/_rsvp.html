@@ -1,13 +1,13 @@
-{% if next_meeting.can_register %}
+{% if curr_meeting.can_register %}
 <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
   {% if rsvp %}
     You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
     <strong>Change your RSVP: </strong>
   {% else %}
-  {% if next_meeting.reg_close_date %}
+  {% if curr_meeting.reg_close_date %}
       <p style="color: red">Registration for this event will close on 
-          {{ next_meeting.reg_close_date|date:"l F j" }} at
-          {{ next_meeting.reg_close_date|date:"g:i a" }}
+          {{ curr_meeting.reg_close_date|date:"l F j" }} at
+          {{ curr_meeting.reg_close_date|date:"g:i a" }}
       </p>
   {% endif %}
   {% endif %}
@@ -22,7 +22,7 @@
     <input type="text" name="name" placeholder="John Smith">
     <label for="email">Email</label>
     <input type="text" name="email" placeholder="john@example.com">
-    <input type="hidden" name="meeting" value="{{ next_meeting.pk }}">
+    <input type="hidden" name="meeting" value="{{ curr_meeting.pk }}">
     <input type="hidden" name="response" value="Y">
     {% if not request.user.is_authenticated %}
       {{ rsvp_form.captcha }}
@@ -34,4 +34,4 @@
  <p style="color: red">This event is no longer accepting registrations.</p>
 {% endif %}
 
-<p>{{ next_meeting.number_rsvps }} going so far</p>
+<p>{{ curr_meeting.number_rsvps }} going so far</p>

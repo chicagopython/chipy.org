@@ -3,7 +3,7 @@ $('.rsvp').click(function(){
     $.ajax({
         type: 'POST',
         url: "{% url 'rsvp' %}",
-        data: {response:$(this).data('response'), csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ next_meeting.id }}'},
+        data: {response:$(this).data('response'), csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ curr_meeting.id }}'},
         success: function(data){
             location.reload();
         },

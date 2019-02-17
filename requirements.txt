@@ -26,7 +26,7 @@ Pillow==4.1.1
 probablepeople==0.5.4
 psycopg2==2.7.1
 python-openid==2.2.5
-requests==2.18.1
+requests==2.20.0
 six==1.10.0
 sorl-thumbnail==12.3
 Werkzeug==0.10.4

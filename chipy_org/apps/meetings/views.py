@@ -22,6 +22,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import probablepeople
+
+from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
 from .utils import meetup_meeting_sync, unicode_convert
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
@@ -49,6 +51,15 @@ class MeetingDetail(DetailView):
     template_name = 'meetings/meeting.html'
     pk_url_kwarg = 'pk'
     model = Meeting
+
+    def get_context_data(self, **kwargs):
+        context = super(MeetingDetail, self).get_context_data(**kwargs)
+        context.update(kwargs)
+        if self.request.user.is_authenticated():
+            context['rsvp_form'] = RSVPForm(self.request)
+        else:
+            context['rsvp_form'] = AnonymousRSVPForm(self.request)
+        return context
 
 
 class ProposeTopic(CreateView):

@@ -245,6 +245,8 @@ INSTALLED_APPS = [
     'chipy_org.apps.subgroups',
 ]
 
+TEST_RUNNER = 'chipy_org.runner.PytestTestRunner'
+
 if DEBUG:
     # Add the command extensions
     INSTALLED_APPS += ['django_extensions']

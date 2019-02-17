@@ -1,4 +1,3 @@
-from django.utils import unittest
 import django
 from django.test.client import Client
 from django.core.urlresolvers import reverse

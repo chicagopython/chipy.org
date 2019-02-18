@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:  # required for runs that don't use workflows
+    working_directory: site/
     filters:
       branches:
         only:
@@ -17,7 +18,7 @@ jobs:
       - run:
           name: Install Requirements
           command: |
-            pip install -r requirements_test.txt
+            pip install --user -r requirements_test.txt
       - run:
           name: Run Tests
           command: pytest

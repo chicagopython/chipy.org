@@ -8,16 +8,27 @@ jobs:
           - develop
           - /rc-.*/
           - /feature/*
+    working_directory: ~/circleci-app
     docker:
       - image: circleci/python:2.7.15
         environment:
           DEBUG: "True"
     steps:
       - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "requirements_test.txt" }}
       - run:
           name: Install Requirements
           command: |
             pip install --user -r requirements_test.txt
+      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
+          key: deps9-{{ .Branch }}-{{ checksum "requirements_test.txt" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
       - run:
           name: Run Tests
           command: pytest

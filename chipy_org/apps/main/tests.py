@@ -19,7 +19,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('home'))
+        response = self.client.get(reverse_lazy('home'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)

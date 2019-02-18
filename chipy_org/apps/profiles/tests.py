@@ -23,7 +23,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:list'))
+        response = self.client.get(reverse_lazy('profiles:list'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -32,7 +32,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:edit'))
+        response = self.client.get(reverse_lazy('profiles:edit'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 302)
@@ -45,7 +45,7 @@ class SmokeTest(TestCase):
         self.client.force_login(self.user)
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:edit'))
+        response = self.client.get(reverse_lazy('profiles:edit'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -61,7 +61,7 @@ class SmokeTest(TestCase):
         # TEST
         response = self.client.post(
             reverse_lazy('profiles:edit'),
-            {'display_name': display_name, 'show': True})
+            {'display_name': display_name, 'show': True}, follow=True)
 
         # CHECK
         self.user.profile.refresh_from_db()

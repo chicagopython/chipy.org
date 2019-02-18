@@ -28,7 +28,7 @@ class SmokeTest(TestCase):
 
         # TEST
         response = self.client.get(
-            reverse_lazy('sponsor_detail', args=[self.sponsor.slug]))
+            reverse_lazy('sponsor_detail', args=[self.sponsor.slug]), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -38,7 +38,7 @@ class SmokeTest(TestCase):
 
         # TEST
         response = self.client.get(
-            reverse_lazy('sponsor_list'))
+            reverse_lazy('sponsor_list'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)

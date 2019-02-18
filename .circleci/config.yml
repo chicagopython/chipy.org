@@ -13,6 +13,7 @@ jobs:
       - image: circleci/python:2.7.15
         environment:
           DEBUG: "True"
+          ADMINS: "admin@chipy.org"
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin

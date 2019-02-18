@@ -8,7 +8,7 @@ DATABASES = {
         'TEST': {}
     }
 }
-
+DEBUG=True
 ADMINS = 'admin@chipy.org'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ENVELOPE_EMAIL_RECIPIENTS = "admin@example.com"

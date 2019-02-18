@@ -2,12 +2,13 @@ version: 2
 jobs:
   build:  # required for runs that don't use workflows
     working_directory: /site/
-    branches:
-      only:
-        - master
-        - develop
-        - /rc-.*/
-        - /feature/*
+    filters:
+      branches:
+        only:
+          - master
+          - develop
+          - /rc-.*/
+          - /feature/*
     docker:
       - image: circleci/python:2.7.15
         environment:

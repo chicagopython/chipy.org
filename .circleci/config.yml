@@ -14,6 +14,7 @@ jobs:
         environment:
           DEBUG: "True"
           ADMINS: "admin@chipy.org"
+          ENVELOPE_EMAIL_RECIPIENTS: "admin@chipy.org"
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin

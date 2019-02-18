@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:  # required for runs that don't use workflows
+    working_directory: /site/
+    docker:
+      - image: circleci/python:2.7.15
+        environment:
+          DEBUG: "True"
+    steps:
+      - checkout
+      - run:
+        command: |
+          pip install -r requirements.txt
+      - run: sudo pip install pylint
+      - run:
+        command: |
+          pytest
+      - run: pylint chipy_org/
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1

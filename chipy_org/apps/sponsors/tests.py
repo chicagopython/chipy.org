@@ -1,6 +1,6 @@
+# pylint: disable=invalid-name,duplicate-code
 import pytest
-from django.test import TestCase, override_settings
-from django.test import Client
+from django.test import TestCase, override_settings, Client
 from django.core.urlresolvers import reverse_lazy
 from django.conf import global_settings
 from django.contrib.auth import get_user_model

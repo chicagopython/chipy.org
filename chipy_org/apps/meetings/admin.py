@@ -66,8 +66,9 @@ class MeetingAdmin(admin.ModelAdmin):
 
     def action(self, obj):
         if obj.meetup_id:
-            return '<input type="submit" value="Sync Meetup" class="meetup-sync-button" data-meeting-pk="{}">'.format(
-                obj.pk)
+            return ('<input type="submit" value="Sync Meetup" '
+                    'class="meetup-sync-button" data-meeting-pk="{}">').format(
+                        obj.pk)
         return ''
 
     action.allow_tags = True

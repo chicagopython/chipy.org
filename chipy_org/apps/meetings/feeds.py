@@ -1,6 +1,6 @@
+from datetime import timedelta
 from django_ical.views import ICalFeed
 from .models import Meeting
-from datetime import timedelta
 
 
 class MeetingFeed(ICalFeed):

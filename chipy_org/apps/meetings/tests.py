@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name,no-member,unused-variable,duplicate-code
 import datetime
 import pytest
 import django
@@ -89,7 +90,7 @@ class SmokeTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     @pytest.mark.skipif(
-        django.VERSION < (1,9,0),
+        django.VERSION < (1, 9, 0),
         reason="Django 1.9 introduces force_login")
     def test__propose_topic__GET__auth(self):
         # SETUP

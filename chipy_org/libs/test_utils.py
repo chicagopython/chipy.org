@@ -1,13 +1,11 @@
 import django
 from django.test.client import Client
-from django.core.urlresolvers import reverse
-
 from django.contrib.auth.models import User
 
 
 class AuthenticatedTest(django.test.TestCase):
     def setUp(self):
-        self.c = Client()
+        self.client = Client()
         self.users = None
 
         # create login
@@ -20,7 +18,7 @@ class AuthenticatedTest(django.test.TestCase):
         self.user = user
 
         # login
-        self.c.login(username='test', password='test123')
+        self.client.login(username='test', password='test123')
 
     def extra_users(self):
         self.users = []

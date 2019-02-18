@@ -1,3 +1,4 @@
+# pylint: disable=unused-wildcard-import,wildcard-import
 from .settings import *
 
 DATABASES = {
@@ -8,13 +9,13 @@ DATABASES = {
     }
 }
 
-ADMINS='admin@chipy.org'
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-ENVELOPE_EMAIL_RECIPIENTS="admin@example.com"
+ADMINS = 'admin@chipy.org'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ENVELOPE_EMAIL_RECIPIENTS = "admin@example.com"
 
-SECRET_KEY='somesecretkeyfordjangogoeshere'
+SECRET_KEY = 'somesecretkeyfordjangogoeshere'
 
-USE_S3=False
+USE_S3 = False
 
-NORECAPTCHA_SITE_KEY='dummy_recaptcha_public_key'
-NORECAPTCHA_SECRET_KEY='dummy_recaptcha_private_key'
+NORECAPTCHA_SITE_KEY = 'dummy_recaptcha_public_key'
+NORECAPTCHA_SECRET_KEY = 'dummy_recaptcha_private_key'

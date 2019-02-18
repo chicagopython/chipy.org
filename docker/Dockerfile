@@ -26,7 +26,8 @@ USER app
 
 # Install python packages
 ADD requirements.txt ${SITE_DIR}requirements.txt
-RUN pip install --user -r ${SITE_DIR}requirements.txt
+ADD requirements_test.txt ${SITE_DIR}requirements_test.txt
+RUN pip install --user -r ${SITE_DIR}requirements_test.txt
 RUN pip install --user uwsgi
 COPY docker/ ${SITE_DIR}docker/
 ADD . proj/

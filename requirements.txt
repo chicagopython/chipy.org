@@ -25,8 +25,6 @@ oauth2==1.5.211
 Pillow==5.4.1
 probablepeople==0.5.4
 psycopg2-binary==2.7.7
-pytest==4.2.1
-pytest-django==3.4.7
 #pytest-cov==2.6.0 
 python-openid==2.2.5
 requests==2.21.0

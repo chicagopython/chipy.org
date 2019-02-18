@@ -15,8 +15,9 @@ def get_rsvp(meeting, meetup_member):
     Handles getting the rsvp instance to update from Meetup.
     Will return a new instance if needed.
 
-    If there is a name collision, it will update the current RSVP with the Meetup Info. This isn't perfect by any
-    stretch, but for our uses it should be good enough.
+    If there is a name collision, it will update the current RSVP with the
+    Meetup Info. This isn't perfect by any stretch, but for our uses it
+    should be good enough.
 
     """
 
@@ -26,7 +27,7 @@ def get_rsvp(meeting, meetup_member):
 
     if name_collisions:
         rsvp = name_collisions[0]
-        rsvp.meetup_user_id=meetup_user_id
+        rsvp.meetup_user_id = meetup_user_id
 
     else:
         try:
@@ -61,18 +62,18 @@ def get_real_names(api_key, results):
     url = "https://api.meetup.com/2/profiles"
     realname_question_id = 8181568
     attendee_ids = ','.join(str(r['member']['member_id']) for r in results)
-    params = dict(member_id=attendee_ids, group_urlname = '_ChiPy_', key=api_key)
+    params = dict(member_id=attendee_ids, group_urlname='_ChiPy_', key=api_key)
     api_response = requests.get(url, params=params)
     response = api_response.json()
     results = response['results']
     for result in results:
-        id = result['member_id']
-        for a in result['answers']:
-            if a['question_id'] == realname_question_id:
-                if 'answer' in a:
-                    real_names[id] = a['answer']
-        if id not in real_names:
-            real_names[id] = " ".join(s.capitalize() for s in result['name'].split())
+        mid = result['member_id']
+        for ans in result['answers']:
+            if ans['question_id'] == realname_question_id:
+                if 'answer' in ans:
+                    real_names[mid] = ans['answer']
+        if mid not in real_names:
+            real_names[mid] = " ".join(s.capitalize() for s in result['name'].split())
     return real_names
 
 
@@ -85,7 +86,7 @@ def meetup_meeting_sync(api_key, meetup_event_id):
 
     response = api_response.json()
     results = response['results']
-    logger.info('Got {} results for Meetup sync'.format(len(results)))
+    logger.info('Got %s results for Meetup sync', len(results))
     real_names = get_real_names(api_key, results)
 
     for result in results:
@@ -97,11 +98,11 @@ def meetup_meeting_sync(api_key, meetup_event_id):
         try:
             rsvp.save()
         except ValidationError as exc:
-            logger.warning('Error saving RSVP for {} with response of {}. Error is {}'.format(
-                result['member']['name'], rsvp.response, exc))
+            logger.warning('Error saving RSVP for %s with response of %s. Error is %s',
+                           result['member']['name'], rsvp.response, exc)
         else:
-            logger.info('Saved RSVP for {} with response of {}'.format(result['member']['name'],
-                                                                       rsvp.response))
+            logger.info('Saved RSVP for %s with response of %s',
+                        result['member']['name'], rsvp.response)
 
 
 def unicode_convert(inin):

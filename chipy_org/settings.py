@@ -16,7 +16,9 @@ def env_var(key, default=None):
     return val
 
 
-def env_list(key, defaults=[], delimiter=','):
+def env_list(key, defaults=None, delimiter=','):
+    if not defaults:
+        defaults = []
     val_list = defaults
     val = os.environ.get(key, None)
     if val:

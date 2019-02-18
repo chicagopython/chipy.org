@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name,duplicate-code
 import pytest
 from django.test import TestCase, override_settings
 from django.test import Client
@@ -11,14 +12,14 @@ pytestmark = pytest.mark.django_db
     STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 class SmokeTest(TestCase):
 
-     def setUp(self):
+    def setUp(self):
         self.client = Client()
 
-     def test__announcements_list_url__GET(self):
+    def test__announcements_list_url__GET(self):
         # SETUP
 
-         # TEST
+        # TEST
         response = self.client.get(reverse_lazy('announcements_list'))
 
-         # CHECK
+        # CHECK
         self.assertEqual(response.status_code, 200)

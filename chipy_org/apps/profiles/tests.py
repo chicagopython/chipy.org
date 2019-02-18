@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name,duplicate-code
 import pytest
 import django
 from django.test import TestCase, override_settings
@@ -37,7 +38,7 @@ class SmokeTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     @pytest.mark.skipif(
-        django.VERSION < (1,9,0),
+        django.VERSION < (1, 9, 0),
         reason="Django 1.9 introduces force_login")
     def test__profile_edit_url__GET_auth(self):
         # SETUP
@@ -50,7 +51,7 @@ class SmokeTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     @pytest.mark.skipif(
-        django.VERSION < (1,9,0),
+        django.VERSION < (1, 9, 0),
         reason="Django 1.9 introduces force_login")
     def test__profile_edit_url__POST_auth(self):
         # SETUP

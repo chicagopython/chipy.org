@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Install Requirements
           command: |
-            pip install --user -r requirements_test.txt
+            pip install -r requirements_test.txt
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ .Branch }}-{{ checksum "requirements_test.txt" }}
           paths:

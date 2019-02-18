@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:  # required for runs that don't use workflows
-    working_directory: /site/
+    working_directory: site/
     filters:
       branches:
         only:

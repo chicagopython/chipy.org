@@ -87,7 +87,7 @@ class SmokeTest(TestCase):
         response = self.client.get(reverse_lazy('propose_topic'), follow=True)
 
         # CHECK
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     @pytest.mark.skipif(
         django.VERSION < (1, 9, 0),

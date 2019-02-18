@@ -77,7 +77,7 @@ class SmokeTest(TestCase):
     def test__meeting_detail__GET(self):
         # TEST
         response = self.client.get(
-            reverse_lazy('meeting', args=[self.meeting.id]))
+            reverse_lazy('meeting', args=[self.meeting.id]), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)

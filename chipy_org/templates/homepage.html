@@ -179,7 +179,7 @@ h2 a {
                     <p><a href="{{ next_meeting.live_stream }}">Live Stream</a><p>
                   {% endif %}
 
-                  {% include "_rsvp.html" %}
+                  {% include "_rsvp.html" with curr_meeting=next_meeting %}
 
                   <p>
                       <a class="btn btn-primary" href="{% url 'meeting' next_meeting.pk %}">Details</a>
@@ -372,6 +372,7 @@ h2 a {
 {% endblock %}
 {% block extra_jquery %}
 {% include "_homepage.js" %}
+{% include "_rsvp.js" with curr_meeting=next_meeting %}
 
 $(document).ready(function() {
     // Source: https://codepen.io/maxds/pen/jgeoA

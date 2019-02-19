@@ -1,7 +1,8 @@
 from django.conf.urls import url
+from django.contrib.flatpages.views import flatpage
 
 
 urlpatterns = [
-    url(r"^$", 'django.contrib.flatpages.views.flatpage',
+    url(r"^$", flatpage,
         {'url': '/about/'}, name='about'),
 ]

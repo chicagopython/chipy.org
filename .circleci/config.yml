@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:  # required for runs that don't use workflows
+    filters:
+      branches:
+        only:
+          - master
+          - develop
+          - /rc-.*/
+          - /feature/*
+    working_directory: ~/circleci-app
+    docker:
+      - image: circleci/python:2.7.15
+        environment:
+          DEBUG: true
+          ADMINS: "admin@chipy.org"
+          ENVELOPE_EMAIL_RECIPIENTS: "admin@chipy.org"
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "requirements_test.txt" }}
+      - run:
+          name: Install Requirements
+          command: |
+            pip install -r requirements_test.txt
+      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
+          key: deps9-{{ .Branch }}-{{ checksum "requirements_test.txt" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
+      - run:
+          name: Run Tests
+          command: pytest
+      - run:
+          name: Run Linting
+          command: pylint chipy_org/
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1

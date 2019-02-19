@@ -1,22 +1,18 @@
-Chipy.org
-=========
+# Chipy.org
 
 The code for the Chipy.org website
 This project is open source and the license can be found in LICENSE.
 
-
-Installation
-============
+## Installation
 
 To get setup with chipy.org code it is recommended that you use the following:
 
- * Python 2.7.x
- * virtualenv
- * [Autoenv](https://github.com/kennethreitz/autoenv)
- * C compiler (for PIL)
+* Python 2.7.x
+* virtualenv
+* [Autoenv](https://github.com/kennethreitz/autoenv)
+* C compiler (for PIL)
 
-Setting up a Local environment
-------------------------------
+## Setting up a Local environment
 
 Chipy.org is setup using [12factor](http://12factor.net), which means that it takes local settings from the environment. For this reason it is recommended that you use autoenv and a .env file. The example .env is::
 
@@ -73,8 +69,7 @@ Install project dependencies::
 
     (venv)$ pip install -r requirements.txt
 
-Setting up the database
------------------------
+## Setting up the database
 
 I recommend keeping your development DB as close to production as possible. If you're on a Mac, I recommend using [Postgress.app](http://postgresapp.com)
 
@@ -82,16 +77,13 @@ You will need to run::
 
     (venv)$ python manage.py migrate
 
-Running a web server
---------------------
+## Running a web server
 
 In development you should run::
 
     (venv)$ python manage.py runserver
 
-
-Heroku Commands
--------------------------------
+## Heroku Commands
 
     # Deploy changes to master
     git push heroku master

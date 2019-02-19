@@ -1,7 +1,19 @@
+# pylint: disable=invalid-name,no-member,unused-variable,duplicate-code
 import datetime
+import pytest
+import django
+from django.test import TestCase, override_settings
+from django.test import Client
+from django.core.urlresolvers import reverse_lazy
+from django.conf import global_settings
+from django.contrib.auth import get_user_model
 
 import chipy_org.libs.test_utils as test_utils
-from .models import RSVP, Meeting, Venue
+from .models import RSVP, Meeting, Venue, Topic
+
+User = get_user_model()
+
+pytestmark = pytest.mark.django_db
 
 
 class MeetingsTest(test_utils.AuthenticatedTest):
@@ -39,3 +51,68 @@ class MeetingsTest(test_utils.AuthenticatedTest):
                 name='Test Name', meeting=meeting,
                 response='Y', email='dummy@example.com',
             )
+
+
+@override_settings(
+    STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+class SmokeTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create(username="chipy",)
+        self.meeting = Meeting.objects.create(
+            when=datetime.datetime.now() + datetime.timedelta(days=7)
+        )
+        self.topic = Topic.objects.create(
+            title="test topic"
+        )
+
+    def test__past_meetings__GET(self):
+        # TEST
+        response = self.client.get(reverse_lazy('past_meetings'), follow=True)
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+
+    def test__meeting_detail__GET(self):
+        # TEST
+        response = self.client.get(
+            reverse_lazy('meeting', args=[self.meeting.id]), follow=True)
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+
+    def test__propose_topic__GET__annon(self):
+        # TEST
+        response = self.client.get(reverse_lazy('propose_topic'), follow=True)
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+
+    @pytest.mark.skipif(
+        django.VERSION < (1, 9, 0),
+        reason="Django 1.9 introduces force_login")
+    def test__propose_topic__GET__auth(self):
+        # SETUP
+        self.client.force_login(self.user)
+
+        # TEST
+        response = self.client.get(reverse_lazy('propose_topic'), follow=True)
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+
+    def test__past_topics__GET(self):
+        # TEST
+        response = self.client.get(reverse_lazy('past_topics'), follow=True)
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+
+    def test__past_topic__GET(self):
+        # TEST
+        response = self.client.get(
+            reverse_lazy('past_topic', args=[self.topic.id]), follow=True)
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)

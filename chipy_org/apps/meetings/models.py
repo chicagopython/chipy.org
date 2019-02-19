@@ -1,13 +1,12 @@
 from __future__ import unicode_literals
-from django.utils import timezone
+import datetime
 import string
 import random
-
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from interval.fields import IntervalField
-
 
 from chipy_org.libs.models import CommonModel
 
@@ -39,14 +38,12 @@ class Venue(CommonModel):
     latitude = property(get_latitude)
 
     @property
-    def jsonLatLng(self):
+    def jsonLatLng(self):  # pylint: disable=invalid-name
         '''
         Use the string returned as args for google.maps.LatLng constructor.
         '''
         if self.latitude is not None and self.longitude is not None:
             return "%.6f,%.6f" % (self.latitude, self.longitude)
-        else:
-            return None
 
     directions = models.TextField(blank=True, null=True)
     embed_map = models.TextField(blank=True, null=True)
@@ -237,7 +234,7 @@ class RSVP(CommonModel):
                 if RSVP.objects.filter(meeting=self.meeting, name=self.name).exists():
                     raise ValidationError('User has already RSVPed for meeting')
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         self.full_clean()
 
         # Generate a key for this RSVP
@@ -271,5 +268,4 @@ class RSVP(CommonModel):
             return self.guests
 
     def __unicode__(self):
-        self.users_name
         return "{}: {}".format(self.meeting, self.name)

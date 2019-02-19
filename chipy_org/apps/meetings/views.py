@@ -4,7 +4,6 @@ import logging
 
 from django.db.models import Sum
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse_lazy
@@ -22,6 +21,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import probablepeople
+
+from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
 from .utils import meetup_meeting_sync, unicode_convert
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
@@ -49,6 +50,15 @@ class MeetingDetail(DetailView):
     template_name = 'meetings/meeting.html'
     pk_url_kwarg = 'pk'
     model = Meeting
+
+    def get_context_data(self, **kwargs):
+        context = super(MeetingDetail, self).get_context_data(**kwargs)
+        context.update(kwargs)
+        if self.request.user.is_authenticated():
+            context['rsvp_form'] = RSVPForm(self.request)
+        else:
+            context['rsvp_form'] = AnonymousRSVPForm(self.request)
+        return context
 
 
 class ProposeTopic(CreateView):
@@ -190,9 +200,10 @@ class RSVPlistCSVBase(RSVPlist):
 
     def _lookup_rsvps(self, rsvp):
         if self.private:
-            yield ["User Id", "Username", "Full Name", "First Name", "Last Name", "Email", "Guests",]
+            yield ["User Id", "Username", "Full Name",
+                   "First Name", "Last Name", "Email", "Guests", ]
         else:
-            yield ["Full Name", "First Name", "Last Name", "Guests",]
+            yield ["Full Name", "First Name", "Last Name", "Guests", ]
         for item in rsvp:
             first_name = last_name = full_name = ""
             if not item.name:
@@ -203,7 +214,7 @@ class RSVPlistCSVBase(RSVPlist):
                     last_name = item.user.last_name
                     try:
                         full_name = item.user.profile.display_name
-                    except Exception as e:
+                    except Exception:
                         logger.exception("Unable to access user profile.")
             else:
                 full_name = item.name
@@ -212,16 +223,16 @@ class RSVPlistCSVBase(RSVPlist):
                     parsed = probablepeople.tag(full_name)
                     first_name = parsed[0].get("GivenName")
                     last_name = parsed[0].get("Surname")
-                except Exception as e:
-                    logger.exception("unable to parse person {}".format(full_name))
+                except Exception:
+                    logger.exception("unable to parse person %s", full_name)
             if self.private:
-                row = [item.user.id if item.user else "", 
-                    item.user.username if item.user else "",
-                    full_name,
-                    first_name,
-                    last_name,
-                    item.email,
-                    item.guests]
+                row = [item.user.id if item.user else "",
+                       item.user.username if item.user else "",
+                       full_name,
+                       first_name,
+                       last_name,
+                       item.email,
+                       item.guests]
             else:
                 row = [
                     full_name,
@@ -247,11 +258,11 @@ class RSVPlistCSVBase(RSVPlist):
 class RSVPlistPrivate(RSVPlistCSVBase):
 
     @method_decorator(staff_member_required)
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):  # pylint: disable=arguments-differ
         return super(RSVPlistPrivate, self).dispatch(*args, **kwargs)
 
     private = True
- 
+
 
 class RSVPlistHost(RSVPlistCSVBase):
     private = False

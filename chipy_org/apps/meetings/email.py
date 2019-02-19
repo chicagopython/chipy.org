@@ -8,18 +8,19 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+
 def send_rsvp_email(rsvp):
     try:
         plaintext = get_template('meetings/emails/rsvp_email.txt')
         htmly = get_template('meetings/emails/rsvp_email.html')
 
-        d = Context(
+        context = Context(
             {'key': rsvp.key, 'site': Site.objects.get_current()})
 
         subject = 'Chipy: Link to Change your RSVP'
         from_email = 'DoNotReply@chipy.org'
-        text_content = plaintext.render(d)
-        html_content = htmly.render(d)
+        text_content = plaintext.render(context)
+        html_content = htmly.render(context)
         msg = EmailMultiAlternatives(
             subject, text_content, from_email, [rsvp.email])
         msg.attach_alternative(html_content, "text/html")
@@ -28,19 +29,18 @@ def send_rsvp_email(rsvp):
         logger.exception(e)
 
 
-def send_meeting_topic_submitted_email(topic):
+def send_meeting_topic_submitted_email(topic):  # pylint: disable=invalid-name
     try:
         plaintext = get_template('meetings/emails/meeting_topic_submitted.txt')
         htmly = get_template('meetings/emails/meeting_topic_submitted.html')
-        chipy_topic_emails = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS")
         recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
-        d = Context(
+        context = Context(
             {'topic': topic, 'site': Site.objects.get_current()})
 
         subject = 'Chipy: New Meeting Topic Submitted'
         from_email = 'DoNotReply@chipy.org'
-        text_content = plaintext.render(d)
-        html_content = htmly.render(d)
+        text_content = plaintext.render(context)
+        html_content = htmly.render(context)
         msg = EmailMultiAlternatives(
             subject, text_content, from_email,
             recipients)

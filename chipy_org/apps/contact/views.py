@@ -9,4 +9,3 @@ class ChipyContactForm(ContactForm):
 
 class ChipyContactView(ContactView):
     form_class = ChipyContactForm
-

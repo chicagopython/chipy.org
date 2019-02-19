@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 import traceback
-from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect
 
 from social_auth.exceptions import SocialAuthBaseException
-from social_auth.utils import setting, backend_setting, get_backend_name
+from social_auth.utils import get_backend_name
 from social_auth.middleware import SocialAuthExceptionMiddleware
-import sys
 
 
 class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):

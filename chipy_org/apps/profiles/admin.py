@@ -8,13 +8,13 @@ class UserProfileInline(admin.StackedInline):
     model = UserProfile
 
 
-class UserAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     inlines = (UserProfileInline,)
 
     def get_search_fields(self, request):
-        sfields = super(UserAdmin, self).get_search_fields(request)
+        sfields = super(CustomUserAdmin, self).get_search_fields(request)
         return sfields + ('profile__display_name', )
 
 
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)

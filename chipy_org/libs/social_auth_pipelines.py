@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext
 from social_core.exceptions import AuthAlreadyAssociated
-from social_core.pipeline import (
+from social_core.pipeline.social_auth import (
     associate_by_email as super_associate_by_email)
 
 

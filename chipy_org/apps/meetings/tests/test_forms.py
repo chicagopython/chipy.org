@@ -1,6 +1,7 @@
+# pylint: disable=redefined-outer-name,invalid-name
 import datetime
 import pytest
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory
 from django.contrib.auth import get_user_model
 from ..forms import TopicForm
 from ..models import Topic, Presentor, Meeting
@@ -27,7 +28,7 @@ datas = [
         "name": "Test Testerson",
         "email": "email@chipy.org",
         "description": "this is a test",
-        "experience_level": "novice", 
+        "experience_level": "novice",
         "notes": "this is a test",
         "license": "CC BY",
         "length_minutes": '20',
@@ -46,7 +47,7 @@ def test__basic_topic_test_form(user_fixture, meeting_fixture, data):
     topic_form = TopicForm(request, data=data)
 
     topic_form.is_valid()
-    topic = topic_form.save()
+    _ = topic_form.save()
 
     assert Topic.objects.filter(title="test-topic").count() == 1
     assert Presentor.objects.filter(name="Test Testerson").count() == 1

@@ -3,9 +3,8 @@ import traceback
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from social_auth.exceptions import SocialAuthBaseException
-from social_auth.utils import get_backend_name
-from social_auth.middleware import SocialAuthExceptionMiddleware
+from social_core.exceptions import SocialAuthBaseException
+from social_django.middleware import SocialAuthExceptionMiddleware
 
 
 class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):
@@ -17,7 +16,7 @@ class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):
         self.backend = self.get_backend(request, exception)
 
         if isinstance(exception, SocialAuthBaseException):
-            backend_name = get_backend_name(self.backend)
+            backend_name = str(self.backend)
             message = self.get_message(request, exception)
             url = self.get_redirect_uri(request, exception)
 

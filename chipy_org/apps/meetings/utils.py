@@ -8,9 +8,9 @@ from .models import Meeting, RSVP
 
 
 try:
-  basestring
+    basestring
 except NameError:  # python 3
-  basestring = str
+    basestring = str  # pytest: disable=invalid-name
 
 
 logger = logging.getLogger(__name__)

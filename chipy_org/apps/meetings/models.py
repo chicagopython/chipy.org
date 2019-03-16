@@ -19,7 +19,7 @@ MEETING = (
 
 class Venue(CommonModel):
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     name = models.CharField(max_length=MAX_LENGTH)
@@ -65,7 +65,7 @@ class MeetingType(CommonModel):
     slug = models.SlugField(max_length=64, unique=True)
     description = models.TextField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s | (%s)" % (self.id, self.name)
 
     class Meta(object):
@@ -75,7 +75,7 @@ class MeetingType(CommonModel):
 
 class Meeting(CommonModel):
 
-    def __unicode__(self):
+    def __str__(self):
         if self.where:
             return "%s at %s" % (
                 self.when.strftime("%a, %b %d %Y at %I:%M %p"), self.where.name)
@@ -126,7 +126,7 @@ class Meeting(CommonModel):
 
 class Presentor(CommonModel):
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s | (%s)" % (self.name, self.email)
 
     user = models.ForeignKey(User, blank=True, null=True)
@@ -161,7 +161,7 @@ class TopicsQuerySet(models.QuerySet):
 
 class Topic(CommonModel):
 
-    # def __unicode__(self):
+    # def __str__(self):
     #     out = self.title
     #     if self.presentors.count():
     #         out += " By: %s" % self.presentors.all()[0].name
@@ -266,5 +266,5 @@ class RSVP(CommonModel):
         else:
             return self.guests
 
-    def __unicode__(self):
+    def __str__(self):
         return "{}: {}".format(self.meeting, self.name)

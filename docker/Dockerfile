@@ -1,9 +1,18 @@
-FROM python:2.7.15
+FROM python:3.6.8
 
 # install os dependencies; clean apt cache
-RUN apt-get update && apt-get install -y build-essential git \
-    libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev \
-    libpq-dev postgresql-client && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    libjpeg-dev \
+    libfreetype6 \
+    libfreetype6-dev \
+    libpq-dev \
+    python3-dev \
+    zlib1g-dev \
+    libpq-dev \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
 
 # environment variables needed 
 ENV SITE_DIR=/site/

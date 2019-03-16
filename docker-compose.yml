@@ -29,6 +29,7 @@ services:
     environment:
       - CONNECT_METHOD=http
       - ALLOWED_HOSTS=localhost
+      - USE_S3=False
     stdin_open: true
     tty: true
 

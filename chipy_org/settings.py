@@ -9,10 +9,11 @@ import dj_database_url
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
-    if val in ('True', 'true'):
-        val = True
-    elif val in ('False', 'false'):
-        val = False
+    if isinstance(val, str):
+        if val.lower() in ('t', 'true'):
+            val = True
+        elif val.lower() in ['f', 'false']:
+            val = False
     return val
 
 
@@ -151,7 +152,7 @@ TEMPLATES = [
 ]
 
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

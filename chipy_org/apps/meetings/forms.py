@@ -13,15 +13,10 @@ class TopicForm(forms.ModelForm):
         'experience_level',
     )
 
-<<<<<<< HEAD
-    meeting = ModelChoiceField(queryset=Meeting.objects.filter(
-        when__gt=datetime.datetime.now()))
-=======
     meeting = forms.ModelChoiceField(
         queryset=Meeting.objects.filter(when__gt=datetime.datetime.now()))
     name = forms.CharField(label="Your Name", required=True)
     email = forms.EmailField(label="Your Email", required=True)
->>>>>>> feature/talk-submission-fixes
 
     def __init__(self, request, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)

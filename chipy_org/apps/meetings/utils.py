@@ -7,6 +7,12 @@ import requests
 from .models import Meeting, RSVP
 
 
+try:
+  basestring
+except NameError:  # python 3
+  basestring = str
+
+
 logger = logging.getLogger(__name__)
 
 

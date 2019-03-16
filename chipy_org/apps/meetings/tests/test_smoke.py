@@ -9,7 +9,7 @@ from django.conf import global_settings
 from django.contrib.auth import get_user_model
 
 import chipy_org.libs.test_utils as test_utils
-from .models import RSVP, Meeting, Venue, Topic
+from ..models import RSVP, Meeting, Venue, Topic
 
 User = get_user_model()
 

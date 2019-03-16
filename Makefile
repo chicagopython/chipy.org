@@ -13,10 +13,16 @@ build:
 run:
 	docker-compose up
 
+run_back:
+	docker-compose up -d
+
 web: run
 
 migrate:
-	docker exec -it web python manage.py migrate auth || true
-	docker exec -it web python manage.py migrate
+	docker-compose exec web python manage.py migrate auth || true
+	docker-compose exec web python manage.py migrate
 
-setup: setup_env build run_db setup_db
+test:
+	docker-compose exec web pytest -v chipy_org/
+
+setup: setup_env build

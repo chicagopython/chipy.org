@@ -65,7 +65,7 @@ class SmokeTest(TestCase):
 
         # CHECK
         self.user.profile.refresh_from_db()
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(
             self.user.profile.display_name,
             display_name)

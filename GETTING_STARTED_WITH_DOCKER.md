@@ -17,69 +17,36 @@ Make the project directory your working directory:
 
     cd chipy.org
 
-Build the environment:
+Run the setup command to configure the environment:
 
-    docker-compose up --build
+    make setup
 
+Once done, modify the `docker/docker.env` file with the values you require in
+your development environment. Reasonable defaults have been provided for local
+development.
 
-Initialize the application (migrate):
+Then start up your webserver!
 
-    docker-compose run app init
+    make web
 
-Create a superuser:
+That will start your webserver! If you try to hit the Django app it will throw
+an error because you have not yet run migrations. But connectivity is good! And
+we can fix migrations with this line in another terminal window:
 
-    docker-compose run app manage createsuperuser
+    make migrate
 
-Open a browser:
+It works! Right? Try the url in your browser!
 
-    http://localhost:8000/
+    localhost:8000
 
+Once again, that whole package is super easy:
 
-Other Docker Commands:
-------------------------------
+    make setup
+    make web
+    make migrate
 
-Run a bash shell (automatically activates virtualenv):
+You can run commands like the following to get inside your web server to run any code directly:
 
-    docker-compose run app /bin/bash
+    docker exec -it chipy-web bash
 
-Shortcut to run Management Command:
-
-    docker-compose run app manage help
-
-
-Create an env file in the root directory:
-
-    export DEBUG=True
-    export ALLOWED_HOSTS="chipy.org,www.chipy.org"
-    export GITHUB_APP_ID=youridhere
-    export GITHUB_API_SECRET=supersecretkeyhere
-    export SECRET_KEY=somesecretkeyfordjangogoeshere
-    export ADMINS=admin@example.com
-    export ENVELOPE_EMAIL_RECIPIENTS=admin@example.com
-    export NORECAPTCHA_SITE_KEY=your_recaptcha_public_key
-    export NORECAPTCHA_SECRET_KEY=your_recaptcha_private_key
-    export DATABASE_URL=postgres://postgres:mysecretpassword@localhost:5432/chipy
-
-    # settings needed for social authentication
-    export GITHUB_API_SECRET=""
-    export GITHUB_APP_ID=""
-    export GOOGLE_OAUTH2_CLIENT_ID=""
-    export GOOGLE_OAUTH2_CLIENT_SECRET=""
-
-    # optional email settings and their defaults
-    export EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-    export EMAIL_HOST='smtp.sendgrid.net'
-    export EMAIL_PORT=587
-    export EMAIL_USE_TLS=True
-    export EMAIL_HOST_USER=""
-    export EMAIL_HOST_PASSWORD=""
-
-    # to enable S3, do the following
-    export USE_S3="True"
-    export AWS_ACCESS_KEY_ID=""
-    export AWS_SECRET_ACCESS_KEY=""
-    export AWS_STORAGE_BUCKET_NAME=""
-
-Source your env:
-
-    source .env
+Happy Dev'ing!

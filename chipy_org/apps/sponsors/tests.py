@@ -1,10 +1,12 @@
-from django.test import TestCase, override_settings
-from django.test import Client
+# pylint: disable=invalid-name,duplicate-code
+import pytest
+from django.test import TestCase, override_settings, Client
 from django.core.urlresolvers import reverse_lazy
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
 from .models import Sponsor
 
+pytestmark = pytest.mark.django_db
 
 User = get_user_model()
 
@@ -26,7 +28,7 @@ class SmokeTest(TestCase):
 
         # TEST
         response = self.client.get(
-            reverse_lazy('sponsor_detail', args=[self.sponsor.slug]))
+            reverse_lazy('sponsor_detail', args=[self.sponsor.slug]), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -36,7 +38,7 @@ class SmokeTest(TestCase):
 
         # TEST
         response = self.client.get(
-            reverse_lazy('sponsor_list'))
+            reverse_lazy('sponsor_list'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)

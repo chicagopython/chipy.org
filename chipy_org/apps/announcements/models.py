@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 from django.db import models
-from chipy_org.libs.models import CommonModel
 from ckeditor.fields import RichTextField
+from chipy_org.libs.models import CommonModel
 
 
 class AnnouncementQuerySet(models.QuerySet):

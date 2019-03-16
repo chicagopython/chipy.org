@@ -3,7 +3,7 @@ import datetime
 import sys
 import traceback
 
-from django.http import HttpResponseServerError
+from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader, Context
 from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting, RSVP
@@ -22,12 +22,12 @@ class Home(TemplateView):
         # get upcoming main meeting
         future_meetings = Meeting.objects.filter(
             meeting_type__isnull=True).filter(
-            when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
+                when__gt=datetime.datetime.now() - datetime.timedelta(hours=24))
 
         # get next 3 non-main meetings
         other_meetings = Meeting.objects.filter(
             meeting_type__isnull=False).filter(
-            when__gt=datetime.datetime.now() - datetime.timedelta(hours=24)
+                when__gt=datetime.datetime.now() - datetime.timedelta(hours=24)
             ).order_by('when')[:3]
         context['other_meetings'] = other_meetings
 
@@ -61,10 +61,15 @@ class Home(TemplateView):
 
 
 def custom_500(request):
-    t = loader.get_template('500.html')
+    template = loader.get_template('500.html')
+
     print(sys.exc_info())
-    type, value, tb = sys.exc_info()
-    return HttpResponseServerError(t.render(Context({
+    etype, value, tback = sys.exc_info()
+    return HttpResponseServerError(template.render(Context({
         'exception_value': value,
-        'value': type,
-        'tb': traceback.format_exception(type, value, tb)})))
+        'value': etype,
+        'tb': traceback.format_exception(etype, value, tback)})))
+
+
+def customer_404(request):
+    return HttpResponse('<h1>404 - Page Not Found</h1>', status=404)

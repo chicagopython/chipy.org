@@ -16,5 +16,5 @@ class UserProfile(models.Model):
 def create_profile(sender, instance, created, **kwargs):
     """Create a matching profile whenever a user object is created."""
     if created:
-        profile, new = UserProfile.objects.get_or_create(
+        UserProfile.objects.get_or_create(
             user=instance, display_name=instance.get_full_name())

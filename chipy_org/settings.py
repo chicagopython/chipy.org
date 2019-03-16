@@ -16,7 +16,9 @@ def env_var(key, default=None):
     return val
 
 
-def env_list(key, defaults=[], delimiter=','):
+def env_list(key, defaults=None, delimiter=','):
+    if not defaults:
+        defaults = []
     val_list = defaults
     val = os.environ.get(key, None)
     if val:
@@ -37,6 +39,8 @@ ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
 
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = env_var('SERVE_MEDIA', DEBUG)
+
+SECURE_SSL_REDIRECT = env_var("SECURE_SSL_REDIRECT", True)
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -239,6 +243,8 @@ INSTALLED_APPS = [
     'chipy_org.apps.sponsors',
     'chipy_org.apps.subgroups',
 ]
+
+TEST_RUNNER = 'chipy_org.runner.PytestTestRunner'
 
 if DEBUG:
     # Add the command extensions

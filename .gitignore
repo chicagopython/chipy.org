@@ -64,7 +64,11 @@ local_settings.py
 dev.db
 
 .env
+docker.env
 .idea
 htdocs/static/
 htdocs/media/
 chipy_org/mediafiles/
+venv/
+
+.vscode

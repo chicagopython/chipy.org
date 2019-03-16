@@ -42,3 +42,5 @@ if settings.SERVE_MEDIA:
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
     ]
     urlpatterns += staticfiles_urlpatterns()
+
+handler404 = 'chipy_org.apps.main.views.customer_404'

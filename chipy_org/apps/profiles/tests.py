@@ -1,3 +1,6 @@
+# pylint: disable=invalid-name,duplicate-code
+import pytest
+import django
 from django.test import TestCase, override_settings
 from django.test import Client
 from django.core.urlresolvers import reverse_lazy
@@ -20,7 +23,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:list'))
+        response = self.client.get(reverse_lazy('profiles:list'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -29,21 +32,27 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:edit'))
+        response = self.client.get(reverse_lazy('profiles:edit'), follow=True)
 
         # CHECK
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
+    @pytest.mark.skipif(
+        django.VERSION < (1, 9, 0),
+        reason="Django 1.9 introduces force_login")
     def test__profile_edit_url__GET_auth(self):
         # SETUP
         self.client.force_login(self.user)
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:edit'))
+        response = self.client.get(reverse_lazy('profiles:edit'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
 
+    @pytest.mark.skipif(
+        django.VERSION < (1, 9, 0),
+        reason="Django 1.9 introduces force_login")
     def test__profile_edit_url__POST_auth(self):
         # SETUP
         display_name = "ChiPy"
@@ -52,7 +61,7 @@ class SmokeTest(TestCase):
         # TEST
         response = self.client.post(
             reverse_lazy('profiles:edit'),
-            {'display_name': display_name, 'show': True})
+            {'display_name': display_name, 'show': True}, follow=True)
 
         # CHECK
         self.user.profile.refresh_from_db()

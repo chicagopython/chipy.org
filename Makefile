@@ -11,11 +11,12 @@ build:
 	docker-compose build
 
 run:
-	docker-compose up -d
+	docker-compose up
 
 web: run
 
-up: run
+up:
+	docker-compose up -d
 
 down:
 	docker-compose down

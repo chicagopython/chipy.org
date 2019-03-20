@@ -71,5 +71,7 @@ htdocs/media/
 chipy_org/mediafiles/
 venv/
 
+docker-compose.override.yml
+
 .vscode
 .envrc

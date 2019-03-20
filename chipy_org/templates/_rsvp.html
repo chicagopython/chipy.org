@@ -5,14 +5,14 @@
     <strong>Change your RSVP: </strong>
   {% else %}
   {% if curr_meeting.reg_close_date %}
-      <p style="color: red">Registration for this event will close on 
+      <p style="color: red">Registration for this event will close on
           {{ curr_meeting.reg_close_date|date:"l F j" }} at
           {{ curr_meeting.reg_close_date|date:"g:i a" }}
       </p>
   {% endif %}
   {% endif %}
+  <!-- TODO make RSVP choices read from choices -->
   <a class="btn btn-mini rsvp" data-response="Y">Yes</a>
-  <a class="btn btn-mini rsvp" data-response="M">Maybe</a>
   <a class="btn btn-mini rsvp" data-response="N">No</a>
 </p>
 <div id="anonymous-rsvp-dialog" style="display:none;">

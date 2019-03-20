@@ -107,11 +107,11 @@ settings. This prevents browsers to override your request from
 http://localhost:8000/ to https://localhost:8000.
 Without the steps below, trying to load http://localhost:8000/ will time out.
 
-    - Open a new tab on Firefox and goto about:config
-    - Click on the `I accept the risk` button
-    - On the serarch box type `browser.ssl_override_behavior`
-    - Double click on it and set the value to 0 from 2 and hit Ok.
-    - Close and reopen your brower
-    - Go to http://localhost:8000/
+1. Open a new tab on Firefox and goto about:config
+1. Click on the `I accept the risk` button
+1. On the serarch box type `browser.ssl_override_behavior`
+1. Double click on it and set the value to 0 from 2 and hit Ok.
+1. Close and reopen your brower
+1. Go to http://localhost:8000/
 
 Once you are done with your testing you revert back the value to 2.

@@ -23,3 +23,35 @@ class SmokeTest(TestCase):
 
         # CHECK
         self.assertEqual(response.status_code, 200)
+
+
+@pytest.mark.parametrize(
+    'test_in, result', [
+        (True, True),
+        (False, False),
+        ('t', True),
+        ('f', False),
+        ('true', True),
+        ('false', False),
+        ('1', '1'),
+        (1, '1'),
+        ('foo', 'foo'),
+    ]
+)
+def test_settingspy_env_var(monkeypatch, test_in, result):
+    monkeypatch.setenv('TEST_VAR', test_in)
+    from chipy_org import settings
+    assert settings.env_var('TEST_VAR') == result
+
+
+@pytest.mark.parametrize(
+    'test_in, result', [
+        ('', []),
+        ('f@e.com', ["f@e.com"]),
+        ('f@e.com,b@e.com', ["f@e.com", "b@e.com"]),
+    ]
+)
+def test_settingspy_env_list(monkeypatch, test_in, result):
+    monkeypatch.setenv('TEST_VAR', test_in)
+    from chipy_org import settings
+    assert settings.env_list('TEST_VAR') == result

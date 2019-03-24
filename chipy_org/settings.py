@@ -2,7 +2,6 @@
 # Django settings for account project
 
 import os
-
 import dj_database_url
 
 
@@ -10,9 +9,10 @@ def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
     if isinstance(val, str):
-        if val.lower() in ('t', 'true'):
+        lower_val = val.lower()
+        if lower_val in ['t', 'true']:
             val = True
-        elif val.lower() in ['f', 'false']:
+        elif lower_val in ['f', 'false']:
             val = False
     return val
 

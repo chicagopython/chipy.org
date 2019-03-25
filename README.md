@@ -5,7 +5,7 @@ This project is open source and the license can be found in LICENSE.
 
 [![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
 
-Chipy.org is setup using the [12factor](http://12factor.net) methodology. It is
+Chipy.org is setup using the [12factor](http://12factor.net) methodology. The site is
 normally powered by Heroku, but you can use Docker and Docker Compose for
 local development.
 
@@ -74,7 +74,6 @@ The below example shows you how to run the `help` management command, but
 other Django management commands can be run the same way.
 
     docker-compose exec web ./manage.py help
-
 
 ## Heroku Commands
 

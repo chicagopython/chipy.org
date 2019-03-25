@@ -69,6 +69,13 @@ viewing the logs, you can press ctl-c.
 
     docker-compose logs -f web
 
+To run an arbitrary Django management command, you can use the following form.
+The below example shows you how to run the `help` management command, but
+other Django management commands can be run the same way.
+
+    docker-compose exec web ./manage.py help
+
+
 ## Heroku Commands
 
 This application is deployed to production using Heroku. You should not need

@@ -55,6 +55,12 @@ following in your url bar:
 
     http://localhost:8000
 
+For local development, Social Auth will be disabled by default. Therefore,
+to log into the Django Admin interface, you will need to visit the following
+url and login with the superuser credentials that you created above.
+
+     http://localhost:8000/admin/
+
 Chipy.org uses Pytest to help ensure code is working properly.
 All tests must pass before merging code, and tests should be added as
 new functionality is added.

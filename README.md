@@ -5,7 +5,7 @@ This project is open source and the license can be found in LICENSE.
 
 [![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
 
-Chipy.org is setup using [12factor](http://12factor.net) philosophies. It is
+Chipy.org is setup using the [12factor](http://12factor.net) methodology. It is
 normally powered by Heroku, but you can use Docker and Docker Compose for
 local development.
 

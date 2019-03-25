@@ -2,17 +2,18 @@
 # Django settings for account project
 
 import os
-
 import dj_database_url
 
 
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
-    if val in ('True', 'true'):
-        val = True
-    elif val in ('False', 'false'):
-        val = False
+    if isinstance(val, str):
+        lower_val = val.lower()
+        if lower_val in ['t', 'true']:
+            val = True
+        elif lower_val in ['f', 'false']:
+            val = False
     return val
 
 
@@ -30,8 +31,10 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = env_var('DEBUG', False)
 
-ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com', 'chipy-149.herokuapp.com',
-                 'localhost:8000', 'www.localhost:8000', 'www.localhost']
+ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com',
+                 'chipy-149.herokuapp.com',
+                 'localhost:8000', 'locahost',
+                 'www.localhost:8000', 'www.localhost']
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
 
@@ -109,6 +112,7 @@ else:
 
 STATIC_ROOT = os.path.abspath(
     os.path.join(PROJECT_ROOT, "..", "staticfiles"))
+
 STATIC_URL = '/static/'
 MEDIA_URL = "/media/"
 

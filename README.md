@@ -3,87 +3,98 @@
 The code for the Chipy.org website
 This project is open source and the license can be found in LICENSE.
 
+[![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
+
+Chipy.org is setup using the [12factor](http://12factor.net) methodology. The site is
+normally powered by Heroku, but you can use Docker and Docker Compose for
+local development.
+
 ## Installation
 
 To get setup with chipy.org code it is recommended that you use the following:
 
-* Python 2.7.x
-* virtualenv
-* [Autoenv](https://github.com/kennethreitz/autoenv)
-* C compiler (for PIL)
+* Docker - https://docs.docker.com/install/
+* docker-compose - https://docs.docker.com/compose/install/
+* make - https://www.gnu.org/software/make/
 
-## Setting up a Local environment
-
-Chipy.org is setup using [12factor](http://12factor.net), which means that it takes local settings from the environment. For this reason it is recommended that you use autoenv and a .env file. The example .env is::
-
-    export DEBUG=True
-    export ALLOWED_HOSTS="chipy.org,www.chipy.org"
-    export GITHUB_APP_ID=youridhere
-    export GITHUB_API_SECRET=supersecretkeyhere
-    export SECRET_KEY=somesecretkeyfordjangogoeshere
-    export ADMINS=admin@example.com
-    export ENVELOPE_EMAIL_RECIPIENTS=admin@example.com
-    export NORECAPTCHA_SITE_KEY=your_recaptcha_public_key
-    export NORECAPTCHA_SECRET_KEY=your_recaptcha_private_key
-    export DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
-
-    # settings needed for social authentication
-    export GITHUB_API_SECRET=""
-    export GITHUB_APP_ID=""
-    export GOOGLE_OAUTH2_CLIENT_ID=""
-    export GOOGLE_OAUTH2_CLIENT_SECRET=""
-
-    # optional email settings and their defaults
-    export EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-    export EMAIL_HOST='smtp.sendgrid.net'
-    export EMAIL_PORT=587
-    export EMAIL_USE_TLS=True
-    export EMAIL_HOST_USER=""
-    export EMAIL_HOST_PASSWORD=""
-
-    # to enable S3, do the following
-    export USE_S3="True"
-    export AWS_ACCESS_KEY_ID=""
-    export AWS_SECRET_ACCESS_KEY=""
-    export AWS_STORAGE_BUCKET_NAME=""
-
-Note that the only required config is the github stuff. The secret key will be random by default which will cause your session to wipe on every restart.
-
-If using autoenv, the above will be in your environment when you cd to the project directory
-
-Create a virtual environment where your dependencies will live::
-
-    $ virtualenv venv
-    $ source venv/bin/activate
-    (venv)$
+## Setting up a Local development environment using Docker
 
 Clone the repo
 
-    (venv)$ git clone git://github.com/chicagopython/chipy.org.git chipy.org
+    git clone git://github.com/chicagopython/chipy.org.git chipy.org
 
-Make the project directory your working directory::
+Make the project directory your working directory:
 
-    (venv)$ cd chipy.org
+    cd chipy.org
 
-Install project dependencies::
+Run the setup command to configure the environment. This will copy
+a default configuration file from docker/docker.env.sample to
+docker/docker.env.
 
-    (venv)$ pip install -r requirements.txt
+    make setup_env
 
-## Setting up the database
+You may customize the docker/docker.env as needed for your development needs.  
+The docker/docker.env file should NOT be committed version control.
 
-I recommend keeping your development DB as close to production as possible. If you're on a Mac, I recommend using [Postgress.app](http://postgresapp.com)
+To start the app, you can run the following command.  This will start
+up the web app and a database as services using docker-compose.
 
-You will need to run::
+    make up
 
-    (venv)$ python manage.py migrate
+After running `make up`, you need to migrate the database. This will
+create the tables and database objects needed to run the site.
 
-## Running a web server
+    make migrate
 
-In development you should run::
+Next, you should create a superuser to use to login to the site admin with.
 
-    (venv)$ python manage.py runserver
+    docker-compose exec web ./manage.py createsuperuser
+
+Finally, you should be able to visit your site, but entering the
+following in your url bar:
+
+    http://localhost:8000
+
+For local development, Social Auth will be disabled by default. Therefore,
+to log into the Django Admin interface, you will need to visit the following
+url and login with the superuser credentials that you created above.
+
+     http://localhost:8000/admin/
+
+Chipy.org uses Pytest to help ensure code is working properly.
+All tests must pass before merging code, and tests should be added as
+new functionality is added.
+If you would like to run tests for the app, run the following:
+
+    make test
+
+Chipy.org uses Pylint to encourage good software development techniques.
+All Pylint checks must pass before merging code.
+If you would like to run the Pylint linting process, run the following:
+
+    make lint
+
+If you want to execute a shell into your container, run the following:
+once your app is running with `make up`:
+
+    docker-compose exec web bash
+
+If you want to see the application logs, use the following command. To stop
+viewing the logs, you can press ctl-c.
+
+    docker-compose logs -f web
+
+To run an arbitrary Django management command, you can use the following form.
+The below example shows you how to run the `help` management command, but
+other Django management commands can be run the same way.
+
+    docker-compose exec web ./manage.py help
 
 ## Heroku Commands
+
+This application is deployed to production using Heroku. You should not need
+to use these for basic site development, but are provided here as a guide for
+people deploying the site to Heroku.
 
     # Deploy changes to master
     git push heroku master
@@ -99,19 +110,3 @@ In development you should run::
 
     # Set environment variable on Heroku
     heroku config:set DEBUG=True
-
-## Browser config changes for local development
-
-To test your changes you might need to make some changes to your browser 
-settings. This prevents browsers to override your request from 
-http://localhost:8000/ to https://localhost:8000.
-Without the steps below, trying to load http://localhost:8000/ will time out.
-
-1. Open a new tab on Firefox and goto about:config
-1. Click on the `I accept the risk` button
-1. On the serarch box type `browser.ssl_override_behavior`
-1. Double click on it and set the value to 0 from 2 and hit Ok.
-1. Close and reopen your brower
-1. Go to http://localhost:8000/
-
-Once you are done with your testing you revert back the value to 2.

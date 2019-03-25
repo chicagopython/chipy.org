@@ -5,6 +5,10 @@ This project is open source and the license can be found in LICENSE.
 
 [![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
 
+Chipy.org is setup using [12factor](http://12factor.net) philosophies. It is
+normally powered by Heroku, but you can use Docker and Docker Compose for
+local development.
+
 ## Installation
 
 To get setup with chipy.org code it is recommended that you use the following:
@@ -14,10 +18,6 @@ To get setup with chipy.org code it is recommended that you use the following:
 * make - https://www.gnu.org/software/make/
 
 ## Setting up a Local development environment using Docker
-
-Chipy.org is setup using [12factor](http://12factor.net) philosophies. It is
-normally powered by Heroku, but you can use Docker and Docker compose for
-local development.
 
 Clone the repo
 

@@ -3,6 +3,8 @@
 The code for the Chipy.org website
 This project is open source and the license can be found in LICENSE.
 
+[![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
+
 ## Installation
 
 To get setup with chipy.org code it is recommended that you use the following:

@@ -25,4 +25,7 @@ migrate:
 test:
 	docker-compose exec web pytest -v chipy_org/
 
+lint:
+	docker-compose exec web pylint chipy_org/
+
 setup: setup_env build

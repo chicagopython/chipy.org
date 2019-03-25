@@ -55,11 +55,20 @@ following in your url bar:
 
     http://localhost:8000
 
+Chipy.org uses Pytest to help ensure code is working properly.
+All tests must pass before merging code, and tests should be added as
+new functionality is added.
 If you would like to run tests for the app, run the following:
 
     make test
 
-If you want to execute a shell into your container, run the following: 
+Chipy.org uses Pylint to encourage good software development techniques.
+All Pylint checks must pass before merging code.
+If you would like to run the Pylint linting process, run the following:
+
+    make lint
+
+If you want to execute a shell into your container, run the following:
 once your app is running with `make up`:
 
     docker-compose exec web bash

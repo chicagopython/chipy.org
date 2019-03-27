@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import datetime
 import string
 import random
+from ckeditor.fields import RichTextField
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
@@ -97,6 +98,7 @@ class Meeting(CommonModel):
                    "Mentorship Meeting, Startup Row, etc.). "
                    "Leave this empty for the main meeting."))
     description = models.TextField(blank=True, null=True)
+    #description = RichTextField(blank=True, null=True)
 
     def can_register(self):
         can_reg = True

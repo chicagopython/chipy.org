@@ -256,7 +256,7 @@ h2 a {
                 {% endif %}
                 <hr />
                 {% if meeting.description %}
-                <p itemprop="description">{{ meeting.description }}</p>
+                <p itemprop="description">{{ meeting.description|truncatewords:30 }}</p>
                 {% endif %}
 
                 <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
@@ -268,18 +268,17 @@ h2 a {
 
                     {% if meeting.where.directions %}
                     <p><strong>Directions:</strong></p>
-                    <p>{{ meeting.where.directions }}</p>
+                    <p>{{ meeting.where.directions|truncatewords:15 }}</p>
                     {% endif %}
 
                     <p>
-                      {{ meeting.where.address }}<br>
-                      {% if meeting.where.directions %}
-                        {{ meeting.where.directions }}<br>
-                      {% endif %}
+                    <p><strong>Address:</strong></p>
+                    {{ meeting.where.address }}<br>
                       {% if meeting.where.phone %}
                         {{ meeting.where.phone }}<br>
                       {% endif %}
                       {% if meeting.where.email %}
+                    <p><strong>E-mail:</strong></p>
                         {{ meeting.where.email }}<br>
                       {% endif %}
                   </p>

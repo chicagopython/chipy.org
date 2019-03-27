@@ -43,3 +43,11 @@ class MeetingFeed(ICalFeed):
 
     def item_title(self, item):
         return 'ChiPy Meeting'
+
+class MeetingFeedForMeeting(MeetingFeed):
+
+    def __init__ (self, meeting_id):
+        self.meeting_id = meeting_id
+
+    def items(self):
+        return Meeting.objects.get(id=self.meeting_id)

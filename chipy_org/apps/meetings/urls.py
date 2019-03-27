@@ -23,6 +23,9 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]*)/$',
         MeetingDetail.as_view(), name='meeting'),
 
+   # url(r'^(?P<pk>[0-9]*)/ical$',
+     #   MeetingDetail.as_view(), name='meeting'),
+
     url(r'^rsvp/$',
         RSVP.as_view(), name='rsvp'),
     url(r'^rsvp/anonymous/$',

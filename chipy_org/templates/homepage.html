@@ -136,7 +136,7 @@ h2 a {
                 {% if next_meeting %}
 
                 {% if next_meeting.description %}
-                <p itemprop="description">{{ next_meeting.description }}</p>
+                <p itemprop="description">{{ next_meeting.description|truncatewords:80 }}</p>
                 {% endif %}
 
                 {% endif %}

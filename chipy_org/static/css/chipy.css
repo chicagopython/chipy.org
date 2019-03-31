@@ -7234,6 +7234,20 @@ hr {
     right: 30px;
   }
 }
+.ui-dialog {
+  z-index:1000000000;
+  top: 0; left: 0;
+  margin: auto;
+  position: fixed;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.ui-dialog .ui-dialog-content {
+  flex: 1;
+}
 .ui-dialog .ui-dialog-titlebar {
   padding: 0.15em 1em;
 }

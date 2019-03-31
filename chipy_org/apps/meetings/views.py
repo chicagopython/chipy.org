@@ -44,6 +44,7 @@ class PastMeetings(ListView):
     queryset = Meeting.objects.filter(
         when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
+    paginate_by = 5
 
 
 class MeetingDetail(DetailView):

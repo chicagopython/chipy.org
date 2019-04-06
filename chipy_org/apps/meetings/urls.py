@@ -10,7 +10,8 @@ from .views import (
     RSVPlistPrivate,
     RSVPlistHost,
     PastTopics,
-    PastTopic,)
+    PastTopic,
+    UpcomingMeetings)
 
 
 urlpatterns = [
@@ -19,7 +20,8 @@ urlpatterns = [
         MeetingFeed(), name="ical_feed"),
     url(r'^past/$',
         PastMeetings.as_view(), name='past_meetings'),
-
+     url(r'^upcoming/$',
+        UpcomingMeetings.as_view(), name='upcoming_meetings'),
     url(r'^(?P<pk>[0-9]*)/$',
         MeetingDetail.as_view(), name='meeting'),
 

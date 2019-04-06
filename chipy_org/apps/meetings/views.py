@@ -45,6 +45,11 @@ class PastMeetings(ListView):
         when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
 
+class UpcomingMeetings(ListView):
+    template_name = 'meetings/upcoming_meetings.html'
+    queryset = Meeting.objects.filter(
+        when__gt=datetime.datetime.now() + datetime.timedelta(hours=3)
+    ).order_by("when")
 
 class MeetingDetail(DetailView):
     template_name = 'meetings/meeting.html'

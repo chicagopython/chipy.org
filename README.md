@@ -96,11 +96,12 @@ This application is deployed to production using Heroku. You should not need
 to use these for basic site development, but are provided here as a guide for
 people deploying the site to Heroku.
 
+    # Tag the release
+    git tag -m x.x.x x.x.x
+    git push --tags
+
     # Deploy changes to master
     git push heroku master
-
-    # Deploy feature branch  
-    git push heroku feature/mybranch:master
 
     # Collectstatic
     heroku run python manage.py collectstatic --noinput
@@ -110,3 +111,17 @@ people deploying the site to Heroku.
 
     # Set environment variable on Heroku
     heroku config:set DEBUG=True
+
+### Tagging
+
+ChiPy follows loose [Semantic Versioning](https://semver.org/) rules. Almost
+every deploy will be a minor version except where a significant UI or API
+change happens or a change likely breaks many feature branches.
+
+### Heroku Testing
+
+It is recommended that you deploy to a personal Heroku account to test, but
+regardless you can deploy a feature branch with the following command:
+
+    # Deploy feature branch
+    git push heroku feature/mybranch:master

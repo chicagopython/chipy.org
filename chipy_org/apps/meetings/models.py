@@ -7,6 +7,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from interval.fields import IntervalField
+from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel
 
@@ -64,7 +65,7 @@ class MeetingType(CommonModel):
         help_text='Optional Sub-group (i.e. SIG)')
     name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, unique=True)
-    description = models.TextField(blank=True, null=True)
+    description = tinymce_models.HTMLField(blank=True, null=True)
 
     def __unicode__(self):
         return "%s | (%s)" % (self.id, self.name)
@@ -96,7 +97,7 @@ class Meeting(CommonModel):
         help_text=("Type of meeting (i.e. SIG Meeting, "
                    "Mentorship Meeting, Startup Row, etc.). "
                    "Leave this empty for the main meeting."))
-    description = models.TextField(blank=True, null=True)
+    description = tinymce_models.HTMLField(blank=True, null=True)
 
     def can_register(self):
         can_reg = True
@@ -186,7 +187,7 @@ class Topic(CommonModel):
     length = IntervalField(
         format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
-    description = models.TextField(
+    description = tinymce_models.HTMLField(
         "Public Description", blank=True, null=True,
         help_text="This will be the public talk description.")
     notes = models.TextField(

@@ -136,7 +136,7 @@ h2 a {
                 {% if next_meeting %}
 
                 {% if next_meeting.description %}
-                <p itemprop="description">{{ next_meeting.description|truncatewords:80 }}</p>
+                <p itemprop="description">{{ next_meeting.description|truncatewords:80|safe }}</p>
                 {% endif %}
 
                 {% endif %}
@@ -256,7 +256,7 @@ h2 a {
                 {% endif %}
                 <hr />
                 {% if meeting.description %}
-                <p itemprop="description">{{ meeting.description|truncatewords:30 }}</p>
+                <p itemprop="description">{{ meeting.description|truncatewords:30|safe }}</p>
                 {% endif %}
 
                 <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>

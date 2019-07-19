@@ -1,4 +1,4 @@
-FROM python:2.7.15
+FROM python:3.4.10
 
 # install os dependencies; clean apt cache
 RUN apt-get update && apt-get install -y \

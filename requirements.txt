@@ -13,7 +13,6 @@ django-honeypot==0.5.0
 django-ical==1.4
 django-nocaptcha-recaptcha==0.0.19
 django-pgsql-interval-field==0.9.4
-django-social-auth==0.7.28
 django-storages==1.1.8
 django-tinymce==2.0.6
 Django>=1.7.0,<1.9.0
@@ -29,6 +28,7 @@ psycopg2-binary==2.7.7
 python-openid==2.2.5
 requests==2.21.0
 six==1.10.0
+social-auth-app-django==3.1.0
 sorl-thumbnail==12.3
 Werkzeug==0.10.4
 whitenoise==3.3.0

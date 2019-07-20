@@ -142,7 +142,7 @@ TEMPLATES = [
                 "django.core.context_processors.request",
                 "django.core.context_processors.static",
                 "django.contrib.messages.context_processors.messages",
-                "social_auth.context_processors.social_auth_login_redirect",
+                "social_django.context_processors.login_redirect",
             ],
             'loaders': [
                 'admin_tools.template_loaders.Loader',
@@ -170,13 +170,10 @@ MIDDLEWARE_CLASSES = [
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = [
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.browserid.BrowserIDBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.OpenIDBackend',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.open_id.OpenIdAuth',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -231,7 +228,7 @@ INSTALLED_APPS = [
     'honeypot',
     'interval',
     'rest_framework',
-    'social_auth',
+    'social_django',
     'storages',
     'tinymce',
     "sorl.thumbnail",

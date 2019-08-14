@@ -33,10 +33,18 @@
     <ul class="nav">
         <li><a href="/#about">About</a></li>
         <li><a href="/pages/conduct">Code of Conduct</a></li>
-        <li><a href="{% url 'sponsor_list' %}">Sponsor</a></li>
-        <li><a href="/pages/host/">Host</a></li>
-        <li><a href="/pages/referrals/">Referrals</a></li>
-        <li><a href="/pages/donate/">Donate</a></li>
+        <li class="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Support Us
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a href="{% url 'sponsor_list' %}">Sponsor</a>
+            <a href="/pages/host/">Host</a>
+            <a href="/pages/referrals/">Referral Program</a>
+            <a href="/pages/donate/">Individual Donation</a>
+          </div>
+        </li>
+        <li><a href="/pages/giving">ChiPy Giving</a></li>
         <li><a href="{% url 'propose_topic' %}">Speak</a></li>
         <li><a href="https://chipymentor.org/">Mentorship</a></li>
         <li><a href="/pages/sigs/">SIGs</a></li>

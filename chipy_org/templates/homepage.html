@@ -230,7 +230,7 @@ h2 a {
                       {% if topic.experience_level %}
                       Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
-                      <span  class="more">{{ topic.description }}</span>
+                      <span  class="more">{{ topic.description|safe }}</span>
                     </li>
                   {% endfor %}
                 </ul>

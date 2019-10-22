@@ -1,5 +1,5 @@
 from django.views.generic import DetailView, ListView
-from .models import Sponsor
+from .models import Sponsor, SponsorGroup
 
 
 class SponsorDetailView(DetailView):
@@ -9,9 +9,15 @@ class SponsorDetailView(DetailView):
 
 
 class SponsorListView(ListView):
-    model = Sponsor
-    context_object_name = "sponsors"
+    model = SponsorGroup
+    context_object_name = "sponsor_groups"
     template_name = "sponsors/sponsor_list.html"
 
     def get_queryset(self):
-        return super(SponsorListView, self).get_queryset().order_by('name')
+        return (
+            super(SponsorListView, self)
+                .get_queryset()
+                .filter(sponsors__isnull=False)
+                .prefetch_related('sponsors')
+                .order_by('list_priority', 'name')
+        )

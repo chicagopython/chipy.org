@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Sponsor, MeetingSponsor, GeneralSponsor
+from .models import Sponsor, SponsorGroup, MeetingSponsor, GeneralSponsor
 
 
 class MeetingSponsorInline(admin.StackedInline):
@@ -18,5 +18,11 @@ class SponsorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class SponsorGroupAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    search_fields = ["name"]
+
+
 admin.site.register(Sponsor, SponsorAdmin)
+admin.site.register(SponsorGroup, SponsorGroupAdmin)
 admin.site.register(GeneralSponsor, GeneralSponsorAdmin)

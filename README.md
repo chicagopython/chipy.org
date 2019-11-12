@@ -110,7 +110,7 @@ people deploying the site to Heroku.
     heroku run python manage.py migrate
 
     # Set environment variable on Heroku
-    heroku config:set DEBUG=True
+    heroku config:set DEBUG=False
 
 ### Tagging
 

@@ -19,7 +19,7 @@ up:
 shell:
 	@echo "Opening shell in docker container"
 	@echo "Use this shell to run python and django commands normally"
-	@docker-compose exec web sh
+	@docker-compose exec web bash
 
 web: run
 

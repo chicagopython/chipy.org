@@ -3,7 +3,7 @@ import pytest
 import django
 from django.test import TestCase, override_settings
 from django.test import Client
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
 
@@ -23,7 +23,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:list'), follow=True)
+        response = self.client.get(reverse('profiles:list'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -32,7 +32,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:edit'), follow=True)
+        response = self.client.get(reverse('profiles:edit'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -45,7 +45,7 @@ class SmokeTest(TestCase):
         self.client.force_login(self.user)
 
         # TEST
-        response = self.client.get(reverse_lazy('profiles:edit'), follow=True)
+        response = self.client.get(reverse('profiles:edit'), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -60,7 +60,7 @@ class SmokeTest(TestCase):
 
         # TEST
         response = self.client.post(
-            reverse_lazy('profiles:edit'),
+            reverse('profiles:edit'),
             {'display_name': display_name, 'show': True}, follow=True)
 
         # CHECK

@@ -20,4 +20,5 @@ class SponsorListView(ListView):
                 .filter(sponsors__isnull=False)
                 .prefetch_related('sponsors')
                 .order_by('list_priority', 'name')
+                .distinct()
         )

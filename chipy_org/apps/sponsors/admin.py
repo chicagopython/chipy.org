@@ -13,7 +13,8 @@ class GeneralSponsorAdmin(admin.ModelAdmin):
 
 
 class SponsorAdmin(admin.ModelAdmin):
-    list_display = ["name", "slug", ]
+    list_display = ["name", "slug", "sponsor_group"]
+    list_filter = ["sponsor_group"]
     search_fields = ["name", "slug", "url"]
     prepopulated_fields = {"slug": ("name",)}
 

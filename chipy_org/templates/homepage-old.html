@@ -230,8 +230,7 @@ h2 a {
                       {% if topic.experience_level %}
                       Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
-                      {{ topic.description|striptags|truncatewords:80|safe }}<br />
-                      <a href="{{ announcement.link }}">Learn more</a>
+                      <span  class="more">{{ topic.description|safe }}</span>
                     </li>
                   {% endfor %}
                 </ul>
@@ -259,6 +258,8 @@ h2 a {
                 {% if meeting.description %}
                 <p itemprop="description">{{ meeting.description|truncatewords:30|safe }}</p>
                 {% endif %}
+                
+
 
                 <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
                 <p itemprop="address"><strong>Where: </strong>
@@ -379,8 +380,8 @@ $(document).ready(function() {
     // Configure/customize these variables.
     var showChar = 140;  // How many characters are shown by default
     var ellipsestext = "...";
-    var moretext = "[more]";
-    var lesstext = "[less]";
+    var moretext = "[less]";
+    var lesstext = "[more]";
 
 
     $('.more').each(function() {

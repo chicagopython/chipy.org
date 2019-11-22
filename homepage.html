@@ -136,7 +136,7 @@ h2 a {
                 {% if next_meeting %}
 
                 {% if next_meeting.description %}
-                <p itemprop="description">{{ next_meeting.description|truncatewords:80|safe }}</p>
+                <p itemprop="description">{{ next_meeting.description|safe|truncatewords:80 }}</p>
                 {% endif %}
 
                 {% endif %}
@@ -228,9 +228,9 @@ h2 a {
                             {{presenter.name}} {% if not forloop.last %}, {% endif %}
                           {% endfor %}<br />
                       {% if topic.experience_level %}
-                      Experience Level: {{ topic.get_experience_level_display }}<br />
+                      BUTTS Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
-                      <span  class="more">{{ topic.description|safe }}</span>
+                      <span  class="more">{{ topic.description|striptags|truncatewords:80 }}</span>
                     </li>
                   {% endfor %}
                 </ul>

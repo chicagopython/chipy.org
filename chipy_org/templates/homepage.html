@@ -231,7 +231,7 @@ h2 a {
                       Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
                       {{ topic.description|striptags|truncatewords:80|safe }}<br />
-                      <a href="{{ announcement.link }}">Learn more</a>
+                      <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
                     </li>
                   {% endfor %}
                 </ul>

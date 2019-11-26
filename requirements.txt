@@ -30,5 +30,5 @@ requests==2.21.0
 six==1.10.0
 social-auth-app-django==3.1.0
 sorl-thumbnail==12.3
-Werkzeug==0.10.4
+Werkzeug==0.15.3
 whitenoise==3.3.0

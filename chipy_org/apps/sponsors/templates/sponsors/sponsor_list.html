@@ -4,7 +4,12 @@
 
 {% block head_title %}{% trans "Sponsor List" %}{% endblock %}
 
+{% load humanize %}
+
 {% block body %}
+
+<h2>{{meeting_attendees|intcomma}} Python Enthusiasts Attended ChiPy Meetings in the Last Year!!</h2>
+
 <h2>ChiPy Sponsors</h2>
 <p>{% flatblock "sponsor_info_text" %}</p>
 

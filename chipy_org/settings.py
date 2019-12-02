@@ -161,7 +161,7 @@ MIDDLEWARE_CLASSES = [
     'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
 ]
 
-# Python Social Auth Settings
+# Start of Python Social Auth settings
 SOCIAL_AUTH_GITHUB_APP_KEY = env_var('GITHUB_APP_ID')
 SOCIAL_AUTH_GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 
@@ -197,14 +197,14 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email',]
 
 GITHUB_EXTRA_DATA = [
     ('email', 'email'),
 ]
+# End of Python Social Auth Settings
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-# End Python Social Auth Settings
 
 INSTALLED_APPS = [
     # Admin Tools

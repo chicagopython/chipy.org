@@ -4,7 +4,6 @@
 import os
 import dj_database_url
 
-
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
@@ -38,8 +37,6 @@ ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com',
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)
 
-GITHUB_APP_ID = env_var('GITHUB_APP_ID')
-GITHUB_API_SECRET = env_var('GITHUB_API_SECRET')
 
 # tells Pinax to serve media through the staticfiles app.
 SERVE_MEDIA = env_var('SERVE_MEDIA', DEBUG)
@@ -68,9 +65,6 @@ DATABASES = {
 # system time zone.
 TIME_ZONE = "US/Central"
 
-LOGIN_URL = "/login/"
-
-LOGIN_REDIRECT_URL = '/'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -142,7 +136,7 @@ TEMPLATES = [
                 "django.core.context_processors.request",
                 "django.core.context_processors.static",
                 "django.contrib.messages.context_processors.messages",
-                "social_auth.context_processors.social_auth_login_redirect",
+                "social_django.context_processors.login_redirect",
             ],
             'loaders': [
                 'admin_tools.template_loaders.Loader',
@@ -167,20 +161,24 @@ MIDDLEWARE_CLASSES = [
     'chipy_org.libs.middleware.ChipySocialAuthExceptionMiddleware',  # social auth settings
 ]
 
+# Start of Python Social Auth settings
+SOCIAL_AUTH_GITHUB_KEY = env_var('GITHUB_APP_ID')
+SOCIAL_AUTH_GITHUB_SECRET = env_var('GITHUB_API_SECRET')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_var('GOOGLE_OAUTH2_CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
+
+LOGIN_URL = "/login/"
 LOGIN_ERROR_URL = '/'
+LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = [
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.browserid.BrowserIDBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.OpenIDBackend',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.open_id.OpenIdAuth',
     'django.contrib.auth.backends.ModelBackend',
 ]
-
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 SOCIAL_AUTH_ENABLED_BACKENDS = (
     'google',
@@ -188,20 +186,24 @@ SOCIAL_AUTH_ENABLED_BACKENDS = (
 )
 
 SOCIAL_AUTH_PIPELINE = (
-    'social_auth.backends.pipeline.social.social_auth_user',
-    'chipy_org.libs.social_auth_pipelines.associate_by_email',
-    'social_auth.backends.pipeline.user.get_username',
-    'social_auth.backends.pipeline.user.create_user',
-    'social_auth.backends.pipeline.social.associate_user',
-    'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details'
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email',]
 
 GITHUB_EXTRA_DATA = [
     ('email', 'email'),
 ]
+# End of Python Social Auth Settings
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 INSTALLED_APPS = [
     # Admin Tools
@@ -231,7 +233,7 @@ INSTALLED_APPS = [
     'honeypot',
     'interval',
     'rest_framework',
-    'social_auth',
+    'social_django',
     'storages',
     'tinymce',
     "sorl.thumbnail",
@@ -298,24 +300,6 @@ NORECAPTCHA_SECRET_KEY = env_var('NORECAPTCHA_SECRET_KEY')
 FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var('MEETUP_API_KEY')
-
-GOOGLE_OAUTH2_CLIENT_ID = env_var('GOOGLE_OAUTH2_CLIENT_ID')
-GOOGLE_OAUTH2_CLIENT_SECRET = env_var('GOOGLE_OAUTH2_CLIENT_SECRET')
-
-# LOGGING = {
-#     'version': 1,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#             'stream': sys.stdout,
-#         }
-#     },
-#     'root': {
-#         'handlers': ['console'],
-#         'level': 'INFO'
-#     }
-# }
-
 
 LOGGING = {
     'version': 1,

@@ -39,6 +39,14 @@ class GeneralSponsor(models.Model):
         ordering = ["sponsor__name"]
 
 
+class SponsorGroup(models.Model):
+    name = models.CharField(max_length=80)
+    list_priority = models.IntegerField(default=5)
+
+    def __str__(self):
+        return self.name
+
+
 class Sponsor(models.Model):
 
     name = models.CharField(max_length=80)
@@ -49,6 +57,7 @@ class Sponsor(models.Model):
         upload_to="sponsor_logos", blank=True, null=True,
         help_text=("All logos will be cropped to fit a 4 by 3 aspect ratio. "
                    "Resolution should be at minimum 400x300."))
+    sponsor_group = models.ForeignKey(SponsorGroup, related_name='sponsors', blank=True, null=True)
 
     def __str__(self):
         return "{name}".format(name=self.name)

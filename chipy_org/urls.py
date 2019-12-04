@@ -12,7 +12,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'', include('chipy_org.apps.main.urls')),
-    url(r'', include('social_auth.urls')),
+    url('', include('social_django.urls', namespace='social')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^login/{0,1}$', TemplateView.as_view(template_name='login.html')),
     url(r'^grappelli/', include('grappelli.urls')),

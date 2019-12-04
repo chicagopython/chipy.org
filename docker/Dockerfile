@@ -1,4 +1,4 @@
-FROM python:2.7.15
+FROM python:3.6.9
 
 # install os dependencies; clean apt cache
 RUN apt-get update && apt-get install -y \
@@ -36,6 +36,7 @@ ADD requirements.txt ${SITE_DIR}requirements.txt
 ADD requirements_test.txt ${SITE_DIR}requirements_test.txt
 RUN pip install --user -r ${SITE_DIR}requirements_test.txt
 RUN pip install --user uwsgi
+
 COPY docker/ ${SITE_DIR}docker/
 ADD . proj/
 

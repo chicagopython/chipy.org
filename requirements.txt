@@ -12,7 +12,6 @@ django-gravatar2==1.1.4
 django-honeypot==0.5.0
 django-ical==1.4
 django-nocaptcha-recaptcha==0.0.19
-django-pgsql-interval-field==0.9.4
 django-storages==1.1.8
 django-tinymce==2.0.6
 Django>=1.7.0,<1.9.0

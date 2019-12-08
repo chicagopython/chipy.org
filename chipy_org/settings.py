@@ -231,7 +231,6 @@ INSTALLED_APPS = [
     'django_gravatar',
     'gunicorn',
     'honeypot',
-    'interval',
     'rest_framework',
     'social_django',
     'storages',

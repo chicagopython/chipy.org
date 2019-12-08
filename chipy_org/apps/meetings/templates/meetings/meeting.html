@@ -61,7 +61,7 @@
                 <li>
                   <strong>{{ topic.title }}</strong><br />
                   {% if topic.length %}
-                    ({{ topic.length }} Minutes)<br />
+                    Duration: {{ topic.length}}<br />
                   {% endif %}
                   By: {% for presenter in topic.presentors.all %}
                         {{presenter.name}} {% if not forloop.last %}, {% endif %}

@@ -28,7 +28,7 @@ def env_list(key, defaults=None, delimiter=','):
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = env_var('DEBUG', True)
+DEBUG = env_var('DEBUG', False)
 
 ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com',
                  'chipy-149.herokuapp.com',

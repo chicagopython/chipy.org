@@ -1,3 +1,5 @@
+{% load bleach_tags %}
+
       <div class="talk">
         <span class="title"><a href="{% url 'past_topic' talk.id %}">{{ talk.title }}</a></span>
         {% for presenter in talk.presentors.all %}
@@ -10,6 +12,6 @@
         <div class="topic-date">Date: {% firstof talk.start_time talk.meeting.when %}</div>
         {% if talk.slides_link %}<div><a href="{{ talk.slides_link }}">Slides Link</a></div>{% endif %}
         <div class="description">
-          {{ talk.description|safe }}
+          {{ talk.description|bleach|safe }}
         </div>
       </div>

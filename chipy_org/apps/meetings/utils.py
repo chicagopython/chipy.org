@@ -106,6 +106,6 @@ def meetup_meeting_sync(api_key, meetup_event_id):
 
 
 def unicode_convert(inin):
-    if isinstance(inin, basestring):
+    if isinstance(inin, str):
         return inin.encode("utf-8")
     return inin

@@ -1,6 +1,7 @@
 import datetime
 import csv
 import logging
+import operator
 
 from django.db.models import Sum
 from django.conf import settings
@@ -205,6 +206,7 @@ class RSVPlistCSVBase(RSVPlist):
                    "First Name", "Last Name", "Email", "Guests", ]
         else:
             yield ["Full Name", "First Name", "Last Name", "Guests", ]
+        rsvps_ordered = []
         for item in rsvp:
             first_name = last_name = full_name = ""
             if not item.name:
@@ -234,13 +236,21 @@ class RSVPlistCSVBase(RSVPlist):
                        last_name,
                        item.email,
                        item.guests]
+                if row[2] != "":
+                    rsvps_ordered.append(tuple(row))
             else:
                 row = [
                     full_name,
                     first_name,
                     last_name,
                     item.guests]
-            row = [unicode_convert(x) for x in row]
+                if row[2] != "":
+                    rsvps_ordered.append(tuple(row))
+
+        rsvps_ordered = sorted(rsvps_ordered, key=operator.itemgetter(2,1))
+        print("rsvps_ordered",rsvps_ordered)
+
+        for row in rsvps_ordered:
             yield row
 
     def render_to_response(self, context, **response_kwargs):

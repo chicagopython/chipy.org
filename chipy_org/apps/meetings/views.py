@@ -244,11 +244,10 @@ class RSVPlistCSVBase(RSVPlist):
                     first_name,
                     last_name,
                     item.guests]
-                if row[2] != "":
+                if row[0] != "":
                     rsvps_ordered.append(tuple(row))
 
-        rsvps_ordered = sorted(rsvps_ordered, key=operator.itemgetter(2,1))
-        print("rsvps_ordered",rsvps_ordered)
+        rsvps_ordered = sorted(rsvps_ordered, key=operator.itemgetter(2, 1))
 
         for row in rsvps_ordered:
             yield row

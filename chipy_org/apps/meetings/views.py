@@ -236,21 +236,20 @@ class RSVPlistCSVBase(RSVPlist):
                        last_name,
                        item.email,
                        item.guests]
-                if row[2] != "":
-                    rsvps_ordered.append(tuple(row))
+                rsvps_ordered.append(tuple(row))
             else:
                 row = [
                     full_name,
                     first_name,
                     last_name,
                     item.guests]
-                if row[0] != "":
-                    rsvps_ordered.append(tuple(row))
+                rsvps_ordered.append(tuple(row))
 
         rsvps_ordered = sorted(rsvps_ordered, key=operator.itemgetter(2, 1))
 
         for row in rsvps_ordered:
-            yield row
+            if row[0]:
+                yield row
 
     def render_to_response(self, context, **response_kwargs):
         response = HttpResponse(content_type='text/csv')

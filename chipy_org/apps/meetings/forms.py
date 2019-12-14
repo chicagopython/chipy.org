@@ -69,7 +69,7 @@ class RSVPForm(forms.ModelForm):
 
     class Meta:
         model = RSVP
-        fields = ('response', 'user', 'name', 'meeting', 'email')
+        fields = ('response', 'user', 'first_name', 'last_name', 'meeting', 'email')
 
     def clean_user(self):
         if not self.cleaned_data['user'] and self.request.user.is_authenticated():
@@ -89,4 +89,4 @@ class AnonymousRSVPForm(forms.ModelForm):
 
     class Meta:
         model = RSVP
-        fields = ('response', 'meeting', 'name', 'email')
+        fields = ('response', 'meeting', 'first_name', 'last_name', 'email')

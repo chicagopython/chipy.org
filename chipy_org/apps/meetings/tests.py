@@ -42,14 +42,20 @@ class MeetingsTest(test_utils.AuthenticatedTest):
 
         with self.assertRaises(ValidationError):
             name_rsvp = RSVP.objects.create(
-                name='Test Name', meeting=meeting,
-                response='Y', email='dummy@example.com',
+                first_name='Test',
+                last_name='Name',
+                meeting=meeting,
+                response='Y',
+                email='dummy@example.com',
             )
 
             # Can't have two of the same name
             duplicate_name_rsvp = RSVP.objects.create(
-                name='Test Name', meeting=meeting,
-                response='Y', email='dummy@example.com',
+                first_name='Test',
+                last_name='Name',
+                meeting=meeting,
+                response='Y',
+                email='dummy@example.com',
             )
 
 

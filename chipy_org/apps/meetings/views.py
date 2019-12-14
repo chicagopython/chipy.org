@@ -1,6 +1,7 @@
 import datetime
 import csv
 import logging
+from operator import itemgetter
 
 from django.db.models import Sum
 from django.conf import settings
@@ -20,7 +21,6 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import probablepeople
 
 from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
 from .utils import meetup_meeting_sync, unicode_convert
@@ -178,8 +178,7 @@ class RSVPlist(ListView):
 
     def get_queryset(self):
         self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
-        return RSVPModel.objects.filter(
-            meeting=self.meeting).exclude(response='N').order_by('name')
+        return RSVPModel.objects.filter(meeting=self.meeting).exclude(response='N')
 
     def get_context_data(self, **kwargs):
         rsvp_yes = RSVPModel.objects.filter(
@@ -200,47 +199,45 @@ class RSVPlist(ListView):
 class RSVPlistCSVBase(RSVPlist):
 
     def _lookup_rsvps(self, rsvp):
+
+        # yield the CVS header
         if self.private:
             yield ["User Id", "Username", "Full Name",
                    "First Name", "Last Name", "Email", "Guests", ]
         else:
             yield ["Full Name", "First Name", "Last Name", "Guests", ]
+
+        data = []
         for item in rsvp:
-            first_name = last_name = full_name = ""
-            if not item.name:
-                # if no name is defined and there is a db record for this user
-                if item.user:
-                    # lookup the user's name from the db
-                    first_name = item.user.first_name
-                    last_name = item.user.last_name
-                    try:
-                        full_name = item.user.profile.display_name
-                    except Exception:
-                        logger.exception("Unable to access user profile.")
-            else:
-                full_name = item.name
-                try:
-                    # try to parse out the user first/last name
-                    parsed = probablepeople.tag(full_name)
-                    first_name = parsed[0].get("GivenName")
-                    last_name = parsed[0].get("Surname")
-                except Exception:
-                    logger.exception("unable to parse person %s", full_name)
+            # use model's computed user properties to pull
+            # the correct name information
+
             if self.private:
-                row = [item.user.id if item.user else "",
-                       item.user.username if item.user else "",
-                       full_name,
-                       first_name,
-                       last_name,
-                       item.email,
-                       item.guests]
+                data.append([
+                    item.user.id if item.user else "",
+                    item.user.username if item.user else "",
+                    item.users_full_name,
+                    item.users_first_name,
+                    item.users_last_name,
+                    item.users_email,
+                    item.users_guests,
+                ])
             else:
-                row = [
-                    full_name,
-                    first_name,
-                    last_name,
-                    item.guests]
-            row = [unicode_convert(x) for x in row]
+                data.append([
+                    item.users_full_name,
+                    item.users_first_name,
+                    item.users_last_name,
+                    item.users_guests,
+                ])
+
+        # set keys for sort based on private status and
+        # use stable sort in reverse for correct multisort
+        last_name_key = 4 if self.private else 2
+        first_name_key = 3 if self.private else 1
+        data.sort(key=itemgetter(first_name_key))
+        data.sort(key=itemgetter(last_name_key))
+
+        for row in data:
             yield row
 
     def render_to_response(self, context, **response_kwargs):

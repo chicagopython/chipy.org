@@ -18,8 +18,10 @@
 <div id="anonymous-rsvp-dialog" style="display:none;">
   <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
     {% csrf_token %}
-    <label for="name">Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
-    <input type="text" name="name" placeholder="John Smith">
+    <label for="first_name">Enter the first name <strong>on your ID</strong> for access to the meeting venue.</label>
+    <input type="text" name="first_name" placeholder="John">
+    <label for="last_name">Enter the last name <strong>on your ID</strong> for access to the meeting venue.</label>
+    <input type="text" name="last_name" placeholder="Smith">
     <label for="email">Email</label>
     <input type="text" name="email" placeholder="john@example.com">
     <input type="hidden" name="meeting" value="{{ curr_meeting.pk }}">

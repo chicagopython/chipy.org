@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import datetime
 import string
 import random
+
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
@@ -211,7 +212,8 @@ class RSVP(CommonModel):
     )
 
     user = models.ForeignKey(User, blank=True, null=True)
-    name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+    first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+    last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
     meeting = models.ForeignKey(Meeting)
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
@@ -222,7 +224,7 @@ class RSVP(CommonModel):
     def clean(self):
         from django.core.exceptions import ValidationError
 
-        if not self.user and not self.name:
+        if not self.user and not (self.first_name and self.last_name):
             raise ValidationError('User or Name required')
 
         # Check uniqueness
@@ -231,7 +233,11 @@ class RSVP(CommonModel):
                 if RSVP.objects.filter(meeting=self.meeting, user=self.user).exists():
                     raise ValidationError('User has already RSVPed for meeting')
             else:
-                if RSVP.objects.filter(meeting=self.meeting, name=self.name).exists():
+                if RSVP.objects.filter(
+                        meeting=self.meeting,
+                        first_name__iexact=self.first_name,
+                        last_name__iexact=self.last_name,
+                    ).exists():
                     raise ValidationError('User has already RSVPed for meeting')
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
@@ -245,13 +251,39 @@ class RSVP(CommonModel):
         return super(RSVP, self).save(*args, **kwargs)
 
     @property
-    def users_name(self):
-        if not self.name:
-            if self.user.profile.display_name:
-                self.name = self.user.profile.display_name
-            else:
-                self.name = self.user.get_full_name()
-        return self.name
+    def users_full_name(self):
+        if self.user and self.user.profile.display_name:
+            return self.user.profile.display_name.lower()
+
+        if self.user and self.user.get_full_name():
+            full_name = self.user.get_full_name()
+            return full_name.lower() 
+
+        if self.first_name and self.last_name:
+            full_name = self.first_name + " " + self.last_name
+            return full_name.lower()
+
+        return "N/A"
+
+    @property
+    def users_first_name(self):
+        if self.user:
+            return self.user.first_name.lower()
+        
+        if self.first_name:
+            return self.first_name.lower()
+
+        return "N/A" 
+        
+    @property
+    def users_last_name(self):
+        if self.user:
+            return self.user.last_name.lower()
+        
+        if self.last_name:
+            return self.last_name.lower()
+
+        return "N/A" 
 
     @property
     def users_email(self):
@@ -262,10 +294,7 @@ class RSVP(CommonModel):
 
     @property
     def users_guests(self):
-        if self.user:
-            return self.user.guests
-        else:
-            return self.guests
+        return self.guests
 
     def __str__(self):
-        return "{}: {}".format(self.meeting, self.name)
+        return "{}: {}".format(self.meeting, self.users_full_name)

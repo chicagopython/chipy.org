@@ -22,7 +22,7 @@ down:
 shell:
 	@echo "Opening shell in docker container"
 	@echo "Use this shell to run python and django commands normally"
-	@docker-compose exec web bash
+	@docker-compose exec --user app web bash
 
 web: run
 

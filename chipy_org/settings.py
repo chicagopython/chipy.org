@@ -229,6 +229,7 @@ INSTALLED_APPS = [
     'envelope',
     'flatblocks',
     'django_gravatar',
+    'django_bleach',
     'gunicorn',
     'honeypot',
     'interval',
@@ -293,6 +294,14 @@ TINYMCE_DEFAULT_CONFIG = {
     # use absolute urls when inserting links/images
     'relative_urls': False,
 }
+
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'code', 'strong', 'a', 'span', 'tt', 'hr', 'img',
+                       'abbr', 'sub', 'sup', 'table', 'tbody', 'tr', 'td', 'th', 'br', 'li', 'pre',
+                       'strong', 'ul', 'h1', 'h2', 'h3', 'div', 'iframe', 'src', 'class']
+BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style', 'rel', 'img', 'src', 'alt']
+BLEACH_ALLOWED_PROTOCOLS = ['http', 'https', 'data']
+BLEACH_ALLOWED_STYLES = ['font-family', 'font-weight', 'text-decoration', 'font-variant']
+BLEACH_STRIP_TAGS = True
 
 NORECAPTCHA_SITE_KEY = env_var('NORECAPTCHA_SITE_KEY')
 NORECAPTCHA_SECRET_KEY = env_var('NORECAPTCHA_SECRET_KEY')

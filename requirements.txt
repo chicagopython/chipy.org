@@ -1,6 +1,7 @@
 boto==2.49.0
 dj-database-url==0.4.2
 django-admin-tools==0.8.1
+django-bleach==0.6.1 
 django-ckeditor==5.2.2
 django-envelope==1.0
 django-extensions==1.8.1

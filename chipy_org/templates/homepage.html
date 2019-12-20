@@ -2,6 +2,8 @@
 
 {% load i18n staticfiles flatblocks thumbnail %}
 
+{% load bleach_tags %}
+
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
@@ -230,7 +232,8 @@ h2 a {
                       {% if topic.experience_level %}
                       Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
-                      <span  class="more">{{ topic.description }}</span>
+                      {{ topic.description|striptags|truncatewords:80|bleach|safe }}<br />
+                      <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
                     </li>
                   {% endfor %}
                 </ul>
@@ -256,7 +259,7 @@ h2 a {
                 {% endif %}
                 <hr />
                 {% if meeting.description %}
-                <p itemprop="description">{{ meeting.description|truncatewords:30|safe }}</p>
+                <p itemprop="description">{{ meeting.description|truncatewords_html:30|safe }}</p>
                 {% endif %}
 
                 <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
@@ -359,43 +362,5 @@ h2 a {
 {% block extra_jquery %}
 {% include "_homepage.js" %}
 {% include "_rsvp.js" with curr_meeting=next_meeting %}
-
-$(document).ready(function() {
-    // Source: https://codepen.io/maxds/pen/jgeoA
-    // Configure/customize these variables.
-    var showChar = 140;  // How many characters are shown by default
-    var ellipsestext = "...";
-    var moretext = "[more]";
-    var lesstext = "[less]";
-
-
-    $('.more').each(function() {
-        var content = $(this).html();
-
-        if(content.length > showChar) {
-
-            var c = content.substr(0, showChar);
-            var h = content.substr(showChar, content.length - showChar);
-
-            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
-
-            $(this).html(html);
-        }
-
-    });
-
-    $(".morelink").click(function(){
-        if($(this).hasClass("less")) {
-            $(this).removeClass("less");
-            $(this).html(moretext);
-        } else {
-            $(this).addClass("less");
-            $(this).html(lesstext);
-        }
-        $(this).parent().prev().toggle();
-        $(this).prev().toggle();
-        return false;
-    });
-});
 
 {% endblock %}

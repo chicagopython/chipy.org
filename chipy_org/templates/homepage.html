@@ -259,7 +259,7 @@ h2 a {
                 {% endif %}
                 <hr />
                 {% if meeting.description %}
-                <p itemprop="description">{{ meeting.description|truncatewords:30|safe }}</p>
+                <p itemprop="description">{{ meeting.description|truncatewords_html:30|safe }}</p>
                 {% endif %}
 
                 <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>

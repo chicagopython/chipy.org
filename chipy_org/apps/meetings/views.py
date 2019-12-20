@@ -23,7 +23,7 @@ from rest_framework.views import APIView
 import probablepeople
 
 from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
-from .utils import meetup_meeting_sync 
+from .utils import meetup_meeting_sync
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
 from .forms import TopicForm, RSVPForm, AnonymousRSVPForm

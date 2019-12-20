@@ -103,4 +103,3 @@ def meetup_meeting_sync(api_key, meetup_event_id):
         else:
             logger.info('Saved RSVP for %s with response of %s',
                         result['member']['name'], rsvp.response)
-

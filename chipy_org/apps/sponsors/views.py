@@ -16,9 +16,9 @@ class SponsorListView(ListView):
     def get_queryset(self):
         return (
             super(SponsorListView, self)
-                .get_queryset()
-                .filter(sponsors__isnull=False)
-                .prefetch_related('sponsors')
-                .order_by('list_priority', 'name')
-                .distinct()
+            .get_queryset()
+            .filter(sponsors__isnull=False)
+            .prefetch_related('sponsors')
+            .order_by('list_priority', 'name')
+            .distinct()
         )

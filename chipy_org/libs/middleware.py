@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from social_core.exceptions import SocialAuthBaseException
-from social_core.backends.utils import get_backend
 from social_django.middleware import SocialAuthExceptionMiddleware
 
 

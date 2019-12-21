@@ -23,7 +23,6 @@ gunicorn==19.9.0
 httplib2==0.9.2
 oauth2==1.9.0post1
 Pillow==5.4.1
-probablepeople==0.5.4
 psycopg2-binary==2.7.7
 #pytest-cov==2.6.0 
 python-openid==2.2.5

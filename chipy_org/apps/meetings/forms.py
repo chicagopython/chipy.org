@@ -69,7 +69,14 @@ class RSVPForm(forms.ModelForm):
 
     class Meta:
         model = RSVP
-        fields = ('response', 'user', 'name', 'meeting', 'email')
+        fields = (
+            'response',
+            'meeting',
+            'user',
+            'first_name',
+            'last_name',
+            'email'
+        )
 
     def clean_user(self):
         if not self.cleaned_data['user'] and self.request.user.is_authenticated():
@@ -77,7 +84,7 @@ class RSVPForm(forms.ModelForm):
 
 
 class AnonymousRSVPForm(forms.ModelForm):
-    captcha = NoReCaptchaField()
+    # captcha = NoReCaptchaField()
 
     def __init__(self, request, *args, **kwargs):
         super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
@@ -89,4 +96,10 @@ class AnonymousRSVPForm(forms.ModelForm):
 
     class Meta:
         model = RSVP
-        fields = ('response', 'meeting', 'name', 'email')
+        fields = (
+            'response',
+            'meeting',
+            'first_name',
+            'last_name',
+            'email',
+        )

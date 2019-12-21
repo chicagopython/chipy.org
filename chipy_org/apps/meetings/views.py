@@ -184,14 +184,10 @@ class RSVPlist(ListView):
     def get_context_data(self, **kwargs):
         rsvp_yes = RSVPModel.objects.filter(
             meeting=self.meeting).exclude(response='N').count()
-        rsvp_guest = RSVPModel.objects.filter(
-            meeting=self.meeting).exclude(
-                response='N').aggregate(Sum('guests'))['guests__sum']
-        if not rsvp_guest:
-            rsvp_guest = 0
+        # TODO: rename guests to some thing reasonable
         context = {
             'meeting': self.meeting,
-            'guests': (rsvp_yes + rsvp_guest)
+            'guests': (rsvp_yes)
         }
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context
@@ -201,45 +197,33 @@ class RSVPlistCSVBase(RSVPlist):
 
     def _lookup_rsvps(self, rsvp):
         if self.private:
-            yield ["User Id", "Username", "Full Name",
-                   "First Name", "Last Name", "Email", "Guests", ]
+            yield [
+                "User Id",
+                "Username",
+                "First Name", 
+                "Last Name",
+                "Email",
+            ]
         else:
-            yield ["Full Name", "First Name", "Last Name", "Guests", ]
+            yield [
+                "First Name",
+                "Last Name", 
+            ]
+
         for item in rsvp:
-            first_name = last_name = full_name = ""
-            if not item.name:
-                # if no name is defined and there is a db record for this user
-                if item.user:
-                    # lookup the user's name from the db
-                    first_name = item.user.first_name
-                    last_name = item.user.last_name
-                    try:
-                        full_name = item.user.profile.display_name
-                    except Exception:
-                        logger.exception("Unable to access user profile.")
-            else:
-                full_name = item.name
-                try:
-                    # try to parse out the user first/last name
-                    parsed = probablepeople.tag(full_name)
-                    first_name = parsed[0].get("GivenName")
-                    last_name = parsed[0].get("Surname")
-                except Exception:
-                    logger.exception("unable to parse person %s", full_name)
             if self.private:
                 row = [item.user.id if item.user else "",
                        item.user.username if item.user else "",
-                       full_name,
-                       first_name,
-                       last_name,
+                       item.first_name,
+                       item.last_name,
                        item.email,
-                       item.guests]
+                   ]
             else:
                 row = [
-                    full_name,
-                    first_name,
-                    last_name,
-                    item.guests]
+                    item.first_name,
+                    item.last_name,
+                ]
+
             yield row
 
     def render_to_response(self, context, **response_kwargs):

@@ -1,4 +1,6 @@
 $('.rsvp').click(function(){
+
+    {% comment %}
     {% if request.user.is_authenticated %}
     $.ajax({
         type: 'POST',
@@ -9,10 +11,13 @@ $('.rsvp').click(function(){
         },
     });
     {% else %}
+    {% endif %}
+    {% endcomment %}
+
     $('#anonymous-rsvp-dialog').dialog({width: '500'});
     $('#anonymous-rsvp-form input[name=response]').val($(this).data('response'))
     return false;
-    {% endif %}
+    
 });
 $('#anonymous-rsvp-form1').submit(function(event){
     event.preventDefault();

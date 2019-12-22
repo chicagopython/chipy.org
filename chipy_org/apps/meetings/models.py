@@ -223,7 +223,7 @@ class RSVP(CommonModel):
     meetup_user_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        ordering = ['last_name', 'first_name']
+        ordering = ['-meeting', 'last_name', 'first_name']
 
     def clean(self):
         # TODO: check on the items below.

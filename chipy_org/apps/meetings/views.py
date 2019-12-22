@@ -20,7 +20,6 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import probablepeople
 
 from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
 from .utils import meetup_meeting_sync
@@ -103,7 +102,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             meeting_id = self.request.POST.get('meeting', None)
             if not meeting_id:
                 raise Http404('Meeting missing from POST')
-
+            
             try:
                 meeting_id = int(meeting_id)
             except (ValueError, TypeError):
@@ -155,6 +154,12 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         kwargs.update(super(RSVP, self).get_form_kwargs())
         kwargs.update({'request': self.request})
         return kwargs
+
+    def get_initial(self):
+        initial = super().get_initial()
+        data = {'email': 'abc@email.com', 'first_name':'FIRST', 'last_name':'LAST'}
+        initial.update(data)
+        return initial
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()

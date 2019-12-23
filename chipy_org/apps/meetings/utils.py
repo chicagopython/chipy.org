@@ -103,9 +103,3 @@ def meetup_meeting_sync(api_key, meetup_event_id):
         else:
             logger.info('Saved RSVP for %s with response of %s',
                         result['member']['name'], rsvp.response)
-
-
-def unicode_convert(inin):
-    if isinstance(inin, basestring):
-        return inin.encode("utf-8")
-    return inin

@@ -2,6 +2,8 @@
 
 {% load i18n staticfiles %}
 
+{% load bleach_tags %}
+
 {% block head_title %}{% trans "Topic" %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
@@ -17,7 +19,7 @@
           {% endif %}
           <hr />
           {% if meeting.description %}
-          <p itemprop="description">{{ meeting.description|safe }}</p>
+          <p itemprop="description">{{ meeting.description|bleach|safe }}</p>
           {% endif %}
 
           <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
@@ -69,7 +71,7 @@
                   {% if topic.experience_level %}
                   Experience Level: {{ topic.get_experience_level_display }}<br />
                   {% endif %}
-                  {{ topic.description|safe }}
+                  {{ topic.description|bleach|safe }}
                 </li>
               {% endfor %}
             </ul>

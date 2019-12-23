@@ -26,7 +26,7 @@
       Experience Level: {{ topic.get_experience_level_display }}<br />
       {% endif %}
       {% if topic.slides_link %}<a href="{{ topic.slides_link }}">Slides Link</a>{% endif %}<br />
-      {{ topic.description }}
+      {{ topic.description|safe }}
     </div>
   {% endif %}
 {% endfor %}

@@ -1,6 +1,7 @@
 boto==2.49.0
 dj-database-url==0.4.2
 django-admin-tools==0.8.1
+django-bleach==0.6.1 
 django-ckeditor==5.2.2
 django-envelope==1.0
 django-extensions==1.8.1
@@ -13,7 +14,6 @@ django-honeypot==0.5.0
 django-ical==1.4
 django-nocaptcha-recaptcha==0.0.19
 django-pgsql-interval-field==0.9.4
-django-social-auth==0.7.28
 django-storages==1.1.8
 django-tinymce==2.0.6
 Django>=1.7.0,<1.9.0
@@ -21,7 +21,7 @@ djangorestframework==3.2.4
 feedparser==5.2.1
 gunicorn==19.9.0
 httplib2==0.9.2
-oauth2==1.5.211
+oauth2==1.9.0post1
 Pillow==5.4.1
 probablepeople==0.5.4
 psycopg2-binary==2.7.7
@@ -29,7 +29,7 @@ psycopg2-binary==2.7.7
 python-openid==2.2.5
 requests==2.21.0
 six==1.10.0
+social-auth-app-django==3.1.0
 sorl-thumbnail==12.3
 Werkzeug==0.10.4
 whitenoise==3.3.0
-wsgiref==0.1.2

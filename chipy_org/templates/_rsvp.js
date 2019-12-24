@@ -5,7 +5,11 @@ $('.rsvp').click(function(){
     $.ajax({
         type: 'POST',
         url: "{% url 'rsvp' %}",
-        data: {response:$(this).data('response'), csrfmiddlewaretoken: '{{ csrf_token }}', meeting: '{{ curr_meeting.id }}'},
+        data: {
+            response:$(this).data('response'),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            meeting: '{{ curr_meeting.id }}'
+        },
         success: function(data){
             location.reload();
         },
@@ -14,8 +18,24 @@ $('.rsvp').click(function(){
     {% endif %}
     {% endcomment %}
 
-    $('#anonymous-rsvp-dialog').dialog({width: '500'});
-    $('#anonymous-rsvp-form input[name=response]').val($(this).data('response'))
+    $.ajax({
+        type: 'GET',
+        url: "{% url 'anonymous_rsvp' %}",
+        data: {
+            response:$(this).data('response'),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            meeting: '{{ curr_meeting.id }}'
+        },
+        success: function(data){
+            $('#form-contents').html(data['html']);
+            $('#anonymous-rsvp-dialog').dialog({width: '500'});
+            $('#anonymous-rsvp-form input[name=response]').val($(this).data('response'))
+        },
+        error: function(xhr, status, e){
+            alert(status);
+        }
+    });
+    
     return false;
     
 });

@@ -18,7 +18,8 @@
 {{ form.non_field_errors }}
 <form method="POST" id="rsvp-form" action=".">
   {% csrf_token %}
-  {{ form.name }}
+  {{ form.first_name }}
+  {{ form.last_name }}
   {{ form.response }}<br>
   <input type="submit" name="submit" value="Change RSVP" class="btn btn-primary">
 </form>

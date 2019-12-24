@@ -5,7 +5,7 @@ import logging
 from django.db.models import Sum
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404, JsonResponse 
 from django.core.urlresolvers import reverse_lazy
 from django.utils.text import slugify
 
@@ -90,16 +90,19 @@ class MyTopics(ListView):
         return Topic.objects.filter(presentors=presenter)
 
 
-class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
+class RSVP(ProcessFormView, ModelFormMixin):
     http_method_names = ['post', 'get']
     success_url = reverse_lazy("home")
 
     def dispatch(self, request, *args, **kwargs):
-
         self.object = None
 
         def lookup_meeting():
-            meeting_id = self.request.POST.get('meeting', None)
+            if self.request.method == "GET":
+                meeting_id = self.request.GET.get('meeting', None)
+            elif self.request.method == "POST":
+                meeting_id = self.request.POST.get('meeting', None)
+          
             if not meeting_id:
                 raise Http404('Meeting missing from POST')
             
@@ -122,11 +125,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         elif self.request.user.is_anonymous() and 'rsvp_key' not in self.kwargs:
             # If the user is anonymous
             self.meeting = lookup_meeting()
-        elif 'rsvp_key' in self.kwargs:
-            # If the user has a registration link (typically emailed to them)
-            # This is to allow the user to possibly change their response.
-            self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
-            self.meeting = self.object.meeting
+
         else:
             raise Exception("should not get here")
 
@@ -143,12 +142,6 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         else:
             return AnonymousRSVPForm
 
-    def get_template_names(self):
-        if self.request.method == 'POST':
-            return ['meetings/_rsvp_form_response.html']
-        elif self.request.method == 'GET':
-            return ['meetings/rsvp_form.html']
-
     def get_form_kwargs(self):
         kwargs = {}
         kwargs.update(super(RSVP, self).get_form_kwargs())
@@ -157,13 +150,72 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
     def get_initial(self):
         initial = super().get_initial()
-        data = {'email': 'abc@email.com', 'first_name':'FIRST', 'last_name':'LAST'}
-        initial.update(data)
+        initial.update({'meeting': self.meeting})
+        if self.request.user.is_authenticated():
+            user = self.request.user
+            data = {
+                'user': user,
+                'email': getattr(user, 'email', None),
+                'first_name': getattr(user, 'first_name', None),
+                'last_name': getattr(user, 'last_name', None)
+            }
+            initial.update(data)
         return initial
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+
+        if form.is_valid():
+            response = self.form_valid(form)
+            messages.success(request, 'RSVP Successful.')
+
+            if not self.object.user and self.object.email:
+                send_rsvp_email(self.object)
+
+            return response
+        else:
+            return self.form_invalid(form)
+
+    def get(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        data = {'html': form.as_p(), }
+        return JsonResponse(data)
+
+
+class UpdateAnonymousRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
+    http_method_names = ['post', 'get']
+    success_url = reverse_lazy("home")
+    form_class = AnonymousRSVPForm
+
+    def dispatch(self, request, *args, **kwargs):
+        # If the user has a registration link (typically emailed to them)
+        # This is to allow the user to possibly change their response.
+        self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
+        self.meeting = self.object.meeting
+
+        # check to see if registration is closed
+        if not self.meeting.can_register():
+            messages.error(request, 'Registration for this meeting is closed.')
+            return redirect(reverse_lazy("home"))
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_template_names(self):
+        if self.request.method == 'POST':
+            return ['meetings/_rsvp_form_response.html']
+        elif self.request.method == 'GET':
+            return ['meetings/rsvp_form.html']
+
+    def get_form_kwargs(self):
+        kwargs = {}
+        kwargs.update(super().get_form_kwargs())
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
 
         if form.is_valid():
             response = self.form_valid(form)
@@ -184,7 +236,10 @@ class RSVPlist(ListView):
     def get_queryset(self):
         self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
         return RSVPModel.objects.filter(
-            meeting=self.meeting).exclude(response='N').order_by('name')
+                meeting=self.meeting
+            ).exclude(
+                response='N'
+            ).order_by('last_name', 'first_name')
 
     def get_context_data(self, **kwargs):
         rsvp_yes = RSVPModel.objects.filter(
@@ -205,28 +260,28 @@ class RSVPlistCSVBase(RSVPlist):
             yield [
                 "User Id",
                 "Username",
-                "First Name", 
                 "Last Name",
+                "First Name", 
                 "Email",
             ]
         else:
             yield [
-                "First Name",
                 "Last Name", 
+                "First Name",
             ]
 
         for item in rsvp:
             if self.private:
                 row = [item.user.id if item.user else "",
                        item.user.username if item.user else "",
-                       item.first_name,
                        item.last_name,
+                       item.first_name,
                        item.email,
                    ]
             else:
                 row = [
-                    item.first_name,
                     item.last_name,
+                    item.first_name,
                 ]
 
             yield row

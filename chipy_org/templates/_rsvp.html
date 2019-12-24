@@ -1,5 +1,6 @@
 {% if curr_meeting.can_register %}
 <p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
+<div id="test1"></div>
   {% if rsvp %}
     You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
     <strong>Change your RSVP: </strong>
@@ -18,6 +19,20 @@
 <div id="anonymous-rsvp-dialog" style="display:none;">
   <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
     {% csrf_token %}
+    <div id="form-contents"></div>
+    <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
+  </form>
+</div>
+{% else %}
+ <p style="color: red">This event is no longer accepting registrations.</p>
+{% endif %}
+
+<p>{{ curr_meeting.number_rsvps }} going so far</p>
+
+
+{% comment %}
+  <form id="anonymous-rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
+    {% csrf_token %}
     <label>Enter the name <strong>on your ID</strong> for access to the meeting venue.</label>
     <label for="first_name">First Name</label>
     <input type="text" name="first_name" placeholder="John">
@@ -27,16 +42,9 @@
     <input type="text" name="email" placeholder="john@example.com">
     <input type="hidden" name="meeting" value="{{ curr_meeting.pk }}">
     <input type="hidden" name="response" value="Y">
-    {% comment %}
     {% if not request.user.is_authenticated %}
       {{ rsvp_form.captcha }}
     {% endif %}
-    {% endcomment %}
     <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
   </form>
-</div>
-{% else %}
- <p style="color: red">This event is no longer accepting registrations.</p>
-{% endif %}
-
-<p>{{ curr_meeting.number_rsvps }} going so far</p>
+{% endcomment %}

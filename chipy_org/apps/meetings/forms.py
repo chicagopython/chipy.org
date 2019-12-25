@@ -61,64 +61,25 @@ class TopicForm(forms.ModelForm):
         instance.presentors.add(presenter)
         return instance
 
-
-class RSVPForm(forms.ModelForm):
-    def __init__(self, request, *args, **kwargs):
-        super(RSVPForm, self).__init__(*args, **kwargs)
-        self.request = request
-
+class RsvpBaseForm(forms.ModelForm):
     class Meta:
         model = RSVP
         fields = (
+            'user',
             'response',
             'meeting',
-            'user',
             'first_name',
             'last_name',
             'email'
         )
-
-    def clean_first_name(self):
-        return self.cleaned_data['first_name'].lower()
-
-    def clean_last_name(self):
-        return self.cleaned_data['last_name'].lower()
-
-    def clean_email(self):
-        return self.cleaned_data['email'].lower()
-
-    def clean_user(self):
-        if not self.cleaned_data['user'] and self.request.user.is_authenticated():
-            return self.request.user
-
-
-class AnonymousRSVPForm(forms.ModelForm):
-    captcha = NoReCaptchaField()
-
-    def __init__(self, request, *args, **kwargs):
-        super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            # On an update we don't want to make any changes to the email.
-            del self.fields['email']
-            # del self.fields['captcha']
-            del self.fields['meeting']
-
-    class Meta:
-        model = RSVP
-        fields = (
-            'response',
-            'meeting',
-            'first_name',
-            'last_name',
-            'email',
-        )
-        widgets = {
-            'meeting': forms.HiddenInput(),
-        }
         labels = {
             'first_name': 'First name on your legal ID',
             'last_name': 'Last name on your legal ID',
         }
+        widgets = {
+            'meeting': forms.HiddenInput(),
+            'user': forms.HiddenInput(),
+        }
 
     def clean_first_name(self):
         return self.cleaned_data['first_name'].lower()
@@ -128,3 +89,22 @@ class AnonymousRSVPForm(forms.ModelForm):
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
+
+
+class RSVPForm(RsvpBaseForm):
+    def __init__(self, request, *args, **kwargs):
+        super(RSVPForm, self).__init__(*args, **kwargs)
+        self.request = request
+
+
+class AnonymousRSVPForm(RsvpBaseForm):
+    captcha = NoReCaptchaField(gtag_attrs={'id':'rsvp-captcha'})
+
+    def __init__(self, request, *args, **kwargs):
+        super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
+        self.fields['captcha'].label = '' 
+        if self.instance.pk:
+            # On an update we don't want to make any changes to the email.
+            del self.fields['email']
+            del self.fields['captcha']
+            del self.fields['meeting']

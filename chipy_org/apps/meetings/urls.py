@@ -11,7 +11,8 @@ from .views import (
     RSVPlistPrivate,
     RSVPlistHost,
     PastTopics,
-    PastTopic,)
+    PastTopic,
+)
 
 
 urlpatterns = [
@@ -24,12 +25,11 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]*)/$',
         MeetingDetail.as_view(), name='meeting'),
 
+    # TODO: one url for an initial RSVP
     url(r'^rsvp/$',
         RSVP.as_view(), name='rsvp'),
     url(r'^rsvp/anonymous/$',
         RSVP.as_view(), name='anonymous_rsvp'),
-    # url(r'^rsvp/anonymous/(?P<rsvp_key>[a-z0-9]{40})/$',
-    #     RSVP.as_view(), name='anonymous_rsvp_with_key'),
     
     url(r'^rsvp/anonymous/(?P<rsvp_key>[a-z0-9]{40})/$',
         UpdateAnonymousRSVP.as_view(),

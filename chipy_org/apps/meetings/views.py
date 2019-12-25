@@ -15,6 +15,7 @@ from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixi
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.conf import settings 
 
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
@@ -90,7 +91,7 @@ class MyTopics(ListView):
         return Topic.objects.filter(presentors=presenter)
 
 
-class RSVP(ProcessFormView, ModelFormMixin):
+class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
     success_url = reverse_lazy("home")
 
@@ -142,6 +143,12 @@ class RSVP(ProcessFormView, ModelFormMixin):
         else:
             return AnonymousRSVPForm
 
+    def get_template_names(self):
+        if self.request.method == 'POST':
+            return ['meetings/_rsvp_form_response.html']
+        elif self.request.method == 'GET':
+            return ['meetings/rsvp_form.html']
+
     def get_form_kwargs(self):
         kwargs = {}
         kwargs.update(super(RSVP, self).get_form_kwargs())
@@ -150,7 +157,10 @@ class RSVP(ProcessFormView, ModelFormMixin):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial.update({'meeting': self.meeting})
+        initial.update({
+            'meeting': self.meeting,
+            'response': 'Y',
+        })
         if self.request.user.is_authenticated():
             user = self.request.user
             data = {
@@ -180,7 +190,12 @@ class RSVP(ProcessFormView, ModelFormMixin):
     def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        data = {'html': form.as_p(), }
+        data = {
+            'html': form.as_p(),
+            'sitekey': settings.NORECAPTCHA_SITE_KEY,
+            'is_anonymous': self.request.user.is_anonymous(),
+        }
+
         return JsonResponse(data)
 
 

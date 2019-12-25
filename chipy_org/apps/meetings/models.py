@@ -208,12 +208,13 @@ class RSVP(CommonModel):
     RSVP_CHOICES = (
         ('Y', "Yes"),
         ('N', "No"),
-        ('M', "Maybe"),
     )
 
     user = models.ForeignKey(User, blank=True, null=True)
+
     # TODO: remove name field keeping for migration purposes
     name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+
     last_name  = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)

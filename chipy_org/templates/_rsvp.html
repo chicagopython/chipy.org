@@ -14,7 +14,7 @@
   <a class="btn btn-mini rsvp">RSVP</a>
 </p>
 <div id="rsvp-dialog" style="display:none;">
-  <form id="rsvp-form" method="POST" action="{% url 'anonymous_rsvp' %}">
+  <form id="rsvp-form" method="POST" action="{% url 'rsvp' %}">
     {% csrf_token %}
     <div id="rsvp-form-fields"></div>
     <input type="submit" name="submit" value="RSVP" class="btn btn-primary">

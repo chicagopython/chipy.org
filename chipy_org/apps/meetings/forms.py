@@ -61,7 +61,11 @@ class TopicForm(forms.ModelForm):
         instance.presentors.add(presenter)
         return instance
 
-class RsvpBaseForm(forms.ModelForm):
+class RSVPForm(forms.ModelForm):
+    def __init__(self, request, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request
+
     class Meta:
         model = RSVP
         fields = (
@@ -91,18 +95,12 @@ class RsvpBaseForm(forms.ModelForm):
         return self.cleaned_data['email'].lower()
 
 
-class RSVPForm(RsvpBaseForm):
-    def __init__(self, request, *args, **kwargs):
-        super(RSVPForm, self).__init__(*args, **kwargs)
-        self.request = request
-
-
-class AnonymousRSVPForm(RsvpBaseForm):
+class RSVPFormWithCaptcha(RSVPForm):
     captcha = NoReCaptchaField(gtag_attrs={'id':'rsvp-captcha'})
 
     def __init__(self, request, *args, **kwargs):
-        super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
-        self.fields['captcha'].label = '' 
+        super().__init__(request, *args, **kwargs)
+        self.fields['captcha'].label = ''
         if self.instance.pk:
             # On an update we don't want to make any changes to the email.
             del self.fields['email']

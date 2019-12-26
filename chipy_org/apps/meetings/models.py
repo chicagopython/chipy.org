@@ -215,7 +215,7 @@ class RSVP(CommonModel):
     # TODO: remove name field keeping for migration purposes
     name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
 
-    last_name  = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+    last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
     meeting = models.ForeignKey(Meeting)
@@ -227,9 +227,6 @@ class RSVP(CommonModel):
         ordering = ['-meeting', 'last_name', 'first_name']
 
     def clean(self):
-        # TODO: check on the items below.
-        # should we be importing this here
-        # does clean belong here or on the model
         from django.core.exceptions import ValidationError
 
         if not self.user and not self.email:

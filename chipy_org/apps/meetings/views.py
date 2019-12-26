@@ -2,10 +2,9 @@ import datetime
 import csv
 import logging
 
-from django.db.models import Sum
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, Http404, JsonResponse 
+from django.http import HttpResponseRedirect, HttpResponse, Http404, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.utils.text import slugify
 
@@ -15,18 +14,17 @@ from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixi
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.conf import settings 
 
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
+from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 from .utils import meetup_meeting_sync
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
-from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
+from .forms import TopicForm, RSVPForm, RSVPFormWithCaptcha
 from .models import (
     Meeting,
     Topic,
@@ -58,7 +56,7 @@ class MeetingDetail(DetailView):
         if self.request.user.is_authenticated():
             context['rsvp_form'] = RSVPForm(self.request)
         else:
-            context['rsvp_form'] = AnonymousRSVPForm(self.request)
+            context['rsvp_form'] = RSVPFormWithCaptcha(self.request)
         return context
 
 
@@ -103,10 +101,10 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
                 meeting_id = self.request.GET.get('meeting', None)
             elif self.request.method == "POST":
                 meeting_id = self.request.POST.get('meeting', None)
-          
+
             if not meeting_id:
                 raise Http404('Meeting missing from POST')
-            
+
             try:
                 meeting_id = int(meeting_id)
             except (ValueError, TypeError):
@@ -114,34 +112,28 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
             return get_object_or_404(Meeting, pk=meeting_id)
 
-        if self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
-            # If the user is logged in
-            self.meeting = lookup_meeting()
+        self.meeting = lookup_meeting()
+        if self.request.user.is_authenticated():
             try:
-                # check to see if they already have registered
                 self.object = RSVPModel.objects.get(
-                    user=self.request.user, meeting=self.meeting)
+                    user=self.request.user,
+                    meeting=self.meeting
+                )
             except RSVPModel.DoesNotExist:
                 pass
-        elif self.request.user.is_anonymous() and 'rsvp_key' not in self.kwargs:
-            # If the user is anonymous
-            self.meeting = lookup_meeting()
-
-        else:
-            raise Exception("should not get here")
 
         # check to see if registration is closed
         if not self.meeting.can_register():
             messages.error(request, 'Registration for this meeting is closed.')
             return redirect(reverse_lazy("home"))
 
-        return super(RSVP, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
         if self.request.user.is_authenticated():
             return RSVPForm
         else:
-            return AnonymousRSVPForm
+            return RSVPFormWithCaptcha
 
     def get_template_names(self):
         if self.request.method == 'POST':
@@ -150,8 +142,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             return ['meetings/rsvp_form.html']
 
     def get_form_kwargs(self):
-        kwargs = {}
-        kwargs.update(super(RSVP, self).get_form_kwargs())
+        kwargs = super().get_form_kwargs()
         kwargs.update({'request': self.request})
         return kwargs
 
@@ -199,10 +190,10 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         return JsonResponse(data)
 
 
-class UpdateAnonymousRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
+class UpdateRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
     success_url = reverse_lazy("home")
-    form_class = AnonymousRSVPForm
+    form_class = RSVPForm
 
     def dispatch(self, request, *args, **kwargs):
         # If the user has a registration link (typically emailed to them)
@@ -224,8 +215,7 @@ class UpdateAnonymousRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin
             return ['meetings/rsvp_form.html']
 
     def get_form_kwargs(self):
-        kwargs = {}
-        kwargs.update(super().get_form_kwargs())
+        kwargs = super().get_form_kwargs()
         kwargs.update({'request': self.request})
         return kwargs
 
@@ -251,7 +241,7 @@ class RSVPlist(ListView):
     def get_queryset(self):
         self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
         return RSVPModel.objects.filter(
-                meeting=self.meeting
+            meeting=self.meeting
             ).exclude(
                 response='N'
             ).order_by('last_name', 'first_name')
@@ -276,23 +266,24 @@ class RSVPlistCSVBase(RSVPlist):
                 "User Id",
                 "Username",
                 "Last Name",
-                "First Name", 
+                "First Name",
                 "Email",
             ]
         else:
             yield [
-                "Last Name", 
+                "Last Name",
                 "First Name",
             ]
 
         for item in rsvp:
             if self.private:
-                row = [item.user.id if item.user else "",
-                       item.user.username if item.user else "",
-                       item.last_name,
-                       item.first_name,
-                       item.email,
-                   ]
+                row = [
+                    item.user.id if item.user else "",
+                    item.user.username if item.user else "",
+                    item.last_name,
+                    item.first_name,
+                    item.email,
+                ]
             else:
                 row = [
                     item.last_name,

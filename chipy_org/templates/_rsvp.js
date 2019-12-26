@@ -1,9 +1,8 @@
 $('.rsvp').click(function(){
     $.ajax({
         type: 'GET',
-        url: "{% url 'anonymous_rsvp' %}",
+        url: "{% url 'rsvp' %}",
         data: {
-            //response:$(this).data('response'),
             csrfmiddlewaretoken: '{{ csrf_token }}',
             meeting: '{{ curr_meeting.id }}'
         },
@@ -29,7 +28,7 @@ $('#anonymous-rsvp-form1').submit(function(event){
     event.preventDefault();
     $.ajax({
         type: 'POST',
-        url: "{% url 'anonymous_rsvp' %}",
+        url: "{% url 'rsvp' %}",
         data: $('#rsvp-form').serialize(),
         success: function (data, textStatus) {
             alert(data, textStatus);

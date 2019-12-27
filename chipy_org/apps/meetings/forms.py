@@ -102,7 +102,4 @@ class RSVPFormWithCaptcha(RSVPForm):
         super().__init__(request, *args, **kwargs)
         self.fields['captcha'].label = ''
         if self.instance.pk:
-            # On an update we don't want to make any changes to the email.
             del self.fields['email']
-            del self.fields['captcha']
-            del self.fields['meeting']

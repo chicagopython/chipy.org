@@ -1,4 +1,4 @@
-import datetime
+mport datetime
 import csv
 import logging
 
@@ -89,10 +89,40 @@ class MyTopics(ListView):
         return Topic.objects.filter(presentors=presenter)
 
 
-class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
+
+
+class RSVPBaseView(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
     success_url = reverse_lazy("home")
 
+    def get_template_names(self):
+        if self.request.method == 'POST':
+            return ['meetings/_rsvp_form_response.html']
+        elif self.request.method == 'GET':
+            return ['meetings/rsvp_form.html']
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if form.is_valid():
+            response = self.form_valid(form)
+            messages.success(request, 'RSVP Successful.')
+
+            if not self.object.user and self.object.email:
+                send_rsvp_email(self.object)
+
+            return response
+        else:
+            return self.form_invalid(form)
+
+
+class RSVP(RSVPBaseView):
     def dispatch(self, request, *args, **kwargs):
         self.object = None
 
@@ -113,6 +143,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             return get_object_or_404(Meeting, pk=meeting_id)
 
         self.meeting = lookup_meeting()
+
         if self.request.user.is_authenticated():
             try:
                 self.object = RSVPModel.objects.get(
@@ -135,17 +166,6 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         else:
             return RSVPFormWithCaptcha
 
-    def get_template_names(self):
-        if self.request.method == 'POST':
-            return ['meetings/_rsvp_form_response.html']
-        elif self.request.method == 'GET':
-            return ['meetings/rsvp_form.html']
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({'request': self.request})
-        return kwargs
-
     def get_initial(self):
         initial = super().get_initial()
         initial.update({
@@ -163,21 +183,6 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             initial.update(data)
         return initial
 
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
-        if form.is_valid():
-            response = self.form_valid(form)
-            messages.success(request, 'RSVP Successful.')
-
-            if not self.object.user and self.object.email:
-                send_rsvp_email(self.object)
-
-            return response
-        else:
-            return self.form_invalid(form)
-
     def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -186,13 +191,11 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             'sitekey': settings.NORECAPTCHA_SITE_KEY,
             'is_anonymous': self.request.user.is_anonymous(),
         }
-
         return JsonResponse(data)
 
 
-class UpdateRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
-    http_method_names = ['post', 'get']
-    success_url = reverse_lazy("home")
+# class UpdateRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
+class UpdateRSVP(RSVPBaseView):
     form_class = RSVPForm
 
     def dispatch(self, request, *args, **kwargs):
@@ -207,31 +210,6 @@ class UpdateRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             return redirect(reverse_lazy("home"))
 
         return super().dispatch(request, *args, **kwargs)
-
-    def get_template_names(self):
-        if self.request.method == 'POST':
-            return ['meetings/_rsvp_form_response.html']
-        elif self.request.method == 'GET':
-            return ['meetings/rsvp_form.html']
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({'request': self.request})
-        return kwargs
-
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-
-        if form.is_valid():
-            response = self.form_valid(form)
-            messages.success(request, 'RSVP Successful.')
-
-            if not self.object.user and self.object.email:
-                send_rsvp_email(self.object)
-
-            return response
-        else:
-            return self.form_invalid(form)
 
 
 class RSVPlist(ListView):

@@ -22,7 +22,6 @@ $('.rsvp').click(function(){
     });
     
     return false;
-    
 });
 $('#anonymous-rsvp-form1').submit(function(event){
     event.preventDefault();

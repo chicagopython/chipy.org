@@ -10,7 +10,13 @@ from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView,
+    FormView,
+    ProcessFormView,
+    ModelFormMixin
+)
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -89,9 +95,7 @@ class MyTopics(ListView):
         return Topic.objects.filter(presentors=presenter)
 
 
-
-
-class RSVPBaseView(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
+class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
     success_url = reverse_lazy("home")
 
@@ -106,30 +110,11 @@ class RSVPBaseView(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         kwargs.update({'request': self.request})
         return kwargs
 
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
-        if form.is_valid():
-            response = self.form_valid(form)
-            messages.success(request, 'RSVP Successful.')
-
-            if not self.object.user and self.object.email:
-                send_rsvp_email(self.object)
-
-            return response
-        else:
-            return self.form_invalid(form)
-
-
-class RSVP(RSVPBaseView):
     def dispatch(self, request, *args, **kwargs):
         self.object = None
 
         def lookup_meeting():
-            if self.request.method == "GET":
-                meeting_id = self.request.GET.get('meeting', None)
-            elif self.request.method == "POST":
+            if self.request.method == "POST":
                 meeting_id = self.request.POST.get('meeting', None)
 
             if not meeting_id:
@@ -156,22 +141,29 @@ class RSVP(RSVPBaseView):
         # check to see if registration is closed
         if not self.meeting.can_register():
             messages.error(request, 'Registration for this meeting is closed.')
-            return redirect(reverse_lazy("home"))
+            return redirect(reverse_lazy('home'))
 
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
-        if self.request.user.is_authenticated():
-            return RSVPForm
-        else:
-            return RSVPFormWithCaptcha
+        authenticated = self.request.user.is_authenticated()
+        return RSVPForm if authenticated else RSVPFormWithCaptcha
+
+    def form_valid(self, form):
+        # calling super.form_valid(form) also does self.object = form.save() 
+        response = super().form_valid(form)
+
+        messages.success(self.request, 'RSVP Successful.')
+        if not self.object.user and self.object.email:
+            send_rsvp_email(self.object)
+
+        return response
 
     def get_initial(self):
-        initial = super().get_initial()
-        initial.update({
+        initial = {
             'meeting': self.meeting,
             'response': 'Y',
-        })
+        }
         if self.request.user.is_authenticated():
             user = self.request.user
             data = {
@@ -183,33 +175,35 @@ class RSVP(RSVPBaseView):
             initial.update(data)
         return initial
 
-    def get(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        data = {
-            'html': form.as_p(),
-            'sitekey': settings.NORECAPTCHA_SITE_KEY,
-            'is_anonymous': self.request.user.is_anonymous(),
-        }
-        return JsonResponse(data)
 
-
-# class UpdateRSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
-class UpdateRSVP(RSVPBaseView):
+class UpdateRSVP(UpdateView):
+    model = RSVPModel
+    #fields = ('first_name', 'last_name', 'response')
     form_class = RSVPForm
+    success_url = reverse_lazy("home")
 
-    def dispatch(self, request, *args, **kwargs):
-        # If the user has a registration link (typically emailed to them)
-        # This is to allow the user to possibly change their response.
-        self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
-        self.meeting = self.object.meeting
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
-        # check to see if registration is closed
-        if not self.meeting.can_register():
-            messages.error(request, 'Registration for this meeting is closed.')
+    def form_valid(self, form):
+        if self.request.method == 'POST':
+            messages.success(self.request,'RSVP updated succesfully.')
+        return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
+        if not obj.meeting.can_register():
+            messages.error(self.request, 'Registration for this meeting is closed.')
             return redirect(reverse_lazy("home"))
+        return obj
 
-        return super().dispatch(request, *args, **kwargs)
+    def get_template_names(self):
+        if self.request.method == 'POST':
+            return ['meetings/_rsvp_form_response.html']
+        elif self.request.method == 'GET':
+            return ['meetings/rsvp_form.html']
 
 
 class RSVPlist(ListView):

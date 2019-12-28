@@ -1,26 +1,5 @@
 $('.rsvp').click(function(){
-    $.ajax({
-        type: 'GET',
-        url: "{% url 'rsvp' %}",
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            meeting: '{{ curr_meeting.id }}'
-        },
-        success: function(data){
-            $('#rsvp-form-fields').html(data['html']);
-            if(data['is_anonymous']){
-                grecaptcha.render(
-                    'rsvp-captcha',
-                    {'sitekey': data['sitekey']}
-                );
-            }
-            $('#rsvp-dialog').dialog({width: '500'});
-        },
-        error: function(xhr, status, e){
-            alert(status);
-        }
-    });
-    
+    $('#rsvp-dialog').dialog({width: '500'});
     return false;
 });
 $('#anonymous-rsvp-form1').submit(function(event){

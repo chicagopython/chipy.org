@@ -25,8 +25,10 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]*)/$',
         MeetingDetail.as_view(), name='meeting'),
 
+    # pass the meeting id here!!!
     url(r'^rsvp/$',
         RSVP.as_view(), name='rsvp'),
+
     url(r'^rsvp/(?P<rsvp_key>[a-z0-9]{40})/$',
         UpdateRSVP.as_view(), name='update_rsvp_with_key'),
 

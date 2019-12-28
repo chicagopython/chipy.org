@@ -240,7 +240,7 @@ class RSVP(CommonModel):
             else:
                 if RSVP.objects.filter(meeting=self.meeting, email=self.email).exists():
                     raise ValidationError(
-                        'An User with this email has already RSVPed for meeting'
+                        'A user with this email has already RSVPed for this meeting.'
                     )
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ

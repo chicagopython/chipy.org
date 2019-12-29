@@ -20,7 +20,7 @@
         action="{% url 'rsvp' %}"
     >
     {% csrf_token %}
-    {{ rsvp_form }}
+    {{ form }}
     <div id="rsvp-form-fields"></div>
     <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
   </form>

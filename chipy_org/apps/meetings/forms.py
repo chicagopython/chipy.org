@@ -64,7 +64,6 @@ class TopicForm(forms.ModelForm):
 class RSVPForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.request = request
         if self.instance.pk:
             del self.fields['email']
 
@@ -95,10 +94,6 @@ class RSVPForm(forms.ModelForm):
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
-
-    def clean_user(self):
-        if not self.cleaned_data['user'] and self.request.user.is_authenticated():
-            return self.request.user
 
 
 class RSVPFormWithCaptcha(RSVPForm):

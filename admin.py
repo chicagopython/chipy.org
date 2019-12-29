@@ -7,7 +7,7 @@ from django.utils.html import format_html
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import (
     Meeting, Venue, Topic, Presentor, RSVP, MeetingType)
-from tinymce.widgets import TinyMCE
+
 from django.db import models
 
 class VenueAdmin(admin.ModelAdmin):

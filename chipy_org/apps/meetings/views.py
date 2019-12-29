@@ -4,7 +4,7 @@ import logging
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, Http404, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse_lazy
 from django.utils.text import slugify
 
@@ -13,7 +13,6 @@ from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import (
     CreateView,
     UpdateView,
-    FormView,
     ProcessFormView,
     ModelFormMixin
 )
@@ -43,6 +42,57 @@ from .serializers import MeetingSerializer
 logger = logging.getLogger(__name__)
 
 
+class InitialRSVPMixin():
+    def get_next_main_meeting(self):
+        return (Meeting.objects
+            .filter(meeting_type__isnull=True)
+            .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
+            .order_by('when')
+            .first()
+        )
+        
+    def get_initial(self, next_main_meeting):
+        initial = {'response': 'Y'}
+        initial.update({'meeting': next_main_meeting})
+        if self.request.user.is_authenticated():
+            user = self.request.user
+            user_data = {
+                'user': user,
+                'email': getattr(user, 'email', None),
+                'first_name': getattr(user, 'first_name', None),
+                'last_name': getattr(user, 'last_name', None),
+            }
+            initial.update(user_data)
+        return initial
+
+    def get_form_class(self):
+        if self.request.user.is_authenticated():
+            return RSVPForm
+        else:
+            return RSVPFormWithCaptcha
+
+    def get_form(self, **kwargs):
+        form_class = self.get_form_class()
+        return form_class(**kwargs)
+
+    def add_extra_context(self, context):
+        next_main_meeting = self.get_next_main_meeting()
+        context['next_meeting'] = next_main_meeting 
+
+        if next_main_meeting: 
+            initial = self.get_initial(next_main_meeting)
+            context['form'] = self.get_form(request=self.request, initial=initial)
+
+            if self.request.user.is_authenticated():
+                try:
+                    context['rsvp'] = (RSVPModel.objects
+                        .get(meeting=next_main_meeting, user=self.request.user)
+                    )
+                except:
+                    context['rsvp'] = None
+        return context
+
+
 class PastMeetings(ListView):
     template_name = 'meetings/past_meetings.html'
     queryset = Meeting.objects.filter(
@@ -51,7 +101,7 @@ class PastMeetings(ListView):
     paginate_by = 5
 
 
-class MeetingDetail(DetailView):
+class MeetingDetail(DetailView, InitialRSVPMixin):
     template_name = 'meetings/meeting.html'
     pk_url_kwarg = 'pk'
     model = Meeting
@@ -59,10 +109,7 @@ class MeetingDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MeetingDetail, self).get_context_data(**kwargs)
         context.update(kwargs)
-        if self.request.user.is_authenticated():
-            context['rsvp_form'] = RSVPForm(self.request)
-        else:
-            context['rsvp_form'] = RSVPFormWithCaptcha(self.request)
+        context = self.add_extra_context(context)
         return context
 
 
@@ -117,6 +164,9 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             if self.request.method == "POST":
                 meeting_id = self.request.POST.get('meeting', None)
 
+            if self.request.method == "GET":
+                meeting_id = self.request.GET.get('meeting', None)
+
             if not meeting_id:
                 raise Http404('Meeting missing from POST')
 
@@ -150,7 +200,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         return RSVPForm if authenticated else RSVPFormWithCaptcha
 
     def form_valid(self, form):
-        # calling super.form_valid(form) also does self.object = form.save() 
+        # calling super.form_valid(form) also does self.object = form.save()
         response = super().form_valid(form)
 
         messages.success(self.request, 'RSVP Successful.')
@@ -178,7 +228,6 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
 class UpdateRSVP(UpdateView):
     model = RSVPModel
-    #fields = ('first_name', 'last_name', 'response')
     form_class = RSVPForm
     success_url = reverse_lazy("home")
 
@@ -189,7 +238,7 @@ class UpdateRSVP(UpdateView):
 
     def form_valid(self, form):
         if self.request.method == 'POST':
-            messages.success(self.request,'RSVP updated succesfully.')
+            messages.success(self.request, 'RSVP updated succesfully.')
         return super().form_valid(form)
 
     def get_object(self, queryset=None):

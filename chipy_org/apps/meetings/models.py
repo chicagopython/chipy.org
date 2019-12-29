@@ -5,6 +5,7 @@ import random
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from interval.fields import IntervalField
 from tinymce import models as tinymce_models
@@ -227,8 +228,6 @@ class RSVP(CommonModel):
         ordering = ['-meeting', 'last_name', 'first_name']
 
     def clean(self):
-        from django.core.exceptions import ValidationError
-
         if not self.user and not self.email:
             raise ValidationError('User or email required')
 

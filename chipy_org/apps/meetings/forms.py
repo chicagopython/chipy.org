@@ -61,6 +61,7 @@ class TopicForm(forms.ModelForm):
         instance.presentors.add(presenter)
         return instance
 
+
 class RSVPForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)

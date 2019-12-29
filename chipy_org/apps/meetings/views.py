@@ -45,12 +45,12 @@ logger = logging.getLogger(__name__)
 class InitialRSVPMixin():
     def get_next_main_meeting(self):
         return (Meeting.objects
-            .filter(meeting_type__isnull=True)
-            .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
-            .order_by('when')
-            .first()
-        )
-        
+                .filter(meeting_type__isnull=True)
+                .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
+                .order_by('when')
+                .first()
+                )
+
     def get_initial(self, next_main_meeting):
         initial = {'response': 'Y'}
         initial.update({'meeting': next_main_meeting})
@@ -77,17 +77,17 @@ class InitialRSVPMixin():
 
     def add_extra_context(self, context):
         next_main_meeting = self.get_next_main_meeting()
-        context['next_meeting'] = next_main_meeting 
+        context['next_meeting'] = next_main_meeting
 
-        if next_main_meeting: 
+        if next_main_meeting:
             initial = self.get_initial(next_main_meeting)
             context['form'] = self.get_form(request=self.request, initial=initial)
 
             if self.request.user.is_authenticated():
                 try:
                     context['rsvp'] = (RSVPModel.objects
-                        .get(meeting=next_main_meeting, user=self.request.user)
-                    )
+                                       .get(meeting=next_main_meeting, user=self.request.user)
+                                       )
                 except:
                     context['rsvp'] = None
         return context
@@ -263,9 +263,9 @@ class RSVPlist(ListView):
         self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
         return RSVPModel.objects.filter(
             meeting=self.meeting
-            ).exclude(
-                response='N'
-            ).order_by('last_name', 'first_name')
+        ).exclude(
+            response='N'
+        ).order_by('last_name', 'first_name')
 
     def get_context_data(self, **kwargs):
         rsvp_yes = RSVPModel.objects.filter(

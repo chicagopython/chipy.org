@@ -6,8 +6,7 @@ import traceback
 from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader, Context
 from django.views.generic import TemplateView
-from chipy_org.apps.meetings.models import Meeting, RSVP
-from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
+from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
 from chipy_org.apps.sponsors.models import GeneralSponsor
 from chipy_org.apps.announcements.models import Announcement
@@ -20,8 +19,7 @@ class Home(TemplateView, InitialRSVPMixin):
         return (Meeting.objects
                 .filter(meeting_type__isnull=False)
                 .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
-                .order_by('when')[:num]
-                )
+                .order_by('when')[:num])
 
     def get_context_data(self, **kwargs):
         context = {}

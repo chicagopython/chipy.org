@@ -48,8 +48,7 @@ class InitialRSVPMixin():
                 .filter(meeting_type__isnull=True)
                 .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
                 .order_by('when')
-                .first()
-                )
+                .first())
 
     def get_initial(self, next_main_meeting):
         initial = {'response': 'Y'}
@@ -86,8 +85,7 @@ class InitialRSVPMixin():
             if self.request.user.is_authenticated():
                 try:
                     context['rsvp'] = (RSVPModel.objects
-                                       .get(meeting=next_main_meeting, user=self.request.user)
-                                       )
+                                       .get(meeting=next_main_meeting, user=self.request.user))
                 except:
                     context['rsvp'] = None
         return context

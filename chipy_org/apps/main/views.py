@@ -15,13 +15,13 @@ from chipy_org.apps.announcements.models import Announcement
 
 class Home(TemplateView, InitialRSVPMixin):
     template_name = 'homepage.html'
-    
+
     def get_non_main_meetings(self, num):
         return (Meeting.objects
-            .filter(meeting_type__isnull=False)
-            .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
-            .order_by('when')[:num]
-        )
+                .filter(meeting_type__isnull=False)
+                .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
+                .order_by('when')[:num]
+                )
 
     def get_context_data(self, **kwargs):
         context = {}

@@ -35,7 +35,7 @@ class TopicForm(forms.ModelForm):
             "name",
             "email",
             'meeting',
-            'length',
+            'length_minutes',
             'experience_level',
             'description',
             'notes',

@@ -20,7 +20,6 @@ class TopicInline(admin.StackedInline):
     filter_horizontal = ['presentors']
     readonly_fields = ['modified', 'created', ]
     extra = 0
-    exclude = ['length',]
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -29,7 +28,6 @@ class TopicAdmin(admin.ModelAdmin):
     list_filter = ['approved', 'experience_level']
     search_fields = ['title']
     filter_horizontal = ['presentors']
-    exclude = ['length',]
 
     def get_presenters(self, obj):
         return format_html(" &bull; ".join(

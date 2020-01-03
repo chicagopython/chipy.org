@@ -60,8 +60,8 @@
               {% for topic in meeting.topics.active %}
                 <li>
                   <strong>{{ topic.title }}</strong><br />
-                  {% if topic.length %}
-                    ({{ topic.length }} Minutes)<br />
+                  {% if topic.length_minutes %}
+                    ({{ topic.length_minutes }} Minutes)<br />
                   {% endif %}
                   By: {% for presenter in topic.presentors.all %}
                         {{presenter.name}} {% if not forloop.last %}, {% endif %}

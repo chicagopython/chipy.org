@@ -27,14 +27,11 @@ class SmokeTest(TestCase):
 
 @pytest.mark.parametrize(
     'test_in, result', [
-        (True, True),
-        (False, False),
         ('t', True),
         ('f', False),
         ('true', True),
         ('false', False),
         ('1', '1'),
-        (1, '1'),
         ('foo', 'foo'),
     ]
 )

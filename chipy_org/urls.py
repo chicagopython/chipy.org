@@ -3,14 +3,14 @@ from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.views.generic import TemplateView
+import django.contrib.auth.views
+import django.views
 
 from chipy_org.apps.contact.views import ChipyContactView
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
+import chipy_org.apps.main.views
 
 admin.autodiscover()
-import django.contrib.auth.views
-import django.views
-import chipy_org.apps.main.views
 
 urlpatterns = [
     url(r'', include('chipy_org.apps.main.urls')),

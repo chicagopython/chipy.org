@@ -185,6 +185,7 @@ class Topic(CommonModel):
         max_length=50, choices=LICENSE_CHOISES, default='CC BY')
     length = IntervalField(
         format="M", blank=True, null=True)
+    length_minutes = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = tinymce_models.HTMLField(
         "Public Description", blank=True, null=True,

@@ -24,6 +24,9 @@ shell:
 	@echo "Use this shell to run python and django commands normally"
 	@docker-compose exec --user app web bash
 
+psql:
+	@docker-compose exec db psql chipy chipy
+
 web: run
 
 migrate:

@@ -268,7 +268,6 @@ class RSVPlist(ListView):
     def get_context_data(self, **kwargs):
         rsvp_yes = RSVPModel.objects.filter(
             meeting=self.meeting).exclude(response='N').count()
-        # TODO: rename guests to some thing reasonable
         context = {
             'meeting': self.meeting,
             'guests': (rsvp_yes)

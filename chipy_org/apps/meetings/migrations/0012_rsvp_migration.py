@@ -21,7 +21,7 @@ def parse_anonymous_rsvp_names(apps, schema_editor):
         if rsvp.name:
             parsed = probablepeople.tag(rsvp.name)
             rsvp.first_name = parsed[0].get('GivenName','').lower()
-            rsvp.last_name = parsed[0].get('Surname').lower()
+            rsvp.last_name = parsed[0].get('Surname', '').lower()
             rsvp.save()
 
 

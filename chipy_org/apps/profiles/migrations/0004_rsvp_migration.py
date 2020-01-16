@@ -3,17 +3,24 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
-import probablepeople
+has_probablepeople = True
+try:
+    import probablepeople
+except:
+    has_probablepeople = False
 
 
 def display_name_to_rsvps(apps, schema_editor):
+    if not has_probablepeople:
+        return None
+
     UserProfile = apps.get_model('profiles', 'UserProfile')
     RSVP = apps.get_model('meetings', 'RSVP')
     users = UserProfile.objects.all()
     for user in users:
         parsed = probablepeople.tag(user.display_name)
-        first_name = parsed[0].get("GivenName")
-        last_name = parsed[0].get("Surname")
+        first_name = parsed[0].get('GivenName', '').lower()
+        last_name = parsed[0].get('Surname', '').lower()
         
         rsvps = RSVP.objects.filter(user=user.pk)
         for rsvp in rsvps:

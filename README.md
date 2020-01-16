@@ -42,7 +42,11 @@ up the web app and a database as services using docker-compose.
     make up
 
 After running `make up`, you need to migrate the database. This will
-create the tables and database objects needed to run the site.
+create the tables and database objects needed to run the site. 
+
+Note: After running `make migrate` the first time, an error message may appear. If the error message looks like `psycopg2.ProgrammingError: relation "django_site" does not exist`, you can ignore it. Run `make migrate` a second time. This error message should now be gone. 
+
+If after running `make migrate` the first time you get a different error message than the one above, run `make migrate` again. If the error message still appears, you should troubleshoot it.
 
     make migrate
 
@@ -50,7 +54,7 @@ Next, you should create a superuser to use to login to the site admin with.
 
     docker-compose exec web ./manage.py createsuperuser
 
-Finally, you should be able to visit your site, but entering the
+Finally, you should be able to visit your site by entering the
 following in your url bar:
 
     http://localhost:8000

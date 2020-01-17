@@ -2,7 +2,6 @@ import datetime
 import csv
 import logging
 
-from django.db.models import Sum
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -11,7 +10,12 @@ from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import CreateView, ProcessFormView, ModelFormMixin
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView,
+    ProcessFormView,
+    ModelFormMixin
+)
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -20,13 +24,12 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import probablepeople
 
-from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
+from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 from .utils import meetup_meeting_sync
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
-from .forms import TopicForm, RSVPForm, AnonymousRSVPForm
+from .forms import TopicForm, RSVPForm, RSVPFormWithCaptcha
 from .models import (
     Meeting,
     Topic,
@@ -39,6 +42,55 @@ from .serializers import MeetingSerializer
 logger = logging.getLogger(__name__)
 
 
+class InitialRSVPMixin():
+    def get_next_main_meeting(self):
+        return (Meeting.objects
+                .filter(meeting_type__isnull=True)
+                .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
+                .order_by('when')
+                .first())
+
+    def get_initial(self, next_main_meeting):
+        initial = {'response': 'Y'}
+        initial.update({'meeting': next_main_meeting})
+        if self.request.user.is_authenticated():
+            user = self.request.user
+            user_data = {
+                'user': user,
+                'email': getattr(user, 'email', None),
+                'first_name': getattr(user, 'first_name', None),
+                'last_name': getattr(user, 'last_name', None),
+            }
+            initial.update(user_data)
+        return initial
+
+    def get_form_class(self):
+        if self.request.user.is_authenticated():
+            return RSVPForm
+        else:
+            return RSVPFormWithCaptcha
+
+    def get_form(self, **kwargs):
+        form_class = self.get_form_class()
+        return form_class(**kwargs)
+
+    def add_extra_context(self, context):
+        next_main_meeting = self.get_next_main_meeting()
+        context['next_meeting'] = next_main_meeting
+
+        if next_main_meeting:
+            initial = self.get_initial(next_main_meeting)
+            context['form'] = self.get_form(request=self.request, initial=initial)
+
+            if self.request.user.is_authenticated():
+                try:
+                    context['rsvp'] = (RSVPModel.objects
+                                       .get(meeting=next_main_meeting, user=self.request.user))
+                except:
+                    context['rsvp'] = None
+        return context
+
+
 class PastMeetings(ListView):
     template_name = 'meetings/past_meetings.html'
     queryset = Meeting.objects.filter(
@@ -47,7 +99,7 @@ class PastMeetings(ListView):
     paginate_by = 5
 
 
-class MeetingDetail(DetailView):
+class MeetingDetail(DetailView, InitialRSVPMixin):
     template_name = 'meetings/meeting.html'
     pk_url_kwarg = 'pk'
     model = Meeting
@@ -55,10 +107,7 @@ class MeetingDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MeetingDetail, self).get_context_data(**kwargs)
         context.update(kwargs)
-        if self.request.user.is_authenticated():
-            context['rsvp_form'] = RSVPForm(self.request)
-        else:
-            context['rsvp_form'] = AnonymousRSVPForm(self.request)
+        context = self.add_extra_context(context)
         return context
 
 
@@ -95,12 +144,27 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ['post', 'get']
     success_url = reverse_lazy("home")
 
-    def dispatch(self, request, *args, **kwargs):
+    def get_template_names(self):
+        if self.request.method == 'POST':
+            return ['meetings/_rsvp_form_response.html']
+        elif self.request.method == 'GET':
+            return ['meetings/rsvp_form.html']
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def dispatch(self, request, *args, **kwargs):
         self.object = None
 
         def lookup_meeting():
-            meeting_id = self.request.POST.get('meeting', None)
+            if self.request.method == "POST":
+                meeting_id = self.request.POST.get('meeting', None)
+
+            if self.request.method == "GET":
+                meeting_id = self.request.GET.get('meeting', None)
+
             if not meeting_id:
                 raise Http404('Meeting missing from POST')
 
@@ -111,65 +175,82 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
             return get_object_or_404(Meeting, pk=meeting_id)
 
-        if self.request.user.is_authenticated() and 'rsvp_key' not in self.kwargs:
-            # If the user is logged in
-            self.meeting = lookup_meeting()
+        self.meeting = lookup_meeting()
+
+        if self.request.user.is_authenticated():
             try:
-                # check to see if they already have registered
                 self.object = RSVPModel.objects.get(
-                    user=self.request.user, meeting=self.meeting)
+                    user=self.request.user,
+                    meeting=self.meeting
+                )
             except RSVPModel.DoesNotExist:
                 pass
-        elif self.request.user.is_anonymous() and 'rsvp_key' not in self.kwargs:
-            # If the user is anonymous
-            self.meeting = lookup_meeting()
-        elif 'rsvp_key' in self.kwargs:
-            # If the user has a registration link (typically emailed to them)
-            # This is to allow the user to possibly change their response.
-            self.object = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
-            self.meeting = self.object.meeting
-        else:
-            raise Exception("should not get here")
 
         # check to see if registration is closed
         if not self.meeting.can_register():
             messages.error(request, 'Registration for this meeting is closed.')
-            return redirect(reverse_lazy("home"))
+            return redirect(reverse_lazy('home'))
 
-        return super(RSVP, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
+        authenticated = self.request.user.is_authenticated()
+        return RSVPForm if authenticated else RSVPFormWithCaptcha
+
+    def form_valid(self, form):
+        # calling super.form_valid(form) also does self.object = form.save()
+        response = super().form_valid(form)
+
+        messages.success(self.request, 'RSVP Successful.')
+        if not self.object.user and self.object.email:
+            send_rsvp_email(self.object)
+
+        return response
+
+    def get_initial(self):
+        initial = {
+            'meeting': self.meeting,
+            'response': 'Y',
+        }
         if self.request.user.is_authenticated():
-            return RSVPForm
-        else:
-            return AnonymousRSVPForm
+            user = self.request.user
+            data = {
+                'user': user,
+                'email': getattr(user, 'email', None),
+                'first_name': getattr(user, 'first_name', None),
+                'last_name': getattr(user, 'last_name', None)
+            }
+            initial.update(data)
+        return initial
+
+
+class UpdateRSVP(UpdateView):
+    model = RSVPModel
+    form_class = RSVPForm
+    success_url = reverse_lazy("home")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def form_valid(self, form):
+        if self.request.method == 'POST':
+            messages.success(self.request, 'RSVP updated succesfully.')
+        return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
+        if not obj.meeting.can_register():
+            messages.error(self.request, 'Registration for this meeting is closed.')
+            return redirect(reverse_lazy("home"))
+        return obj
 
     def get_template_names(self):
         if self.request.method == 'POST':
             return ['meetings/_rsvp_form_response.html']
         elif self.request.method == 'GET':
             return ['meetings/rsvp_form.html']
-
-    def get_form_kwargs(self):
-        kwargs = {}
-        kwargs.update(super(RSVP, self).get_form_kwargs())
-        kwargs.update({'request': self.request})
-        return kwargs
-
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
-        if form.is_valid():
-            response = self.form_valid(form)
-            messages.success(request, 'RSVP Successful.')
-
-            if not self.object.user and self.object.email:
-                send_rsvp_email(self.object)
-
-            return response
-        else:
-            return self.form_invalid(form)
 
 
 class RSVPlist(ListView):
@@ -179,19 +260,17 @@ class RSVPlist(ListView):
     def get_queryset(self):
         self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
         return RSVPModel.objects.filter(
-            meeting=self.meeting).exclude(response='N').order_by('name')
+            meeting=self.meeting
+        ).exclude(
+            response='N'
+        ).order_by('last_name', 'first_name')
 
     def get_context_data(self, **kwargs):
         rsvp_yes = RSVPModel.objects.filter(
             meeting=self.meeting).exclude(response='N').count()
-        rsvp_guest = RSVPModel.objects.filter(
-            meeting=self.meeting).exclude(
-                response='N').aggregate(Sum('guests'))['guests__sum']
-        if not rsvp_guest:
-            rsvp_guest = 0
         context = {
             'meeting': self.meeting,
-            'guests': (rsvp_yes + rsvp_guest)
+            'guests': (rsvp_yes)
         }
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context
@@ -201,45 +280,34 @@ class RSVPlistCSVBase(RSVPlist):
 
     def _lookup_rsvps(self, rsvp):
         if self.private:
-            yield ["User Id", "Username", "Full Name",
-                   "First Name", "Last Name", "Email", "Guests", ]
+            yield [
+                "User Id",
+                "Username",
+                "Last Name",
+                "First Name",
+                "Email",
+            ]
         else:
-            yield ["Full Name", "First Name", "Last Name", "Guests", ]
+            yield [
+                "Last Name",
+                "First Name",
+            ]
+
         for item in rsvp:
-            first_name = last_name = full_name = ""
-            if not item.name:
-                # if no name is defined and there is a db record for this user
-                if item.user:
-                    # lookup the user's name from the db
-                    first_name = item.user.first_name
-                    last_name = item.user.last_name
-                    try:
-                        full_name = item.user.profile.display_name
-                    except Exception:
-                        logger.exception("Unable to access user profile.")
-            else:
-                full_name = item.name
-                try:
-                    # try to parse out the user first/last name
-                    parsed = probablepeople.tag(full_name)
-                    first_name = parsed[0].get("GivenName")
-                    last_name = parsed[0].get("Surname")
-                except Exception:
-                    logger.exception("unable to parse person %s", full_name)
             if self.private:
-                row = [item.user.id if item.user else "",
-                       item.user.username if item.user else "",
-                       full_name,
-                       first_name,
-                       last_name,
-                       item.email,
-                       item.guests]
+                row = [
+                    item.user.id if item.user else "",
+                    item.user.username if item.user else "",
+                    item.last_name,
+                    item.first_name,
+                    item.email,
+                ]
             else:
                 row = [
-                    full_name,
-                    first_name,
-                    last_name,
-                    item.guests]
+                    item.last_name,
+                    item.first_name,
+                ]
+
             yield row
 
     def render_to_response(self, context, **response_kwargs):

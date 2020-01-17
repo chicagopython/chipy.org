@@ -92,9 +92,24 @@ class PresentorAdmin(admin.ModelAdmin):
 
 class RSVPAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'user', 'name', 'email', 'meeting', 'response', 'created']
+        'id',
+        'user',
+        'name',
+        'first_name',
+        'last_name',
+        'email',
+        'meeting',
+        'response',
+        'created'
+    ]
     readonly_fields = ['created', 'modified']
-    search_fields = ['id', 'name', 'email']
+    search_fields = [
+        'id',
+        'name',
+        'first_name',
+        'last_name',
+        'email',
+    ]
     list_filter = ['response']
 
 

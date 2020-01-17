@@ -15,14 +15,14 @@
     {% for rsvp in attendees  %}
       <tr>
         <td>
-          {{ rsvp.users_name }}
+          {{ rsvp.full_name }}
         </td>
         <td>
           {% if request.user.is_staff %}
             {% if rsvp.meetup_user_id %}
               From Meetup
             {% else %}
-              <a href="mailto:{{ rsvp.users_email }}">{{ rsvp.users_email }}</a>
+              <a href="mailto:{{ rsvp.email }}">{{ rsvp.email }}</a>
             {% endif %}<br>
           {% endif %}
         </td>

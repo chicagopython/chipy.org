@@ -6,57 +6,28 @@ import traceback
 from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader, Context
 from django.views.generic import TemplateView
-from chipy_org.apps.meetings.models import Meeting, RSVP
-from chipy_org.apps.meetings.forms import RSVPForm, AnonymousRSVPForm
+from chipy_org.apps.meetings.models import Meeting
+from chipy_org.apps.meetings.views import InitialRSVPMixin
 from chipy_org.apps.sponsors.models import GeneralSponsor
 from chipy_org.apps.announcements.models import Announcement
 
 
-class Home(TemplateView):
+class Home(TemplateView, InitialRSVPMixin):
     template_name = 'homepage.html'
+
+    def get_non_main_meetings(self, num):
+        return (Meeting.objects
+                .filter(meeting_type__isnull=False)
+                .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
+                .order_by('when')[:num])
 
     def get_context_data(self, **kwargs):
         context = {}
         context.update(kwargs)
-
-        # get upcoming main meeting
-        future_meetings = Meeting.objects.filter(
-            meeting_type__isnull=True).filter(
-                when__gt=datetime.datetime.now() - datetime.timedelta(hours=6))
-
-        # get next 3 non-main meetings
-        other_meetings = Meeting.objects.filter(
-            meeting_type__isnull=False).filter(
-                when__gt=datetime.datetime.now() - datetime.timedelta(hours=6)
-            ).order_by('when')[:3]
-        context['other_meetings'] = other_meetings
-
-        context["general_sponsors"] = GeneralSponsor.objects.all(
-            ).order_by('?')
-
-        if future_meetings.count() == 0:
-            context['next_meeting'] = False
-        else:
-            next_meeting = future_meetings.order_by('when')[0]
-            context['next_meeting'] = next_meeting
-
-            # Check if user and get rsvp
-            if self.request.user.is_authenticated():
-                # Is there already an RSVP
-                if RSVP.objects.filter(
-                        meeting=next_meeting,
-                        user=self.request.user).exists():
-                    context['rsvp'] = RSVP.objects.get(
-                        meeting=next_meeting,
-                        user=self.request.user)
-                else:
-                    context['rsvp'] = None
-
-                context['rsvp_form'] = RSVPForm(self.request)
-            else:
-                context['rsvp_form'] = AnonymousRSVPForm(self.request)
-
+        context['other_meetings'] = self.get_non_main_meetings(num=3)
+        context["general_sponsors"] = GeneralSponsor.objects.all().order_by('?')
         context['announcement'] = Announcement.objects.featured()
+        context = self.add_extra_context(context)
         return context
 
 

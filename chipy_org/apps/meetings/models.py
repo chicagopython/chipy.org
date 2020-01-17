@@ -5,6 +5,7 @@ import random
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from interval.fields import IntervalField
 from tinymce import models as tinymce_models
@@ -208,23 +209,27 @@ class RSVP(CommonModel):
     RSVP_CHOICES = (
         ('Y', "Yes"),
         ('N', "No"),
-        ('M', "Maybe"),
     )
 
     user = models.ForeignKey(User, blank=True, null=True)
+
+    # TODO: remove name field keeping for migration purposes
     name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+
+    last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
+    first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
     meeting = models.ForeignKey(Meeting)
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)
-    guests = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-meeting', 'last_name', 'first_name']
 
     def clean(self):
-        from django.core.exceptions import ValidationError
-
-        if not self.user and not self.name:
-            raise ValidationError('User or Name required')
+        if not self.user and not self.email:
+            raise ValidationError('User or email required')
 
         # Check uniqueness
         if not self.id:
@@ -232,8 +237,10 @@ class RSVP(CommonModel):
                 if RSVP.objects.filter(meeting=self.meeting, user=self.user).exists():
                     raise ValidationError('User has already RSVPed for meeting')
             else:
-                if RSVP.objects.filter(meeting=self.meeting, name=self.name).exists():
-                    raise ValidationError('User has already RSVPed for meeting')
+                if RSVP.objects.filter(meeting=self.meeting, email=self.email).exists():
+                    raise ValidationError(
+                        'A user with this email has already RSVPed for this meeting.'
+                    )
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         self.full_clean()
@@ -246,27 +253,8 @@ class RSVP(CommonModel):
         return super(RSVP, self).save(*args, **kwargs)
 
     @property
-    def users_name(self):
-        if not self.name:
-            if self.user.profile.display_name:
-                self.name = self.user.profile.display_name
-            else:
-                self.name = self.user.get_full_name()
-        return self.name
-
-    @property
-    def users_email(self):
-        if self.user:
-            return self.user.email
-        else:
-            return self.email
-
-    @property
-    def users_guests(self):
-        if self.user:
-            return self.user.guests
-        else:
-            return self.guests
+    def full_name(self):
+        return self.first_name + " " + self.last_name
 
     def __str__(self):
-        return "{}: {}".format(self.meeting, self.name)
+        return "{}: {}".format(self.meeting, self.full_name)

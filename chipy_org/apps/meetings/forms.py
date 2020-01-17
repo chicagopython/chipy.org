@@ -64,29 +64,42 @@ class TopicForm(forms.ModelForm):
 
 class RSVPForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
-        super(RSVPForm, self).__init__(*args, **kwargs)
-        self.request = request
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            del self.fields['email']
 
     class Meta:
         model = RSVP
-        fields = ('response', 'user', 'name', 'meeting', 'email')
+        fields = (
+            'user',
+            'response',
+            'meeting',
+            'first_name',
+            'last_name',
+            'email'
+        )
+        labels = {
+            'first_name': 'First name on your legal ID',
+            'last_name': 'Last name on your legal ID',
+        }
+        widgets = {
+            'meeting': forms.HiddenInput(),
+            'user': forms.HiddenInput(),
+        }
 
-    def clean_user(self):
-        if not self.cleaned_data['user'] and self.request.user.is_authenticated():
-            return self.request.user
+    def clean_first_name(self):
+        return self.cleaned_data['first_name'].lower()
+
+    def clean_last_name(self):
+        return self.cleaned_data['last_name'].lower()
+
+    def clean_email(self):
+        return self.cleaned_data['email'].lower()
 
 
-class AnonymousRSVPForm(forms.ModelForm):
+class RSVPFormWithCaptcha(RSVPForm):
     captcha = NoReCaptchaField()
 
     def __init__(self, request, *args, **kwargs):
-        super(AnonymousRSVPForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            # On an update we don't want to make any changes to the email.
-            del self.fields['email']
-            del self.fields['captcha']
-            del self.fields['meeting']
-
-    class Meta:
-        model = RSVP
-        fields = ('response', 'meeting', 'name', 'email')
+        super().__init__(request, *args, **kwargs)
+        self.fields['captcha'].label = ''

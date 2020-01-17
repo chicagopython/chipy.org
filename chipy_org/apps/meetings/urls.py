@@ -7,10 +7,12 @@ from .views import (
     ProposeTopic,
     MyTopics,
     RSVP,
+    UpdateRSVP,
     RSVPlistPrivate,
     RSVPlistHost,
     PastTopics,
-    PastTopic,)
+    PastTopic,
+)
 
 
 urlpatterns = [
@@ -23,18 +25,17 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]*)/$',
         MeetingDetail.as_view(), name='meeting'),
 
+    # pass the meeting id here!!!
     url(r'^rsvp/$',
         RSVP.as_view(), name='rsvp'),
-    url(r'^rsvp/anonymous/$',
-        RSVP.as_view(), name='anonymous_rsvp'),
-    url(r'^rsvp/anonymous/(?P<rsvp_key>[a-z0-9]{40})/$',
-        RSVP.as_view(), name='anonymous_rsvp_with_key'),
+
+    url(r'^rsvp/(?P<rsvp_key>[a-z0-9]{40})/$',
+        UpdateRSVP.as_view(), name='update_rsvp_with_key'),
 
     url(r'^rsvp/list/(?P<meeting_key>[a-z0-9]{40})/private.csv$',
         RSVPlistPrivate.as_view(), name='rsvp_list_csv'),
     url(r'^rsvp/list/(?P<meeting_key>[a-z0-9]{40})/host.csv$',
         RSVPlistHost.as_view(), name='rsvp_list_host_csv'),
-
 
     url(r'^topics/propose/$',
         login_required(ProposeTopic.as_view()), name='propose_topic'),

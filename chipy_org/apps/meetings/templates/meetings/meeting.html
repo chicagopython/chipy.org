@@ -13,11 +13,12 @@
 
     <div class="row-fluid">
       <div class="span12">
-          {% if meeting.meeting_type %}
-          <h3 itemprop="name">{{ meeting.meeting_type.name }}</h3>
-          {% if meeting.meeting_type.subgroup %}<p><a href="{% url 'groups' meeting.meeting_type.subgroup.slug %}">{{ meeting.meeting_type.subgroup.name }}</a></p>{% endif %}
+          {% if meeting.title %}
+              <h3 itemprop="name">{{ meeting.title }}</h3>
           {% endif %}
+
           <hr />
+
           {% if meeting.description %}
           <p itemprop="description">{{ meeting.description|bleach|safe }}</p>
           {% endif %}

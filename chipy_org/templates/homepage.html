@@ -132,7 +132,10 @@ h2 a {
 
         <div class="row-fluid">
             <div class="module span6">
-                <h3>In the Loop</h3>
+                {% if next_meeting.title %}
+                    <h3>{{ next_meeting.title }}</h3>
+                {% endif %}
+
                 <p>Meetings happen in the downtown area the second Thursday of every month.</p>
 
                 {% if next_meeting %}
@@ -250,14 +253,13 @@ h2 a {
         <div class="row-fluid">
             {% for meeting in other_meetings %}
             <div class="module span4 box-feature" itemscope itemtype="http://schema.org/Event">
-
-                {% if meeting.meeting_type %}
-                <h4 itemprop="name">{{ meeting.meeting_type.name }}</h4>
-
-                {% if meeting.meeting_type.subgroup %}<p><a href="{% url 'groups' meeting.meeting_type.subgroup.slug %}">{{ meeting.meeting_type.subgroup.name }}</a></p>{% endif %}
-
+                
+                {% if meeting.title %}
+                    <h4 itemprop="name">{{ meeting.title }}</h4>
                 {% endif %}
+
                 <hr />
+
                 {% if meeting.description %}
                 <p itemprop="description">{{ meeting.description|truncatewords_html:30|safe }}</p>
                 {% endif %}

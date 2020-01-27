@@ -1,21 +1,25 @@
 # Chipy.org
 
-The code for the Chipy.org website
-This project is open source and the license can be found in LICENSE.
+This is the code for the Chipy.org website.
+This project is open source, and the license can be found in LICENSE.
 
 [![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
 
-Chipy.org is setup using the [12factor](http://12factor.net) methodology. The site is
+Chipy.org is set up using the [12factor](http://12factor.net) methodology. The site is
 normally powered by Heroku, but you can use Docker and Docker Compose for
 local development.
 
 ## Installation
 
-To get setup with chipy.org code it is recommended that you use the following:
+To get setup with chipy.org code, it is recommended that you use the following:
 
 * Docker - https://docs.docker.com/install/
 * docker-compose - https://docs.docker.com/compose/install/
 * make - https://www.gnu.org/software/make/
+
+For Windows users not using Windows 10 Pro, we recommend using Docker Toolbox from https://docs.docker.com/toolbox/toolbox_install_windows/ . After following the README instructions below, select the `default` virtual machine in VirtualBox. Set up port forwarding from the Guest Port as 8000 to the Host Port as 8000. Go to `localhost:8000` on your browser to see the site.
+
+Note: A `.gitattributes` file has been provided to keep line endings as LF, instead of CRLF, on checkout and commit. Issues related to developing on Windows with Docker Toolbox are likely related to files having incorrect line endings.
 
 ## Setting up a Local development environment using Docker
 

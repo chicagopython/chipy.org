@@ -5,7 +5,7 @@ This project is open source, and the license can be found in LICENSE.
 
 [![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
 
-Chipy.org is set up using the [12factor](http://12factor.net) methodology. The site is
+Chipy.org uses the [12factor](http://12factor.net) methodology. The site is
 normally powered by Heroku, but you can use Docker and Docker Compose for
 local development.
 
@@ -13,11 +13,21 @@ local development.
 
 To get setup with chipy.org code, it is recommended that you use the following:
 
+For Mac and Linux:
 * Docker - https://docs.docker.com/install/
-* docker-compose - https://docs.docker.com/compose/install/
-* make - https://www.gnu.org/software/make/
+* Docker Compose - https://docs.docker.com/compose/install/
+* Make - https://www.gnu.org/software/make/
 
-For Windows users not using Windows 10 Pro, we recommend using Docker Toolbox from https://docs.docker.com/toolbox/toolbox_install_windows/ . After following the README instructions below, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
+For Windows 10 Pro:
+* Docker - https://docs.docker.com/install/
+* Docker Compose - https://docs.docker.com/compose/install/
+* Chocolatey - https://chocolatey.org/ (package manager used to install Make)
+
+For Windows 10 Non Pro:
+* Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/ 
+* Chocolatey - https://chocolatey.org/ (package manager used to install Make)
+
+For Windows users not using Windows 10 Pro, we recommend using Docker Toolbox. Use the package manager Chocolatey to install Make. After following the README instructions below, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
 
 Note: A `.gitattributes` file has been provided to keep line endings as LF, instead of CRLF, on checkout and commit. Issues related to developing on Windows with Docker Toolbox are likely related to files having incorrect line endings.
 

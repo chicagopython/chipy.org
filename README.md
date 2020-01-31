@@ -21,17 +21,29 @@ For Mac and Linux:
 For Windows 10 Pro, 64-bit:
 * Docker - https://docs.docker.com/install/
 * Docker Compose - https://docs.docker.com/compose/install/
-* Chocolatey - https://chocolatey.org/ (package manager used to install Make)
+* Chocolatey - https://chocolatey.org/install (package manager used to install Make)
 
 For Windows 7 to 10 Non Pro, 64-bit:
 * Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/ 
-* Chocolatey - https://chocolatey.org/ (package manager used to install Make)
+* Chocolatey - https://chocolatey.org/install (package manager used to install Make)
 
-For Windows 7 to 10 users not using Windows 10 Pro, we recommend using Docker Toolbox. Use the package manager Chocolatey to install Make. After following the README instructions below, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
+### Instructions for Windows 7 to 10 Users (Non Pro) 
+
+For Windows 7 to 10 users not using Windows 10 Pro, we recommend using Docker Toolbox. Use the package manager Chocolatey to install Make. (See instructions in the section below for that.) Then click on `Docker Quickstart` on your Desktop to get the Docker Toolbox terminal. Using the Docker Toolbox terminal, follow the "Setting up a Local Development Environment Using Docker" instructions below. Once you have the database and web app up, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
 
 Note: A `.gitattributes` file has been provided to keep line endings as LF, instead of CRLF, on checkout and commit. Issues related to developing on Windows with Docker Toolbox are likely related to files having incorrect line endings.
 
-## Setting up a Local development environment using Docker
+### Using Chocolatey to install Make
+
+For Windows users, we recommend using the package manager Chocolatey to install Make.
+
+1. Install Chocolatey from https://chocolatey.org/install . Open Powershell as administrator when following the instructions. 
+
+2. Once Chocolatey is installed, run the following command in Powershell (as administrator):
+    
+    `choco install make`
+
+## Setting up a Local Development Environment using Docker
 
 Clone the repo
 

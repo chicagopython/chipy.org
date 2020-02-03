@@ -21,6 +21,13 @@ class Home(TemplateView, InitialRSVPMixin):
                 .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
                 .order_by('when')[:num])
 
+    def get_meeting(self):
+        return (Meeting.objects
+                .filter(meeting_type__isnull=True)
+                .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
+                .order_by('when')
+                .first())
+
     def get_context_data(self, **kwargs):
         context = {}
         context.update(kwargs)

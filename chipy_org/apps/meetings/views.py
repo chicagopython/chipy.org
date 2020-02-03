@@ -43,16 +43,15 @@ logger = logging.getLogger(__name__)
 
 
 class InitialRSVPMixin():
-    def get_next_main_meeting(self):
-        return (Meeting.objects
-                .filter(meeting_type__isnull=True)
-                .filter(when__gt=datetime.datetime.now()-datetime.timedelta(hours=6))
-                .order_by('when')
-                .first())
 
-    def get_initial(self, next_main_meeting):
+    def get_meeting(self):
+        # override this method to determine the meeting used for the rsvp
+        # the function is expected to return a single Meeting object
+        pass
+
+    def get_initial(self, meeting):
         initial = {'response': 'Y'}
-        initial.update({'meeting': next_main_meeting})
+        initial.update({'meeting': meeting})
         if self.request.user.is_authenticated():
             user = self.request.user
             user_data = {
@@ -62,7 +61,7 @@ class InitialRSVPMixin():
                 'last_name': getattr(user, 'last_name', None),
             }
             initial.update(user_data)
-        return initial
+        self.initial = initial
 
     def get_form_class(self):
         if self.request.user.is_authenticated():
@@ -75,17 +74,20 @@ class InitialRSVPMixin():
         return form_class(**kwargs)
 
     def add_extra_context(self, context):
-        next_main_meeting = self.get_next_main_meeting()
-        context['next_meeting'] = next_main_meeting
+        meeting = self.get_meeting()
+        context['next_meeting'] = meeting
 
-        if next_main_meeting:
-            initial = self.get_initial(next_main_meeting)
-            context['form'] = self.get_form(request=self.request, initial=initial)
+        if meeting:
+            self.get_initial(meeting)
+            context['form'] = self.get_form(
+                request=self.request,
+                initial=self.initial
+            )
 
             if self.request.user.is_authenticated():
                 try:
                     context['rsvp'] = (RSVPModel.objects
-                                       .get(meeting=next_main_meeting, user=self.request.user))
+                                       .get(meeting=meeting, user=self.request.user))
                 except:
                     context['rsvp'] = None
         return context
@@ -103,6 +105,9 @@ class MeetingDetail(DetailView, InitialRSVPMixin):
     template_name = 'meetings/meeting.html'
     pk_url_kwarg = 'pk'
     model = Meeting
+
+    def get_meeting(self):
+        return self.object
 
     def get_context_data(self, **kwargs):
         context = super(MeetingDetail, self).get_context_data(**kwargs)

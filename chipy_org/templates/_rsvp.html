@@ -19,11 +19,10 @@
         method="POST"
         action="{% url 'rsvp' %}"
     >
-    {% csrf_token %}
-    {{ form }}
-    <div id="rsvp-form-fields"></div>
-    <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
-  </form>
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
+    </form>
 </div>
 {% else %}
  <p style="color: red">This event is no longer accepting registrations.</p>

@@ -1,23 +1,49 @@
 # Chipy.org
 
-The code for the Chipy.org website
-This project is open source and the license can be found in LICENSE.
+This is the code for the Chipy.org website.
+This project is open source, and the license can be found in LICENSE.
 
 [![CircleCI](https://circleci.com/gh/chicagopython/chipy.org/tree/master.svg?style=svg)](https://circleci.com/gh/chicagopython/chipy.org/tree/master)
 
-Chipy.org is setup using the [12factor](http://12factor.net) methodology. The site is
+Chipy.org uses the [12factor](http://12factor.net) methodology. The site is
 normally powered by Heroku, but you can use Docker and Docker Compose for
 local development.
 
 ## Installation
 
-To get setup with chipy.org code it is recommended that you use the following:
+To get setup with chipy.org code, it is recommended that you use the following:
 
+For Mac and Linux:
 * Docker - https://docs.docker.com/install/
-* docker-compose - https://docs.docker.com/compose/install/
-* make - https://www.gnu.org/software/make/
+* Docker Compose - https://docs.docker.com/compose/install/
+* Make - https://www.gnu.org/software/make/
 
-## Setting up a Local development environment using Docker
+For Windows 10 Pro, 64-bit:
+* Docker - https://docs.docker.com/install/
+* Docker Compose - https://docs.docker.com/compose/install/
+* Chocolatey - https://chocolatey.org/install (package manager used to install Make)
+
+For Windows 7 to 10 Non Pro, 64-bit:
+* Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/ 
+* Chocolatey - https://chocolatey.org/install (package manager used to install Make)
+
+### Instructions for Windows 7 to 10 Users (Non Pro) 
+
+For Windows 7 to 10 users not using Windows 10 Pro, we recommend using Docker Toolbox. Use the package manager Chocolatey to install Make. (See instructions in the section below for that.) Then click on `Docker Quickstart` on your Desktop to get the Docker Toolbox terminal. Using the Docker Toolbox terminal, follow the "Setting up a Local Development Environment Using Docker" instructions below. Once you have the database and web app up, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
+
+Note: A `.gitattributes` file has been provided to keep line endings as LF, instead of CRLF, on checkout and commit. Issues related to developing on Windows with Docker Toolbox are likely related to files having incorrect line endings.
+
+### Using Chocolatey to install Make
+
+For Windows users, we recommend using the package manager Chocolatey to install Make.
+
+1. Install Chocolatey from https://chocolatey.org/install . Open Powershell as administrator when following the instructions. 
+
+2. Once Chocolatey is installed, run the following command in Powershell (as administrator):
+    
+    `choco install make`
+
+## Setting up a Local Development Environment using Docker
 
 Clone the repo
 

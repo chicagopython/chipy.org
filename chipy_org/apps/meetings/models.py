@@ -7,7 +7,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from interval.fields import IntervalField
 from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel
@@ -184,8 +183,6 @@ class Topic(CommonModel):
         max_length=15, blank=True, null=True, choices=EXPERIENCE_LEVELS)
     license = models.CharField(
         max_length=50, choices=LICENSE_CHOISES, default='CC BY')
-    length = IntervalField(
-        format="M", blank=True, null=True)
     length_minutes = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = tinymce_models.HTMLField(

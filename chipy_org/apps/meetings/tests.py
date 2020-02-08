@@ -4,12 +4,15 @@ import pytest
 import django
 from django.test import TestCase, override_settings
 from django.test import Client
+from django.core import mail
 from django.core.urlresolvers import reverse
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
 
 import chipy_org.libs.test_utils as test_utils
 from .models import RSVP, Meeting, Venue, Topic
+from . import email
+
 
 User = get_user_model()
 
@@ -116,3 +119,49 @@ class SmokeTest(TestCase):
 
         # CHECK
         self.assertEqual(response.status_code, 200)
+
+
+def test_post_topic_sends_email():
+    m = Meeting(
+        when=datetime.datetime.now(),
+        reg_close_date=datetime.datetime.now(), 
+        description="Test"
+    )
+    m.save()
+    assert len(Meeting.objects.all()) == 1
+
+    t = Topic(
+        title="Test Meeting",
+        meeting=m,
+        experience_level='novice',
+        length_minutes=10,
+        description="Test Topic",
+    )
+    t.save()
+    assert len(Topic.objects.all()) == 1
+
+    email.send_meeting_topic_submitted_email(t)
+    assert len(mail.outbox) == 1
+
+
+def test_anonymous_rsvp_email():
+    m = Meeting(
+        when=datetime.datetime.now(),
+        reg_close_date=datetime.datetime.now(),
+        description="Test",
+    )
+    m.save()
+    assert len(Meeting.objects.all()) == 1
+
+    rsvp = RSVP(
+        last_name='last name',
+        first_name='first_name',
+        email='test@test.com', 
+        meeting=m,
+        response='Y',
+    )
+    rsvp.save()
+    assert len(RSVP.objects.all()) == 1
+
+    email.send_rsvp_email(rsvp)
+    assert len(mail.outbox) == 1

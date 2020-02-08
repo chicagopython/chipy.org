@@ -1,3 +1,5 @@
+{% load bleach_tags %}
+
 <p>A meeting topic has been submitted:<p>
 
 <p><a href="https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}">https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}</a></p>

@@ -85,11 +85,9 @@ class InitialRSVPMixin():
             )
 
             if self.request.user.is_authenticated():
-                try:
-                    context['rsvp'] = (RSVPModel.objects
-                                       .get(meeting=meeting, user=self.request.user))
-                except:
-                    context['rsvp'] = None
+                context['rsvp'] = (RSVPModel.objects
+                                   .filter(meeting=meeting, user=self.request.user)
+                                   .first())
         return context
 
 

@@ -210,7 +210,7 @@ class RSVP(CommonModel):
 
     user = models.ForeignKey(User, blank=True, null=True)
 
-    # TODO: remove name field keeping for migration purposes
+    # willdo: remove name field keeping for migration purposes
     name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
 
     last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)

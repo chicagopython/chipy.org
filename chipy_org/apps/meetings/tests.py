@@ -124,7 +124,7 @@ class SmokeTest(TestCase):
 def test_post_topic_sends_email():
     m = Meeting(
         when=datetime.datetime.now(),
-        reg_close_date=datetime.datetime.now(), 
+        reg_close_date=datetime.datetime.now(),
         description="Test"
     )
     m.save()
@@ -156,7 +156,7 @@ def test_anonymous_rsvp_email():
     rsvp = RSVP(
         last_name='last name',
         first_name='first_name',
-        email='test@test.com', 
+        email='test@test.com',
         meeting=m,
         response='Y',
     )

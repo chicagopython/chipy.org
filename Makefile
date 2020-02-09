@@ -27,6 +27,10 @@ shell:
 psql:
 	@docker-compose exec db psql chipy chipy
 
+resetdb:
+	@docker-compose exec db psql chipy chipy -c "drop schema if exists public cascade;"
+	@docker-compose exec db psql chipy chipy -c "create schema public;"
+
 web: run
 
 migrate:

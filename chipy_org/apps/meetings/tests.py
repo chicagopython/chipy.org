@@ -167,28 +167,36 @@ def test_anonymous_rsvp_email():
 
 
 class MeetingTitleTest(TestCase):
-    # Tests if 'custom_title' from 'meeting' is available, it'll be used as 'title' for meeting.
-    # If 'custom_title' from 'meeting' isn't available, the 'default_title' from 'meeting_type' will be used as 'title' for meeting.
+    # Tests if 'custom_title' from 'meeting' is available, it'll be used as
+    # 'title' for meeting.  If 'custom_title' from 'meeting' isn't available,
+    # the 'default_title' from 'meeting_type' will be used as 'title' for
+    # meeting.
 
     def setUp(self):
-        self.meeting_type_non_main = MeetingType.objects.create(name='Non Main Sig ', default_title='Non Main Default Title')
+        self.meeting_type_non_main = MeetingType.objects.create(
+            name='Non Main Sig ',
+            default_title='Non Main Default Title')
 
-    def test_non_main_meeting_without_custom_field(self): 
+    def test_non_main_meeting_without_custom_field(self):
         meeting = Meeting.objects.create(
-            when = datetime.date.today(), meeting_type = self.meeting_type_non_main)
+            when=datetime.date.today(),
+            meeting_type=self.meeting_type_non_main)
         self.assertEqual(meeting.title, 'Non Main Default Title')
 
     def test_main_meeting_without_custom_field(self):
         meeting = Meeting.objects.create(
-            when = datetime.date.today())
+            when=datetime.date.today())
         self.assertEqual(meeting.title, 'In the Loop')
 
     def test_non_main_meeting_with_custom_field(self):
         meeting = Meeting.objects.create(
-            when = datetime.date.today(), meeting_type = self.meeting_type_non_main, custom_title = 'Non Main Custom Title')
+            when=datetime.date.today(),
+            meeting_type=self.meeting_type_non_main,
+            custom_title='Non Main Custom Title')
         self.assertEqual(meeting.title, 'Non Main Custom Title')
 
     def test_main_meeting_with_custom_field(self):
         meeting = Meeting.objects.create(
-            when = datetime.date.today(), custom_title = 'Main Custom Title')
+            when=datetime.date.today(),
+            custom_title='Main Custom Title')
         self.assertEqual(meeting.title, 'Main Custom Title')

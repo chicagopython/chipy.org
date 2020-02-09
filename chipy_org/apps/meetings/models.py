@@ -97,10 +97,12 @@ class Meeting(CommonModel):
         help_text=("Type of meeting (i.e. SIG Meeting, "
                    "Mentorship Meeting, Startup Row, etc.). "
                    "Leave this empty for the main meeting. "
-                   ))
-    custom_title = models.CharField(max_length=64, null=True, blank=True,
-        help_text=("If you fill out this field, this 'custom_title' will show up as the title of the event." 
-                   ))
+                  ))
+    custom_title = models.CharField(
+        max_length=64, null=True, blank=True,
+        help_text=("If you fill out this field, this 'custom_title'"
+                   "will show up as the title of the event."
+                  ))
     description = tinymce_models.HTMLField(blank=True, null=True)
 
     def can_register(self):
@@ -129,14 +131,14 @@ class Meeting(CommonModel):
     def meetup_url(self):
         return "https://www.meetup.com/_ChiPy_/events/{}/".format(self.meetup_id)
 
-    @property 
+    @property
     def title(self):
         if self.custom_title:
             return self.custom_title
         if self.meeting_type and self.meeting_type.default_title:
             return self.meeting_type.default_title
         return "In the Loop" # quasi default title for the main meeting
-    
+
 class Presentor(CommonModel):
 
     def __str__(self):

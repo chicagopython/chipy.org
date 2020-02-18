@@ -14,8 +14,6 @@ import tinymce.models
 
 class Migration(migrations.Migration):
 
-    replaces = [('meetings', '0001_initial'), ('meetings', '0002_rsvp_guests'), ('meetings', '0003_topic_experience_level'), ('meetings', '0004_auto_20170417_2021'), ('meetings', '0005_auto_20170906_2150'), ('meetings', '0006_auto_20170906_2300'), ('meetings', '0007_meeting_reg_close_date'), ('meetings', '0008_auto_20190711_1501'), ('meetings', '0009_auto_20191231_1735'), ('meetings', '0010_auto_20191231_1757'), ('meetings', '0009_auto_20191221_0934'), ('meetings', '0011_merge'), ('meetings', '0012_rsvp_migration'), ('meetings', '0013_auto_20200116_1950'), ('meetings', '0011_remove_topic_length'), ('meetings', '0014_merge'), ('meetings', '0015_auto_20200208_1904')]
-
     dependencies = [
         ('subgroups', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

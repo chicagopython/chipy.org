@@ -232,7 +232,6 @@ INSTALLED_APPS = [
     'django_bleach',
     'gunicorn',
     'honeypot',
-    'interval',
     'rest_framework',
     'social_django',
     'storages',
@@ -263,7 +262,6 @@ if DEBUG:
 FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
 ]
-
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 ENVELOPE_EMAIL_RECIPIENTS = env_var('ENVELOPE_EMAIL_RECIPIENTS').split(',')

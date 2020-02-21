@@ -10,6 +10,7 @@ from chipy_org.apps.contact.views import ChipyContactView
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 import chipy_org.apps.main.views
 
+
 admin.autodiscover()
 
 urlpatterns = [
@@ -21,8 +22,8 @@ urlpatterns = [
     url(r'^meetings/', include('chipy_org.apps.meetings.urls')),
     url(r'^groups/', include('chipy_org.apps.subgroups.urls')),
     url(r'^announcements/', include('chipy_org.apps.announcements.urls')),
-    url(r'^profiles/', include('chipy_org.apps.profiles.urls', namespace="profiles")),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^profiles/', include('chipy_org.apps.profiles.urls')),
+    url(r'^admin/', admin.site.urls),
     url(r'^about/', include('chipy_org.apps.about.urls')),
     url(r'^logout', django.contrib.auth.views.logout, {'next_page': '/'}),
     url(r'^contact/', ChipyContactView.as_view(), name="contact"),

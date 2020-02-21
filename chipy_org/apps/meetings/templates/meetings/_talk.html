@@ -12,6 +12,8 @@
         <div class="topic-date">Date: {% firstof talk.start_time talk.meeting.when %}</div>
         {% if talk.slides_link %}<div><a href="{{ talk.slides_link }}">Slides Link</a></div>{% endif %}
         <div class="description">
-          {{ talk.description|bleach|safe }}
+          {% if talk.description %}
+              {{ talk.description|bleach|safe }}
+          {% endif %}
         </div>
       </div>

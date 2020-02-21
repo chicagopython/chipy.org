@@ -61,7 +61,7 @@ class SmokeTest(TestCase):
         # TEST
         response = self.client.post(
             reverse('profiles:edit'),
-            {'display_name': display_name, 'show': True}, follow=True)
+            {'display_name': display_name, 'show': True}, follow=False)
 
         # CHECK
         self.user.profile.refresh_from_db()

@@ -10,7 +10,9 @@
         <div id="contact">
           <form method="post" id="contact-us" action=".">
             {% csrf_token %}
-            {% antispam_fields %}
+            {% autoescape off %}
+                {% antispam_fields %}
+            {% endautoescape %}
             {{ form.as_p }}
             <input class="btn btn-primary" type="submit" value="Send Email">
           </form>

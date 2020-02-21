@@ -24,10 +24,10 @@ For Windows 10 Pro, 64-bit:
 * Chocolatey - https://chocolatey.org/install (package manager used to install Make)
 
 For Windows 7 to 10 Non Pro, 64-bit:
-* Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/ 
+* Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/
 * Chocolatey - https://chocolatey.org/install (package manager used to install Make)
 
-### Instructions for Windows 7 to 10 Users (Non Pro) 
+### Instructions for Windows 7 to 10 Users (Non Pro)
 
 For Windows 7 to 10 users not using Windows 10 Pro, we recommend using Docker Toolbox. Use the package manager Chocolatey to install Make. (See instructions in the section below for that.) Then click on `Docker Quickstart` on your Desktop to get the Docker Toolbox terminal. Using the Docker Toolbox terminal, follow the "Setting up a Local Development Environment Using Docker" instructions below. Once you have the database and web app up, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
 
@@ -37,10 +37,10 @@ Note: A `.gitattributes` file has been provided to keep line endings as LF, inst
 
 For Windows users, we recommend using the package manager Chocolatey to install Make.
 
-1. Install Chocolatey from https://chocolatey.org/install . Open Powershell as administrator when following the instructions. 
+1. Install Chocolatey from https://chocolatey.org/install . Open Powershell as administrator when following the instructions.
 
 2. Once Chocolatey is installed, run the following command in Powershell (as administrator):
-    
+
     `choco install make`
 
 ## Setting up a Local Development Environment using Docker
@@ -59,7 +59,7 @@ docker/docker.env.
 
     make setup_env
 
-You may customize the docker/docker.env as needed for your development needs.  
+You may customize the docker/docker.env as needed for your development needs.
 The docker/docker.env file should NOT be committed version control.
 
 To start the app, you can run the following command.  This will start
@@ -68,7 +68,7 @@ up the web app and a database as services using docker-compose.
     make up
 
 After running `make up`, you need to migrate the database. This will
-create the tables and database objects needed to run the site. 
+create the tables and database objects needed to run the site.
 
     make migrate
 
@@ -146,9 +146,8 @@ people deploying the site to Heroku.
 
 ### Tagging
 
-ChiPy follows loose [Semantic Versioning](https://semver.org/) rules. Almost
-every deploy will be a minor version except where a significant UI or API
-change happens or a change likely breaks many feature branches.
+This repo uses date-based tagging as it is not a library (normally semver). To
+create a new tag run `make tag`. Tags should be created at every deploy.
 
 ### Heroku Testing
 

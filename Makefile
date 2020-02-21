@@ -1,4 +1,5 @@
 .PHONY: help
+date_tag=$(shell date +%Y%m%d%H%M)
 
 help:
 	@echo "Type make, then hit tab to see make options"
@@ -36,6 +37,10 @@ web: run
 migrate:
 	docker-compose exec web python manage.py migrate auth || true
 	docker-compose exec web python manage.py migrate
+
+tag:
+	echo Making tag $(date_tag)
+	git tag -m $(date_tag) $(date_tag)
 
 test:
 	docker-compose exec web pytest -v chipy_org/

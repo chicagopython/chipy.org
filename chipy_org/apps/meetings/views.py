@@ -52,7 +52,7 @@ class InitialRSVPMixin():
     def get_initial(self, meeting):
         initial = {'response': 'Y'}
         initial.update({'meeting': meeting})
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             user = self.request.user
             user_data = {
                 'user': user,
@@ -64,7 +64,7 @@ class InitialRSVPMixin():
         self.initial = initial
 
     def get_form_class(self):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             return RSVPForm
         else:
             return RSVPFormWithCaptcha
@@ -84,7 +84,7 @@ class InitialRSVPMixin():
                 initial=self.initial
             )
 
-            if self.request.user.is_authenticated():
+            if self.request.user.is_authenticated:
                 context['rsvp'] = (RSVPModel.objects
                                    .filter(meeting=meeting, user=self.request.user)
                                    .first())
@@ -180,7 +180,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
         self.meeting = lookup_meeting()
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             try:
                 self.object = RSVPModel.objects.get(
                     user=self.request.user,
@@ -197,7 +197,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
-        authenticated = self.request.user.is_authenticated()
+        authenticated = self.request.user.is_authenticated
         return RSVPForm if authenticated else RSVPFormWithCaptcha
 
     def form_valid(self, form):
@@ -215,7 +215,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
             'meeting': self.meeting,
             'response': 'Y',
         }
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             user = self.request.user
             data = {
                 'user': user,

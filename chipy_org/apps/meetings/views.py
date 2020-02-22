@@ -127,7 +127,8 @@ class ProposeTopic(CreateView):
     def form_valid(self, form):
         self.object = form.save()
         messages.success(self.request, 'Topic has been submitted.')
-        send_meeting_topic_submitted_email(self.object)
+        recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
+        send_meeting_topic_submitted_email(self.object, recipients)
         return HttpResponseRedirect(self.get_success_url())
 
 

@@ -138,8 +138,10 @@ def test_post_topic_sends_email():
     )
     t.save()
     assert len(Topic.objects.all()) == 1
+    
+    r=["test@email.com"]
 
-    email.send_meeting_topic_submitted_email(t)
+    email.send_meeting_topic_submitted_email(t, r)
     assert len(mail.outbox) == 1
 
 

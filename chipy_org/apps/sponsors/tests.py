@@ -1,44 +1,57 @@
-# pylint: disable=invalid-name,duplicate-code
-import pytest
-from django.test import TestCase, override_settings, Client
+# pylint: disable=invalid-name, duplicate-code, redefined-outer-name
 from django.core.urlresolvers import reverse
 from django.conf import global_settings
-from django.contrib.auth import get_user_model
+from django.test import override_settings, Client
+import pytest
+
 from .models import Sponsor
+
 
 pytestmark = pytest.mark.django_db
 
-User = get_user_model()
+
+@pytest.fixture
+def sponsor():
+    return Sponsor.objects.create(slug="chipy", name="Chipy")
 
 
-@override_settings(
-    STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-class SmokeTest(TestCase):
+@pytest.fixture
+def client():
+    return Client()
 
-    def setUp(self):
-        self.client = Client()
-        self.user = User.objects.create(username="chipy",)
-        self.sponsor = Sponsor.objects.create(
-            slug="chipy",
-            name="Chipy"
-        )
 
-    def test__sponsor_detail__GET(self):
-        # SETUP
+@pytest.fixture
+def sponsor_with_logo():
+    return Sponsor.objects.create(
+        name="test-name",
+        slug="test-slug",
+        url="test-url",
+        description="test-description",
+        logo="./test-resources/deadpool.jpg",
+    )
 
-        # TEST
-        response = self.client.get(
-            reverse('sponsor_detail', args=[self.sponsor.slug]), follow=True)
 
-        # CHECK
-        self.assertEqual(response.status_code, 200)
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_sponsor_list(client, sponsor):
+    response = client.get(reverse("sponsor_list"))
+    assert response.status_code == 200
 
-    def test__sponsor_list__GET(self):
-        # SETUP
 
-        # TEST
-        response = self.client.get(
-            reverse('sponsor_list'), follow=True)
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_sponsor_detail(client, sponsor):
+    response = client.get(reverse("sponsor_detail", args=[sponsor.slug]), follow=True)
+    assert response.status_code == 200
 
-        # CHECK
-        self.assertEqual(response.status_code, 200)
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_sponsor_detail_logo(client, sponsor_with_logo):
+    response = client.get(
+        reverse("sponsor_detail", args=[sponsor_with_logo.slug]), follow=True
+    )
+    assert response.status_code == 200
+
+    html = str(response.content)
+    assert sponsor_with_logo.name in html
+    assert sponsor_with_logo.url in html
+    assert sponsor_with_logo.description in html
+    assert "img" in html

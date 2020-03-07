@@ -2,7 +2,6 @@ import logging
 from django.contrib.sites.models import Site
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
 
 
 logger = logging.getLogger(__name__)
@@ -25,11 +24,10 @@ def send_rsvp_email(rsvp):
         logger.exception(e)
 
 
-def send_meeting_topic_submitted_email(topic):  # pylint: disable=invalid-name
+def send_meeting_topic_submitted_email(topic, recipients):  # pylint: disable=invalid-name
     try:
         plaintext = get_template('meetings/emails/meeting_topic_submitted.txt')
         htmly = get_template('meetings/emails/meeting_topic_submitted.html')
-        recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
         context = {'topic': topic, 'site': Site.objects.get_current()}
         subject = 'Chipy: New Meeting Topic Submitted'
         from_email = 'DoNotReply@chipy.org'

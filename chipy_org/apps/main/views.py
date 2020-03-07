@@ -4,7 +4,7 @@ import sys
 import traceback
 
 from django.http import HttpResponse, HttpResponseServerError
-from django.template import loader, Context
+from django.template import loader
 from django.views.generic import TemplateView
 from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
@@ -43,10 +43,10 @@ def custom_500(request):
 
     print(sys.exc_info())
     etype, value, tback = sys.exc_info()
-    return HttpResponseServerError(template.render(Context({
+    return HttpResponseServerError(template.render({
         'exception_value': value,
         'value': etype,
-        'tb': traceback.format_exception(etype, value, tback)})))
+        'tb': traceback.format_exception(etype, value, tback)}))
 
 
 def customer_404(request):

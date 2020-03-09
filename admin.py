@@ -32,8 +32,7 @@ class TopicAdmin(admin.ModelAdmin):
 
     def get_presenters(self, obj):
         return format_html(" &bull; ".join(
-            ["<a href='%s'>%s</a>" % (
-                reverse("admin:meetings_presentor_change", args=[p.id]), p)
+            [f"<a href='{reverse('admin:meetings_presentor_change', args=[p.id])}'>{p}</a>"
              for p
              in obj.presentors.all()]))
     get_presenters.short_description = "Presenter Links"
@@ -69,8 +68,7 @@ class MeetingAdmin(admin.ModelAdmin):
     def action(self, obj):
         if obj.meetup_id:
             return ('<input type="submit" value="Sync Meetup" '
-                    'class="meetup-sync-button" data-meeting-pk="{}">').format(
-                        obj.pk)
+                    f'class="meetup-sync-button" data-meeting-pk="{obj.pk}">')
         return ''
 
     action.allow_tags = True

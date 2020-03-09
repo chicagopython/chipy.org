@@ -316,9 +316,8 @@ class RSVPlistCSVBase(RSVPlist):
 
     def render_to_response(self, context, **response_kwargs):
         response = HttpResponse(content_type='text/csv')
-        file_name = slugify("chipy-export-{id}--{date}".format(
-            id=self.meeting.id, date=self.meeting.when))
-        response['Content-Disposition'] = 'attachment; filename="%s.csv"' % file_name
+        file_name = slugify(f"chipy-export-{self.meeting.id}--{self.meeting.when}")
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.csv"'
 
         writer = csv.writer(response, quoting=csv.QUOTE_ALL)
         for row in self._lookup_rsvps(context['attendees']):

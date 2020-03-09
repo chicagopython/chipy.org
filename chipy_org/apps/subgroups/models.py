@@ -13,7 +13,7 @@ class SubGroup(CommonModel):
     organizers = models.ManyToManyField(User, blank=True)
 
     def __unicode__(self):
-        return "%s | (%s)" % (self.id, self.name)
+        return f"{self.id} | ({self.name})"
 
     class Meta(object):
         verbose_name = "Sub Group (SIG)"

@@ -99,7 +99,7 @@ if USE_S3:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     # these next two aren't used, but staticfiles will complain without them
-    #STATIC_URL = "https://%s.s3.amazonaws.com/static/" % os.environ['AWS_STORAGE_BUCKET_NAME']
+    #STATIC_URL = f"https://{os.environ['AWS_STORAGE_BUCKET_NAME']}.s3.amazonaws.com/static/"
 else:
     MEDIA_ROOT = os.path.abspath(
         os.path.join(PROJECT_ROOT, "mediafiles"))

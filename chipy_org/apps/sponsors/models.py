@@ -12,9 +12,7 @@ class MeetingSponsor(models.Model):
         max_length=128, blank=True, null=True)
 
     def __str__(self):
-        return "{name} sponsored {meeting}".format(
-            name=self.sponsor.name,
-            meeting=self.meeting)
+        return f"{self.sponsor.name} sponsored {self.meeting}"
 
     class Meta:
         verbose_name = "Meeting Sponsor"
@@ -30,8 +28,7 @@ class GeneralSponsor(models.Model):
         max_length=128, blank=True, null=True)
 
     def __str__(self):
-        return "{name} sponsored".format(
-            name=self.sponsor.name)
+        return f"{self.sponsor.name} sponsored"
 
     class Meta:
         verbose_name = "General Sponsor"
@@ -60,7 +57,7 @@ class Sponsor(models.Model):
     sponsor_group = models.ForeignKey(SponsorGroup, related_name='sponsors', blank=True, null=True)
 
     def __str__(self):
-        return "{name}".format(name=self.name)
+        return f"{self.name}"
 
     def get_absolute_url(self):
         return reverse("sponsor_detail", args=[self.slug])

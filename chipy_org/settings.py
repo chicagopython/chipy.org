@@ -96,7 +96,7 @@ if USE_S3:
     AWS_HEADERS = {
         'Cache-Control': 'max-age=86400',
     }
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     # these next two aren't used, but staticfiles will complain without them
     #STATIC_URL = "https://%s.s3.amazonaws.com/static/" % os.environ['AWS_STORAGE_BUCKET_NAME']

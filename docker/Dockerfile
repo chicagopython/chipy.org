@@ -1,4 +1,4 @@
-FROM python:3.6.9
+FROM python:3.7.6
 
 # install os dependencies; clean apt cache
 RUN apt-get update && apt-get install -y \

@@ -43,7 +43,7 @@ class Venue(CommonModel):
         Use the string returned as args for google.maps.LatLng constructor.
         '''
         if self.latitude is not None and self.longitude is not None:
-            return f"{self.latitude:.6},{self.longitude:.6}"
+            return f"{self.latitude:.6f},{self.longitude:.6f}"
 
     directions = models.TextField(blank=True, null=True)
     embed_map = models.TextField(blank=True, null=True)
@@ -79,7 +79,8 @@ class Meeting(CommonModel):
 
     def __str__(self):
         if self.where:
-            return "{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
+            return f"{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
+
         return f"{self.when} location TBD"
 
     when = models.DateTimeField()

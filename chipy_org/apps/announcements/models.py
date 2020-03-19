@@ -34,4 +34,4 @@ class Announcement(CommonModel):
     objects = AnnouncementQuerySet.as_manager()
 
     def __str__(self):
-        return "{}: {}".format(self.id, self.headline)
+        return f"{self.id}: {self.headline}"

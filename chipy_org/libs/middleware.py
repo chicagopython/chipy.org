@@ -20,7 +20,7 @@ class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):
             url = self.get_redirect_uri(request, exception)
 
             if backend:
-                extra_tags = u'social-auth %s' % getattr(backend, 'name', 'unknown')
+                extra_tags = f"social-auth {getattr(backend, 'name', 'unknown')}"
             else:
                 extra_tags = ''
             messages.error(request, message, extra_tags=extra_tags)

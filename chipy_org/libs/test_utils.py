@@ -23,8 +23,8 @@ class AuthenticatedTest(django.test.TestCase):
     def extra_users(self):
         self.users = []
         for i in range(2, 5):
-            user = User(username='test%s' % (i), first_name='Test%s' % (i),
+            user = User(username=f'test{i}', first_name=f'Test{i}',
                         last_name='McTesterson',
-                        email='test%s@example.com' % (i))
+                        email=f'test{i}@example.com')
             user.save()
             self.users.append(user)

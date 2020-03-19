@@ -43,7 +43,7 @@ class Venue(CommonModel):
         Use the string returned as args for google.maps.LatLng constructor.
         '''
         if self.latitude is not None and self.longitude is not None:
-            return "%.6f,%.6f" % (self.latitude, self.longitude)
+            return f"{self.latitude:.6f},{self.longitude:.6f}"
 
     directions = models.TextField(blank=True, null=True)
     embed_map = models.TextField(blank=True, null=True)
@@ -68,7 +68,7 @@ class MeetingType(CommonModel):
     description = tinymce_models.HTMLField(blank=True, null=True)
 
     def __str__(self):
-        return "%s | (%s)" % (self.id, self.name)
+        return f"{self.id} | ({self.name})"
 
     class Meta(object):
         verbose_name = "Meeting Type"
@@ -79,9 +79,9 @@ class Meeting(CommonModel):
 
     def __str__(self):
         if self.where:
-            return "%s at %s" % (
-                self.when.strftime("%a, %b %d %Y at %I:%M %p"), self.where.name)
-        return "%s location TBD" % self.when
+            return f"{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
+
+        return f"{self.when} location TBD"
 
     when = models.DateTimeField()
     reg_close_date = models.DateTimeField(
@@ -129,7 +129,7 @@ class Meeting(CommonModel):
         return reverse("meeting", args=[self.id])
 
     def meetup_url(self):
-        return "https://www.meetup.com/_ChiPy_/events/{}/".format(self.meetup_id)
+        return f"https://www.meetup.com/_ChiPy_/events/{self.meetup_id}/"
 
     @property
     def title(self):
@@ -142,7 +142,7 @@ class Meeting(CommonModel):
 class Presentor(CommonModel):
 
     def __str__(self):
-        return "%s | (%s)" % (self.name, self.email)
+        return f"{self.name} | ({self.email})"
 
     user = models.ForeignKey(User, blank=True, null=True)
     name = models.CharField(max_length=MAX_LENGTH)
@@ -179,7 +179,7 @@ class Topic(CommonModel):
     def __str__(self):
         out = self.title
         if self.presentors.count():
-            out += " By: %s" % self.presentors.all()[0].name
+            out += f" By: {self.presentors.all()[0].name}"
         return out
 
     title = models.CharField(
@@ -268,4 +268,4 @@ class RSVP(CommonModel):
         return self.first_name + " " + self.last_name
 
     def __str__(self):
-        return "{}: {}".format(self.meeting, self.full_name)
+        return f"{self.meeting}: {self.full_name}"

@@ -16,8 +16,7 @@ def associate_by_email(*args, **kwargs):
     if email:
         User = get_user_model()
         if User.objects.filter(email=email).exists():
-            msg = (f"Backend is {backend}. Backend name is {backend.name}."
-                    "This email from is already in use. First login with your "
-                    "other account and under the top right menu click add account.")
+            msg = (f"This email (associated with {backend.name}) from is already in use. First login "
+                    "with your other account and under the top right menu click add account.")
 
             raise AuthAlreadyAssociated(msg)

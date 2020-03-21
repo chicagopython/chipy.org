@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext
 from social_core.exceptions import AuthAlreadyAssociated
 from social_core.pipeline.social_auth import associate_by_email as super_associate_by_email
 
@@ -16,7 +15,8 @@ def associate_by_email(*args, **kwargs):
     if email:
         User = get_user_model()
         if User.objects.filter(email=email).exists():
-            msg = (f"This email (associated with {backend.name}) from is already in use. First login "
-                    "with your other account and under the top right menu click add account.")
+            msg = (f"This email (associated with {backend.name}) from is already in use. "
+                   "First login with your other account and under the top right menu "
+                   "click add account.")
 
             raise AuthAlreadyAssociated(msg)

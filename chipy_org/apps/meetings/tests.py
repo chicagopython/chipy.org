@@ -90,9 +90,6 @@ class SmokeTest(TestCase):
         # CHECK
         self.assertEqual(response.status_code, 200)
 
-    @pytest.mark.skipif(
-        django.VERSION < (1, 9, 0), reason="Django 1.9 introduces force_login"
-    )
     def test__propose_topic__GET__auth(self):
         # SETUP
         self.client.force_login(self.user)

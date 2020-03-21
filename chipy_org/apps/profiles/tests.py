@@ -37,9 +37,6 @@ class SmokeTest(TestCase):
         # CHECK
         self.assertEqual(response.status_code, 200)
 
-    @pytest.mark.skipif(
-        django.VERSION < (1, 9, 0),
-        reason="Django 1.9 introduces force_login")
     def test__profile_edit_url__GET_auth(self):
         # SETUP
         self.client.force_login(self.user)
@@ -50,9 +47,6 @@ class SmokeTest(TestCase):
         # CHECK
         self.assertEqual(response.status_code, 200)
 
-    @pytest.mark.skipif(
-        django.VERSION < (1, 9, 0),
-        reason="Django 1.9 introduces force_login")
     def test__profile_edit_url__POST_auth(self):
         # SETUP
         display_name = "ChiPy"

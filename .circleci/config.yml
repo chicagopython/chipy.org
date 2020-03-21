@@ -12,6 +12,7 @@ jobs:
     docker:
       - image: circleci/python:3.6.9
         environment:
+          ALLOWED_HOSTS: localhost
           CONNECT_METHOD: http
           DEBUG: true
           ADMINS: "admin@chipy.org"

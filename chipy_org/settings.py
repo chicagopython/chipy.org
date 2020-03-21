@@ -32,7 +32,7 @@ DEBUG = env_var('DEBUG', False)
 
 ALLOWED_HOSTS = ['chipy.org', 'www.chipy.org', 'chipy.herokuapp.com',
                  'chipy-149.herokuapp.com',
-                 'localhost:8000', 'locahost',
+                 'localhost:8000', 'localhost',
                  'www.localhost:8000', 'www.localhost']
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", ALLOWED_HOSTS)

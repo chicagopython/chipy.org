@@ -15,6 +15,7 @@ jobs:
           DEBUG: true
           ADMINS: "admin@chipy.org"
           ENVELOPE_EMAIL_RECIPIENTS: "admin@chipy.org"
+          USE_S3: False
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin

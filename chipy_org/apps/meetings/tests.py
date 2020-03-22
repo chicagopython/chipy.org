@@ -1,7 +1,6 @@
 # pylint: disable=invalid-name,no-member,unused-variable,duplicate-code
 import datetime
 import pytest
-import django
 from django.test import TestCase, override_settings
 from django.test import Client
 from django.core import mail

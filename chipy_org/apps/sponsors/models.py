@@ -61,3 +61,6 @@ class Sponsor(models.Model):
 
     def get_absolute_url(self):
         return reverse("sponsor_detail", args=[self.slug])
+
+    class Meta:
+        ordering = ["name"]

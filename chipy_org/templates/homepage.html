@@ -332,28 +332,7 @@ h2 a {
 
     <section>
         <div class="row-fluid">
-            <div class="module span12"><h2><div name="sponsors">Sponsors</div></h2></div>
-        </div><!-- #row-fluid -->
-
-        <div class="row-fluid">
-            <div class="module span12">
-
-                {% if general_sponsors %}
-                <h3>Platinum Sponsors</h3>
-                {% for general_sponsor in general_sponsors %}
-                  <div class="sponsor-home-block">
-                     {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
-                     <div class="sponsor-home-image">
-                         <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
-                             <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
-                         </a>
-                     </div>
-                     {% endthumbnail %}
-                  </div>
-                {% endfor %}
-                {% endif %}
-
-            </div><!--/span-->
+            <div class="module span12"><h2><a href="{% url 'sponsor_list' %}" name="sponsors">Visit Our Sponsors</a></h2></div>
         </div><!-- #row-fluid -->
     </section>
 

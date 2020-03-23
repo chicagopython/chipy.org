@@ -345,25 +345,26 @@ h2 a {
                         <div class="sponsor-home-block">
                         {% if my_sponsor_group != general_sponsor.sponsor.sponsor_group.name %}
                         
-                           {% with my_sponsor_group=general_sponsor.sponsor.sponsor_group.name %}  
-                           <h3>{{ my_sponsor_group }}</h3>
-                           {% endwith %}
+                            {% with my_sponsor_group=general_sponsor.sponsor.sponsor_group.name %}  
+                               <h3>{{ my_sponsor_group }}</h3>
+                            {% endwith %}
                         {% endif %}
                         {% if general_sponsor.sponsor.logo %}
-                        {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
-                           <div class="sponsor-home-image">
-                              <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
-                              <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
-                              </a>
-                            </div>
-                        {% endthumbnail %}
+                            {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
+                                <div class="sponsor-home-image">
+                                    <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
+                                        <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
+                                    </a>
+                                </div>
+                            {% endthumbnail %}
                         {% else %}
-                           <h4>{{general_sponsor.sponsor}}</h4>
+                            <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
+                                <h4>{{general_sponsor.sponsor}}</h4>
+                            </a>
                         {% endif %}
                         </div>
 
-                    {% endfor %}
-                        
+                    {% endfor %}                        
                     {% endwith %}
                 {% endif %}
 

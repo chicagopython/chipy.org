@@ -339,16 +339,15 @@ h2 a {
             <div class="module span12">
 
                 {% if general_sponsors %}
-             
-                    {% with my_sponsor_group=""%}
+                                 
                     {% for general_sponsor in general_sponsors %}
-                        <div class="sponsor-home-block">
-                        {% if my_sponsor_group != general_sponsor.sponsor.sponsor_group.name %}
                         
-                            {% with my_sponsor_group=general_sponsor.sponsor.sponsor_group.name %}  
-                               <h3>{{ my_sponsor_group }}</h3>
-                            {% endwith %}
-                        {% endif %}
+                        <div class="sponsor-home-block">
+                        
+                        {% ifchanged general_sponsor.sponsor.sponsor_group.name %}
+                            <h3>{{ general_sponsor.sponsor.sponsor_group.name }}</h3>
+                        {% endifchanged %}
+                        
                         {% if general_sponsor.sponsor.logo %}
                             {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
                                 <div class="sponsor-home-image">
@@ -365,7 +364,7 @@ h2 a {
                         </div>
 
                     {% endfor %}                        
-                    {% endwith %}
+                   
                 {% endif %}
 
             </div><!--/span-->

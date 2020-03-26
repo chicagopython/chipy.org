@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import (
-    Meeting, Venue, Topic, Presentor, RSVP, MeetingType)
+    Meeting, Venue, Topic, Presentor, RSVP, MeetingType, RepeatMeeting)
 
 
 class VenueAdmin(admin.ModelAdmin):
@@ -114,9 +114,34 @@ class MeetingTypeAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class RepeatMeetingAdmin(admin.ModelAdmin):
+    list_display = ['title', 'meeting_type', 'repeat_every','meeting_day_to_repeat', 'meeting_time_to_repeat', 'where', 'created', 'modified', 'action']
+    list_filter = ['meeting_type']
+    form = MeetingForm
+    # inlines = [
+    #     TopicInline,
+    #     MeetingSponsorInline,
+    # ]
+    readonly_fields = ['created', 'modified']
+
+    def action(self, obj):
+        if obj.meetup_id:
+            return ('<input type="submit" value="Sync Meetup" '
+                    f'class="meetup-sync-button" data-meeting-pk="{obj.pk}">')
+        return ''
+
+    action.allow_tags = True
+
+    class Media:
+        js = ("js/meetup_sync.js",)
+
+    
+
+
 admin.site.register(Venue, VenueAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Presentor, PresentorAdmin)
 admin.site.register(RSVP, RSVPAdmin)
 admin.site.register(MeetingType, MeetingTypeAdmin)
+admin.site.register(RepeatMeeting, RepeatMeetingAdmin)

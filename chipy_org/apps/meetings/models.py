@@ -269,3 +269,89 @@ class RSVP(CommonModel):
 
     def __str__(self):
         return f"{self.meeting}: {self.full_name}"
+
+class RepeatMeeting(CommonModel):
+    REPEAT_CHOICES = [('N','no'),('Y','yes')]
+
+    REPEAT_EVERY_CHOICES = [('first week','first week of the month'),
+                            ('second week','second week of the month'),
+                            ('third week','third week of the month'),
+                            ('fourth week', 'fourth week of the month'), 
+                            ('last week', 'last week of the month')]
+    
+    DAY_TO_REPEAT_CHOICES = [('Sunday', 'Sunday'), 
+                             ('Monday', 'Monday'), 
+                             ('Tuesday', 'Tuesday'),
+                             ('Wednesday', 'Wednesday'),
+                             ('Thursday', 'Thursday'),
+                             ('Friday', 'Friday'),
+                             ('Saturday', 'Saturday')]
+    
+    def __str__(self):
+        if self.where:
+            return f"Every {self.repeat_every} of the month on {self.meeting_day_to_repeat} at {self. repeat_meeting_starts} at {self.where.name}"
+
+        return f"Every {self.repeat_every} of the month on {self.meeting_day_to_repeat} at {self. repeat_meeting_starts} at location TBD"
+
+    repeat_meeting = models.CharField(max_length=1, choices=REPEAT_CHOICES, default='no')
+    repeat_every = models.CharField(max_length=12, choices=REPEAT_EVERY_CHOICES, default='first week')
+    meeting_day_to_repeat = models.CharField(max_length=10, choices=DAY_TO_REPEAT_CHOICES, default='Mon')
+    meeting_time_to_repeat = models.TimeField(auto_now=False, auto_now_add=False)
+    repeat_meeting_starts = models.DateTimeField()
+    repeat_meeting_ends = models.DateTimeField()
+
+    repeat_registration_close_date = models.CharField(max_length=3, choices=REPEAT_CHOICES, default='no')
+    registration_close_day_to_repeat = models.CharField(max_length=12, choices=DAY_TO_REPEAT_CHOICES, default='Mon')
+    registration_close_time_to_repeat = models.TimeField(auto_now=False, auto_now_add=False, blank=True, null=True )
+
+    where = models.ForeignKey(Venue, blank=True, null=True)
+    # Used for anonymous access to meeting information like RSVPs
+    key = models.CharField(max_length=40, unique=True, blank=True)
+    live_stream = models.CharField(max_length=500, null=True, blank=True)
+    meetup_id = models.TextField(blank=True, null=True)
+    meeting_type = models.ForeignKey(
+        MeetingType, blank=True, null=True,
+        help_text=("Type of meeting (i.e. SIG Meeting, "
+                   "Mentorship Meeting, Startup Row, etc.). "
+                   "Leave this empty for the main meeting. "
+                  ))
+    custom_title = models.CharField(
+        max_length=64, null=True, blank=True,
+        help_text=("If you fill out this field, this 'custom_title'"
+                   "will show up as the title of the event."
+                  ))
+    description = tinymce_models.HTMLField(blank=True, null=True)
+
+    def can_register(self):
+        can_reg = True
+        if self.reg_close_date and timezone.now() > self.reg_close_date:
+            can_reg = False
+        if timezone.now() > self.when:
+            can_reg = False
+        return can_reg
+
+    def is_future(self):
+        return bool(self.when >= (timezone.now() - datetime.timedelta(hours=3)))
+
+    def rsvp_user_yes(self):
+        raise NotImplementedError
+
+    def rsvp_user_maybe(self):
+        raise NotImplementedError
+
+    def number_rsvps(self):
+        return self.rsvp_set.exclude(response='N').count()
+
+    def get_absolute_url(self):
+        return reverse("meeting", args=[self.id])
+
+    def meetup_url(self):
+        return f"https://www.meetup.com/_ChiPy_/events/{self.meetup_id}/"
+
+    @property
+    def title(self):
+        if self.custom_title:
+            return self.custom_title
+        if self.meeting_type and self.meeting_type.default_title:
+            return self.meeting_type.default_title
+        return "In the Loop" # quasi default title for the main meeting

@@ -293,15 +293,15 @@ class RepeatMeeting(CommonModel):
 
         return f"Every {self.repeat_every} of the month on {self.meeting_day_to_repeat} at {self. repeat_meeting_starts} at location TBD"
 
-    repeat_meeting = models.CharField(max_length=1, choices=REPEAT_CHOICES, default='no')
+    repeat_meeting = models.CharField(max_length=1, choices=REPEAT_CHOICES, default='N')
     repeat_every = models.CharField(max_length=12, choices=REPEAT_EVERY_CHOICES, default='first week')
-    meeting_day_to_repeat = models.CharField(max_length=10, choices=DAY_TO_REPEAT_CHOICES, default='Mon')
+    meeting_day_to_repeat = models.CharField(max_length=10, choices=DAY_TO_REPEAT_CHOICES, default='Monday')
     meeting_time_to_repeat = models.TimeField(auto_now=False, auto_now_add=False)
     repeat_meeting_starts = models.DateTimeField()
     repeat_meeting_ends = models.DateTimeField()
 
-    repeat_registration_close_date = models.CharField(max_length=3, choices=REPEAT_CHOICES, default='no')
-    registration_close_day_to_repeat = models.CharField(max_length=12, choices=DAY_TO_REPEAT_CHOICES, default='Mon')
+    repeat_registration_close_date = models.CharField(max_length=1, choices=REPEAT_CHOICES, default='N')
+    registration_close_day_to_repeat = models.CharField(max_length=10, choices=DAY_TO_REPEAT_CHOICES, default='Monday')
     registration_close_time_to_repeat = models.TimeField(auto_now=False, auto_now_add=False, blank=True, null=True )
 
     where = models.ForeignKey(Venue, blank=True, null=True)

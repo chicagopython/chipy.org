@@ -1,33 +1,33 @@
 boto3==1.12.16
-dj-database-url==0.4.2
-django-admin-tools==0.8.1
+dj-database-url==0.5.0
+django-admin-tools==0.9.0
 django-bleach==0.6.1
 django-ckeditor==5.9.0
-django-envelope==1.3
-django-extensions==2.2.8
-django-flatblocks==0.9.4
-django-flatpages-tinymce==0.1.1
-django-forms-bootstrap==2.0.3.post1
-django-grappelli==2.8.3
-django-gravatar2==1.1.4
-django-honeypot==0.5.0
-django-ical==1.4
-django-nocaptcha-recaptcha==0.0.20
+django-envelope==1.3 # remove dependance; package no longer supported
+django-extensions==2.2.9
+django-flatblocks==0.9.4 # not using a tox file for testing
+django-flatpages-tinymce==0.1.1 # not using a tox file for testing
+django-forms-bootstrap==3.1.0 # remove dependance; package no longer supported
+django-grappelli==2.13.4 # check release notes for correct version
+django-gravatar2==1.4.4 # profiles only
+django-honeypot==0.8.0
+django-ical==1.7.0
+django-nocaptcha-recaptcha==0.0.20 # find a more standard recaptcha
 django-storages==1.9.1
-django-tinymce==2.8.0
-Django==1.11.28
-djangorestframework==3.10.3
+django-tinymce==2.8.0 # this looks abandoned
+Django==2.2.11
+djangorestframework==3.11.0 # how to test
 feedparser==5.2.1
-gunicorn==19.9.0
-httplib2==0.16.0
-oauth2==1.9.0post1
-probablepeople==0.5.4
+gunicorn==20.0.4
+httplib2==0.17.0
+oauth2==1.9.0post1 # what's using this?
+probablepeople==0.5.4 # kill
 Pillow==6.2.2
-psycopg2-binary==2.7.7
+psycopg2-binary==2.8.4
 #pytest-cov==2.6.0 
 python-openid==2.2.5
-requests==2.21.0
-six==1.10.0
+requests==2.23.0
+six==1.14.0
 social-auth-app-django==3.1.0
 sorl-thumbnail==12.6.3
-whitenoise==4.1.4
+whitenoise==5.0.1

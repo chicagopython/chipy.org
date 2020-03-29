@@ -2,7 +2,7 @@ import random
 import string
 from django.contrib import admin
 from django import forms
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.html import format_html
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, Presentor, RSVP, MeetingType

@@ -1,5 +1,5 @@
 # pylint: disable=invalid-name, duplicate-code, redefined-outer-name
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import global_settings
 from django.test import override_settings, Client
 import pytest

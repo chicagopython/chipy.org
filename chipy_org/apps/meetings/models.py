@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel

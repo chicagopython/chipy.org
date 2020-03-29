@@ -5,7 +5,7 @@ import logging
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView

@@ -4,9 +4,10 @@ from django.urls import reverse
 
 
 class MeetingSponsor(models.Model):
-    sponsor = models.ForeignKey("sponsors.Sponsor")
-    meeting = models.ForeignKey("meetings.Meeting", related_name="meeting_sponsors")
-    about = models.TextField("About this sponsorship", blank=True, null=True)
+    sponsor = models.ForeignKey("sponsors.Sponsor", on_delete=models.PROTECT)
+    meeting = models.ForeignKey("meetings.Meeting", related_name="meeting_sponsors",
+            on_delete=models.CASCADE)
+    about = models.TextField(u"About this sponsorship", blank=True, null=True)
     about_short = models.CharField(
         "Brief description of sponsorship", max_length=128, blank=True, null=True
     )
@@ -21,8 +22,8 @@ class MeetingSponsor(models.Model):
 
 
 class GeneralSponsor(models.Model):
-    sponsor = models.ForeignKey("sponsors.Sponsor")
-    about = models.TextField("About this sponsorship", blank=True, null=True)
+    sponsor = models.ForeignKey("sponsors.Sponsor", on_delete=models.CASCADE)
+    about = models.TextField(u"About this sponsorship", blank=True, null=True)
     about_short = models.CharField(
         "Brief description of sponsorship", max_length=128, blank=True, null=True
     )
@@ -51,15 +52,11 @@ class Sponsor(models.Model):
     url = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     logo = models.ImageField(
-        upload_to="sponsor_logos",
-        blank=True,
-        null=True,
-        help_text=(
-            "All logos will be cropped to fit a 4 by 3 aspect ratio. "
-            "Resolution should be at minimum 400x300."
-        ),
-    )
-    sponsor_group = models.ForeignKey(SponsorGroup, related_name="sponsors", blank=True, null=True)
+        upload_to="sponsor_logos", blank=True, null=True,
+        help_text=("All logos will be cropped to fit a 4 by 3 aspect ratio. "
+                   "Resolution should be at minimum 400x300."))
+    sponsor_group = models.ForeignKey(SponsorGroup, related_name='sponsors', blank=True, null=True,
+            on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.name}"

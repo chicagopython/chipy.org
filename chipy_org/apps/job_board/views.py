@@ -7,6 +7,7 @@ from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileF
 from django.contrib.auth.decorators import login_required
 from .models import JobPost
 from django.db.models import Q
+from itertools import chain
 
 @login_required
 def create_job_post(request):
@@ -38,7 +39,11 @@ def thanks(request):
     return HttpResponse("Thanks!")
 
 def job_post_list(request):
-
-    job_posts = JobPost.objects.filter(Q(status='approved') | Q(status='extended')).order_by('-is_verified_sponsor')
+    # I've split these into two queries in anticipating that there might be different ordering or filtering based on sponsored vs non-sponsored job posts
+    sponsored_job_posts = JobPost.objects.filter( (Q(status='approved') | Q(status='extended')) & Q(is_verified_sponsor=True)).order_by('-id')
+    regular_job_posts = JobPost.objects.filter( (Q(status='approved') | Q(status='extended')) & Q(is_verified_sponsor=False)).order_by('-id')
     
-    return render(request,'job_post_list.html', {'job_posts':job_posts} )
+    # I put the two groups of job posts back together so they can processed by the same loop in the template
+    job_posts = list(chain(sponsored_job_posts, regular_job_posts))
+    
+    return render(request,'job_post_list.html', { 'job_posts':job_posts} )

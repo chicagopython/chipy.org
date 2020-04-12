@@ -5,9 +5,20 @@
 
 <h2>Job Posts</h2>
     <ul>
+        
+        
+
         {% for post in job_posts %}
+            {% ifchanged post.is_verified_sponsor %}
+                {% if post.is_verified_sponsor %}
+                    <h3>Sponsored Job Posts</h3>
+                {% else %}
+                    <h3>Regular Job Posts</h3>
+                {% endif %}
+            {% endifchanged %}
+
             {% if post.days_elapsed < 3 %}
-            <li>{{post.is_verified_sponsor}} {{post.position}} at {{ post.company_name }}, 
+            <li><a href="">{{post.is_verified_sponsor}} {{post.position}} at {{ post.company_name }}</a>, 
                 
                 Posted  
                 {% if post.days_elapsed == 0 %} 

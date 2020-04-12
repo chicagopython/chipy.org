@@ -81,7 +81,6 @@ class JobPost(CommonModel):
         if self.is_sponsor and self.company_sponsor:
             company_name = self.company_name.strip().lower()
             company_sponsor = self.company_sponsor.name.strip().lower()
-
             return company_name == company_sponsor 
         else:
             return False

@@ -25,7 +25,7 @@ def create_job_post(request):
             job_user_form.save()
             job_profile_form.save()
 
-            return HttpResponseRedirect(reverse('thanks'))
+            return HttpResponseRedirect(reverse('after-submit-job-post'))
 
     else:
         job_post_form = JobPostForm(initial={'contact':request.user}) #sets an intial value only for unbound form, not for bound form
@@ -35,8 +35,10 @@ def create_job_post(request):
 
     return render(request, 'job_post_form.html', {'job_post_form': job_post_form, 'job_user_form': job_user_form, 'job_profile_form': job_profile_form})
 
-def thanks(request):
-    return HttpResponse("Thanks!")
+def after_submit_job_post(request):
+    
+    return render(request, 'after_submit_job_post.html', {})
+
 
 def job_post_list(request):
     # I've split these into two queries in anticipating that there might be different ordering or filtering based on sponsored vs non-sponsored job posts

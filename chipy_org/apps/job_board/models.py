@@ -4,6 +4,7 @@ from chipy_org.libs.models import CommonModel
 from chipy_org.apps.sponsors.models import Sponsor
 
 MAX_LENGTH = 255
+
 STATUS_CHOICES = [('pending', 'Pending Approval'),
                    ('approved', 'Approved'),
                    ('denied', 'Denied'),
@@ -16,8 +17,10 @@ class JobPost(CommonModel):
     
     __original_status = None
 
-    position = models.CharField(max_length=MAX_LENGTH)
     company_name = models.CharField(max_length=MAX_LENGTH)
+    
+    position = models.CharField(max_length=MAX_LENGTH)
+    
     description = models.CharField(max_length=2500)
 
     is_sponsor = models.BooleanField(

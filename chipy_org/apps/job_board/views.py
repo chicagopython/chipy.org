@@ -6,6 +6,7 @@ from django.urls import reverse
 from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import JobPost
+from django.db.models import Q
 
 @login_required
 def create_job_post(request):
@@ -34,9 +35,10 @@ def create_job_post(request):
     return render(request, 'job_post_form.html', {'job_post_form': job_post_form, 'job_user_form': job_user_form, 'job_profile_form': job_profile_form})
 
 def thanks(request):
-    return HttpResponse("Thanks!!!")
+    return HttpResponse("Thanks!")
 
-class JobPostList(ListView):
-    queryset = JobPost.objects.all()
-    context_object_name = 'job_posts'
-    template_name = 'job_post_list.html'
+def job_post_list(request):
+
+    job_posts = JobPost.objects.filter(Q(status='approved') | Q(status='extended')).order_by('-is_verified_sponsor')
+    
+    return render(request,'job_post_list.html', {'job_posts':job_posts} )

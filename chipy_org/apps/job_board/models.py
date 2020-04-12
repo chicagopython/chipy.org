@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from datetime import datetime
 from chipy_org.libs.models import CommonModel
 from chipy_org.apps.sponsors.models import Sponsor
 
@@ -21,12 +21,15 @@ class JobPost(CommonModel):
     
     position = models.CharField(max_length=MAX_LENGTH)
     
-    description = models.CharField(max_length=2500)
+    description = models.CharField(max_length=2500, help_text = '2500 Character Limit')
 
     is_sponsor = models.BooleanField(
         default=False, verbose_name="Is the company a sponsor of ChiPy?")
 
     company_sponsor = models.ForeignKey(Sponsor, blank=True, null=True)
+
+    # After checking to see that the company_name and company_sponsor match, it is then considered verified
+    is_verified_sponsor = models.BooleanField(editable=False, default=False)
 
     can_host_meeting = models.BooleanField(
         default=False, verbose_name="Is your organization interested in hosting an event?")
@@ -48,11 +51,37 @@ class JobPost(CommonModel):
         self.__original_status = self. status
 
     def save(self, *args, **kwargs):
-        ''' Every time a decision is made for the status of the post, 
-        the date that the decision is made is updated. '''
+        # Every time a decision is made for the status of the post, 
+        # the date that the decision is made is updated. 
         
         if  self.__original_status != self.status:
-            self.status_change_date = timezone.now()
+            self.status_change_date = datetime.now()
             self.__original_status = self. status
+ 
+        self.is_verified_sponsor = self.verify_sponsor
 
         return super(JobPost, self).save(*args, **kwargs)
+
+    @property
+    def days_elapsed(self):
+
+        # computes days elapsed from when job post is put in 'approved' or 'extended' status
+        if self.status == 'approved' or self.status == 'extended':
+            current_datetime = datetime.now()
+            delta = current_datetime - self.status_change_date
+            days_elapsed_from_posting = delta.days
+            return days_elapsed_from_posting
+        else:
+            return None
+    
+    @property
+    def verify_sponsor(self):
+        # checks to see if the company_name that the user has entered is one of the sponsors
+        
+        if self.is_sponsor and self.company_sponsor:
+            company_name = self.company_name.strip().lower()
+            company_sponsor = self.company_sponsor.name.strip().lower()
+
+            return company_name == company_sponsor 
+        else:
+            return False

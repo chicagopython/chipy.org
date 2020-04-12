@@ -6,7 +6,19 @@
 <h2>Job Posts</h2>
     <ul>
         {% for post in job_posts %}
-            <li>{{post.position}} at {{ post.company_name }}</li>
+            {% if post.days_elapsed < 3 %}
+            <li>{{post.is_verified_sponsor}} {{post.position}} at {{ post.company_name }}, 
+                
+                Posted  
+                {% if post.days_elapsed == 0 %} 
+                   today 
+                {% elif post.days_elapsed == 1 %}
+                   1 day ago 
+                {% else %}
+                    {{post.days_elapsed}} days ago
+                {% endif %}
+            </li>
+            {% endif %}
         {% endfor %}
     </ul>
 

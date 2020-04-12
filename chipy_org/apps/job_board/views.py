@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.urls import reverse 
 from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileForm
 from django.contrib.auth.decorators import login_required
+from .models import JobPost
 
 @login_required
 def create_job_post(request):
@@ -34,3 +35,8 @@ def create_job_post(request):
 
 def thanks(request):
     return HttpResponse("Thanks!!!")
+
+class JobPostList(ListView):
+    queryset = JobPost.objects.all()
+    context_object_name = 'job_posts'
+    template_name = 'job_post_list.html'

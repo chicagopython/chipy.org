@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 from chipy_org.libs.models import CommonModel
 from chipy_org.apps.sponsors.models import Sponsor
+from django.contrib.auth.models import User
 
 MAX_LENGTH = 255
 
@@ -43,6 +44,8 @@ class JobPost(CommonModel):
 
     link_to_company_page = models.CharField(max_length=MAX_LENGTH)
 
+    contact = models.ForeignKey(User, blank=True, null=True)
+
     def __str__(self):
         return f"{self.position} at {self.company_name}"
 
@@ -58,6 +61,9 @@ class JobPost(CommonModel):
             self.status_change_date = datetime.now()
             self.__original_status = self. status
  
+        # The property 'verify_sponsor' is saved in a model field because
+        # properties can not be used in filtering querysets.
+        # Query filtering and ordering in Django views are based only on fields, not properties.
         self.is_verified_sponsor = self.verify_sponsor
 
         return super(JobPost, self).save(*args, **kwargs)

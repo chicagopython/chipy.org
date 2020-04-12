@@ -17,11 +17,13 @@ class JobPostForm(forms.ModelForm):
             'is_sponsor',
             'company_sponsor',
             'can_host_meeting',
-            'link_to_company_page'
+            'link_to_company_page',
+            'contact',
         ]
         
         widgets = {
             'description': Textarea(attrs={'cols':80, 'rows':20}),
+            'contact': forms.HiddenInput(),
         }
 
 

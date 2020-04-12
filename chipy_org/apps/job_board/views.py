@@ -14,7 +14,7 @@ def create_job_post(request):
 
 
     if request.method == 'POST':
-      
+
         job_post_form = JobPostForm(request.POST)
         job_user_form = JobUserForm(request.POST, instance = request.user)
         job_profile_form = JobProfileForm(request.POST, instance = request.user.profile)
@@ -28,7 +28,7 @@ def create_job_post(request):
             return HttpResponseRedirect(reverse('thanks'))
 
     else:
-        job_post_form = JobPostForm()
+        job_post_form = JobPostForm(initial={'contact':request.user}) #sets an intial value only for unbound form, not for bound form
         job_user_form = JobUserForm(instance = request.user)
         job_profile_form = JobProfileForm(instance = request.user.profile)
        

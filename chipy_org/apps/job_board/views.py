@@ -47,3 +47,9 @@ def job_post_list(request):
     job_posts = list(chain(sponsored_job_posts, regular_job_posts))
     
     return render(request,'job_post_list.html', { 'job_posts':job_posts} )
+
+def job_post_detail(request, pk):
+
+    job_post = JobPost.objects.get(pk=pk)
+
+    return render(request,'job_post_detail.html', { 'job_post':job_post} )

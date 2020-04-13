@@ -33,6 +33,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('profiles', '0003_merge'),
+        ('meetings', '0002_auto_20200217_1825')
     ]
 
     operations = [

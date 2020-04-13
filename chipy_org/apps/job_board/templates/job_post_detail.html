@@ -11,19 +11,20 @@
 
 <p>
 
-Description: {{job_post.description}}
+<b>Description:</b> {{job_post.description}}
 
 <p>
-Contact: {{job_post.contact.first_name}} {{job_post.contact.last_name}}
 
+<b>Link to Website:</b> {{job_post.link_to_company_page}}
+
+<p>
+
+<b>Contact:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
 {% if job_post.contact.profile.is_external_recruiter %}
-    , External Recruiter
+  , External Recruiter
 {% endif %}
 
 <br>
-Email: {{job_post.contact.email}}
-
-
-
+<b>Email:</b> {{job_post.contact.email}}
 
 {% endblock body %}

@@ -19,6 +19,7 @@ class JobPostForm(forms.ModelForm):
             'can_host_meeting',
             'link_to_company_page',
             'contact',
+            'agree_to_terms',
         ]
         
         widgets = {

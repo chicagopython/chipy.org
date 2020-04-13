@@ -13,7 +13,21 @@
 {{ form.non_field_errors }}
 <form action="." method="post">
     {% csrf_token %}
-    {{ job_post_form.as_p }}
+   
+
+    {% for field in job_post_form.visible_fields %}
+      {% if field == job_post_form.agree_to_terms %}
+        {{field}} I have read and agree to the <a href="/pages/referral/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
+        <p>
+      {% else %}
+        {{field.label_tag}} {{field.errors}}
+        {{field}} 
+        {{field.help_text}}
+        <p>
+      {% endif %}
+    {% endfor %}
+    <p>
+    <h4>Contact Info</h4>
     <p>
     {{ job_user_form.as_p }}
     <p>

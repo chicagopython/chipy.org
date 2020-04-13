@@ -46,6 +46,10 @@ class JobPost(CommonModel):
 
     contact = models.ForeignKey(User, blank=True, null=True)
 
+    agree_to_terms = models.BooleanField(
+        default=False, 
+        verbose_name="")
+
     def __str__(self):
         return f"{self.position} at {self.company_name}"
 

@@ -178,8 +178,6 @@ class Topic(CommonModel):
 
     def __str__(self):
         out = self.title
-        if self.presentors.count():
-            out += f" By: {self.presentors.all()[0].name}"
         return out
 
     title = models.CharField(

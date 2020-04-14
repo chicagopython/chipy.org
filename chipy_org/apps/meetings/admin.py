@@ -23,7 +23,7 @@ class TopicInline(admin.StackedInline):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('id', 'approved', 'title', 'experience_level', 'meeting', 'created')
+    list_display = ('id', 'approved', 'title', 'experience_level', 'get_presenters', 'meeting', 'created')
     readonly_fields = ['get_presenters', 'modified', 'created', ]
     list_filter = ['approved', 'experience_level']
     search_fields = ['title']
@@ -31,7 +31,7 @@ class TopicAdmin(admin.ModelAdmin):
 
     def get_presenters(self, obj):
         return format_html(" &bull; ".join(
-            [f"<a href='{reverse('admin:meetings_presentor_change', args=[p.id])}'>{p}</a>"
+            [f"<a href='{reverse('admin:meetings_presentor_change', args=[p.id])}'>{p.name}</a>"
              for p
              in obj.presentors.all()]))
     get_presenters.short_description = "Presenter Links"
@@ -79,7 +79,7 @@ class MeetingAdmin(admin.ModelAdmin):
 
 class PresentorAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'user', 'email', 'phone']
+        'id', 'name', 'user', 'email', 'phone']
     search_fields = [
         'user__username', 'user__first_name', 'user__last_name',
         'email', 'phone']

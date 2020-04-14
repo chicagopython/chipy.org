@@ -2,24 +2,19 @@
     
 
 {% block body %}
-{% for field in form %}
-  {% if field.errors %}
-    {{ field.name }} has the errors:
-    {% for error in field.errors %}
-      {{ error }}
-    {% endfor %}
-  {% endif %}
-{% endfor %}
-{{ form.non_field_errors }}
+<h2>Create a Job Post</h2>
+
 <form action="." method="post">
     {% csrf_token %}
    
 
-    {% for field in job_post_form.visible_fields %}
+    {% for field in job_post_form %}
       {% if field == job_post_form.agree_to_terms %}
-        {{field}} I have read and agree to the <a href="/pages/referral/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
+        {{field}} I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
         <p>
-      {% else %}
+      {% elif field == job_post_form.contact %}
+         <!--print nothing because 'contact' is a hidden field-->
+      {% else %}  
         {{field.label_tag}} {{field.errors}}
         {{field}} 
         {{field.help_text}}

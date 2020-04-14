@@ -6,6 +6,9 @@ from chipy_org.apps.profiles.models import UserProfile
 from .models import JobPost
 
 class JobPostForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(JobPostForm, self).__init__(*args, **kwargs)
+        self.fields['agree_to_terms'].required = True
 
     class Meta:
         model = JobPost

@@ -27,7 +27,7 @@ class JobPost(CommonModel):
     is_sponsor = models.BooleanField(
         default=False, verbose_name="Is the company a sponsor of ChiPy?")
 
-    company_sponsor = models.ForeignKey(Sponsor, blank=True, null=True)
+    company_sponsor = models.ForeignKey(Sponsor, blank=True, null=True, verbose_name="If your company is a sponsor of ChiPy, please select it from this list.")
 
     # After checking to see that the company_name and company_sponsor match, it is then considered verified
     is_verified_sponsor = models.BooleanField(editable=False, default=False)
@@ -47,8 +47,7 @@ class JobPost(CommonModel):
     contact = models.ForeignKey(User, blank=True, null=True)
 
     agree_to_terms = models.BooleanField(
-        default=False, 
-        verbose_name="")
+        verbose_name="Does the user agree to referral terms?")
 
     def __str__(self):
         return f"{self.position} at {self.company_name}"

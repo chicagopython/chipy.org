@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, DetailView
 from django.urls import reverse 
 from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import JobPost
 from django.db.models import Q
 from itertools import chain
+import datetime
 
 @login_required
 def create_job_post(request):
@@ -42,8 +42,8 @@ def after_submit_job_post(request):
 
 def job_post_list(request):
     # I've split these into two queries in anticipating that there might be different ordering or filtering based on sponsored vs non-sponsored job posts
-    sponsored_job_posts = JobPost.objects.filter( (Q(status='approved') | Q(status='extended')) & Q(is_verified_sponsor=True)).order_by('-id')
-    regular_job_posts = JobPost.objects.filter( (Q(status='approved') | Q(status='extended')) & Q(is_verified_sponsor=False)).order_by('-id')
+    sponsored_job_posts = JobPost.objects.filter( Q(status='AP') & Q(is_sponsor=True) & Q(expiration_date__gte=datetime.datetime.now()) ).order_by('-id')
+    regular_job_posts = JobPost.objects.filter( Q(status='AP') & Q(is_sponsor=False) & Q(expiration_date__gte=datetime.datetime.now()) ).order_by('-id')
     
     # I put the two groups of job posts back together so they can processed by the same loop in the template
     job_posts = list(chain(sponsored_job_posts, regular_job_posts))

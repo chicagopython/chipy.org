@@ -6,14 +6,17 @@
 
 <form action="." method="post">
     {% csrf_token %}
-   
+    <p>
+    {{ job_user_form.as_p }}
+    <p>
+    {{ job_profile_form.as_p }}
 
     {% for field in job_post_form %}
       {% if field == job_post_form.agree_to_terms %}
         {{field}} I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
         <p>
       {% elif field == job_post_form.contact %}
-         <!--print nothing because 'contact' is a hidden field-->
+         {{field}}
       {% else %}  
         {{field.label_tag}} {{field.errors}}
         {{field}} 
@@ -21,12 +24,6 @@
         <p>
       {% endif %}
     {% endfor %}
-    <p>
-    <h4>Contact Info</h4>
-    <p>
-    {{ job_user_form.as_p }}
-    <p>
-    {{ job_profile_form.as_p }}
 
     <input type="submit" value="Submit" class="btn btn-primary" >
 </form>

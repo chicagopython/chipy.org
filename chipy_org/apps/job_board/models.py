@@ -1,16 +1,14 @@
 from django.db import models
-from datetime import datetime
+import datetime
 from chipy_org.libs.models import CommonModel
 from chipy_org.apps.sponsors.models import Sponsor
 from django.contrib.auth.models import User
 
-MAX_LENGTH = 255
+MAX_LENGTH = 100
+NUM_DAYS_T0_EXPIRE = 30
 
-STATUS_CHOICES = [('pending', 'Pending Approval'),
-                   ('approved', 'Approved'),
-                   ('denied', 'Denied'),
-                   ('extended', 'Extended'),
-                   ('archived', 'Archived') 
+STATUS_CHOICES = [('SU', 'Submitted'),
+                   ('AP', 'Approved'),
                  ]
 
 
@@ -27,27 +25,26 @@ class JobPost(CommonModel):
     is_sponsor = models.BooleanField(
         default=False, verbose_name="Is the company a sponsor of ChiPy?")
 
-    company_sponsor = models.ForeignKey(Sponsor, blank=True, null=True, verbose_name="If your company is a sponsor of ChiPy, please select it from this list.")
-
-    # After checking to see that the company_name and company_sponsor match, it is then considered verified
-    is_verified_sponsor = models.BooleanField(editable=False, default=False)
-
     can_host_meeting = models.BooleanField(
         default=False, verbose_name="Is your organization interested in hosting an event?")
 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES , default='pending')
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES , default='SU')
     
-    # - 'status_change_date' is used to calculate relative time, i.e. 3 Days from when Job was first approved for posting
-    # - Will also be useful for calculating when post should expire 
     # - This field will change every time you update the 'status' field. Code for doing that is in the 'save' method.
     status_change_date = models.DateTimeField(editable=False, auto_now_add=True) 
+    
+    approval_date = models.DateTimeField(editable=False, blank=True, null=True)
+    
+    days_to_expire = models.IntegerField(default=NUM_DAYS_T0_EXPIRE, verbose_name="Num of days for post to show")
+    
+    expiration_date = models.DateTimeField(editable=False, blank=True, null=True) 
 
-    link_to_company_page = models.CharField(max_length=MAX_LENGTH)
+    company_website = models.CharField(max_length=MAX_LENGTH)
 
     contact = models.ForeignKey(User, blank=True, null=True)
 
     agree_to_terms = models.BooleanField(
-        verbose_name="Does the user agree to referral terms?")
+        verbose_name="I have read and agree to the referral terms, which includes giving a referral fee when a candidate is hired/placed.")
 
     def __str__(self):
         return f"{self.position} at {self.company_name}"
@@ -61,35 +58,23 @@ class JobPost(CommonModel):
         # the date that the decision is made is updated. 
         
         if  self.__original_status != self.status:
-            self.status_change_date = datetime.now()
+            self.status_change_date = datetime.datetime.now()
             self.__original_status = self. status
- 
-        # The property 'verify_sponsor' is saved in a model field because
-        # properties can not be used in filtering querysets.
-        # Query filtering and ordering in Django views are based only on fields, not properties.
-        self.is_verified_sponsor = self.verify_sponsor
 
-        return super(JobPost, self).save(*args, **kwargs)
+        if self.status == 'AP': # if post is approved, set the approval date and expiration date
+            self.approval_date = datetime.datetime.now()
+            self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
+        
+        super(JobPost, self).save(*args, **kwargs)
 
     @property
     def days_elapsed(self):
 
-        # computes days elapsed from when job post is put in 'approved' or 'extended' status
-        if self.status == 'approved' or self.status == 'extended':
-            current_datetime = datetime.now()
-            delta = current_datetime - self.status_change_date
+        # computes days elapsed from when job post is put in 'approved' status
+        if self.status == 'AP' and self.approval_date:
+            current_datetime = datetime.datetime.now()
+            delta = current_datetime - self.approval_date
             days_elapsed_from_posting = delta.days
             return days_elapsed_from_posting
         else:
             return None
-    
-    @property
-    def verify_sponsor(self):
-        # checks to see if the company_name that the user has entered is one of the sponsors
-        
-        if self.is_sponsor and self.company_sponsor:
-            company_name = self.company_name.strip().lower()
-            company_sponsor = self.company_sponsor.name.strip().lower()
-            return company_name == company_sponsor 
-        else:
-            return False

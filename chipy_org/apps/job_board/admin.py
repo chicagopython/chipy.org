@@ -5,7 +5,7 @@ from .models import JobPost
 
 class JobPostAdmin(admin.ModelAdmin):
     
-    list_display = ('position', 'company_name', 'created', 'status', 'status_change_date')
+    list_display = ('position', 'company_name', 'is_sponsor', 'created', 'status', 'approval_date', 'expiration_date', 'days_to_expire')
 
     #readonly_fields = ('status_change_date')
 

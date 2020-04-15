@@ -8,29 +8,27 @@
         
         {% for post in job_posts %}
 
-            {% ifchanged post.is_verified_sponsor %}
-                {% if post.is_verified_sponsor %}
+            {% ifchanged post.is_sponsor %}
+                {% if post.is_sponsor %}
                     <h3>Sponsored Job Posts</h3>
                 {% else %}
                     <h3>Regular Job Posts</h3>
                 {% endif %}
             {% endifchanged %}
 
-            {% if post.days_elapsed < 10 %}
-
-                <li><a href="{% url 'job-post-detail' pk=post.pk %}">{{post.position}} at {{ post.company_name }}</a>, 
+            <li><a href="{% url 'job-post-detail' pk=post.pk %}">{{post.position}} at {{ post.company_name }}</a>, 
                     
-                    Posted  
-                    {% if post.days_elapsed == 0 %} 
+                Posted  
+                {% if post.days_elapsed == 0 %} 
                     today 
-                    {% elif post.days_elapsed == 1 %}
+                {% elif post.days_elapsed == 1 %}
                     1 day ago 
-                    {% else %}
-                        {{post.days_elapsed}} days ago
-                    {% endif %}
-                </li>
+                {% else %}
+                    {{post.days_elapsed}} days ago
+                {% endif %}
+                
+            </li>
 
-            {% endif %}
         {% endfor %}
     </ul>
 

@@ -12,20 +12,13 @@
                 {% if post.is_sponsor %}
                     <h3>Sponsored Job Posts</h3>
                 {% else %}
-                    <h3>Regular Job Posts</h3>
+                    <h3>Other Job Posts</h3>
                 {% endif %}
             {% endifchanged %}
 
             <li><a href="{% url 'job-post-detail' pk=post.pk %}">{{post.position}} at {{ post.company_name }}</a>, 
                     
-                Posted  
-                {% if post.days_elapsed == 0 %} 
-                    today 
-                {% elif post.days_elapsed == 1 %}
-                    1 day ago 
-                {% else %}
-                    {{post.days_elapsed}} days ago
-                {% endif %}
+                Posted  {{post.days_elapsed}} day{{ post.days_elapsed|pluralize }} ago
                 
             </li>
 

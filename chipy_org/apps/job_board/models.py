@@ -5,7 +5,7 @@ from chipy_org.apps.sponsors.models import Sponsor
 from django.contrib.auth.models import User
 
 MAX_LENGTH = 100
-NUM_DAYS_T0_EXPIRE = 30
+NUM_DAYS_T0_EXPIRE = 60
 
 STATUS_CHOICES = [('SU', 'Submitted'),
                    ('AP', 'Approved'),

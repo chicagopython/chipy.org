@@ -10,8 +10,7 @@ from tinymce.widgets import TinyMCE
 class CustomFlatpageForm(FlatpageForm):
     def __init__(self, *args, **kwargs):
         super(CustomFlatpageForm, self).__init__(*args, **kwargs)
-        self.fields['content'].widget = TinyMCE(
-            attrs={'cols': 120, 'rows': 30})
+        self.fields["content"].widget = TinyMCE(attrs={"cols": 120, "rows": 30})
 
 
 class CustomFlatPageAdmin(FlatPageAdmin):
@@ -25,8 +24,7 @@ admin.site.register(FlatPage, CustomFlatPageAdmin)
 class CustomFlatBlockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomFlatBlockForm, self).__init__(*args, **kwargs)
-        self.fields['content'].widget = TinyMCE(
-            attrs={'cols': 120, 'rows': 30})
+        self.fields["content"].widget = TinyMCE(attrs={"cols": 120, "rows": 30})
 
 
 class CustomFlatBlockAdmin(FlatBlockAdmin):

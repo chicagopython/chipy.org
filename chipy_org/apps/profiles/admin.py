@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
 
     def get_search_fields(self, request):
         sfields = super(CustomUserAdmin, self).get_search_fields(request)
-        return sfields + ('profile__display_name', )
+        return sfields + ("profile__display_name",)
 
 
 admin.site.unregister(User)

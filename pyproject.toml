@@ -1,0 +1,16 @@
+[tool.black]
+line-length = 100
+target-version = ['py36']
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.vscode
+  | dist
+  | migrations
+  | venv
+)/
+'''

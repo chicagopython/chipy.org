@@ -8,10 +8,8 @@ from django.conf import global_settings
 pytestmark = pytest.mark.django_db
 
 
-@override_settings(
-    STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 class SmokeTest(TestCase):
-
     def setUp(self):
         self.client = Client()
 
@@ -19,36 +17,29 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse('home'), follow=True)
+        response = self.client.get(reverse("home"), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
 
 
 @pytest.mark.parametrize(
-    'test_in, result', [
-        ('t', True),
-        ('f', False),
-        ('true', True),
-        ('false', False),
-        ('1', '1'),
-        ('foo', 'foo'),
-    ]
+    "test_in, result",
+    [("t", True), ("f", False), ("true", True), ("false", False), ("1", "1"), ("foo", "foo"),],
 )
 def test_settingspy_env_var(monkeypatch, test_in, result):
-    monkeypatch.setenv('TEST_VAR', test_in)
+    monkeypatch.setenv("TEST_VAR", test_in)
     from chipy_org import settings
-    assert settings.env_var('TEST_VAR') == result
+
+    assert settings.env_var("TEST_VAR") == result
 
 
 @pytest.mark.parametrize(
-    'test_in, result', [
-        ('', []),
-        ('f@e.com', ["f@e.com"]),
-        ('f@e.com,b@e.com', ["f@e.com", "b@e.com"]),
-    ]
+    "test_in, result",
+    [("", []), ("f@e.com", ["f@e.com"]), ("f@e.com,b@e.com", ["f@e.com", "b@e.com"]),],
 )
 def test_settingspy_env_list(monkeypatch, test_in, result):
-    monkeypatch.setenv('TEST_VAR', test_in)
+    monkeypatch.setenv("TEST_VAR", test_in)
     from chipy_org import settings
-    assert settings.env_list('TEST_VAR') == result
+
+    assert settings.env_list("TEST_VAR") == result

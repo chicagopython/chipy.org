@@ -6,16 +6,17 @@ from chipy_org.libs.models import CommonModel
 
 
 class AnnouncementQuerySet(models.QuerySet):
-
     def active(self):
         now = timezone.now()
-        return self.filter(active=True).filter(
-            models.Q(end_date__isnull=True) | models.Q(end_date__gte=now)
-            ).order_by('created')
+        return (
+            self.filter(active=True)
+            .filter(models.Q(end_date__isnull=True) | models.Q(end_date__gte=now))
+            .order_by("created")
+        )
 
     def featured(self):
         try:
-            feature = self.active().latest('created')
+            feature = self.active().latest("created")
         except Announcement.DoesNotExist:
             feature = None
         return feature
@@ -26,8 +27,8 @@ class Announcement(CommonModel):
     text = RichTextField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(
-        default=True,
-        help_text="Has this announcement been published yet?")
+        default=True, help_text="Has this announcement been published yet?"
+    )
     photo = models.ImageField(upload_to="announcements", blank=True, null=True)
     link = models.URLField(blank=True, null=True)
 

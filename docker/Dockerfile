@@ -15,27 +15,17 @@ RUN apt-get update && apt-get install -y \
 # environment variables needed 
 ENV SITE_DIR=/site/
 ENV PYTHONPATH="${SITE_DIR}proj/"
-ENV PATH="${PATH}:/home/app/.local/bin/"
 ENV NUM_THREADS=2
 ENV NUM_PROCS=2
 
-# Create new application user
-RUN groupadd -r app && \
-    useradd -r -g app -d /home/app -c "Docker image user" app
-
-# Create user dirs, set perms on user dirs and switch to user
-RUN install -g app -o app -d ${SITE_DIR}
 WORKDIR ${SITE_DIR}
-RUN install -g app -o app -d proj/ var/log/ htdocs/ htdocs/static/ /home/app
-RUN find ${SITE_DIR} -type d -exec chmod g+s {} \;
-RUN chmod -R g+w ${SITE_DIR}
-USER app
+RUN install -d proj/ var/log/ htdocs/ htdocs/static/
 
 # Install python packages
 ADD requirements.txt ${SITE_DIR}requirements.txt
 ADD requirements_test.txt ${SITE_DIR}requirements_test.txt
-RUN pip install --user -r ${SITE_DIR}requirements_test.txt
-RUN pip install --user uwsgi
+RUN pip install -r ${SITE_DIR}requirements_test.txt
+RUN pip install uwsgi
 
 COPY docker/ ${SITE_DIR}docker/
 ADD . proj/

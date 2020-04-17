@@ -46,7 +46,7 @@ class JobPost(CommonModel):
 
     company_website = models.CharField(max_length=MAX_LENGTH)
 
-    contact = models.ForeignKey(User, blank=True, null=True)
+    contact = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     agree_to_terms = models.BooleanField(
         verbose_name="I have read and agree to the referral terms, which includes giving a referral fee when a candidate is hired/placed."

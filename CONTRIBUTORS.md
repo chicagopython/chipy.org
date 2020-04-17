@@ -1,7 +1,9 @@
 # ChiPy.org Contributors
 
-* [Bryan Chance](https://github.com/bhchance) - Added CONTRIBUTERS.md
+* [Bryan Chance](https://github.com/bhchance)
+* [Aaron Elmquist](https://github.com/elmq0022)
 * [Adam 'Cezar' Jenkins](https://github.com/emperorcezar)
+* [Aly Sivji](https://github.com/alysivji)
 * [Anjali Deolapure](https://github.com/adeolapure)
 * [Brian Ray](https://github.com/brianray)
 * [Cameron Rudnick](https://github.com/camrudnick)
@@ -15,5 +17,6 @@
 * [Raymond Berg](https://github.com/raymondberg)
 * [Ross Heflin](https://github.com/ne0zen)
 * [Sam Lahti](https://github.com/selecsosi)
+* [Sophan Mien](https://github.com/sophm256)
 * [Tanya Schlusser](https://github.com/tanyaschlusser)
 * [Tathagata](https://github.com/tathagata)

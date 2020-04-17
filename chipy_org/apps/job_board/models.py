@@ -1,8 +1,9 @@
-from django.db import models
 import datetime
-from chipy_org.libs.models import CommonModel
-from chipy_org.apps.sponsors.models import Sponsor
+
 from django.contrib.auth.models import User
+from django.db import models
+
+from chipy_org.libs.models import CommonModel
 
 MAX_LENGTH = 100
 NUM_DAYS_T0_EXPIRE = 60
@@ -33,7 +34,8 @@ class JobPost(CommonModel):
 
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default="SU")
 
-    # - This field will change every time you update the 'status' field. Code for doing that is in the 'save' method.
+    # This field will change every time you update the 'status'
+    # field. Code for doing that is in the 'save' method.
     status_change_date = models.DateTimeField(editable=False, auto_now_add=True)
 
     approval_date = models.DateTimeField(editable=False, blank=True, null=True)
@@ -49,7 +51,8 @@ class JobPost(CommonModel):
     contact = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     agree_to_terms = models.BooleanField(
-        verbose_name="I have read and agree to the referral terms, which includes giving a referral fee when a candidate is hired/placed."
+        verbose_name="I have read and agree to the referral terms, "
+        "which includes giving a referral fee when a candidate is hired/placed."
     )
 
     def __str__(self):
@@ -59,7 +62,7 @@ class JobPost(CommonModel):
         super(JobPost, self).__init__(*args, **kwargs)
         self.__original_status = self.status
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         # Every time a decision is made for the status of the post,
         # the date that the decision is made is updated.
 

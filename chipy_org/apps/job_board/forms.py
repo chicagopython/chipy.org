@@ -5,48 +5,41 @@ from chipy_org.apps.sponsors.models import Sponsor
 from chipy_org.apps.profiles.models import UserProfile
 from .models import JobPost
 
+
 class JobPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JobPostForm, self).__init__(*args, **kwargs)
-        self.fields['agree_to_terms'].required = True
+        self.fields["agree_to_terms"].required = True
 
     class Meta:
         model = JobPost
-        
+
         fields = [
-            'company_name',
-            'position',
-            'description',
-            'is_sponsor',
-            'can_host_meeting',
-            'company_website',
-            'contact',
-            'agree_to_terms',
+            "company_name",
+            "position",
+            "description",
+            "is_sponsor",
+            "can_host_meeting",
+            "company_website",
+            "contact",
+            "agree_to_terms",
         ]
-        
+
         widgets = {
-            'description': Textarea(attrs={'cols':80, 'rows':20}),
-            'contact': forms.HiddenInput(),
+            "description": Textarea(attrs={"cols": 80, "rows": 20}),
+            "contact": forms.HiddenInput(),
         }
 
 
 class JobUserForm(forms.ModelForm):
-
     class Meta:
         model = User
 
-        fields = [
-            'first_name',
-            'last_name',
-            'email'
-        ]
+        fields = ["first_name", "last_name", "email"]
 
-      
+
 class JobProfileForm(forms.ModelForm):
-
     class Meta:
         model = UserProfile
 
-        fields = [
-               'is_external_recruiter'
-        ]
+        fields = ["is_external_recruiter"]

@@ -8,12 +8,13 @@ from social_django.middleware import SocialAuthExceptionMiddleware
 
 
 class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):
-    '''
+    """
     We're overriding this because modern django, when setup
     correctly can handle messages for anonymous users.
-    '''
+    """
+
     def process_exception(self, request, exception):
-        backend = getattr(request, 'backend', None)
+        backend = getattr(request, "backend", None)
 
         if isinstance(exception, SocialAuthBaseException):
             message = self.get_message(request, exception)
@@ -22,7 +23,7 @@ class ChipySocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware):
             if backend:
                 extra_tags = f"social-auth {getattr(backend, 'name', 'unknown')}"
             else:
-                extra_tags = ''
+                extra_tags = ""
             messages.error(request, message, extra_tags=extra_tags)
 
             return redirect(url)

@@ -46,9 +46,7 @@ def test_sponsor_detail(client, sponsor):
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_sponsor_detail_logo(client, sponsor_with_logo):
-    response = client.get(
-        reverse("sponsor_detail", args=[sponsor_with_logo.slug]), follow=True
-    )
+    response = client.get(reverse("sponsor_detail", args=[sponsor_with_logo.slug]), follow=True)
     assert response.status_code == 200
 
     html = str(response.content)

@@ -14,8 +14,8 @@ from chipy_org.libs.models import CommonModel
 MAX_LENGTH = 255
 
 MEETING = (
-    ('Loop', 'Loop Meeting - 2nd Thursday'),
-    ('North', 'North Meeting - 3rd Thursday'),
+    ("Loop", "Loop Meeting - 2nd Thursday"),
+    ("North", "North Meeting - 3rd Thursday"),
 )
 
 
@@ -39,9 +39,9 @@ class Venue(CommonModel):
 
     @property
     def jsonLatLng(self):  # pylint: disable=invalid-name
-        '''
+        """
         Use the string returned as args for google.maps.LatLng constructor.
-        '''
+        """
         if self.latitude is not None and self.longitude is not None:
             return f"{self.latitude:.6f},{self.longitude:.6f}"
 
@@ -60,8 +60,8 @@ class MeetingType(CommonModel):
     """
 
     subgroup = models.ForeignKey(
-        'subgroups.SubGroup', blank=True, null=True,
-        help_text='Optional Sub-group (i.e. SIG)')
+        "subgroups.SubGroup", blank=True, null=True, help_text="Optional Sub-group (i.e. SIG)"
+    )
     name = models.CharField(max_length=64)
     default_title = models.CharField(max_length=64, null=True, blank=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -76,7 +76,6 @@ class MeetingType(CommonModel):
 
 
 class Meeting(CommonModel):
-
     def __str__(self):
         if self.where:
             return f"{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
@@ -84,25 +83,31 @@ class Meeting(CommonModel):
         return f"{self.when} location TBD"
 
     when = models.DateTimeField()
-    reg_close_date = models.DateTimeField(
-        "Registration Close Date",
-        blank=True, null=True)
+    reg_close_date = models.DateTimeField("Registration Close Date", blank=True, null=True)
     where = models.ForeignKey(Venue, blank=True, null=True)
     # Used for anonymous access to meeting information like RSVPs
     key = models.CharField(max_length=40, unique=True, blank=True)
     live_stream = models.CharField(max_length=500, null=True, blank=True)
     meetup_id = models.TextField(blank=True, null=True)
     meeting_type = models.ForeignKey(
-        MeetingType, blank=True, null=True,
-        help_text=("Type of meeting (i.e. SIG Meeting, "
-                   "Mentorship Meeting, Startup Row, etc.). "
-                   "Leave this empty for the main meeting. "
-                  ))
+        MeetingType,
+        blank=True,
+        null=True,
+        help_text=(
+            "Type of meeting (i.e. SIG Meeting, "
+            "Mentorship Meeting, Startup Row, etc.). "
+            "Leave this empty for the main meeting. "
+        ),
+    )
     custom_title = models.CharField(
-        max_length=64, null=True, blank=True,
-        help_text=("If you fill out this field, this 'custom_title'"
-                   "will show up as the title of the event."
-                  ))
+        max_length=64,
+        null=True,
+        blank=True,
+        help_text=(
+            "If you fill out this field, this 'custom_title'"
+            "will show up as the title of the event."
+        ),
+    )
     description = tinymce_models.HTMLField(blank=True, null=True)
 
     def can_register(self):
@@ -123,7 +128,7 @@ class Meeting(CommonModel):
         raise NotImplementedError
 
     def number_rsvps(self):
-        return self.rsvp_set.exclude(response='N').count()
+        return self.rsvp_set.exclude(response="N").count()
 
     def get_absolute_url(self):
         return reverse("meeting", args=[self.id])
@@ -137,10 +142,10 @@ class Meeting(CommonModel):
             return self.custom_title
         if self.meeting_type and self.meeting_type.default_title:
             return self.meeting_type.default_title
-        return "In the Loop" # quasi default title for the main meeting
+        return "In the Loop"  # quasi default title for the main meeting
+
 
 class Presentor(CommonModel):
-
     def __str__(self):
         return f"{self.name} | ({self.email})"
 
@@ -152,59 +157,67 @@ class Presentor(CommonModel):
 
 
 LICENSE_CHOISES = (
-    ('CC BY', 'Creative Commons: Attribution'),
-    ('CC BY-SA', 'Creative Commons: Attribution-ShareAlike'),
-    ('CC BY-ND', 'Creative Commons: Attribution-NoDerivs'),
-    ('CC BY-NC', 'Creative Commons: Attribution-NonCommercial'),
-    ('CC BY-NC-SA', 'Creative Commons: Attribution-NonCommercial-ShareAlike'),
-    ('CC BY-NC-ND', 'Creative Commons: Attribution-NonCommercial-NoDerivs'),
-    ('All Rights Reserved', 'All Rights Reserved')
+    ("CC BY", "Creative Commons: Attribution"),
+    ("CC BY-SA", "Creative Commons: Attribution-ShareAlike"),
+    ("CC BY-ND", "Creative Commons: Attribution-NoDerivs"),
+    ("CC BY-NC", "Creative Commons: Attribution-NonCommercial"),
+    ("CC BY-NC-SA", "Creative Commons: Attribution-NonCommercial-ShareAlike"),
+    ("CC BY-NC-ND", "Creative Commons: Attribution-NonCommercial-NoDerivs"),
+    ("All Rights Reserved", "All Rights Reserved"),
 )
 
 EXPERIENCE_LEVELS = (
-    ('novice', 'Novice'),
-    ('intermediate', 'Intermediate'),
-    ('advanced', 'Advanced'),
+    ("novice", "Novice"),
+    ("intermediate", "Intermediate"),
+    ("advanced", "Advanced"),
 )
 
 
 class TopicsQuerySet(models.QuerySet):
-
     def active(self):
-        return self.filter(approved=True).order_by('start_time')
+        return self.filter(approved=True).order_by("start_time")
 
 
 class Topic(CommonModel):
-
     def __str__(self):
         out = self.title
         return out
 
     title = models.CharField(
-        help_text="This will be the public title for your talk.",
-        max_length=MAX_LENGTH)
-    presentors = models.ManyToManyField(
-        Presentor, blank=True)
+        help_text="This will be the public title for your talk.", max_length=MAX_LENGTH
+    )
+    presentors = models.ManyToManyField(Presentor, blank=True)
     meeting = models.ForeignKey(
-        Meeting, blank=True, null=True, related_name='topics',
-        help_text=(
-            "Please select the meeting that you'd like to "
-            "target your talk for."))
+        Meeting,
+        blank=True,
+        null=True,
+        related_name="topics",
+        help_text=("Please select the meeting that you'd like to " "target your talk for."),
+    )
     experience_level = models.CharField(
         "Audience Experience Level",
-        max_length=15, blank=True, null=True, choices=EXPERIENCE_LEVELS)
-    license = models.CharField(
-        max_length=50, choices=LICENSE_CHOISES, default='CC BY')
+        max_length=15,
+        blank=True,
+        null=True,
+        choices=EXPERIENCE_LEVELS,
+    )
+    license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default="CC BY")
     length_minutes = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = tinymce_models.HTMLField(
-        "Public Description", blank=True, null=True,
-        help_text="This will be the public talk description.")
+        "Public Description",
+        blank=True,
+        null=True,
+        help_text="This will be the public talk description.",
+    )
     notes = models.TextField(
         "Private Submission Notes",
-        blank=True, null=True,
-        help_text=("Additional non-public information or context "
-                   "you want us to know about the talk submission."),
+        blank=True,
+        null=True,
+        help_text=(
+            "Additional non-public information or context "
+            "you want us to know about the talk submission."
+        ),
     )
     slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
@@ -216,8 +229,8 @@ class Topic(CommonModel):
 class RSVP(CommonModel):
 
     RSVP_CHOICES = (
-        ('Y', "Yes"),
-        ('N', "No"),
+        ("Y", "Yes"),
+        ("N", "No"),
     )
 
     user = models.ForeignKey(User, blank=True, null=True)
@@ -234,21 +247,21 @@ class RSVP(CommonModel):
     meetup_user_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        ordering = ['-meeting', 'last_name', 'first_name']
+        ordering = ["-meeting", "last_name", "first_name"]
 
     def clean(self):
         if not self.user and not self.email:
-            raise ValidationError('User or email required')
+            raise ValidationError("User or email required")
 
         # Check uniqueness
         if not self.id:
             if self.user:
                 if RSVP.objects.filter(meeting=self.meeting, user=self.user).exists():
-                    raise ValidationError('User has already RSVPed for meeting')
+                    raise ValidationError("User has already RSVPed for meeting")
             else:
                 if RSVP.objects.filter(meeting=self.meeting, email=self.email).exists():
                     raise ValidationError(
-                        'A user with this email has already RSVPed for this meeting.'
+                        "A user with this email has already RSVPed for this meeting."
                     )
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
@@ -256,8 +269,9 @@ class RSVP(CommonModel):
 
         # Generate a key for this RSVP
         if not self.key:
-            self.key = ''.join(
-                random.choice(string.digits + string.ascii_lowercase) for x in range(40))
+            self.key = "".join(
+                random.choice(string.digits + string.ascii_lowercase) for x in range(40)
+            )
 
         return super(RSVP, self).save(*args, **kwargs)
 

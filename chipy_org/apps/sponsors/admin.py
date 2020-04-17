@@ -9,7 +9,7 @@ class MeetingSponsorInline(admin.StackedInline):
 
 class GeneralSponsorAdmin(admin.ModelAdmin):
     model = GeneralSponsor
-    list_display = ['sponsor', 'about_short']
+    list_display = ["sponsor", "about_short"]
 
 
 class SponsorAdmin(admin.ModelAdmin):

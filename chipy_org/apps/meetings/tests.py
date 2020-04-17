@@ -35,24 +35,16 @@ class MeetingsTest(test_utils.AuthenticatedTest):
 
         with self.assertRaises(ValidationError):
             # This should already exist
-            duplicate_rsvp = RSVP.objects.create(
-                user=self.user, meeting=meeting, response="Y"
-            )
+            duplicate_rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")
 
         with self.assertRaises(ValidationError):
             name_rsvp = RSVP.objects.create(
-                name="Test Name",
-                meeting=meeting,
-                response="Y",
-                email="dummy@example.com",
+                name="Test Name", meeting=meeting, response="Y", email="dummy@example.com",
             )
 
             # Can't have two of the same name
             duplicate_name_rsvp = RSVP.objects.create(
-                name="Test Name",
-                meeting=meeting,
-                response="Y",
-                email="dummy@example.com",
+                name="Test Name", meeting=meeting, response="Y", email="dummy@example.com",
             )
 
 
@@ -75,9 +67,7 @@ class SmokeTest(TestCase):
 
     def test__meeting_detail__GET(self):
         # TEST
-        response = self.client.get(
-            reverse("meeting", args=[self.meeting.id]), follow=True
-        )
+        response = self.client.get(reverse("meeting", args=[self.meeting.id]), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -108,9 +98,7 @@ class SmokeTest(TestCase):
 
     def test__past_topic__GET(self):
         # TEST
-        response = self.client.get(
-            reverse("past_topic", args=[self.topic.id]), follow=True
-        )
+        response = self.client.get(reverse("past_topic", args=[self.topic.id]), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)
@@ -118,9 +106,7 @@ class SmokeTest(TestCase):
 
 def test_post_topic_sends_email():
     m = Meeting(
-        when=datetime.datetime.now(),
-        reg_close_date=datetime.datetime.now(),
-        description="Test",
+        when=datetime.datetime.now(), reg_close_date=datetime.datetime.now(), description="Test",
     )
     m.save()
     assert len(Meeting.objects.all()) == 1
@@ -143,9 +129,7 @@ def test_post_topic_sends_email():
 
 def test_anonymous_rsvp_email():
     m = Meeting(
-        when=datetime.datetime.now(),
-        reg_close_date=datetime.datetime.now(),
-        description="Test",
+        when=datetime.datetime.now(), reg_close_date=datetime.datetime.now(), description="Test",
     )
     m.save()
     assert len(Meeting.objects.all()) == 1

@@ -8,10 +8,8 @@ from django.conf import global_settings
 pytestmark = pytest.mark.django_db
 
 
-@override_settings(
-    STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 class SmokeTest(TestCase):
-
     def setUp(self):
         self.client = Client()
 
@@ -19,7 +17,7 @@ class SmokeTest(TestCase):
         # SETUP
 
         # TEST
-        response = self.client.get(reverse('announcements_list'), follow=True)
+        response = self.client.get(reverse("announcements_list"), follow=True)
 
         # CHECK
         self.assertEqual(response.status_code, 200)

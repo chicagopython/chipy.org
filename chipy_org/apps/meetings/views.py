@@ -10,12 +10,7 @@ from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import (
-    CreateView,
-    UpdateView,
-    ProcessFormView,
-    ModelFormMixin
-)
+from django.views.generic.edit import CreateView, UpdateView, ProcessFormView, ModelFormMixin
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -42,23 +37,22 @@ from .serializers import MeetingSerializer
 logger = logging.getLogger(__name__)
 
 
-class InitialRSVPMixin():
-
+class InitialRSVPMixin:
     def get_meeting(self):
         # override this method to determine the meeting used for the rsvp
         # the function is expected to return a single Meeting object
         pass
 
     def get_initial(self, meeting):
-        initial = {'response': 'Y'}
-        initial.update({'meeting': meeting})
+        initial = {"response": "Y"}
+        initial.update({"meeting": meeting})
         if self.request.user.is_authenticated:
             user = self.request.user
             user_data = {
-                'user': user,
-                'email': getattr(user, 'email', None),
-                'first_name': getattr(user, 'first_name', None),
-                'last_name': getattr(user, 'last_name', None),
+                "user": user,
+                "email": getattr(user, "email", None),
+                "first_name": getattr(user, "first_name", None),
+                "last_name": getattr(user, "last_name", None),
             }
             initial.update(user_data)
         self.initial = initial
@@ -75,24 +69,21 @@ class InitialRSVPMixin():
 
     def add_extra_context(self, context):
         meeting = self.get_meeting()
-        context['next_meeting'] = meeting
+        context["next_meeting"] = meeting
 
         if meeting:
             self.get_initial(meeting)
-            context['form'] = self.get_form(
-                request=self.request,
-                initial=self.initial
-            )
+            context["form"] = self.get_form(request=self.request, initial=self.initial)
 
             if self.request.user.is_authenticated:
-                context['rsvp'] = (RSVPModel.objects
-                                   .filter(meeting=meeting, user=self.request.user)
-                                   .first())
+                context["rsvp"] = RSVPModel.objects.filter(
+                    meeting=meeting, user=self.request.user
+                ).first()
         return context
 
 
 class PastMeetings(ListView):
-    template_name = 'meetings/past_meetings.html'
+    template_name = "meetings/past_meetings.html"
     queryset = Meeting.objects.filter(
         when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
@@ -100,8 +91,8 @@ class PastMeetings(ListView):
 
 
 class MeetingDetail(DetailView, InitialRSVPMixin):
-    template_name = 'meetings/meeting.html'
-    pk_url_kwarg = 'pk'
+    template_name = "meetings/meeting.html"
+    pk_url_kwarg = "pk"
     model = Meeting
 
     def get_meeting(self):
@@ -115,25 +106,25 @@ class MeetingDetail(DetailView, InitialRSVPMixin):
 
 
 class ProposeTopic(CreateView):
-    template_name = 'meetings/propose_topic.html'
+    template_name = "meetings/propose_topic.html"
     form_class = TopicForm
     success_url = reverse_lazy("home")
 
     def get_form_kwargs(self):
         kwargs = super(ProposeTopic, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def form_valid(self, form):
         self.object = form.save()
-        messages.success(self.request, 'Topic has been submitted.')
+        messages.success(self.request, "Topic has been submitted.")
         recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
         send_meeting_topic_submitted_email(self.object, recipients)
         return HttpResponseRedirect(self.get_success_url())
 
 
 class MyTopics(ListView):
-    template_name = 'meetings/my_topics.html'
+    template_name = "meetings/my_topics.html"
 
     def get_queryset(self):
         try:
@@ -145,18 +136,18 @@ class MyTopics(ListView):
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
-    http_method_names = ['post', 'get']
+    http_method_names = ["post", "get"]
     success_url = reverse_lazy("home")
 
     def get_template_names(self):
-        if self.request.method == 'POST':
-            return ['meetings/_rsvp_form_response.html']
-        elif self.request.method == 'GET':
-            return ['meetings/rsvp_form.html']
+        if self.request.method == "POST":
+            return ["meetings/_rsvp_form_response.html"]
+        elif self.request.method == "GET":
+            return ["meetings/rsvp_form.html"]
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def dispatch(self, request, *args, **kwargs):
@@ -164,13 +155,13 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
         def lookup_meeting():
             if self.request.method == "POST":
-                meeting_id = self.request.POST.get('meeting', None)
+                meeting_id = self.request.POST.get("meeting", None)
 
             if self.request.method == "GET":
-                meeting_id = self.request.GET.get('meeting', None)
+                meeting_id = self.request.GET.get("meeting", None)
 
             if not meeting_id:
-                raise Http404('Meeting missing from POST')
+                raise Http404("Meeting missing from POST")
 
             try:
                 meeting_id = int(meeting_id)
@@ -183,17 +174,14 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
         if self.request.user.is_authenticated:
             try:
-                self.object = RSVPModel.objects.get(
-                    user=self.request.user,
-                    meeting=self.meeting
-                )
+                self.object = RSVPModel.objects.get(user=self.request.user, meeting=self.meeting)
             except RSVPModel.DoesNotExist:
                 pass
 
         # check to see if registration is closed
         if not self.meeting.can_register():
-            messages.error(request, 'Registration for this meeting is closed.')
-            return redirect(reverse_lazy('home'))
+            messages.error(request, "Registration for this meeting is closed.")
+            return redirect(reverse_lazy("home"))
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -205,7 +193,7 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
         # calling super.form_valid(form) also does self.object = form.save()
         response = super().form_valid(form)
 
-        messages.success(self.request, 'RSVP Successful.')
+        messages.success(self.request, "RSVP Successful.")
         if not self.object.user and self.object.email:
             send_rsvp_email(self.object)
 
@@ -213,16 +201,16 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
     def get_initial(self):
         initial = {
-            'meeting': self.meeting,
-            'response': 'Y',
+            "meeting": self.meeting,
+            "response": "Y",
         }
         if self.request.user.is_authenticated:
             user = self.request.user
             data = {
-                'user': user,
-                'email': getattr(user, 'email', None),
-                'first_name': getattr(user, 'first_name', None),
-                'last_name': getattr(user, 'last_name', None)
+                "user": user,
+                "email": getattr(user, "email", None),
+                "first_name": getattr(user, "first_name", None),
+                "last_name": getattr(user, "last_name", None),
             }
             initial.update(data)
         return initial
@@ -235,53 +223,48 @@ class UpdateRSVP(UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def form_valid(self, form):
-        if self.request.method == 'POST':
-            messages.success(self.request, 'RSVP updated succesfully.')
+        if self.request.method == "POST":
+            messages.success(self.request, "RSVP updated succesfully.")
         return super().form_valid(form)
 
     def get_object(self, queryset=None):
-        obj = get_object_or_404(RSVPModel, key=self.kwargs['rsvp_key'])
+        obj = get_object_or_404(RSVPModel, key=self.kwargs["rsvp_key"])
         if not obj.meeting.can_register():
-            messages.error(self.request, 'Registration for this meeting is closed.')
+            messages.error(self.request, "Registration for this meeting is closed.")
             return redirect(reverse_lazy("home"))
         return obj
 
     def get_template_names(self):
-        if self.request.method == 'POST':
-            return ['meetings/_rsvp_form_response.html']
-        elif self.request.method == 'GET':
-            return ['meetings/rsvp_form.html']
+        if self.request.method == "POST":
+            return ["meetings/_rsvp_form_response.html"]
+        elif self.request.method == "GET":
+            return ["meetings/rsvp_form.html"]
 
 
 class RSVPlist(ListView):
-    context_object_name = 'attendees'
-    template_name = 'meetings/rsvp_list.html'
+    context_object_name = "attendees"
+    template_name = "meetings/rsvp_list.html"
 
     def get_queryset(self):
-        self.meeting = get_object_or_404(Meeting, key=self.kwargs['meeting_key'])
-        return RSVPModel.objects.filter(
-            meeting=self.meeting
-        ).exclude(
-            response='N'
-        ).order_by('last_name', 'first_name')
+        self.meeting = get_object_or_404(Meeting, key=self.kwargs["meeting_key"])
+        return (
+            RSVPModel.objects.filter(meeting=self.meeting)
+            .exclude(response="N")
+            .order_by("last_name", "first_name")
+        )
 
     def get_context_data(self, **kwargs):
-        rsvp_yes = RSVPModel.objects.filter(
-            meeting=self.meeting).exclude(response='N').count()
-        context = {
-            'meeting': self.meeting,
-            'guests': (rsvp_yes)
-        }
+        rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
+        context = {"meeting": self.meeting, "guests": (rsvp_yes)}
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context
 
 
 class RSVPlistCSVBase(RSVPlist):
-
     def _lookup_rsvps(self, rsvp):
         if self.private:
             yield [
@@ -315,19 +298,18 @@ class RSVPlistCSVBase(RSVPlist):
             yield row
 
     def render_to_response(self, context, **response_kwargs):
-        response = HttpResponse(content_type='text/csv')
+        response = HttpResponse(content_type="text/csv")
         file_name = slugify(f"chipy-export-{self.meeting.id}--{self.meeting.when}")
-        response['Content-Disposition'] = f'attachment; filename="{file_name}.csv"'
+        response["Content-Disposition"] = f'attachment; filename="{file_name}.csv"'
 
         writer = csv.writer(response, quoting=csv.QUOTE_ALL)
-        for row in self._lookup_rsvps(context['attendees']):
+        for row in self._lookup_rsvps(context["attendees"]):
             writer.writerow(row)
 
         return response
 
 
 class RSVPlistPrivate(RSVPlistCSVBase):
-
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):  # pylint: disable=arguments-differ
         return super(RSVPlistPrivate, self).dispatch(*args, **kwargs)
@@ -340,17 +322,18 @@ class RSVPlistHost(RSVPlistCSVBase):
 
 
 class PastTopics(ListView):
-    context_object_name = 'topics'
-    template_name = 'meetings/past_topics.html'
+    context_object_name = "topics"
+    template_name = "meetings/past_topics.html"
     queryset = Topic.objects.filter(
-        meeting__when__lt=datetime.date.today(), approved=True).order_by("-meeting__when")
+        meeting__when__lt=datetime.date.today(), approved=True
+    ).order_by("-meeting__when")
 
 
 class PastTopic(DetailView):
     model = Topic
     template_name = "meetings/past_topic.html"
     context_object_name = "topic"
-    pk_url_kwarg = 'id'
+    pk_url_kwarg = "id"
 
 
 class MeetingListAPIView(ListAPIView):

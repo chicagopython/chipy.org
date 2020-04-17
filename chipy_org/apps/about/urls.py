@@ -3,6 +3,5 @@ from django.contrib.flatpages.views import flatpage
 
 
 urlpatterns = [
-    url(r"^$", flatpage,
-        {'url': '/about/'}, name='about'),
+    url(r"^$", flatpage, {"url": "/about/"}, name="about"),
 ]

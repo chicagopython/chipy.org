@@ -48,4 +48,10 @@ test:
 lint:
 	docker-compose exec web pylint chipy_org/
 
+format:
+	docker-compose exec web black .
+
+format-check:
+	docker-compose exec web black --diff .
+
 setup: setup_env build

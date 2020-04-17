@@ -21,13 +21,13 @@ def display_name_to_rsvps(apps, schema_editor):
         parsed = probablepeople.tag(user.display_name)
         first_name = parsed[0].get('GivenName', '').lower()
         last_name = parsed[0].get('Surname', '').lower()
-        
+
         rsvps = RSVP.objects.filter(user=user.pk)
         for rsvp in rsvps:
             rsvp.first_name = first_name
             rsvp.last_name = last_name
             rsvp.save()
-    
+
 
 class Migration(migrations.Migration):
 

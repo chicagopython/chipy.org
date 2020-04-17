@@ -1,0 +1,30 @@
+{% extends "site_base.html" %}
+
+{% block body %}
+
+<h2>
+    {% if job_post.is_verified_sponsor %}
+        Sponsored:
+    {% endif %}
+
+    {{job_post.position}} at {{job_post.company_name}}</h2>
+
+<p>
+
+<b>Description:</b> {{job_post.description}}
+
+<p>
+
+<b>Company Website:</b> {{job_post.company_website}}
+
+<p>
+
+<b>Contact:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
+{% if job_post.contact.profile.is_external_recruiter %}
+  , External Recruiter
+{% endif %}
+
+<br>
+<b>Email:</b> {{job_post.contact.email}}
+
+{% endblock body %}

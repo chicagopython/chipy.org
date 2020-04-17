@@ -1,0 +1,30 @@
+{% extends "site_base.html" %}
+    
+
+{% block body %}
+<h2>Create a Job Post</h2>
+
+<form action="." method="post">
+    {% csrf_token %}
+    <p>
+    {{ job_user_form.as_p }}
+    <p>
+    {{ job_profile_form.as_p }}
+
+    {% for field in job_post_form %}
+      {% if field == job_post_form.agree_to_terms %}
+        {{field}} I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
+        <p>
+      {% elif field == job_post_form.contact %}
+         {{field}}
+      {% else %}  
+        {{field.label_tag}} {{field.errors}}
+        {{field}} 
+        {{field.help_text}}
+        <p>
+      {% endif %}
+    {% endfor %}
+
+    <input type="submit" value="Submit" class="btn btn-primary" >
+</form>
+{% endblock body %}

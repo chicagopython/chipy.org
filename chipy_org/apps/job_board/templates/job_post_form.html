@@ -15,8 +15,6 @@
       {% if field == job_post_form.agree_to_terms %}
         {{field}} I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
         <p>
-      {% elif field == job_post_form.contact %}
-         {{field}}
       {% else %}  
         {{field.label_tag}} {{field.errors}}
         {{field}} 

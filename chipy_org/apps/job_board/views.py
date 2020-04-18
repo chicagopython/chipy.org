@@ -11,12 +11,14 @@ from django.views.generic import ListView, DetailView
 from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileForm
 from .models import JobPost
 
+
 @login_required
 def create_job_post(request):
 
     if request.method == "POST":
 
-        job_post_form = JobPostForm(request.POST)
+        job_post = JobPost(contact=request.user)
+        job_post_form = JobPostForm(request.POST, instance=job_post)
         job_user_form = JobUserForm(request.POST, instance=request.user)
         job_profile_form = JobProfileForm(request.POST, instance=request.user.profile)
 
@@ -29,9 +31,8 @@ def create_job_post(request):
             return HttpResponseRedirect(reverse("after-submit-job-post"))
 
     else:
-        job_post_form = JobPostForm(
-            initial={"contact": request.user}
-        )  # sets an intial value only for unbound form, not for bound form
+        job_post = JobPost(contact=request.user)
+        job_post_form = JobPostForm(instance=job_post)
         job_user_form = JobUserForm(instance=request.user)
         job_profile_form = JobProfileForm(instance=request.user.profile)
 

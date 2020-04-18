@@ -56,5 +56,5 @@ def custom_500(request):
     )
 
 
-def customer_404(request):
-    return HttpResponse("<h1>404 - Page Not Found</h1>", status=404)
+def customer_404(request, e):
+    return HttpResponse('<h1>404 - Page Not Found</h1>', status=404)

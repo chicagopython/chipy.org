@@ -18,7 +18,10 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('display_name', models.CharField(max_length=200, verbose_name=b'Name for Security Check In')),
                 ('show', models.BooleanField(default=False, verbose_name=b'Show my information in the member list')),
-                ('user', models.OneToOneField(related_name='profile', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                    on_delete=models.deletion.CASCADE,
+                    related_name='profile', to=settings.AUTH_USER_MODEL)
+                ),
             ],
         ),
     ]

@@ -22,6 +22,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sponsor',
             name='sponsor_group',
-            field=models.ForeignKey(related_name='sponsors', blank=True, to='sponsors.SponsorGroup', null=True),
+            field=models.ForeignKey(
+                on_delete=models.deletion.CASCADE,
+                related_name='sponsors', blank=True, to='sponsors.SponsorGroup', null=True),
         ),
     ]

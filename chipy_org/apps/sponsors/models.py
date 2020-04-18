@@ -4,7 +4,7 @@ from django.urls import reverse
 
 
 class MeetingSponsor(models.Model):
-    sponsor = models.ForeignKey("sponsors.Sponsor", on_delete=models.PROTECT)
+    sponsor = models.ForeignKey("sponsors.Sponsor", on_delete=models.CASCADE)
     meeting = models.ForeignKey("meetings.Meeting", related_name="meeting_sponsors",
             on_delete=models.CASCADE)
     about = models.TextField(u"About this sponsorship", blank=True, null=True)
@@ -56,7 +56,7 @@ class Sponsor(models.Model):
         help_text=("All logos will be cropped to fit a 4 by 3 aspect ratio. "
                    "Resolution should be at minimum 400x300."))
     sponsor_group = models.ForeignKey(SponsorGroup, related_name='sponsors', blank=True, null=True,
-            on_delete=models.PROTECT)
+            on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name}"

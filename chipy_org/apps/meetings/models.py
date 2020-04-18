@@ -62,7 +62,7 @@ class MeetingType(CommonModel):
     subgroup = models.ForeignKey(
         'subgroups.SubGroup', blank=True, null=True,
         help_text='Optional Sub-group (i.e. SIG)',
-        on_delete=models.PROTECT)
+        on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     default_title = models.CharField(max_length=64, null=True, blank=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -87,7 +87,7 @@ class Meeting(CommonModel):
     reg_close_date = models.DateTimeField(
         "Registration Close Date",
         blank=True, null=True)
-    where = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.PROTECT)
+    where = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
     # Used for anonymous access to meeting information like RSVPs
     key = models.CharField(max_length=40, unique=True, blank=True)
     live_stream = models.CharField(max_length=500, null=True, blank=True)
@@ -98,7 +98,7 @@ class Meeting(CommonModel):
                    "Mentorship Meeting, Startup Row, etc.). "
                    "Leave this empty for the main meeting. "
                   ),
-        on_delete=models.PROTECT)
+        on_delete=models.CASCADE)
     custom_title = models.CharField(
         max_length=64,
         null=True,
@@ -149,7 +149,7 @@ class Presentor(CommonModel):
     def __str__(self):
         return f"{self.name} | ({self.email})"
 
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_LENGTH)
     email = models.EmailField(max_length=MAX_LENGTH, blank=True, null=True)
     phone = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
@@ -192,7 +192,7 @@ class Topic(CommonModel):
         help_text=(
             "Please select the meeting that you'd like to "
             "target your talk for."),
-        on_delete=models.PROTECT)
+        on_delete=models.CASCADE)
     experience_level = models.CharField(
         "Audience Experience Level",
         max_length=15,
@@ -232,7 +232,7 @@ class RSVP(CommonModel):
         ("N", "No"),
     )
 
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
     # willdo: remove name field keeping for migration purposes
     name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)

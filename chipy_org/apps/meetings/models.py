@@ -60,9 +60,12 @@ class MeetingType(CommonModel):
     """
 
     subgroup = models.ForeignKey(
-        'subgroups.SubGroup', blank=True, null=True,
-        help_text='Optional Sub-group (i.e. SIG)',
-        on_delete=models.CASCADE)
+        "subgroups.SubGroup",
+        blank=True,
+        null=True,
+        help_text="Optional Sub-group (i.e. SIG)",
+        on_delete=models.CASCADE,
+    )
     name = models.CharField(max_length=64)
     default_title = models.CharField(max_length=64, null=True, blank=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -84,21 +87,23 @@ class Meeting(CommonModel):
         return f"{self.when} location TBD"
 
     when = models.DateTimeField()
-    reg_close_date = models.DateTimeField(
-        "Registration Close Date",
-        blank=True, null=True)
+    reg_close_date = models.DateTimeField("Registration Close Date", blank=True, null=True)
     where = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
     # Used for anonymous access to meeting information like RSVPs
     key = models.CharField(max_length=40, unique=True, blank=True)
     live_stream = models.CharField(max_length=500, null=True, blank=True)
     meetup_id = models.TextField(blank=True, null=True)
     meeting_type = models.ForeignKey(
-        MeetingType, blank=True, null=True,
-        help_text=("Type of meeting (i.e. SIG Meeting, "
-                   "Mentorship Meeting, Startup Row, etc.). "
-                   "Leave this empty for the main meeting. "
-                  ),
-        on_delete=models.CASCADE)
+        MeetingType,
+        blank=True,
+        null=True,
+        help_text=(
+            "Type of meeting (i.e. SIG Meeting, "
+            "Mentorship Meeting, Startup Row, etc.). "
+            "Leave this empty for the main meeting. "
+        ),
+        on_delete=models.CASCADE,
+    )
     custom_title = models.CharField(
         max_length=64,
         null=True,
@@ -188,11 +193,13 @@ class Topic(CommonModel):
     )
     presentors = models.ManyToManyField(Presentor, blank=True)
     meeting = models.ForeignKey(
-        Meeting, blank=True, null=True, related_name='topics',
-        help_text=(
-            "Please select the meeting that you'd like to "
-            "target your talk for."),
-        on_delete=models.CASCADE)
+        Meeting,
+        blank=True,
+        null=True,
+        related_name="topics",
+        help_text=("Please select the meeting that you'd like to " "target your talk for."),
+        on_delete=models.CASCADE,
+    )
     experience_level = models.CharField(
         "Audience Experience Level",
         max_length=15,

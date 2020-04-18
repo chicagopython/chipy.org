@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView
 from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileForm
 from .models import JobPost
 
+
 @login_required
 def create_job_post(request):
 

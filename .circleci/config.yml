@@ -10,7 +10,7 @@ jobs:
           - /feature/*
     working_directory: ~/circleci-app
     docker:
-      - image: circleci/python:3.6.9
+      - image: circleci/python:3.8.2
         environment:
           ALLOWED_HOSTS: localhost
           CONNECT_METHOD: http

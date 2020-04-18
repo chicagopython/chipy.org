@@ -1,5 +1,5 @@
 
 Sign in with <br>
-<a href="{% url 'social:begin' 'google-oauth2' %}?{{ redirect_querystring }}"><button class="zocial google">Google</button></a><br>
-<a href="{% url 'social:begin' 'github' %}?{{ redirect_querystring }}"><button class="zocial github">Github</button></a><br>
+<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"><button class="zocial google">Google</button></a><br>
+<a href="{% url 'social:begin' 'github' %}?next={{ request.GET.next }}"><button class="zocial github">Github</button></a><br>
 <button class="zocial openid" id="openid-button">OpenID</button><br>

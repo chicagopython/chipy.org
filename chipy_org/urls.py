@@ -16,7 +16,7 @@ admin.autodiscover()
 urlpatterns = [
     url(r'', include('chipy_org.apps.main.urls')),
     url('', include('social_django.urls', namespace='social')),
-    url(r'^accounts/login/$', django.contrib.auth.views.LoginView.as_view),
+    url(r'^accounts/login/$', django.contrib.auth.views.LoginView.as_view()),
     url(r'^login/{0,1}$', TemplateView.as_view(template_name='login.html')),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^meetings/', include('chipy_org.apps.meetings.urls')),
@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^profiles/', include('chipy_org.apps.profiles.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^about/', include('chipy_org.apps.about.urls')),
-    url(r'^logout', django.contrib.auth.views.LogoutView.as_view, {'next_page': '/'}),
+    url(r'^logout', django.contrib.auth.views.LogoutView.as_view(), {'next_page': '/'}),
     url(r'^contact/', ChipyContactView.as_view(), name="contact"),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^pages/', include('django.contrib.flatpages.urls')),

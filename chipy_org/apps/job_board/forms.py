@@ -20,7 +20,6 @@ class JobPostForm(forms.ModelForm):
             "is_sponsor",
             "can_host_meeting",
             "company_website",
-            # "contact",
             "agree_to_terms",
         ]
 

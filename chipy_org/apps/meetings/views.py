@@ -128,7 +128,7 @@ class MyTopics(ListView):
 
     def get_queryset(self):
         try:
-            presenter = Presentor.objects.filter(user=self.request.user)
+            presenter = Presentor.objects.get(user=self.request.user)
         except Presentor.DoesNotExist:
             return Topic.objects.none()
 

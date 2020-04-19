@@ -99,7 +99,7 @@ class MeetingAdmin(admin.ModelAdmin):
         return ""
 
     class Media:
-        js = ("js/meetup_sync.js",)
+        js = ["admin/js/jquery.init.js", "js/meetup_sync.js",]
 
     ordering = ("-when",)
 

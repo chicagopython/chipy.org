@@ -48,7 +48,7 @@ class TopicAdmin(admin.ModelAdmin):
             " &bull; ".join(
                 [
                     f"<a href='{reverse('admin:meetings_presentor_change', args=[p.id])}'>"
-                    "{p.name}</a>"
+                    f"{p.name}</a>"
                     for p in obj.presentors.all()
                 ]
             )

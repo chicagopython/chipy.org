@@ -4,9 +4,9 @@ from django.contrib import admin
 from django import forms
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, Presentor, RSVP, MeetingType
-
 
 class VenueAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "phone", "address"]
@@ -83,15 +83,20 @@ class MeetingAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ["created", "modified"]
 
+    @mark_safe
     def action(self, obj):
         if obj.meetup_id:
             return (
-                '<input type="submit" value="Sync Meetup" '
-                f'class="meetup-sync-button" data-meeting-pk="{obj.pk}">'
+                f"""
+                <input
+                    type="submit"
+                    value="Sync Meetup"
+                    class="meetup-sync-button"
+                    data-meeting-pk="{obj.pk}"
+                >
+                """
             )
         return ""
-
-    action.allow_tags = True
 
     class Media:
         js = ("js/meetup_sync.js",)

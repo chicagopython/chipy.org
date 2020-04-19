@@ -20,7 +20,7 @@ class JobPostAdmin(admin.ModelAdmin):
 
     # Substitute the CharField Widget for a TextArea Widget.
     # This is used for the 'description' CharField in the admin
-    def formfield_for_dbfield(self, db_field, **kwargs):
+    def formfield_for_dbfield(self, db_field, **kwargs):  # pylint: disable=arguments-differ
         formfield = super(JobPostAdmin, self).formfield_for_dbfield(db_field, **kwargs)
         if db_field.name == "description":
             formfield.widget = forms.Textarea(attrs=formfield.widget.attrs)

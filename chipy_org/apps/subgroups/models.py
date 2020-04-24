@@ -14,6 +14,6 @@ class SubGroup(CommonModel):
     def __unicode__(self):
         return f"{self.id} | ({self.name})"
 
-    class Meta(object):
+    class Meta:
         verbose_name = "Sub Group (SIG)"
         verbose_name_plural = "Sub Groups (SIGs)"

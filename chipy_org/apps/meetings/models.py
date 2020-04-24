@@ -74,7 +74,7 @@ class MeetingType(CommonModel):
     def __str__(self):
         return f"{self.id} | ({self.name})"
 
-    class Meta(object):
+    class Meta:
         verbose_name = "Meeting Type"
         verbose_name_plural = "Meeting Types"
 

@@ -4,6 +4,7 @@ import pytest
 from django.test import TestCase, override_settings
 from django.test import Client
 from django.core import mail
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
@@ -22,9 +23,6 @@ class MeetingsTest(test_utils.AuthenticatedTest):
         """
         Tests the uniqueness constraints on the rsvp model
         """
-
-        from django.core.exceptions import ValidationError
-
         test_venue = Venue.objects.create(name="Test")
         meeting = Meeting.objects.create(when=datetime.date.today(), where=test_venue)
         rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")

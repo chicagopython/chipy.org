@@ -2,11 +2,11 @@ import random
 import string
 from django.contrib import admin
 from django import forms
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, Presentor, RSVP, MeetingType
-
 
 class VenueAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "phone", "address"]
@@ -48,7 +48,7 @@ class TopicAdmin(admin.ModelAdmin):
             " &bull; ".join(
                 [
                     f"<a href='{reverse('admin:meetings_presentor_change', args=[p.id])}'>"
-                    "{p.name}</a>"
+                    f"{p.name}</a>"
                     for p in obj.presentors.all()
                 ]
             )
@@ -83,18 +83,23 @@ class MeetingAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ["created", "modified"]
 
+    @mark_safe
     def action(self, obj):
         if obj.meetup_id:
             return (
-                '<input type="submit" value="Sync Meetup" '
-                f'class="meetup-sync-button" data-meeting-pk="{obj.pk}">'
+                f"""
+                <input
+                    type="submit"
+                    value="Sync Meetup"
+                    class="meetup-sync-button"
+                    data-meeting-pk="{obj.pk}"
+                >
+                """
             )
         return ""
 
-    action.allow_tags = True
-
     class Media:
-        js = ("js/meetup_sync.js",)
+        js = ["admin/js/jquery.init.js", "js/meetup_sync.js",]
 
     ordering = ("-when",)
 

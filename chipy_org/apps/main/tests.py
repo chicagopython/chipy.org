@@ -2,7 +2,7 @@
 import pytest
 from django.test import TestCase, override_settings
 from django.test import Client
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import global_settings
 
 pytestmark = pytest.mark.django_db
@@ -29,7 +29,7 @@ class SmokeTest(TestCase):
 )
 def test_settingspy_env_var(monkeypatch, test_in, result):
     monkeypatch.setenv("TEST_VAR", test_in)
-    from chipy_org import settings
+    from chipy_org import settings  # pylint: disable=import-outside-toplevel
 
     assert settings.env_var("TEST_VAR") == result
 
@@ -40,6 +40,6 @@ def test_settingspy_env_var(monkeypatch, test_in, result):
 )
 def test_settingspy_env_list(monkeypatch, test_in, result):
     monkeypatch.setenv("TEST_VAR", test_in)
-    from chipy_org import settings
+    from chipy_org import settings  # pylint: disable=import-outside-toplevel
 
     assert settings.env_list("TEST_VAR") == result

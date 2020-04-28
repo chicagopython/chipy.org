@@ -54,9 +54,8 @@ $(function(){
 
         $.post(url, {}, function(){
             alert('Sync successful');
-        }).error(function() {
+        }).fail(function() {
             alert('Sync failed');
         });
-
     });
 });

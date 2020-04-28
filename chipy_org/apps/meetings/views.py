@@ -1,3 +1,4 @@
+import abc
 import datetime
 import csv
 import logging
@@ -5,7 +6,7 @@ import logging
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
@@ -37,11 +38,12 @@ from .serializers import MeetingSerializer
 logger = logging.getLogger(__name__)
 
 
-class InitialRSVPMixin:
+class InitialRSVPMixin(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
     def get_meeting(self):
         # override this method to determine the meeting used for the rsvp
         # the function is expected to return a single Meeting object
-        pass
+        raise NotImplementedError("Must implement 'get_meeting'")
 
     def get_initial(self, meeting):
         initial = {"response": "Y"}
@@ -128,7 +130,7 @@ class MyTopics(ListView):
 
     def get_queryset(self):
         try:
-            presenter = Presentor.objects.filter(user=self.request.user)
+            presenter = Presentor.objects.get(user=self.request.user)
         except Presentor.DoesNotExist:
             return Topic.objects.none()
 
@@ -257,7 +259,7 @@ class RSVPlist(ListView):
             .order_by("last_name", "first_name")
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):  # pylint: disable=arguments-differ
         rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
         context = {"meeting": self.meeting, "guests": (rsvp_yes)}
         context.update(super(RSVPlist, self).get_context_data(**kwargs))

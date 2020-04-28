@@ -58,7 +58,7 @@ ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS").split(",")
 
 MANAGERS = ADMINS
 
-CHIPY_TOPIC_SUBMIT_EMAILS = [e for e in env_var("CHIPY_TOPIC_SUBMIT_EMAILS", "").split(",")]
+CHIPY_TOPIC_SUBMIT_EMAILS = env_var("CHIPY_TOPIC_SUBMIT_EMAILS", "").split(",")
 
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {"default": dj_database_url.config(default="postgres://localhost:5432/chipy_org")}
@@ -156,7 +156,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",

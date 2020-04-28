@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     display_name = models.CharField(max_length=200, verbose_name="Name for Security Check In")
     show = models.BooleanField(default=False, verbose_name="Show my information in the member list")
     is_external_recruiter = models.BooleanField(

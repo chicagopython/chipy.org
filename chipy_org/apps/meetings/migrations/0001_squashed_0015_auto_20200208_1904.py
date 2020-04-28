@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=255, blank=True, null=True)),
                 ('phone', models.CharField(max_length=255, blank=True, null=True)),
                 ('release', models.BooleanField(default=False)),
-                ('user', models.ForeignKey(blank=True, null=True, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=models.deletion.CASCADE, blank=True, null=True, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -62,8 +62,10 @@ class Migration(migrations.Migration):
                 ('response', models.CharField(max_length=1, choices=[('Y', 'Yes'), ('N', 'No'), ('M', 'Maybe')])),
                 ('key', models.CharField(max_length=255, blank=True, null=True)),
                 ('meetup_user_id', models.IntegerField(blank=True, null=True)),
-                ('meeting', models.ForeignKey(to='meetings.Meeting')),
-                ('user', models.ForeignKey(blank=True, null=True, to=settings.AUTH_USER_MODEL)),
+                ('meeting', models.ForeignKey(on_delete=models.deletion.CASCADE, to='meetings.Meeting')),
+                ('user', models.ForeignKey(
+                    on_delete=models.deletion.CASCADE,
+                    blank=True, null=True, to=settings.AUTH_USER_MODEL)),
                 ('guests', models.IntegerField(default=0)),
             ],
             options={
@@ -83,7 +85,14 @@ class Migration(migrations.Migration):
                 ('slides_link', models.URLField(blank=True, null=True)),
                 ('start_time', models.DateTimeField(blank=True, null=True)),
                 ('approved', models.BooleanField(default=False)),
-                ('meeting', models.ForeignKey(blank=True, null=True, help_text="Please select the meeting that you'd like to target your talk for.", related_name='topics', to='meetings.Meeting')),
+                ('meeting', models.ForeignKey(
+                    on_delete=models.deletion.CASCADE,
+                    blank=True, 
+                    null=True,
+                    help_text="Please select the meeting that you'd like to target your talk for.",
+                    related_name='topics',
+                    to='meetings.Meeting')
+                ),
                 ('presentors', models.ManyToManyField(blank=True, to='meetings.Presentor')),
                 ('experience_level', models.CharField(verbose_name='Audience Experience Level', max_length=15, blank=True, null=True, choices=[('novice', 'Novice'), ('intermediate', 'Intermediate'), ('advanced', 'Advanced')])),
                 ('notes', models.TextField(verbose_name='Private Submission Notes', blank=True, null=True, help_text='Additional non-public information or context you want us to know about the talk submission.')),
@@ -114,7 +123,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='meeting',
             name='where',
-            field=models.ForeignKey(blank=True, null=True, to='meetings.Venue'),
+            field=models.ForeignKey(on_delete=models.deletion.CASCADE, blank=True, null=True, to='meetings.Venue'),
         ),
         migrations.CreateModel(
             name='MeetingType',
@@ -125,7 +134,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=64)),
                 ('slug', models.SlugField(max_length=64, unique=True)),
                 ('description', tinymce.models.HTMLField(blank=True, null=True)),
-                ('subgroup', models.ForeignKey(blank=True, null=True, help_text='Optional Sub-group (i.e. SIG)', to='subgroups.SubGroup')),
+                ('subgroup', models.ForeignKey(on_delete=models.deletion.CASCADE, blank=True, null=True, help_text='Optional Sub-group (i.e. SIG)', to='subgroups.SubGroup')),
             ],
             options={
                 'verbose_name': 'Meeting Type',
@@ -140,7 +149,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='meeting',
             name='meeting_type',
-            field=models.ForeignKey(blank=True, null=True, help_text='Type of meeting (i.e. SIG Meeting, Mentorship Meeting, Startup Row, etc.). Leave this empty for the main meeting.', to='meetings.MeetingType'),
+            field=models.ForeignKey(
+                on_delete=models.deletion.CASCADE,
+                blank=True, null=True, help_text='Type of meeting (i.e. SIG Meeting, Mentorship Meeting, Startup Row, etc.). Leave this empty for the main meeting.', to='meetings.MeetingType'),
         ),
         migrations.AddField(
             model_name='meeting',
@@ -197,6 +208,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='meeting',
             name='meeting_type',
-            field=models.ForeignKey(blank=True, null=True, help_text='Type of meeting (i.e. SIG Meeting, Mentorship Meeting, Startup Row, etc.). Leave this empty for the main meeting. ', to='meetings.MeetingType'),
+            field=models.ForeignKey(
+                on_delete=models.deletion.CASCADE,
+                blank=True, null=True, help_text='Type of meeting (i.e. SIG Meeting, Mentorship Meeting, Startup Row, etc.). Leave this empty for the main meeting. ', to='meetings.MeetingType'),
         ),
     ]

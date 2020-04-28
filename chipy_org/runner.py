@@ -1,4 +1,6 @@
-class PytestTestRunner(object):
+import pytest
+
+class PytestTestRunner:
     """Runs pytest to discover and run tests."""
 
     def __init__(self, verbosity=1, failfast=False, keepdb=False, **kwargs):
@@ -11,8 +13,6 @@ class PytestTestRunner(object):
 
         It translates some of Django's test command option to pytest's.
         """
-        import pytest
-
         argv = []
         if self.verbosity == 0:
             argv.append("--quiet")

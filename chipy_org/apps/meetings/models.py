@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel
@@ -60,7 +60,11 @@ class MeetingType(CommonModel):
     """
 
     subgroup = models.ForeignKey(
-        "subgroups.SubGroup", blank=True, null=True, help_text="Optional Sub-group (i.e. SIG)"
+        "subgroups.SubGroup",
+        blank=True,
+        null=True,
+        help_text="Optional Sub-group (i.e. SIG)",
+        on_delete=models.CASCADE,
     )
     name = models.CharField(max_length=64)
     default_title = models.CharField(max_length=64, null=True, blank=True)
@@ -70,7 +74,7 @@ class MeetingType(CommonModel):
     def __str__(self):
         return f"{self.id} | ({self.name})"
 
-    class Meta(object):
+    class Meta:
         verbose_name = "Meeting Type"
         verbose_name_plural = "Meeting Types"
 
@@ -84,7 +88,7 @@ class Meeting(CommonModel):
 
     when = models.DateTimeField()
     reg_close_date = models.DateTimeField("Registration Close Date", blank=True, null=True)
-    where = models.ForeignKey(Venue, blank=True, null=True)
+    where = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
     # Used for anonymous access to meeting information like RSVPs
     key = models.CharField(max_length=40, unique=True, blank=True)
     live_stream = models.CharField(max_length=500, null=True, blank=True)
@@ -98,6 +102,7 @@ class Meeting(CommonModel):
             "Mentorship Meeting, Startup Row, etc.). "
             "Leave this empty for the main meeting. "
         ),
+        on_delete=models.CASCADE,
     )
     custom_title = models.CharField(
         max_length=64,
@@ -149,7 +154,7 @@ class Presentor(CommonModel):
     def __str__(self):
         return f"{self.name} | ({self.email})"
 
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_LENGTH)
     email = models.EmailField(max_length=MAX_LENGTH, blank=True, null=True)
     phone = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
@@ -193,6 +198,7 @@ class Topic(CommonModel):
         null=True,
         related_name="topics",
         help_text=("Please select the meeting that you'd like to " "target your talk for."),
+        on_delete=models.CASCADE,
     )
     experience_level = models.CharField(
         "Audience Experience Level",
@@ -233,7 +239,7 @@ class RSVP(CommonModel):
         ("N", "No"),
     )
 
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
     # willdo: remove name field keeping for migration purposes
     name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
@@ -241,7 +247,7 @@ class RSVP(CommonModel):
     last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
-    meeting = models.ForeignKey(Meeting)
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)

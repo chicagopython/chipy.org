@@ -30,7 +30,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('about', models.TextField(null=True, verbose_name='About this sponsorship', blank=True)),
                 ('about_short', models.CharField(max_length=128, null=True, verbose_name='Brief description of sponsorship', blank=True)),
-                ('meeting', models.ForeignKey(related_name='meeting_sponsors', to='meetings.Meeting')),
+                ('meeting', models.ForeignKey(
+                    on_delete=models.deletion.CASCADE,
+                    related_name='meeting_sponsors', to='meetings.Meeting')),
             ],
             options={
                 'ordering': ['sponsor__name'],
@@ -52,11 +54,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='meetingsponsor',
             name='sponsor',
-            field=models.ForeignKey(to='sponsors.Sponsor'),
+            field=models.ForeignKey(
+                on_delete=models.deletion.CASCADE,
+                to='sponsors.Sponsor'),
         ),
         migrations.AddField(
             model_name='generalsponsor',
             name='sponsor',
-            field=models.ForeignKey(to='sponsors.Sponsor'),
+            field=models.ForeignKey(
+                on_delete=models.deletion.CASCADE,
+                to='sponsors.Sponsor'),
         ),
     ]

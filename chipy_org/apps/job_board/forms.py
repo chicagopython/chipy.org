@@ -20,7 +20,6 @@ class JobPostForm(forms.ModelForm):
             "is_sponsor",
             "can_host_meeting",
             "company_website",
-            "contact",
             "agree_to_terms",
         ]
 
@@ -31,6 +30,12 @@ class JobPostForm(forms.ModelForm):
 
 
 class JobUserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(JobUserForm, self).__init__(*args, **kwargs)
+        self.fields["first_name"].required = True
+        self.fields["last_name"].required = True
+        self.fields["email"].required = True
+
     class Meta:
         model = User
 

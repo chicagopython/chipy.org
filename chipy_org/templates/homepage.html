@@ -339,18 +339,32 @@ h2 a {
             <div class="module span12">
 
                 {% if general_sponsors %}
-                <h3>Platinum Sponsors</h3>
-                {% for general_sponsor in general_sponsors %}
-                  <div class="sponsor-home-block">
-                     {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
-                     <div class="sponsor-home-image">
-                         <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
-                             <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
-                         </a>
-                     </div>
-                     {% endthumbnail %}
-                  </div>
-                {% endfor %}
+                                 
+                    {% for general_sponsor in general_sponsors %}
+                        
+                        <div class="sponsor-home-block">
+                        
+                        {% ifchanged general_sponsor.sponsor.sponsor_group.name %}
+                            <h3>{{ general_sponsor.sponsor.sponsor_group.name }}</h3>
+                        {% endifchanged %}
+                        
+                        {% if general_sponsor.sponsor.logo %}
+                            {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
+                                <div class="sponsor-home-image">
+                                    <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
+                                        <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
+                                    </a>
+                                </div>
+                            {% endthumbnail %}
+                        {% else %}
+                            <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
+                                <h4>{{general_sponsor.sponsor}}</h4>
+                            </a>
+                        {% endif %}
+                        </div>
+
+                    {% endfor %}                        
+                   
                 {% endif %}
 
             </div><!--/span-->

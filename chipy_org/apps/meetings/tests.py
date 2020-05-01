@@ -180,3 +180,25 @@ class MeetingTitleTest(TestCase):
             when=datetime.date.today(), custom_title="Main Custom Title"
         )
         self.assertEqual(meeting.title, "Main Custom Title")
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_rsvp_works_for_anonymous_user(client):
+    meeting = Meeting.objects.create(
+        when=datetime.date.today() + datetime.timedelta(days=1)
+    )
+    route = reverse("rsvp")
+    response = client.post(route, data={
+        "meeting": meeting.id,
+        "first_name": "Some",
+        "last_name": "Body",
+        "email": "somebody@example.com",
+    })
+    assert response.status_code == 200
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_rsvp_fails_gracefully_with_missing_data(client):
+    meeting = Meeting.objects.create(
+        when=datetime.date.today() + datetime.timedelta(days=1)
+    )
+    response = client.post(reverse("rsvp"), data={"meeting": meeting.id})
+    assert response.status_code == 200

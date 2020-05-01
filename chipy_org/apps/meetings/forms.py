@@ -68,6 +68,9 @@ class TopicForm(forms.ModelForm):
 class RSVPForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for field in ["email", "first_name", "last_name"]:
+            self.fields[field].required = True
+
         if self.instance.pk:
             del self.fields["email"]
 

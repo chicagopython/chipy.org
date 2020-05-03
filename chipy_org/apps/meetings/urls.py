@@ -12,7 +12,7 @@ from .views import (
     ProposeTopic,
     RSVPlistHost,
     RSVPlistPrivate,
-    UpdateRSVP
+    UpdateRSVP,
 )
 
 urlpatterns = [

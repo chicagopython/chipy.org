@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, Presentor, RSVP, MeetingType
 
+
 class VenueAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "phone", "address"]
     search_fields = ["name", "email", "phone", "address"]
@@ -86,8 +87,7 @@ class MeetingAdmin(admin.ModelAdmin):
     @mark_safe
     def action(self, obj):
         if obj.meetup_id:
-            return (
-                f"""
+            return f"""
                 <input
                     type="submit"
                     value="Sync Meetup"
@@ -95,11 +95,13 @@ class MeetingAdmin(admin.ModelAdmin):
                     data-meeting-pk="{obj.pk}"
                 >
                 """
-            )
         return ""
 
     class Media:
-        js = ["admin/js/jquery.init.js", "js/meetup_sync.js",]
+        js = [
+            "admin/js/jquery.init.js",
+            "js/meetup_sync.js",
+        ]
 
     ordering = ("-when",)
 

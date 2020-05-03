@@ -46,7 +46,7 @@ test:
 	docker-compose exec web pytest -v chipy_org/
 
 lint:
-	docker-compose exec web pylint chipy_org/
+	docker-compose exec web pylint -j 0 chipy_org/
 
 format:
 	docker-compose exec web black .

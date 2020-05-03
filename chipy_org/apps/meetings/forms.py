@@ -1,7 +1,9 @@
 import datetime
-from nocaptcha_recaptcha.fields import NoReCaptchaField
+
 from django import forms
-from .models import Topic, Presentor, RSVP, Meeting
+from nocaptcha_recaptcha.fields import NoReCaptchaField
+
+from .models import RSVP, Meeting, Presentor, Topic
 
 
 class TopicForm(forms.ModelForm):

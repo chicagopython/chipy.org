@@ -1,12 +1,14 @@
 from __future__ import unicode_literals
+
 import datetime
-import string
 import random
-from django.utils import timezone
-from django.db import models
+import string
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel

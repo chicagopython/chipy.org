@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-from .views import ProfilesList, ProfileEdit
 
+from .views import ProfileEdit, ProfilesList
 
 app_name = "profiles"  # pylint: disable=invalid-name
 

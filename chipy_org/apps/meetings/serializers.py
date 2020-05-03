@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Meeting, Topic, Presentor
+from .models import Meeting, Presentor, Topic
 
 
 class PresenterSerializer(serializers.ModelSerializer):

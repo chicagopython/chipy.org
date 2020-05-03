@@ -1,39 +1,32 @@
 import abc
-import datetime
 import csv
+import datetime
 import logging
 
 from django.conf import settings
-from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.urls import reverse_lazy
-from django.utils.text import slugify
-
-from django.views.generic import ListView, DetailView
-from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import CreateView, UpdateView, ProcessFormView, ModelFormMixin
-from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.utils.text import slugify
+from django.views.generic import DetailView, ListView
+from django.views.generic.base import TemplateResponseMixin
+from django.views.generic.edit import CreateView, ModelFormMixin, ProcessFormView, UpdateView
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
-from .utils import meetup_meeting_sync
-from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
-from .forms import TopicForm, RSVPForm, RSVPFormWithCaptcha
-from .models import (
-    Meeting,
-    Topic,
-    Presentor,
-)
-
+from .email import send_meeting_topic_submitted_email, send_rsvp_email
+from .forms import RSVPForm, RSVPFormWithCaptcha, TopicForm
 from .models import RSVP as RSVPModel
+from .models import Meeting, Presentor, Topic
 from .serializers import MeetingSerializer
+from .utils import meetup_meeting_sync
 
 logger = logging.getLogger(__name__)
 

@@ -2,8 +2,9 @@ import datetime
 from datetime import date
 
 from django.views.generic import DetailView, ListView
-from .models import Sponsor, SponsorGroup
+
 from ..meetings.models import Meeting
+from .models import Sponsor, SponsorGroup
 
 
 class SponsorDetailView(DetailView):

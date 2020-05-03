@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import Textarea
+
 from chipy_org.apps.profiles.models import UserProfile
+
 from .models import JobPost
 
 

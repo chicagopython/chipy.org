@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import traceback
+
 from django.contrib import messages
 from django.shortcuts import redirect
-
 from social_core.exceptions import SocialAuthBaseException
 from social_django.middleware import SocialAuthExceptionMiddleware
 

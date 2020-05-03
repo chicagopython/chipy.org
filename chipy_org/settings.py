@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+
 import dj_database_url
 
 

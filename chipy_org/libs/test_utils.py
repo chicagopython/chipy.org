@@ -1,6 +1,6 @@
 import django
-from django.test.client import Client
 from django.contrib.auth.models import User
+from django.test.client import Client
 
 
 class AuthenticatedTest(django.test.TestCase):

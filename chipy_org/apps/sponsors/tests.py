@@ -1,11 +1,10 @@
 # pylint: disable=invalid-name, duplicate-code, redefined-outer-name
-from django.urls import reverse
-from django.conf import global_settings
-from django.test import override_settings, Client
 import pytest
+from django.conf import global_settings
+from django.test import Client, override_settings
+from django.urls import reverse
 
 from .models import Sponsor
-
 
 pytestmark = pytest.mark.django_db
 

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 # from django.urls import path
-from .views import create_job_post, after_submit_job_post, JobPostList, JobPostDetail
+from .views import JobPostDetail, JobPostList, after_submit_job_post, create_job_post
 
 urlpatterns = [
     url(r"^create/$", create_job_post, name="create-job-post"),

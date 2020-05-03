@@ -1,14 +1,15 @@
-from itertools import chain
 import datetime
+from itertools import chain
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
 
-from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm, JobProfileForm
+from chipy_org.apps.job_board.forms import JobPostForm, JobProfileForm, JobUserForm
+
 from .models import JobPost
 
 

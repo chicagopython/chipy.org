@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
-from django.views.generic import ListView
-from django.views.generic import UpdateView
+from django.views.generic import ListView, UpdateView
 
-from .models import UserProfile
 from .forms import ProfileForm
+from .models import UserProfile
 
 
 class ProfilesList(ListView):

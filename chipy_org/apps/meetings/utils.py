@@ -2,10 +2,10 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
 import requests
-from .models import Meeting, RSVP
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
+from .models import RSVP, Meeting
 
 logger = logging.getLogger(__name__)
 

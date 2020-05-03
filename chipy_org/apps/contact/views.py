@@ -1,6 +1,6 @@
-from nocaptcha_recaptcha.fields import NoReCaptchaField
-from envelope.views import ContactView
 from envelope.forms import ContactForm
+from envelope.views import ContactView
+from nocaptcha_recaptcha.fields import NoReCaptchaField
 
 
 class ChipyContactForm(ContactForm):

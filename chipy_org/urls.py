@@ -1,15 +1,14 @@
-from django.conf import settings
-from django.conf.urls import url, include
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib import admin
-from django.views.generic import TemplateView
 import django.contrib.auth.views
 import django.views
+from django.conf import settings
+from django.conf.urls import include, url
+from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
+import chipy_org.apps.main.views
 from chipy_org.apps.contact.views import ChipyContactView
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
-import chipy_org.apps.main.views
-
 
 admin.autodiscover()
 

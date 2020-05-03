@@ -232,6 +232,44 @@ class Topic(CommonModel):
     objects = TopicsQuerySet.as_manager()
 
 
+class TopicDraft(Topic):
+    topic = models.ForeignKey("meetings.Topic", on_delete=models.CASCADE, related_name="drafts")
+
+    tracked_fields = [
+        'title', 'meeting', 'experience_level',
+        'length_minutes', 'description', 'slides_link']
+    tracked_relations = [
+        'presentors',
+    ]
+
+    def _copy_tracked(self, src, dst):
+        for fld in TopicDraft.tracked_fields:
+            setattr(dst, fld, getattr(src, fld))
+        dst.save()
+        for rel in TopicDraft.tracked_relations:
+            getattr(src, rel).clear()
+            for obj in getattr(src, rel).all():
+                getattr(dst, rel).add(obj)
+
+    def publish(self):
+        topic = self.topic
+        self._copy_tracked(self, topic)
+
+    def __rrshift__(self, other):
+        self.topic = other
+        self._copy_tracked(other, self)
+
+    def __eq__(self, other):
+        for fld in TopicDraft.tracked_fields:
+            if getattr(self, fld) != getattr(other, fld):
+                return False
+        for rel in TopicDraft.tracked_relations:
+            if (set(getattr(self, rel).values_list('id', flat=True)) !=
+                set(getattr(other, rel).values_list('id', flat=True))):
+                return False
+        return True
+
+
 class RSVP(CommonModel):
 
     RSVP_CHOICES = (

@@ -17,6 +17,7 @@ django-storages==1.9.1
 django-tinymce==2.8.0 # this looks abandoned
 Django==2.2.12
 djangorestframework==3.11.0 # how to test
+diff-match-patch==20181111
 feedparser==5.2.1
 gunicorn==20.0.4
 httplib2==0.17.0

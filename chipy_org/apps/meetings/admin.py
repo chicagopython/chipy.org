@@ -2,11 +2,16 @@ import random
 import string
 from django.contrib import admin
 from django import forms
-from django.urls import reverse
+from django.urls import reverse, path
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.template.response import TemplateResponse
+from django.contrib.admin.utils import unquote
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from ckeditor.widgets import CKEditorWidget
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
-from .models import Meeting, Venue, Topic, Presentor, RSVP, MeetingType
+from .models import Meeting, Venue, Topic, TopicDraft, Presentor, RSVP, MeetingType
 
 class VenueAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "phone", "address"]
@@ -22,6 +27,13 @@ class TopicInline(admin.StackedInline):
         "created",
     ]
     extra = 0
+
+
+class TopicDraftFrom(forms.ModelForm):
+
+    class Meta:
+        model = TopicDraft
+        fields = TopicDraft.tracked_fields + TopicDraft.tracked_relations
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -42,6 +54,66 @@ class TopicAdmin(admin.ModelAdmin):
     list_filter = ["approved", "experience_level"]
     search_fields = ["title"]
     filter_horizontal = ["presentors"]
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('<path:object_id>/drafts/',
+                 self.admin_site.admin_view(self.topic_drafts),
+                 name="topic_drafts"),
+            path('<path:object_id>/drafts/<int:draft_id>/',
+                 self.admin_site.admin_view(self.topic_draft),
+                 name="topic_draft"),
+        ]
+        return my_urls + urls
+
+    def topic_drafts(self, request, object_id):
+        obj = self.get_object(request, unquote(object_id))
+        opts = self.model._meta
+        app_label = opts.app_label
+        drafts = obj.drafts.filter().order_by('-created')
+        context = {
+            **self.admin_site.each_context(request),
+            'object_id': object_id,
+            'original': obj,
+            'drafts': drafts,
+            'app_label': app_label,
+            'opts': opts,
+        }
+        return TemplateResponse(request, "admin/meetings/topic/topicdrafts.html", context)
+
+
+    def topic_draft(self, request, object_id, draft_id):
+        obj = self.get_object(request, unquote(object_id))
+        opts = self.model._meta
+        app_label = opts.app_label
+        draft = obj.drafts.get(id=draft_id)
+
+        if request.method == "POST":
+            form = TopicDraftFrom(instance=draft, data=request.POST)
+            if request.POST.get("_save"):
+                form.save()
+                messages.success(request, 'Draft saved.')
+            elif request.POST.get("_publish"):
+                draft = form.save(commit=False)
+                draft.approved = True
+                draft.save()
+                draft.publish()
+                messages.success(request, 'Draft published.')
+            return redirect(request.get_full_path())
+        else:
+            form = TopicDraftFrom(instance=draft)
+
+        context = {
+            **self.admin_site.each_context(request),
+            'object_id': object_id,
+            'original': obj,
+            'draft': draft,
+            'app_label': app_label,
+            'opts': opts,
+            'form': form,
+        }
+        return TemplateResponse(request, "admin/meetings/topic/topicdraft.html", context)
 
     def get_presenters(self, obj):
         return format_html(

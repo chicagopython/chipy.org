@@ -1,7 +1,7 @@
 import datetime
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 from django import forms
-from .models import Topic, Presentor, RSVP, Meeting
+from .models import Topic, TopicDraft, Presentor, RSVP, Meeting
 
 
 class TopicForm(forms.ModelForm):
@@ -63,6 +63,13 @@ class TopicForm(forms.ModelForm):
 
         instance.presentors.add(presenter)
         return instance
+
+
+class TopicDraftFrom(forms.ModelForm):
+
+    class Meta:
+        model = TopicDraft
+        fields = TopicDraft.tracked_fields + ['notes']
 
 
 class RSVPForm(forms.ModelForm):

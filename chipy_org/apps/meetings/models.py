@@ -178,9 +178,12 @@ EXPERIENCE_LEVELS = (
 )
 
 
-class TopicsQuerySet(models.QuerySet):
+class TopicQuerySet(models.QuerySet):
     def active(self):
         return self.filter(approved=True).order_by("start_time")
+
+    def get_user_topics(self, user):
+        return self.filter(presentors__user=user).order_by('-created')
 
 
 class Topic(CommonModel):
@@ -229,30 +232,44 @@ class Topic(CommonModel):
     start_time = models.DateTimeField(blank=True, null=True)
     approved = models.BooleanField(default=False)
 
-    objects = TopicsQuerySet.as_manager()
+    objects = TopicQuerySet.as_manager()
+
+    def outstanding(self):
+        return self.drafts.filter(
+            models.Q(topic__meeting__when__gte=timezone.now()) | 
+            models.Q(topic__meeting=None)).filter(approved=False)
+
+
+class TopicDraftQuerySet(models.QuerySet):
+
+    def get_user_drafts(self, user):
+        return self.filter(topic__presentors__user=user)
 
 
 class TopicDraft(Topic):
-    topic = models.ForeignKey("meetings.Topic", on_delete=models.CASCADE, related_name="drafts")
+    topic = models.ForeignKey(
+        "meetings.Topic", on_delete=models.CASCADE, related_name="drafts")
 
     tracked_fields = [
         'title', 'meeting', 'experience_level',
         'length_minutes', 'description', 'slides_link']
-    tracked_relations = [
-        'presentors',
-    ]
+
+    objects = TopicDraftQuerySet.as_manager()
 
     def _copy_tracked(self, src, dst):
         for fld in TopicDraft.tracked_fields:
             setattr(dst, fld, getattr(src, fld))
         dst.save()
-        for rel in TopicDraft.tracked_relations:
-            getattr(src, rel).clear()
-            for obj in getattr(src, rel).all():
-                getattr(dst, rel).add(obj)
 
     def publish(self):
         topic = self.topic
+        topic.notes = (
+            topic.notes +
+            "\n----------------------------------------------\n" +
+            "Published Draft {} on {}\n".format(self.id, timezone.now()) +
+            self.notes +
+            "\n----------------------------------------------"
+        )
         self._copy_tracked(self, topic)
 
     def __rrshift__(self, other):
@@ -262,10 +279,6 @@ class TopicDraft(Topic):
     def __eq__(self, other):
         for fld in TopicDraft.tracked_fields:
             if getattr(self, fld) != getattr(other, fld):
-                return False
-        for rel in TopicDraft.tracked_relations:
-            if (set(getattr(self, rel).values_list('id', flat=True)) !=
-                set(getattr(other, rel).values_list('id', flat=True))):
                 return False
         return True
 

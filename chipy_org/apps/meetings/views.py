@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, UpdateView, ProcessFormView, ModelFormMixin
 from django.utils.decorators import method_decorator
@@ -25,10 +25,11 @@ from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 from .utils import meetup_meeting_sync
 from .email import send_rsvp_email, send_meeting_topic_submitted_email
 
-from .forms import TopicForm, RSVPForm, RSVPFormWithCaptcha
+from .forms import TopicForm, TopicDraftFrom, RSVPForm, RSVPFormWithCaptcha
 from .models import (
     Meeting,
     Topic,
+    TopicDraft,
     Presentor,
 )
 
@@ -125,8 +126,44 @@ class ProposeTopic(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+class ProposeTopicList(ListView):
+    model = TopicDraft
+    template_name = "meetings/propose_topic_drafts.html"
+    context_object_name = "drafts"
+
+    def get_queryset(self):
+        return super().get_queryset().get_user_drafts(self.request.user)
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, object_list=None, **kwargs)
+        context['topics'] = Topic.objects.get_user_topics(self.request.user)
+        return context
+
+
+class ProposeTopicDraftAdd(CreateView):
+    form_class = TopicDraftFrom
+    template_name = "meetings/user_topic_add.html"
+    success_url = reverse_lazy('propose_topics_user')
+
+    def dispatch(self, request, topic_id, *args, **kwargs):
+        try:
+            self.topic = Topic.objects.get_user_topics(self.request.user).get(id=topic_id)
+        except Topic.DoesNotExist:
+            raise Http404("Topic does not exist.")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        topic = self.topic
+        initial = {x:getattr(topic, x) for x in TopicDraft.tracked_fields}
+        return {"initial": initial}
+
+    def form_valid(self, form):
+        context = super().form_valid(form)
+        return context
+
+
 class MyTopics(ListView):
-    template_name = "meetings/my_topics.html"
+    template_name = "meetings/user_topics.html"
 
     def get_queryset(self):
         try:

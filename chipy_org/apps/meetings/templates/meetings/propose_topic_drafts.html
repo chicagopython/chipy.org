@@ -1,0 +1,57 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles flatblocks diff_tags %}
+
+{% block head_title %}{% trans "Your Submitted Topcis" %}{% endblock %}
+
+{% block body %}
+<h1>{% trans "Your Submitted Topcis" %}</h1>
+
+{% for topic in topics %}
+<table class="table table-striped">
+<tr>
+    <th colspan="2"><a href="{% url 'propose_topic_user' topic.pk %}" class="btn btn-primary">Edit</a></th>
+</tr>
+<tr>
+    <th>Title</th>
+    <td>{{ topic.title }}</td>
+</tr>
+<tr>
+    <th>Meeting</th>
+    <td>{{ topic.meeting }}</td>
+</tr>
+<tr>
+    <th>Topic Approved</th>
+    <td>{{ topic.approved }}</td>
+</tr>
+<tr> 
+    <th>Experience Level</th>
+    <td>{{ topic.experience_level }}</td>
+</tr>
+<tr>
+    <th>Length (min)</th>
+    <td>{{ topic.length_minutes }}</td>
+</tr>
+<tr>
+    <th>Description</th>
+    <td>{{ topic.description|safe }}</td>
+</tr>
+<tr>
+    <th colspan="2">Pending Edits - your edits to be approved</th>
+</tr>
+{% for draft in topic.outstanding %}
+<tr>
+    <th colspan="2">
+        {% for field in draft.tracked_fields %}
+        <div>{{ field }}: {% diff_draft draft=draft field=field %}</div>
+        {% endfor %}
+    </th>
+</tr>
+{% empty %}
+<tr><td colspan="4">No Edits Pending</td></tr>
+{% endfor %}
+</table>
+<br>
+{% endfor %}
+
+{% endblock body %}

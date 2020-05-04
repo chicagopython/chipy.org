@@ -16,7 +16,10 @@ def _diff_draft(draft, field):
         dmp.diff_cleanupSemantic(diffs)
         return mark_safe(dmp.diff_prettyHtml(diffs))
     else:
-        return ""
+        return mark_safe((
+            "<del style='background:#ffe6e6;'>{}</del>"
+            "<ins style='background:#e6ffe6;'>{}</ins>").format(
+                str(topic_field), str(draft_field))) if topic_field != draft_field else topic_field
 
 
 @register.simple_tag
@@ -24,3 +27,8 @@ def diff_draft(**kwargs):
     draft = kwargs['draft']
     field = kwargs['field']
     return _diff_draft(draft, field)
+
+
+@register.filter
+def draft_equals_published(draft, pub):
+    return draft == pub

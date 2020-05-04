@@ -27,14 +27,25 @@
     <form action="" method="POST">{% csrf_token %}
         <fieldset class="module aligned ">
         {% for field in form %}
+        {% if field.name != "notes" %}
         <div class="form-row">
             {{ field.errors }}
             {{ field.label_tag }} {{ field }}
             {% if field.help_text %}
-            <div>Draft: {% diff_draft draft=draft field=field.name %}</div>
+            <div class="help">{{ field.help_text|safe }}</div>
+            {% endif %}
+            <div>Diff: {% diff_draft draft=draft field=field.name %}</div>
+        </div>
+        {% endif %}
+        {% if field.name == "notes" %}
+        <div class="form-row">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
             <div class="help">{{ field.help_text|safe }}</div>
             {% endif %}
         </div>
+        {% endif %}
         {% endfor %}
         </fieldset>
 

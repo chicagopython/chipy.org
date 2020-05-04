@@ -1,0 +1,32 @@
+{% extends "site_base.html" %}
+{% load i18n staticfiles flatblocks diff_tags %}
+
+{% block head_title %}{% trans "Your topic drafts" %}{% endblock %}
+
+
+{% block body %}
+<h1>Edit Your Submitted Topic</h1>
+
+<form action="" method="POST" class="form-horizontal">{% csrf_token %}
+    <fieldset class="module aligned ">
+    {% for field in form %}
+    {% if field.name %}
+    <div class="control-group">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <div class="help">{{ field.help_text|safe }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    </fieldset>
+
+    <div class="submit-row">
+        <a class="btn" href="{% url 'propose_topics_user' %}">Back</a>
+        <input class="btn btn-primary" type="submit" value="Submit" name="submit">
+
+    </div>
+</form>
+
+{% endblock body %}

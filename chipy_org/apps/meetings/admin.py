@@ -2,6 +2,7 @@ import random
 import string
 from django.contrib import admin
 from django import forms
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, path
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
@@ -12,6 +13,7 @@ from django.shortcuts import redirect, render
 from ckeditor.widgets import CKEditorWidget
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, TopicDraft, Presentor, RSVP, MeetingType
+from .forms import TopicDraftFrom
 
 class VenueAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "phone", "address"]
@@ -27,13 +29,6 @@ class TopicInline(admin.StackedInline):
         "created",
     ]
     extra = 0
-
-
-class TopicDraftFrom(forms.ModelForm):
-
-    class Meta:
-        model = TopicDraft
-        fields = TopicDraft.tracked_fields + TopicDraft.tracked_relations
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -87,20 +82,21 @@ class TopicAdmin(admin.ModelAdmin):
         obj = self.get_object(request, unquote(object_id))
         opts = self.model._meta
         app_label = opts.app_label
-        draft = obj.drafts.get(id=draft_id)
+        draft = get_object_or_404(TopicDraft, topic=obj, id=draft_id)
 
         if request.method == "POST":
             form = TopicDraftFrom(instance=draft, data=request.POST)
             if request.POST.get("_save"):
                 form.save()
                 messages.success(request, 'Draft saved.')
+                return redirect(request.get_full_path())
             elif request.POST.get("_publish"):
                 draft = form.save(commit=False)
                 draft.approved = True
                 draft.save()
                 draft.publish()
                 messages.success(request, 'Draft published.')
-            return redirect(request.get_full_path())
+                return redirect(reverse('admin:meetings_topic_change', args=(obj.pk,)))
         else:
             form = TopicDraftFrom(instance=draft)
 

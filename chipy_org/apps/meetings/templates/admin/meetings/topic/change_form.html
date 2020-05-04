@@ -2,6 +2,6 @@
 {% load i18n admin_urls %}
 {% block object-tools-items %}{{ block.super }}
     <li>
-        <a href="{% url 'admin:topic_drafts' object_id=original.id %}" class="historylink viewsitelink">{% trans "Drafts" %}</a>
+        <a href="{% url 'admin:topic_drafts' object_id=original.id %}" class="historylink viewsitelink">{% trans "Drafts" %} <span style="font-weight: bold">({{original.outstanding.count}})</span></a>
     </li>
 {% endblock %}

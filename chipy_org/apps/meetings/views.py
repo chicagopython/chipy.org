@@ -123,7 +123,7 @@ class ProposeTopic(CreateView):
         messages.success(self.request, "Topic has been submitted.")
         recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
         send_meeting_topic_submitted_email(self.object, recipients)
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(reverse_lazy('propose_topics_user'))
 
 
 class ProposeTopicList(ListView):
@@ -137,7 +137,7 @@ class ProposeTopicList(ListView):
 
 class ProposeTopicDraftAdd(CreateView):
     form_class = TopicDraftFrom
-    template_name = "meetings/user_topic_add.html"
+    template_name = "meetings/propose_topic_draft_add.html"
     success_url = reverse_lazy("propose_topics_user")
 
     def dispatch(self, request, topic_id, *args, **kwargs):

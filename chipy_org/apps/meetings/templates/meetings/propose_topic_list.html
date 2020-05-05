@@ -5,7 +5,12 @@
 {% block head_title %}{% trans "Your Submitted Topcis" %}{% endblock %}
 
 {% block body %}
-<h1>{% trans "Your Submitted Topcis" %}</h1>
+<h1>{% trans "Your Submitted Talks Topcis" %}</h1>
+
+<p>
+    <strong>Below are your previously submitted topics. If you need to make changes to
+    a submission, use the Edit button.</strong>
+</p>
 
 {% for topic in topics %}
 <table class="table table-striped">

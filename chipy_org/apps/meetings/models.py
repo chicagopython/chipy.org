@@ -199,7 +199,8 @@ class TopicBase(CommonModel):
         Meeting,
         blank=True,
         null=True,
-        related_name="%(class)s",
+        related_name="%(class)ss",
+        related_query_name="%(class)ss",
         help_text=("Please select the meeting that you'd like to " "target your talk for."),
         on_delete=models.CASCADE,
     )

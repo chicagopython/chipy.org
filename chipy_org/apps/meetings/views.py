@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, UpdateView, ProcessFormView, ModelFormMixin
 from django.utils.decorators import method_decorator
@@ -136,14 +136,14 @@ class ProposeTopicList(ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, object_list=None, **kwargs)
-        context['topics'] = Topic.objects.get_user_topics(self.request.user)
+        context["topics"] = Topic.objects.get_user_topics(self.request.user)
         return context
 
 
 class ProposeTopicDraftAdd(CreateView):
     form_class = TopicDraftFrom
     template_name = "meetings/user_topic_add.html"
-    success_url = reverse_lazy('propose_topics_user')
+    success_url = reverse_lazy("propose_topics_user")
 
     def dispatch(self, request, topic_id, *args, **kwargs):
         try:
@@ -154,7 +154,7 @@ class ProposeTopicDraftAdd(CreateView):
 
     def get_form_kwargs(self):
         topic = self.topic
-        initial = {x:getattr(topic, x) for x in TopicDraft.tracked_fields}
+        initial = {x: getattr(topic, x) for x in TopicDraft.tracked_fields}
         return {"initial": initial}
 
     def form_valid(self, form):

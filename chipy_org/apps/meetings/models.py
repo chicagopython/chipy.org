@@ -183,7 +183,7 @@ class TopicQuerySet(models.QuerySet):
         return self.filter(approved=True).order_by("start_time")
 
     def get_user_topics(self, user):
-        return self.filter(presentors__user=user).order_by('-created')
+        return self.filter(presentors__user=user).order_by("-created")
 
 
 class Topic(CommonModel):
@@ -236,23 +236,26 @@ class Topic(CommonModel):
 
     def outstanding(self):
         return self.drafts.filter(
-            models.Q(topic__meeting__when__gte=timezone.now()) | 
-            models.Q(topic__meeting=None)).filter(approved=False)
+            models.Q(topic__meeting__when__gte=timezone.now()) | models.Q(topic__meeting=None)
+        ).filter(approved=False)
 
 
 class TopicDraftQuerySet(models.QuerySet):
-
     def get_user_drafts(self, user):
         return self.filter(topic__presentors__user=user)
 
 
 class TopicDraft(Topic):
-    topic = models.ForeignKey(
-        "meetings.Topic", on_delete=models.CASCADE, related_name="drafts")
+    topic = models.ForeignKey("meetings.Topic", on_delete=models.CASCADE, related_name="drafts")
 
     tracked_fields = [
-        'title', 'meeting', 'experience_level',
-        'length_minutes', 'description', 'slides_link']
+        "title",
+        "meeting",
+        "experience_level",
+        "length_minutes",
+        "description",
+        "slides_link",
+    ]
 
     objects = TopicDraftQuerySet.as_manager()
 
@@ -264,11 +267,11 @@ class TopicDraft(Topic):
     def publish(self):
         topic = self.topic
         topic.notes = (
-            topic.notes +
-            "\n----------------------------------------------\n" +
-            "Published Draft {} on {}\n".format(self.id, timezone.now()) +
-            self.notes +
-            "\n----------------------------------------------"
+            topic.notes
+            + "\n----------------------------------------------\n"
+            + "Published Draft {} on {}\n".format(self.id, timezone.now())
+            + self.notes
+            + "\n----------------------------------------------"
         )
         self._copy_tracked(self, topic)
 

@@ -27,7 +27,7 @@ class SponsorListView(ListView):
             .distinct()
         )
 
-    def get_context_data(self, **kwargs): # pylint: disable=arguments-differ
+    def get_context_data(self, **kwargs):  # pylint: disable=arguments-differ
 
         meeting_queryset = Meeting.objects.all().filter(
             when__range=((date.today() - datetime.timedelta(days=365), date.today()))

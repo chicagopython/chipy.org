@@ -66,10 +66,9 @@ class TopicForm(forms.ModelForm):
 
 
 class TopicDraftFrom(forms.ModelForm):
-
     class Meta:
         model = TopicDraft
-        fields = TopicDraft.tracked_fields + ['notes']
+        fields = TopicDraft.tracked_fields + ["notes"]
 
 
 class RSVPForm(forms.ModelForm):

@@ -9,11 +9,11 @@ from django.utils.safestring import mark_safe
 from django.template.response import TemplateResponse
 from django.contrib.admin.utils import unquote
 from django.contrib import messages
-from django.shortcuts import redirect, render
-from ckeditor.widgets import CKEditorWidget
+from django.shortcuts import redirect
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, TopicDraft, Presentor, RSVP, MeetingType
 from .forms import TopicDraftFrom
+
 
 class VenueAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "phone", "address"]
@@ -53,12 +53,16 @@ class TopicAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('<path:object_id>/drafts/',
-                 self.admin_site.admin_view(self.topic_drafts),
-                 name="topic_drafts"),
-            path('<path:object_id>/drafts/<int:draft_id>/',
-                 self.admin_site.admin_view(self.topic_draft),
-                 name="topic_draft"),
+            path(
+                "<path:object_id>/drafts/",
+                self.admin_site.admin_view(self.topic_drafts),
+                name="topic_drafts",
+            ),
+            path(
+                "<path:object_id>/drafts/<int:draft_id>/",
+                self.admin_site.admin_view(self.topic_draft),
+                name="topic_draft",
+            ),
         ]
         return my_urls + urls
 
@@ -66,17 +70,16 @@ class TopicAdmin(admin.ModelAdmin):
         obj = self.get_object(request, unquote(object_id))
         opts = self.model._meta
         app_label = opts.app_label
-        drafts = obj.drafts.filter().order_by('-created')
+        drafts = obj.drafts.filter().order_by("-created")
         context = {
             **self.admin_site.each_context(request),
-            'object_id': object_id,
-            'original': obj,
-            'drafts': drafts,
-            'app_label': app_label,
-            'opts': opts,
+            "object_id": object_id,
+            "original": obj,
+            "drafts": drafts,
+            "app_label": app_label,
+            "opts": opts,
         }
         return TemplateResponse(request, "admin/meetings/topic/topicdrafts.html", context)
-
 
     def topic_draft(self, request, object_id, draft_id):
         obj = self.get_object(request, unquote(object_id))
@@ -88,26 +91,26 @@ class TopicAdmin(admin.ModelAdmin):
             form = TopicDraftFrom(instance=draft, data=request.POST)
             if request.POST.get("_save"):
                 form.save()
-                messages.success(request, 'Draft saved.')
+                messages.success(request, "Draft saved.")
                 return redirect(request.get_full_path())
             elif request.POST.get("_publish"):
                 draft = form.save(commit=False)
                 draft.approved = True
                 draft.save()
                 draft.publish()
-                messages.success(request, 'Draft published.')
-                return redirect(reverse('admin:meetings_topic_change', args=(obj.pk,)))
+                messages.success(request, "Draft published.")
+                return redirect(reverse("admin:meetings_topic_change", args=(obj.pk,)))
         else:
             form = TopicDraftFrom(instance=draft)
 
         context = {
             **self.admin_site.each_context(request),
-            'object_id': object_id,
-            'original': obj,
-            'draft': draft,
-            'app_label': app_label,
-            'opts': opts,
-            'form': form,
+            "object_id": object_id,
+            "original": obj,
+            "draft": draft,
+            "app_label": app_label,
+            "opts": opts,
+            "form": form,
         }
         return TemplateResponse(request, "admin/meetings/topic/topicdraft.html", context)
 
@@ -154,8 +157,7 @@ class MeetingAdmin(admin.ModelAdmin):
     @mark_safe
     def action(self, obj):
         if obj.meetup_id:
-            return (
-                f"""
+            return f"""
                 <input
                     type="submit"
                     value="Sync Meetup"
@@ -163,11 +165,13 @@ class MeetingAdmin(admin.ModelAdmin):
                     data-meeting-pk="{obj.pk}"
                 >
                 """
-            )
         return ""
 
     class Media:
-        js = ["admin/js/jquery.init.js", "js/meetup_sync.js",]
+        js = [
+            "admin/js/jquery.init.js",
+            "js/meetup_sync.js",
+        ]
 
     ordering = ("-when",)
 

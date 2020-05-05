@@ -1,5 +1,6 @@
 import pytest
 
+
 class PytestTestRunner:
     """Runs pytest to discover and run tests."""
 

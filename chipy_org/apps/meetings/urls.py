@@ -7,7 +7,6 @@ from .views import (
     ProposeTopic,
     ProposeTopicList,
     ProposeTopicDraftAdd,
-    MyTopics,
     RSVP,
     UpdateRSVP,
     RSVPlistPrivate,
@@ -45,7 +44,6 @@ urlpatterns = [
         login_required(ProposeTopicDraftAdd.as_view()),
         name="propose_topic_user",
     ),
-    url(r"^topics/mine/$", login_required(MyTopics.as_view()), name="my_topics"),
     url(r"^topics/past/$", PastTopics.as_view(), name="past_topics"),
     url(r"^topics/past/(?P<id>\d+)/$", PastTopic.as_view(), name="past_topic"),
 ]

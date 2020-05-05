@@ -27,7 +27,7 @@
 </tr>
 <tr>
     <th>Topic Approved</th>
-    <td>{{ topic.approved }}</td>
+    <td style="background-color: {% if topic.approved %}#ccffe6{% else %}#ffb3b3{% endif %}">{{ topic.approved }}</td>
 </tr>
 <tr> 
     <th>Experience Level</th>

@@ -162,18 +162,6 @@ class ProposeTopicDraftAdd(CreateView):
         return self.success_url
 
 
-class MyTopics(ListView):
-    template_name = "meetings/user_topics.html"
-
-    def get_queryset(self):
-        try:
-            presenter = Presentor.objects.get(user=self.request.user)
-        except Presentor.DoesNotExist:
-            return Topic.objects.none()
-
-        return Topic.objects.filter(presentors=presenter)
-
-
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     http_method_names = ["post", "get"]
     success_url = reverse_lazy("home")

@@ -127,17 +127,12 @@ class ProposeTopic(CreateView):
 
 
 class ProposeTopicList(ListView):
-    model = TopicDraft
-    template_name = "meetings/propose_topic_drafts.html"
-    context_object_name = "drafts"
+    model = Topic
+    template_name = "meetings/propose_topic_list.html"
+    context_object_name = "topics"
 
     def get_queryset(self):
-        return super().get_queryset().get_user_drafts(self.request.user)
-
-    def get_context_data(self, *args, object_list=None, **kwargs):
-        context = super().get_context_data(*args, object_list=None, **kwargs)
-        context["topics"] = Topic.objects.get_user_topics(self.request.user)
-        return context
+        return super().get_queryset().get_user_topics(self.request.user)
 
 
 class ProposeTopicDraftAdd(CreateView):
@@ -152,14 +147,19 @@ class ProposeTopicDraftAdd(CreateView):
             raise Http404("Topic does not exist.")
         return super().dispatch(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_initial(self):
         topic = self.topic
         initial = {x: getattr(topic, x) for x in TopicDraft.tracked_fields}
-        return {"initial": initial}
+        return initial
 
     def form_valid(self, form):
-        context = super().form_valid(form)
-        return context
+        obj = form.save(commit=False)
+        obj.topic = self.topic
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return self.success_url
 
 
 class MyTopics(ListView):

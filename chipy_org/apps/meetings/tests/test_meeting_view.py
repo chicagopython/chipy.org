@@ -10,8 +10,8 @@ from django.conf import global_settings
 from django.contrib.auth import get_user_model
 
 import chipy_org.libs.test_utils as test_utils
-from .models import RSVP, Meeting, Venue, Topic, MeetingType
-from . import email
+from ..models import RSVP, Meeting, Venue, Topic, MeetingType
+from .. import email
 
 User = get_user_model()
 
@@ -181,24 +181,25 @@ class MeetingTitleTest(TestCase):
         )
         self.assertEqual(meeting.title, "Main Custom Title")
 
+
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_rsvp_works_for_anonymous_user(client):
-    meeting = Meeting.objects.create(
-        when=datetime.date.today() + datetime.timedelta(days=1)
-    )
+    meeting = Meeting.objects.create(when=datetime.date.today() + datetime.timedelta(days=1))
     route = reverse("rsvp")
-    response = client.post(route, data={
-        "meeting": meeting.id,
-        "first_name": "Some",
-        "last_name": "Body",
-        "email": "somebody@example.com",
-    })
+    response = client.post(
+        route,
+        data={
+            "meeting": meeting.id,
+            "first_name": "Some",
+            "last_name": "Body",
+            "email": "somebody@example.com",
+        },
+    )
     assert response.status_code == 200
+
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_rsvp_fails_gracefully_with_missing_data(client):
-    meeting = Meeting.objects.create(
-        when=datetime.date.today() + datetime.timedelta(days=1)
-    )
+    meeting = Meeting.objects.create(when=datetime.date.today() + datetime.timedelta(days=1))
     response = client.post(reverse("rsvp"), data={"meeting": meeting.id})
     assert response.status_code == 200

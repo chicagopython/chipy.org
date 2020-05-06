@@ -80,7 +80,7 @@ class TopicAdmin(admin.ModelAdmin):
         if not request.user.has_perm("meetings.change_topic"):
             raise exceptions.PermissionDenied("Need Topic Change permission")
         obj = self.get_object(request, unquote(object_id))
-        opts = self.model._meta
+        opts = self.model._meta  # pylint: disable=protected-access
         app_label = opts.app_label
         drafts = obj.drafts.filter().order_by("-created")
         context = {
@@ -97,7 +97,7 @@ class TopicAdmin(admin.ModelAdmin):
         if not request.user.has_perm("meetings.change_topic"):
             raise exceptions.PermissionDenied("Need Topic Change permission")
         obj = self.get_object(request, unquote(object_id))
-        opts = self.model._meta
+        opts = self.model._meta  # pylint: disable=protected-access
         app_label = opts.app_label
         draft = get_object_or_404(TopicDraft, topic=obj, id=draft_id)
 

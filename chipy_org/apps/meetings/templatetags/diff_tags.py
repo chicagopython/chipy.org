@@ -2,7 +2,7 @@ from diff_match_patch import diff_match_patch
 from django import template
 from django.utils.safestring import mark_safe
 
-register = template.Library()
+register = template.Library()  # pylint: disable=invalid-name
 
 
 def _diff_draft(draft, field):

@@ -34,7 +34,6 @@ from .models import (
     Meeting,
     Topic,
     TopicDraft,
-    Presentor,
 )
 
 from .models import RSVP as RSVPModel
@@ -144,7 +143,7 @@ class ProposeTopicDraftAdd(CreateView):
     template_name = "meetings/propose_topic_draft_add.html"
     success_url = reverse_lazy("propose_topics_user")
 
-    def dispatch(self, request, topic_id, *args, **kwargs):
+    def dispatch(self, request, topic_id, *args, **kwargs):  # pylint: disable=arguments-differ
         try:
             self.topic = Topic.objects.get_user_topics(self.request.user).get(id=topic_id)
         except Topic.DoesNotExist:

@@ -50,7 +50,7 @@ def test__topic_equals_draft(tin, diffs, expected):
 
 
 @pytest.mark.freeze_time("2020-04-01")
-def test__TopicDraft__publish():
+def test__topicdraft__publish():
     topic = Topic(title="test")
     topic.notes = "noteA"
     topic.save()
@@ -78,7 +78,7 @@ def test__TopicDraft__publish():
     )
 
 
-def test__TopicQuerySet__get_user_topics():
+def test__topicqueryset__get_user_topics():
     user1 = User(username="user1")
     user1.save()
     user2 = User(username="user2")
@@ -110,7 +110,7 @@ def test__TopicQuerySet__get_user_topics():
 
 
 @pytest.mark.freeze_time("2020-05-01")
-def test__Topic__outstanding():
+def test_topic__outstanding():
     meeting1 = Meeting()
     meeting1.when = datetime.datetime(2020, 6, 1)
     meeting1.key = "asdf1"
@@ -121,12 +121,12 @@ def test__Topic__outstanding():
     topic1.save()
     draft1 = TopicDraft()
     draft1.approved = True
-    topic1 >> draft1
+    topic1 >> draft1  # pylint: disable=pointless-statement
     draft2 = TopicDraft()
     draft2.approved = False
-    topic1 >> draft2
+    topic1 >> draft2  # pylint: disable=pointless-statement
     draft3 = TopicDraft()
     draft3.approved = False
-    topic1 >> draft3
+    topic1 >> draft3  # pylint: disable=pointless-statement
 
     assert topic1.outstanding().count() == 2

@@ -1,0 +1,7 @@
+A meeting topic has been updated:
+
+ https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}
+ Title: {{ topic.title }}
+ Meeting: {{ topic.meeting }}
+ Length: {{ topic.length }}
+ Description: {{ topic.description|safe }}

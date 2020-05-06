@@ -1,0 +1,9 @@
+{% load bleach_tags %}
+
+<p>A meeting topic has been updated:<p>
+
+<p><a href="https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}">https://{{ site.domain }}{% url 'admin:meetings_topic_change' topic.id %}</a></p>
+<p>Title: {{ topic.title }}</p>
+<p>Meeting: {{ topic.meeting }}</p>
+<p>Length: {{ topic.length }}</p>
+<p>Description: {{ topic.description|bleach|safe }}</p>

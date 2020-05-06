@@ -23,7 +23,9 @@ from rest_framework.views import APIView
 
 from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 from .utils import meetup_meeting_sync
-from .email import send_rsvp_email, send_meeting_topic_submitted_email
+from .email import (
+    send_rsvp_email, send_meeting_topic_submitted_email,
+    send_meeting_topic_draft_submitted_email)
 
 from .forms import TopicForm, TopicDraftFrom, RSVPForm, RSVPFormWithCaptcha
 from .models import (
@@ -153,9 +155,11 @@ class ProposeTopicDraftAdd(CreateView):
         return initial
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.topic = self.topic
-        obj.save()
+        draft = form.save(commit=False)
+        draft.topic = self.topic
+        draft.save()
+        recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
+        send_meeting_topic_draft_submitted_email(draft, recipients)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

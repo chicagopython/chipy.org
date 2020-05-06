@@ -37,3 +37,19 @@ def send_meeting_topic_submitted_email(topic, recipients):  # pylint: disable=in
         msg.send()
     except Exception as e:
         logger.exception(e)
+
+
+def send_meeting_topic_draft_submitted_email(draft, recipients):  # pylint: disable=invalid-name
+    try:
+        plaintext = get_template("meetings/emails/meeting_topic_draft_submitted.txt")
+        htmly = get_template("meetings/emails/meeting_topic_draft_submitted.html")
+        context = {"topic": draft.topic, "draft": draft, "site": Site.objects.get_current()}
+        subject = "Chipy: Updates to Meeting Topic Submitted"
+        from_email = "DoNotReply@chipy.org"
+        text_content = plaintext.render(context)
+        html_content = htmly.render(context)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, recipients)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+    except Exception as e:
+        logger.exception(e)

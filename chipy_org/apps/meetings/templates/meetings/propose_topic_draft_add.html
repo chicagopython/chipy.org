@@ -4,6 +4,16 @@
 {% block head_title %}{% trans "Your topic drafts" %}{% endblock %}
 
 
+{% block style %}
+    {{ block.super }}
+    <style>
+        #edit-topic input, #edit-topic textarea, #edit-topic select {
+            width: 300px;
+        }
+    </style>
+{% endblock %}
+
+
 {% block body %}
 <h1>Edit Your Submitted Topic</h1>
 
@@ -12,26 +22,28 @@
     require admin approval before they go live.</strong>
 </p>
 
-<form action="" method="POST" class="form-horizontal">{% csrf_token %}
-    <fieldset class="module aligned ">
-    {% for field in form %}
-    {% if field.name %}
-    <div class="control-group">
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        {% if field.help_text %}
-        <div class="help">{{ field.help_text|safe }}</div>
-        {% endif %}
+<div class="row-fluid">
+    <div class="span6">
+      <p>{% flatblock "speaker_text" %}</p>
     </div>
-    {% endif %}
-    {% endfor %}
-    </fieldset>
-
-    <div class="submit-row">
+    <div class="span6">
+      <form action="." method="POST" id="edit-topic">{% csrf_token %}
+        {% for field in form %}
+        <div class="fieldWrapper">
+          {% if field.name not in form.required %}
+          <label for="id_{{ field.html_name }}"><strong>{{ field.label }}</strong> (optional)</label>
+          {% else %}
+          <strong><label for="id_{{ field.html_name }}"><strong>{{ field.label }}</strong></label></strong>
+          {% endif %}
+          {{ field.errors }}
+          <div class="help-text">{{ field.help_text }}</div>{{ field }}
+        </div>
+        {% endfor %}
         <a class="btn" href="{% url 'propose_topics_user' %}">Back</a>
         <input class="btn btn-primary" type="submit" value="Submit Changes for Approval" name="submit">
+      </form>
 
     </div>
-</form>
+  </div>
 
 {% endblock body %}

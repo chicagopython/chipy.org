@@ -299,6 +299,8 @@ class TopicDraft(TopicBase):
         for fld in TopicDraft.tracked_fields:
             if getattr(self, fld) != getattr(other, fld):
                 return False
+        if other.id != self.topic.id:
+            return False
         return True
 
     def __hash__(self):

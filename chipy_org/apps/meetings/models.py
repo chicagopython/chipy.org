@@ -243,6 +243,12 @@ class TopicBase(CommonModel):
     class Meta:
         abstract = True
 
+    def __eq__(self, other):
+        for fld in TopicDraft.tracked_fields:
+            if getattr(self, fld) != getattr(other, fld):
+                return False
+        return True
+
 
 class Topic(TopicBase):
     pass

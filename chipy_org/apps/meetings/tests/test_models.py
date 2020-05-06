@@ -72,7 +72,7 @@ def test__TopicDraft__publish():
     assert topic.notes == (
         "noteA\n"
         "----------------------------------------------\n"
-        "Published Draft 2 on 2020-04-01 00:00:00\n"
+        "Published Draft 1 on 2020-04-01 00:00:00\n"
         "noteB\n"
         "----------------------------------------------"
     )

@@ -10,7 +10,7 @@ from django.conf import global_settings
 from django.contrib.auth import get_user_model
 
 import chipy_org.libs.test_utils as test_utils
-from ..models import RSVP, Meeting, Venue, Topic, MeetingType
+from ..models import RSVP, Meeting, Venue, Topic, TopicDraft, MeetingType, Presentor
 from .. import email
 
 User = get_user_model()
@@ -203,3 +203,47 @@ def test_rsvp_fails_gracefully_with_missing_data(client):
     meeting = Meeting.objects.create(when=datetime.date.today() + datetime.timedelta(days=1))
     response = client.post(reverse("rsvp"), data={"meeting": meeting.id})
     assert response.status_code == 200
+
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_topics_drafts_list_view(client, django_user_model):
+    username = "testtesterson"
+    password = "bar"
+
+    user1 = django_user_model.objects.create_user(username=username, password=password)
+
+    pr1 = Presentor(user=user1, name="u1")
+    pr1.save()
+
+    topic1 = Topic(title="test1")
+    topic1.save()
+    topic1.presentors.add(pr1)
+    topic2 = Topic(title="not-selected")
+    topic2.save()
+
+    client.login(username=username, password=password)
+    response = client.get(reverse('propose_topics_user'))
+    assert list(response.context['topics'].values_list('id', flat=True)) == [user1.id]
+
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_topics_drafts_add_view(client, django_user_model):
+    username = "testtesterson"
+    password = "bar"
+
+    user1 = django_user_model.objects.create_user(username=username, password=password)
+
+    pr1 = Presentor(user=user1, name="u1")
+    pr1.save()
+
+    topic1 = Topic(title="test1")
+    topic1.save()
+    topic1.presentors.add(pr1)
+
+    client.login(username=username, password=password)
+
+    data = {"title": "some title", "description": "some desc"}
+    response = client.post(reverse('propose_topic_user', args=(topic1.id,)), data)
+
+    assert response.status_code == 302
+    assert topic1.drafts.count() == 1

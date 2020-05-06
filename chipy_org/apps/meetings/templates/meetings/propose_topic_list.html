@@ -4,6 +4,26 @@
 
 {% block head_title %}{% trans "Your Submitted Topcis" %}{% endblock %}
 
+{% block style %}
+    {{ block.super }}
+    <style>
+        .table th {width: 200px}
+        .topic-table-header {
+            border-radius: 5px;
+            padding: 4px;
+            background-color: #7ab6f3; color: white}
+        .topic-table-header h3 {
+            float: left;
+            margin: 2px;
+            padding: 0px;
+            line-height: inherit;
+        }
+        .topic-edit {
+            float: right;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 <h1>{% trans "Your Submitted Talks Topcis" %}</h1>
 
@@ -13,21 +33,21 @@
 </p>
 
 {% for topic in topics %}
-<table class="table table-striped">
+<table class="table topic-table">
 <tr>
-    <th colspan="2"><a href="{% url 'propose_topic_user' topic.pk %}" class="btn btn-primary">Edit</a></th>
+
+    <td class="topic-table-header" colspan="2">
+        <h3>{{ topic.title }}</h3>
+        <a href="{% url 'propose_topic_user' topic.pk %}" class="topic-edit btn btn-primary">Edit</a> 
+    </td>
 </tr>
-<tr>
-    <th>Title</th>
-    <td>{{ topic.title }}</td>
+<tr style="background-color: {% if topic.approved %}#E6FFFF{% else %}#FFE6E6{% endif %}">
+    <th>Topic Approved</th>
+    <td>{{ topic.approved }}</td>
 </tr>
 <tr>
     <th>Meeting</th>
     <td>{{ topic.meeting }}</td>
-</tr>
-<tr>
-    <th>Topic Approved</th>
-    <td style="background-color: {% if topic.approved %}#ccffe6{% else %}#ffb3b3{% endif %}">{{ topic.approved }}</td>
 </tr>
 <tr> 
     <th>Experience Level</th>
@@ -42,7 +62,7 @@
     <td>{{ topic.description|safe }}</td>
 </tr>
 <tr>
-    <th colspan="2">Pending Edits - your edits to be approved</th>
+    <th colspan="2">Outstanding Edits - pending approval</th>
 </tr>
 {% for draft in topic.outstanding %}
 <tr>

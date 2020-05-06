@@ -27,7 +27,7 @@
                 <th><div class="text"><span>ID</span></div></th>
                 <th><div class="text"><span>Title</span></div></th>
                 <th><div class="text"><span>Created</span></div></th>
-                <th><div class="text"><span>Published</span></div></th>
+                <th><div class="text"><span>Draft Applied</span></div></th>
                 <th><div class="text"><span>Same as Published</span></div></th>
                 <th></th>
             </tr>
@@ -38,8 +38,8 @@
                 <td>{{ draft.pk }}</td>
                 <td>{{ draft.title }}</td>
                 <td>{{ draft.created }}</td>
-                <td>{{ draft.approved }}</td>
-                <td>{{ draft|draft_equals_published:draft.topic }}</td>
+                <td>{{ draft.approved|yesno:"&#x2713;,"|safe }}</td>
+                <td>{{ draft|draft_equals_published:draft.topic|yesno:"&#x2713;,"|safe  }}</td>
                 <td><a href="{% url 'admin:topic_draft' original.id draft.id %}">View</a></td>
             </tr>
             {% endfor %}

@@ -27,8 +27,17 @@ class TopicInline(admin.StackedInline):
     readonly_fields = [
         "modified",
         "created",
+        'drafts',
     ]
     extra = 0
+
+    def drafts(self, instance):
+        draft_count = instance.outstanding().count()
+        draft_url = reverse('admin:topic_drafts', args=(instance.pk, ))
+        return mark_safe("<a style='color: red' href='{}'>{}</a>".format(draft_url, draft_count))
+
+    # short_description functions like a model field's verbose_name
+    drafts.short_description = "Drafts"
 
 
 class TopicAdmin(admin.ModelAdmin):

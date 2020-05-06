@@ -222,8 +222,8 @@ def test_topics_drafts_list_view(client, django_user_model):
     topic2.save()
 
     client.login(username=username, password=password)
-    response = client.get(reverse('propose_topics_user'))
-    assert list(response.context['topics'].values_list('id', flat=True)) == [user1.id]
+    response = client.get(reverse("propose_topics_user"))
+    assert list(response.context["topics"].values_list("id", flat=True)) == [user1.id]
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
@@ -243,7 +243,7 @@ def test_topics_drafts_add_view(client, django_user_model):
     client.login(username=username, password=password)
 
     data = {"title": "some title", "description": "some desc"}
-    response = client.post(reverse('propose_topic_user', args=(topic1.id,)), data)
+    response = client.post(reverse("propose_topic_user", args=(topic1.id,)), data)
 
     assert response.status_code == 302
     assert topic1.drafts.count() == 1

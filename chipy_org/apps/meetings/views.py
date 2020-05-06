@@ -24,8 +24,10 @@ from rest_framework.views import APIView
 from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 from .utils import meetup_meeting_sync
 from .email import (
-    send_rsvp_email, send_meeting_topic_submitted_email,
-    send_meeting_topic_draft_submitted_email)
+    send_rsvp_email,
+    send_meeting_topic_submitted_email,
+    send_meeting_topic_draft_submitted_email,
+)
 
 from .forms import TopicForm, TopicDraftFrom, RSVPForm, RSVPFormWithCaptcha
 from .models import (

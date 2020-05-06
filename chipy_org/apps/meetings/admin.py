@@ -77,7 +77,7 @@ class TopicAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def topic_drafts(self, request, object_id):
-        if not request.user.has_perm('meetings.change_topic'):
+        if not request.user.has_perm("meetings.change_topic"):
             raise exceptions.PermissionDenied("Need Topic Change permission")
         obj = self.get_object(request, unquote(object_id))
         opts = self.model._meta
@@ -94,7 +94,7 @@ class TopicAdmin(admin.ModelAdmin):
         return TemplateResponse(request, "admin/meetings/topic/topicdrafts.html", context)
 
     def topic_draft(self, request, object_id, draft_id):
-        if not request.user.has_perm('meetings.change_topic'):
+        if not request.user.has_perm("meetings.change_topic"):
             raise exceptions.PermissionDenied("Need Topic Change permission")
         obj = self.get_object(request, unquote(object_id))
         opts = self.model._meta

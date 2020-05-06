@@ -67,10 +67,9 @@ class TopicForm(forms.ModelForm):
 
 
 class TopicDraftFrom(forms.ModelForm):
-
     def clean_description(self):
         desc = self.cleaned_data.get("description", "")
-        return bleach.clean(desc, tags=bleach.sanitizer.ALLOWED_TAGS + ['p', 'ins', 'del'])
+        return bleach.clean(desc, tags=bleach.sanitizer.ALLOWED_TAGS + ["p", "ins", "del"])
 
     class Meta:
         model = TopicDraft

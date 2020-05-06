@@ -247,6 +247,7 @@ class TopicBase(CommonModel):
 class Topic(TopicBase):
     pass
 
+
 class TopicDraftQuerySet(models.QuerySet):
     def get_user_drafts(self, user):
         return self.filter(topic__presentors__user=user)

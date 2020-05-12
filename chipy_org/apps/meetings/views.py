@@ -29,7 +29,7 @@ from .email import (
     send_meeting_topic_draft_submitted_email,
 )
 
-from .forms import TopicForm, TopicDraftFrom, RSVPForm, RSVPFormWithCaptcha
+from .forms import TopicForm, TopicDraftForm, RSVPForm, RSVPFormWithCaptcha
 from .models import (
     Meeting,
     Topic,
@@ -139,7 +139,7 @@ class ProposeTopicList(ListView):
 
 
 class ProposeTopicDraftAdd(CreateView):
-    form_class = TopicDraftFrom
+    form_class = TopicDraftForm
     template_name = "meetings/propose_topic_draft_add.html"
     success_url = reverse_lazy("propose_topics_user")
 

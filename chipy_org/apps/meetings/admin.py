@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 from .models import Meeting, Venue, Topic, TopicDraft, Presentor, RSVP, MeetingType
-from .forms import TopicDraftFrom
+from .forms import TopicDraftForm
 
 
 class VenueAdmin(admin.ModelAdmin):
@@ -102,7 +102,7 @@ class TopicAdmin(admin.ModelAdmin):
         draft = get_object_or_404(TopicDraft, topic=obj, id=draft_id)
 
         if request.method == "POST":
-            form = TopicDraftFrom(instance=draft, data=request.POST)
+            form = TopicDraftForm(instance=draft, data=request.POST)
             if request.POST.get("_save"):
                 form.save()
                 messages.success(request, "Draft saved.")
@@ -115,7 +115,7 @@ class TopicAdmin(admin.ModelAdmin):
                 messages.success(request, "Draft published.")
                 return redirect(reverse("admin:meetings_topic_change", args=(obj.pk,)))
         else:
-            form = TopicDraftFrom(instance=draft)
+            form = TopicDraftForm(instance=draft)
 
         context = {
             **self.admin_site.each_context(request),

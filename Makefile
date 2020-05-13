@@ -52,6 +52,11 @@ format:
 	docker-compose exec web black .
 
 format-check:
+	docker-compose exec web isort -rc -tc --atomic --diff .
 	docker-compose exec web black --diff .
 
 setup: setup_env build
+
+super: docker-compose exec web ./manage.py createsuperuser
+
+log: docker-compose logs -f web

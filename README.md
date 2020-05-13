@@ -45,9 +45,11 @@ For Windows users, we recommend using the package manager Chocolatey to install 
 
 ## Setting up a Local Development Environment using Docker
 
-Clone the repo
+Sign into your GitHub account. Make a fork of the ChiPy repo at https://github.com/chicagopython/chipy.org by going there and clicking "Fork" on the upper right corner.
 
-    git clone git://github.com/chicagopython/chipy.org.git chipy.org
+Clone this forked repo to your local computer (replace your GitHub username without the brackets): 
+
+    git clone https://github.com/<your-GitHub-username>/chipy.org.git chipy.org
 
 Make the project directory your working directory:
 
@@ -72,15 +74,11 @@ create the tables and database objects needed to run the site.
 
     make migrate
 
-Note: After executing `make migrate`, there will be an error message. If the message reads `psycopg2.ProgrammingError: relation "django_site" does not exist`, you can ignore this error message.
-
-Confirm that the migrations were successful. To do this, run `make shell` , which gives you a Bash shell within Docker. Then run `python manage.py migrate --list` . This shows a list of all the migrations. Make sure each migration has a marked checkbox, such as `[X] 0001_initial` . Then exit out of the shell by typing `exit` .
-
-If after running `make migrate` for the first time, you get a different error message than the message above, you should troubleshoot it.
+You can confirm that the migrations were successful. To do this, run `make shell` , which gives you a Bash shell within Docker. Then run `python manage.py migrate --list` . This shows a list of all the migrations. Make sure each migration has a marked checkbox, such as `[X] 0001_initial` . Then exit out of the shell by typing `exit` .
 
 Next, you should create a superuser to use to login to the site admin with.
 
-    docker-compose exec web ./manage.py createsuperuser
+    make super
 
 Finally, you should be able to visit your site by entering the
 following in your url bar:
@@ -106,15 +104,26 @@ If you would like to run the Pylint linting process, run the following:
 
     make lint
 
+Chipy.org uses Black to have consistently formatted code. We also use isort to 
+arrange import statements correctly. Code must be formatted before merging code.
+If you would like to format code, run the following:
+
+    make format
+
+Note: the command `make format` overwrites your files. To see a preview of what formatted code would 
+look without overwriting your files, run the following:
+
+    make format-check
+
 If you want to execute a shell into your container, run the following:
 once your app is running with `make up`:
 
-    docker-compose exec web bash
+    make shell
 
 If you want to see the application logs, use the following command. To stop
 viewing the logs, you can press ctl-c.
 
-    docker-compose logs -f web
+    make log
 
 To run an arbitrary Django management command, you can use the following form.
 The below example shows you how to run the `help` management command, but

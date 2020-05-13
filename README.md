@@ -110,8 +110,7 @@ If you would like to format code, run the following:
 
     make format
 
-Note: the command `make format` overwrites your files. To see a preview of what formatted code would 
-look without overwriting your files, run the following:
+Note: the command `make format` overwrites your files. Also, that command will format your entire local repo, not only the files that you may have created or edited. As a result, if it formats old, unformatted code, that will show up as a diff in your pull request. To see a preview of what formatted code would look without overwriting your files, run the following:
 
     make format-check
 

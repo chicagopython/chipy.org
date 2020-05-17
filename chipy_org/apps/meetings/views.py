@@ -6,7 +6,7 @@ import logging
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 
 from django.views.generic import ListView, DetailView
@@ -148,6 +148,13 @@ class ProposeTopicDraftAdd(CreateView):
             self.topic = Topic.objects.get_user_topics(self.request.user).get(id=topic_id)
         except Topic.DoesNotExist:
             raise Http404("Topic does not exist.")
+
+        topic_draft = self.topic.drafts.filter(approved=False).first()
+        if topic_draft:
+            return HttpResponseRedirect(
+                reverse("propose_topic_user_edit", args=(str(self.topic.id), str(topic_draft.id)))
+            )
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_initial(self):
@@ -159,6 +166,44 @@ class ProposeTopicDraftAdd(CreateView):
         draft = form.save(commit=False)
         draft.topic = self.topic
         draft.save()
+        recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
+        send_meeting_topic_draft_submitted_email(draft, recipients)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return self.success_url
+
+
+class ProposeTopicDraftEdit(UpdateView):
+
+    form_class = TopicDraftForm
+    template_name = "meetings/propose_topic_draft_add.html"
+    success_url = reverse_lazy("propose_topics_user")
+
+    def dispatch(
+        self, request, topic_id, draft_id, *args, **kwargs
+    ):  # pylint: disable=arguments-differ
+        try:
+            self.topic = Topic.objects.get_user_topics(self.request.user).get(id=topic_id)
+        except Topic.DoesNotExist:
+            raise Http404("Topic does not exist.")
+
+        self.draft_id = draft_id
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.topic.drafts.filter(approved=False)
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        try:
+            return queryset.get(id=self.draft_id)
+        except queryset.model.DoesNotExist:
+            raise Http404("Draft does not exist.")
+
+    def form_valid(self, form):
+        draft = form.save()
         recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
         send_meeting_topic_draft_submitted_email(draft, recipients)
         return HttpResponseRedirect(self.get_success_url())

@@ -243,7 +243,7 @@ def test_topics_drafts_add_view(client, django_user_model):
     client.login(username=username, password=password)
 
     data = {"title": "some title", "description": "some desc"}
-    response = client.post(reverse("propose_topic_user", args=(topic1.id,)), data)
+    response = client.post(reverse("propose_topic_user_add", args=(topic1.id,)), data)
 
     assert response.status_code == 302
     assert topic1.drafts.count() == 1

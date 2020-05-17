@@ -57,8 +57,8 @@ format-check:
 
 setup: setup_env build
 
-super: 
+superuser: 
 	docker-compose exec web ./manage.py createsuperuser
 
-log: 
+tail-logs: 
 	docker-compose logs -f web

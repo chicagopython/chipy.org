@@ -78,7 +78,7 @@ You can confirm that the migrations were successful. To do this, run `make shell
 
 Next, you should create a superuser to use to login to the site admin with.
 
-    make super
+    make superuser
 
 Finally, you should be able to visit your site by entering the
 following in your url bar:
@@ -122,7 +122,7 @@ once your app is running with `make up`:
 If you want to see the application logs, use the following command. To stop
 viewing the logs, you can press ctl-c.
 
-    make log
+    make tail-logs
 
 To run an arbitrary Django management command, you can use the following form.
 The below example shows you how to run the `help` management command, but

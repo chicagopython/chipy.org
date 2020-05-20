@@ -19,7 +19,7 @@ Django==2.2.12
 djangorestframework==3.11.0 # how to test
 feedparser==5.2.1
 gunicorn==20.0.4
-httplib2==0.17.0
+httplib2==0.18.0
 oauth2==1.9.0post1 # what's using this?
 probablepeople==0.5.4 # kill
 Pillow==6.2.2

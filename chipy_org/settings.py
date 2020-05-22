@@ -55,7 +55,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS").split(",")]
+ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(",")]
 
 MANAGERS = ADMINS
 

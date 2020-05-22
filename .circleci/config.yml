@@ -12,11 +12,13 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
         environment:
-          ALLOWED_HOSTS: localhost
+          ALLOWED_HOSTS: "chipy.org,www.chipy.org,localhost"
           CONNECT_METHOD: http
           DEBUG: true
           ADMINS: "admin@chipy.org"
           ENVELOPE_EMAIL_RECIPIENTS: "admin@chipy.org"
+          NORECAPTCHA_SITE_KEY: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+          NORECAPTCHA_SECRET_KEY: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
           USE_S3: False
     steps:
       - checkout

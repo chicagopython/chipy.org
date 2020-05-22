@@ -8,6 +8,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ENVELOPE_EMAIL_RECIPIENTS = "admin@example.com"
 
 SECRET_KEY = "somesecretkeyfordjangogoeshere"
+SECURE_SSL_REDIRECT = False
 
 USE_S3 = False
 

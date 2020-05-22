@@ -266,7 +266,7 @@ FIXTURE_DIRS = [
 ]
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
-ENVELOPE_EMAIL_RECIPIENTS = env_var("ENVELOPE_EMAIL_RECIPIENTS").split(",")
+ENVELOPE_EMAIL_RECIPIENTS = env_var("ENVELOPE_EMAIL_RECIPIENTS", "").split(",")
 
 EMAIL_BACKEND = env_var("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = env_var("EMAIL_HOST", "smtp.sendgrid.net")

@@ -11,5 +11,5 @@ SECRET_KEY = "somesecretkeyfordjangogoeshere"
 
 USE_S3 = False
 
-NORECAPTCHA_SITE_KEY = "dummy_recaptcha_public_key"
-NORECAPTCHA_SECRET_KEY = "dummy_recaptcha_private_key"
+NORECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+NORECAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"

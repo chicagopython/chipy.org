@@ -14,6 +14,7 @@ jobs:
         environment:
           ALLOWED_HOSTS: "chipy.org,www.chipy.org,localhost"
           CONNECT_METHOD: http
+          USE_S3: false
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin

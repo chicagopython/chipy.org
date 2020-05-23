@@ -12,7 +12,7 @@ from django.urls import reverse
 import chipy_org.libs.test_utils as test_utils
 
 from . import email
-from .models import RSVP, Meeting, MeetingType, Topic, Venue
+from .models import RSVP, Meeting, MeetingType, Presentor, Topic, Venue
 
 User = get_user_model()
 
@@ -203,4 +203,25 @@ def test_rsvp_works_for_anonymous_user(client):
 def test_rsvp_fails_gracefully_with_missing_data(client):
     meeting = Meeting.objects.create(when=datetime.date.today() + datetime.timedelta(days=1))
     response = client.post(reverse("rsvp"), data={"meeting": meeting.id})
+    assert response.status_code == 200
+
+
+def test_my_talks_with_multiple_presentors_with_same_user(client):
+    user = User.objects.create(username="chipy",)
+
+    p1 = Presentor.objects.create(user=user, name="name1",)
+    t1 = Topic.objects.create(title="title1")
+    t1.presentors.set(
+        [p1,]
+    )
+
+    p2 = Presentor.objects.create(user=user, name="name2",)
+    t2 = Topic.objects.create(title="title2")
+    t2.presentors.set(
+        [p2,]
+    )
+
+    client.force_login(user)
+    response = client.get(reverse("my_topics"))
+
     assert response.status_code == 200

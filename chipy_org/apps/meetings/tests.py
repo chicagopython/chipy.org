@@ -206,7 +206,7 @@ def test_rsvp_fails_gracefully_with_missing_data(client):
     assert response.status_code == 200
 
 
-def test_my_talks_with_multiple_presentors_with_same_user(client):
+def test_my_talks_with_multiple_presenters_with_same_user(client):
     user = User.objects.create(username="chipy",)
 
     p1 = Presentor.objects.create(user=user, name="name1",)

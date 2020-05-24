@@ -175,6 +175,8 @@ LOGIN_URL = "/login/"
 LOGIN_ERROR_URL = "/"
 LOGIN_REDIRECT_URL = "/"
 
+LOGOUT_REDIRECT_URL = "/"
+
 AUTHENTICATION_BACKENDS = [
     "social_core.backends.twitter.TwitterOAuth",
     "social_core.backends.google.GoogleOAuth2",

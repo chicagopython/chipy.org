@@ -5,10 +5,21 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
+from django.contrib.auth.views import LogoutView
+from django.contrib import messages
 
 import chipy_org.apps.main.views
 from chipy_org.apps.contact.views import ChipyContactView
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
+
+
+class LogoutWithRedirectAndMessage(LogoutView):
+    next_page = "/"
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "You've been logged out")
+        return super().dispatch(request, *args, **kwargs)
+
 
 admin.autodiscover()
 
@@ -24,7 +35,7 @@ urlpatterns = [
     url(r"^profiles/", include("chipy_org.apps.profiles.urls")),
     url(r"^admin/", admin.site.urls),
     url(r"^about/", include("chipy_org.apps.about.urls")),
-    url(r"^logout", django.contrib.auth.views.LogoutView.as_view(), {"next_page": "/"}),
+    url(r"^logout", LogoutWithRedirectAndMessage.as_view()),
     url(r"^contact/", ChipyContactView.as_view(), name="contact"),
     url(r"^tinymce/", include("tinymce.urls")),
     url(r"^pages/", include("django.contrib.flatpages.urls")),

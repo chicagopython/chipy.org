@@ -2,23 +2,14 @@ import django.contrib.auth.views
 import django.views
 from django.conf import settings
 from django.conf.urls import include, url
-from django.contrib import admin, messages
-from django.contrib.auth.views import LogoutView
+from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
 
 import chipy_org.apps.main.views
 from chipy_org.apps.contact.views import ChipyContactView
+from chipy_org.apps.main.views import LogoutWithRedirectAndMessage
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
-
-
-class LogoutWithRedirectAndMessage(LogoutView):
-    next_page = "/"
-
-    def dispatch(self, request, *args, **kwargs):
-        messages.success(request, "You've been logged out")
-        return super().dispatch(request, *args, **kwargs)
-
 
 admin.autodiscover()
 

@@ -2,11 +2,10 @@ import django.contrib.auth.views
 import django.views
 from django.conf import settings
 from django.conf.urls import include, url
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.contrib.auth.views import LogoutView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
-from django.contrib.auth.views import LogoutView
-from django.contrib import messages
 
 import chipy_org.apps.main.views
 from chipy_org.apps.contact.views import ChipyContactView
@@ -59,4 +58,4 @@ if settings.SERVE_MEDIA:
     ]
     urlpatterns += staticfiles_urlpatterns()
 
-handler404 = chipy_org.apps.main.views.customer_404
+handler404 = chipy_org.apps.main.views.custom_404

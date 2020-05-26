@@ -1,0 +1,26 @@
+
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% block head_title %}{% trans 'Contact us' %}{% endblock %}
+
+{% block body %}
+  <h1>{% trans 'Contact us' %}</h1>
+  <div class="row-fluid">
+      <div class="module span6">
+        <div id="contact">
+          <form method="post" id="contact-us" action=".">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-primary" type="submit" value="Send Email">
+          </form>
+        </div>
+      </div>
+      <div class="module span6">
+          <h2>Did you know ChiPy has a mailing list?</h3>
+          <p>It's a great place to post a tough question, make an announcement,
+          or leaf through the archives going back to 2005. Get connected with a wealth of resources today!</p>
+          <p><a class="btn" href="http://mail.python.org/mailman/listinfo/chicago">Sign up &raquo;</a></p>
+      </div><!--/span-->
+  </div><!-- #row-fluid -->
+{% endblock %}

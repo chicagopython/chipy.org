@@ -1,5 +1,3 @@
-import os
-
 import pytest
 from django.core import mail
 from django.test import override_settings

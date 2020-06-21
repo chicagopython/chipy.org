@@ -9,20 +9,24 @@ logger = logging.getLogger(__name__)
 
 
 class ContactForm(forms.Form):
-    sender = forms.CharField(label="From")
-    email = forms.EmailField()
-    subject = forms.CharField()
-    message = forms.CharField(widget=forms.Textarea)
+    email = forms.EmailField(max_length=256)
     captcha = NoReCaptchaField()
+    message = forms.CharField(
+        max_length=2000,
+        help_text="enter your message here; 2000 characters max",
+        widget=forms.Textarea,
+    )
+    sender = forms.CharField(max_length=256, label="From")
+    subject = forms.CharField(max_length=256)
 
     def send_email(self):
         try:
             msg = EmailMessage(
-                subject=self.subject,
-                body=self.message,
-                from_email=self.email,
-                to=getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", []),
-                reply_to=[self.email],
+                subject=self.cleaned_data["subject"],
+                body=self.cleaned_data["message"],
+                from_email=self.cleaned_data["email"],
+                to=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
+                reply_to=[self.cleaned_data["email"]],
             )
             msg.send()
             return True

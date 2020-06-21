@@ -9,15 +9,15 @@ logger = logging.getLogger(__name__)
 
 
 class ContactForm(forms.Form):
+    sender = forms.CharField(max_length=256, label="From")
     email = forms.EmailField(max_length=256)
-    captcha = NoReCaptchaField()
+    subject = forms.CharField(max_length=256)
     message = forms.CharField(
         max_length=2000,
         help_text="enter your message here; 2000 characters max",
         widget=forms.Textarea,
     )
-    sender = forms.CharField(max_length=256, label="From")
-    subject = forms.CharField(max_length=256)
+    captcha = NoReCaptchaField()
 
     def send_email(self):
         try:

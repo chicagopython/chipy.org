@@ -1,0 +1,42 @@
+{% extends "job_board/base.html" %}
+
+{% block body %}
+
+<h2>
+    {% if job_post.is_verified_sponsor %}
+        Sponsored:
+    {% endif %}
+
+    {{job_post.position}} at {{job_post.company_name}}</h2>
+
+<p>
+
+<b>Location:</b> {{job_post.get_location_display}}  
+
+<p>
+
+<b>Job Type:</b> {{job_post.get_job_type_display}}
+
+<p>
+
+<b>Description:</b> {{job_post.description}}
+
+<p>
+
+<b>Company Website:</b> {{job_post.company_website}}
+
+<p>
+
+<b>Job Posted by:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
+
+<p>
+{% if job_post.is_from_recruiting_agency %}
+    <b>This posting is from a recruiting agency.</b>
+{% endif %}
+
+<p>
+
+<b>How To Apply:</b> {{job_post.how_to_apply}}
+
+
+{% endblock body %}

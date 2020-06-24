@@ -16,5 +16,14 @@
     #maincontent {
         min-height: 20em;
     }
+
+    /* Turns the mouse cursor from an arrow into a pointing finger when the cursor hovers over
+       rows in a table that have a 'data-href' attribute. e.g. job_post_list.html has '<tr>' with 
+       'data-href' attributes.
+    */
+    tr[data-href] {
+        cursor:pointer
+    }
+
 </style>
 {% endblock %}

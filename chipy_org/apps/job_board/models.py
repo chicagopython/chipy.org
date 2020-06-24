@@ -11,6 +11,22 @@ NUM_DAYS_T0_EXPIRE = 60
 STATUS_CHOICES = [
     ("SU", "Submitted"),
     ("AP", "Approved"),
+    ("RE", "Rejected"),
+]
+
+LOCATION_CHOICES = [
+    ("CH", "Chicago"),
+    ("CT", "Chicago and Temporarily Remote"),
+    ("CR", "Chicago and Remote"),
+    ("RO", "Remote Only"),
+]
+
+JOB_TYPE_CHOICES = [
+    ("FT", "Full-Time"),
+    ("PT", "Part-Time"),
+    ("CO", "Contract to Hire Full-Time"),
+    ("PI", "Paid Internship"),
+    ("PA", "Paid Apprenticeship"),
 ]
 
 
@@ -46,13 +62,32 @@ class JobPost(CommonModel):
 
     expiration_date = models.DateTimeField(editable=False, blank=True, null=True)
 
+    location = models.CharField(
+        max_length=2,
+        choices=LOCATION_CHOICES,
+        default="CH",
+        help_text=(
+            "ChiPy is a locally based group."
+            " The job position must not move the candidate out from Chicago."
+            " Working remotely or commuting is acceptable."
+        ),
+    )
+
+    job_type = models.CharField(max_length=2, choices=JOB_TYPE_CHOICES, default="FT")
+
     company_website = models.CharField(max_length=MAX_LENGTH)
+
+    how_to_apply = models.CharField(max_length=2500, help_text="2500 Character Limit")
 
     contact = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     agree_to_terms = models.BooleanField(
         verbose_name="I have read and agree to the referral terms, "
         "which includes giving a referral fee when a candidate is hired/placed."
+    )
+
+    is_from_recruiting_agency = models.BooleanField(
+        default=False, verbose_name="Is this posting from a recruiting agency?"
     )
 
     def __str__(self):

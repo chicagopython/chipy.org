@@ -1,0 +1,113 @@
+{% extends "job_board/base.html" %}
+    
+
+{% block body %}
+
+
+  {% if view_action == "create" %}
+      <h2>Create a Job Post</h2>
+  {% elif view_action == "update" %}
+      <h2>Update a Job Post</h2>
+  {% endif %}
+  
+
+<form action="." method="post">
+    {% csrf_token %}
+    
+    <table style="margin-bottom: 25px;"> 
+        
+        {% for field in job_user_form %}
+            <tr>
+                <td>{{field.label_tag}}</td>
+                <td>{{ field.errors }}{{field}}</td>
+            </tr>
+        {% endfor %}
+     
+        {% for field in job_post_form %}
+            {% if field == job_post_form.agree_to_terms %}
+                <tr>
+                    <td colspan="2">
+                    {{field}}
+                    I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
+                    {{ field.errors }}
+                    </td>
+                </tr>
+            {% elif field == job_post_form.location %}
+                <tr>
+                    <td style="width: 120px">{{field.label_tag}}</td>
+                    <td>{{ field.errors }}{{field}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                        ChiPy is a locally based group. <button data-toggle="modal" data-target="#moreInfoModal" class="btn btn-info">more</buttondata-toggle="modal" data-target="#moreInfoModal" class="btn btn-info" >
+                        {{ field.errors }}
+                    </td>
+                </tr>
+            {% elif field == job_post_form.is_sponsor %}
+                <tr>
+                    <td colspan="2">{{field}}
+                        Is the company a sponsor of ChiPy?
+                        {{ field.errors }}
+                    </td>
+                </tr>
+            {% elif field == job_post_form.can_host_meeting %}
+                <tr>
+                    <td colspan="2">{{field}}
+                        Is your organization interested in hosting an event?
+                        {{ field.errors }}
+                    </td>
+                </tr>
+            {% elif field == job_post_form.is_from_recruiting_agency %}
+                <tr>
+                    <td colspan="2">{{field}}
+                        Is this posting from a recruiting agency?
+                        {{ field.errors }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{field.label_tag}}</td>
+                    <td>{{ field.errors }}{{field}}</td>
+                </tr>
+             
+            {% endif %}
+        {% endfor %}
+    </table>
+  
+    {% if view_action == "create" %}
+      <input type="submit" value="Create Post" class="btn btn-primary" >
+    {% elif view_action == "update" %}
+      <input type="submit" value="Update Post" class="btn btn-primary" >
+      <a href="{% url 'after-submit-job-post' action='show' %}" class="btn btn-info">Cancel</a>
+    {% endif %}
+
+</form>
+
+<!-- Modal Begins-->
+<div class="modal fade" id="moreInfoModal" tabindex="-1" role="dialog" aria-labelledby="moreInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="moreInfoModalLabel">Location Requirements for Job Posting</h5>
+          
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                ChiPy is a locally based group. Position must not move candidate out of the Chicago area. Working remote or commuting is acceptable. Any position requiring relocation out of the Chicago land is out of scope of the mission of the group.
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--Modal Ends-->
+
+{% endblock body %}

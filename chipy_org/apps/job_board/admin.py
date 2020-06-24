@@ -8,6 +8,7 @@ class JobPostAdmin(admin.ModelAdmin):
 
     list_display = (
         "position",
+        "id",
         "company_name",
         "is_sponsor",
         "created",

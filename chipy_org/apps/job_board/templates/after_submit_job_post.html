@@ -8,4 +8,23 @@ It will have to be approved by an admin in order to show up on the job board.
 <br>
 The status is: Submitted. 
 </h4>
+
+<ul>
+        
+    {% for post in job_posts %}
+
+        <li>{{post.position}} at {{ post.company_name }}, Created on {{post.created|date:"n/j/Y"}}
+            
+            <br>
+            {% if post.status == "SU" %}
+                <a href="{% url 'update-job-post' pk=post.pk %}" class="btn btn-primary">Update Post</a>
+            {% elif post.status == "AP" %}
+                <a href="{% url 'job-post-detail' pk=post.pk %}" class="btn btn-primary">View Post</a>
+            {% endif %}
+            
+        </li>
+
+    {% endfor %}
+</ul>
+
 {% endblock body %}

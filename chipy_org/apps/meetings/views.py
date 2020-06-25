@@ -123,11 +123,11 @@ class MyTopics(ListView):
 
     def get_queryset(self):
         try:
-            presenter = Presentor.objects.get(user=self.request.user)
+            presenter = Presentor.objects.filter(user=self.request.user)
         except Presentor.DoesNotExist:
             return Topic.objects.none()
 
-        return Topic.objects.filter(presentors=presenter)
+        return Topic.objects.filter(presentors__in=presenter)
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):

@@ -15,7 +15,7 @@ django-ical==1.7.0
 django-nocaptcha-recaptcha==0.0.20 # find a more standard recaptcha
 django-storages==1.9.1
 django-tinymce==2.8.0 # this looks abandoned
-Django==2.2.12
+Django==2.2.13
 djangorestframework==3.11.0 # how to test
 feedparser==5.2.1
 gunicorn==20.0.4

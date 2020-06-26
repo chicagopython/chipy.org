@@ -8,6 +8,7 @@ from django.views.generic import TemplateView
 
 import chipy_org.apps.main.views
 from chipy_org.apps.contact.views import ChipyContactView
+from chipy_org.apps.main.views import LogoutWithRedirectAndMessage
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
 admin.autodiscover()
@@ -24,7 +25,7 @@ urlpatterns = [
     url(r"^profiles/", include("chipy_org.apps.profiles.urls")),
     url(r"^admin/", admin.site.urls),
     url(r"^about/", include("chipy_org.apps.about.urls")),
-    url(r"^logout", django.contrib.auth.views.LogoutView.as_view(), {"next_page": "/"}),
+    url(r"^logout", LogoutWithRedirectAndMessage.as_view()),
     url(r"^contact/", ChipyContactView.as_view(), name="contact"),
     url(r"^tinymce/", include("tinymce.urls")),
     url(r"^pages/", include("django.contrib.flatpages.urls")),
@@ -48,4 +49,4 @@ if settings.SERVE_MEDIA:
     ]
     urlpatterns += staticfiles_urlpatterns()
 
-handler404 = chipy_org.apps.main.views.customer_404
+handler404 = chipy_org.apps.main.views.custom_404

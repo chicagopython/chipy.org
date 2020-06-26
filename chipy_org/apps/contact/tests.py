@@ -1,29 +1,33 @@
 import pytest
 from django.core import mail
+from django.conf import global_settings
 from django.test import override_settings
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 
 from .forms import ContactForm
 
 
-def test_clean_captcha(monkeypatch):
+@pytest.fixture
+def no_recaptcha(monkeypatch):
+    monkeypatch.setenv("NORECAPTCHA_TESTING", "True")
+    yield
+
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_clean_captcha(no_recaptcha):
     """
     This example shows how to override the captach for testing purposes used below. The datadict
     passed to the form and subsquently the widget must contatin the g-recaptcha-response with a
     value of passed, and there must ben an environment variable NORECAPTCHA_TESTING set to 'True' to
     by pass the captcha when the form is cleaned.
     """
-    monkeypatch.setenv("NORECAPTCHA_TESTING", "True")
     field = NoReCaptchaField()
     value = field.widget.value_from_datadict({"g-recaptcha-response": "PASSED",}, {}, {})
     field.clean(value)
 
 
-@override_settings(
-    ENVELOPE_EMAIL_RECIPIENTS=["admin@example.com",]
-)
-def test_chipy_contact_form(monkeypatch):
-    monkeypatch.setenv("NORECAPTCHA_TESTING", "True")
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_chipy_contact_form(no_recaptcha):
     assert len(mail.outbox) == 0
 
     form_data = {
@@ -35,19 +39,15 @@ def test_chipy_contact_form(monkeypatch):
     }
 
     form = ContactForm(form_data)
-    form.is_valid()
-    assert form.send_email()
+    assert form.is_valid()
+    form.send_email()
     assert len(mail.outbox) == 1
 
 
 @pytest.mark.django_db
-@override_settings(
-    ENVELOPE_EMAIL_RECIPIENTS=["admin@example.com",]
-)
-def test_chipy_contact_view(client, monkeypatch):
+def test_chipy_contact_view(client, no_recaptcha):
     assert len(mail.outbox) == 0
 
-    monkeypatch.setenv("NORECAPTCHA_TESTING", "True")
     response = client.post(
         "/contact/",
         {

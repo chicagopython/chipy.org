@@ -13,7 +13,7 @@ class ContactView(FormView):
         try:
             form.send_email()
             messages.success(self.request, "Your message has been sent to Chipy's organizers")
-        except:
+        except Exception:
             messages.error(self.request, "Your message was NOT sent to Chipy's organizers")
 
         return super().form_valid(form)

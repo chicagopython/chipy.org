@@ -206,6 +206,7 @@ def test_rsvp_fails_gracefully_with_missing_data(client):
     assert response.status_code == 200
 
 
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_my_talks_with_multiple_presenters_with_same_user(client):
     user = User.objects.create(username="chipy",)
 

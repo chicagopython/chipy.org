@@ -10,9 +10,10 @@ class ContactView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        success = form.send_email()
-        if success:
+        try:
+            form.send_email()
             messages.success(self.request, "Your message has been sent to Chipy's organizers")
-        else:
+        except:
             messages.error(self.request, "Your message was NOT sent to Chipy's organizers")
+
         return super().form_valid(form)

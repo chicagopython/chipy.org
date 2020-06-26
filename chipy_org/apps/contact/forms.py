@@ -20,16 +20,11 @@ class ContactForm(forms.Form):
     captcha = NoReCaptchaField()
 
     def send_email(self):
-        try:
-            msg = EmailMessage(
-                subject=self.cleaned_data["subject"],
-                body=self.cleaned_data["message"],
-                from_email=self.cleaned_data["email"],
-                to=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
-                reply_to=[self.cleaned_data["email"]],
-            )
-            msg.send()
-            return True
-        except Exception as e:
-            logger.exception(e)
-            return False
+        msg = EmailMessage(
+            subject=self.cleaned_data["subject"],
+            body=self.cleaned_data["message"],
+            from_email=self.cleaned_data["email"],
+            to=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
+            reply_to=[self.cleaned_data["email"]],
+        )
+        msg.send()

@@ -210,7 +210,7 @@ class Topic(CommonModel):
         choices=EXPERIENCE_LEVELS,
     )
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default="CC BY")
-    length_minutes = models.IntegerField(blank=True, null=True)
+    length = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = tinymce_models.HTMLField(
         "Public Description",

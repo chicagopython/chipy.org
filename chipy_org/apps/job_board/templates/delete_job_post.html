@@ -1,0 +1,16 @@
+{% extends "site_base.html" %}
+    
+{% block body %}
+
+    <h2>Are you sure you want to delete the job post for {{job_post.position}} at {{job_post.company_name}}?</h2>
+
+    <form action="." method="post">
+        
+        {% csrf_token %}
+        <input type="submit" value="Yes, Delete" class="btn btn-danger"></input>
+    
+    </form>
+
+        <a href="{% url 'after-submit-job-post' %}" class="btn btn-primary">Cancel</a>
+
+{% endblock body %}

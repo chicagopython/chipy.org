@@ -22,6 +22,7 @@ The status is: Submitted.
                 <a href="{% url 'job-post-detail' pk=post.pk %}" class="btn btn-primary">View Post</a>
             {% endif %}
             
+            <a href="{% url 'delete-job-post' pk=post.pk %}" class="btn btn-danger">Delete Post</a>
         </li>
 
     {% endfor %}

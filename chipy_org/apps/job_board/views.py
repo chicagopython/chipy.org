@@ -49,6 +49,7 @@ def create_job_post(request):
         },
     )
 
+
 @login_required
 def update_job_post(request, pk):
     
@@ -88,6 +89,30 @@ def update_job_post(request, pk):
             },
         )
     
+    else:
+
+        # Permission to see this page is denied since the person trying to 
+        # access it isn't the correct user.
+        raise PermissionDenied()
+
+
+@login_required
+def delete_job_post(request, pk):
+
+    job_post = get_object_or_404(JobPost, pk=pk)
+
+    # Make sure that the user owns this post and has the right to delete it.
+    if job_post.contact == request.user:  
+        
+        if request.method == "POST":
+            
+            job_post.delete()
+            return HttpResponseRedirect(reverse("after-submit-job-post"))
+        
+        else:
+            
+            return render(request, "delete_job_post.html", {"job_post":job_post} )
+
     else:
 
         # Permission to see this page is denied since the person trying to 

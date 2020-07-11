@@ -14,7 +14,7 @@ def no_recaptcha(monkeypatch):
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-def test_clean_captcha(no_recaptcha):
+def test_clean_captcha(no_recaptcha):  # pylint: disable=redefined-outer-name
     """
     This example shows how to override the captach for testing purposes used below. The datadict
     passed to the form and subsquently the widget must contatin the g-recaptcha-response with a
@@ -27,7 +27,7 @@ def test_clean_captcha(no_recaptcha):
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-def test_chipy_contact_form(no_recaptcha):
+def test_chipy_contact_form(no_recaptcha):  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
 
     form_data = {
@@ -46,7 +46,7 @@ def test_chipy_contact_form(no_recaptcha):
 
 @pytest.mark.django_db
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-def test_chipy_contact_view(client, no_recaptcha):
+def test_chipy_contact_view(client, no_recaptcha):  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
 
     response = client.post(

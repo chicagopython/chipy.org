@@ -5,7 +5,9 @@ DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memor
 DEBUG = True
 ADMINS = ["admin@chipy.org"]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-ENVELOPE_EMAIL_RECIPIENTS = ["admin@example.com",]
+ENVELOPE_EMAIL_RECIPIENTS = [
+    "admin@example.com",
+]
 
 SECRET_KEY = "somesecretkeyfordjangogoeshere"
 SECURE_SSL_REDIRECT = False

@@ -7,8 +7,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
 
 import chipy_org.apps.main.views
-from chipy_org.apps.main.views import LogoutWithRedirectAndMessage
 from chipy_org.apps.contact.views import ContactView
+from chipy_org.apps.main.views import LogoutWithRedirectAndMessage
 from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
 admin.autodiscover()

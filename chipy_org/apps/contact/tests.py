@@ -1,6 +1,6 @@
 import pytest
-from django.core import mail
 from django.conf import global_settings
+from django.core import mail
 from django.test import override_settings
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 

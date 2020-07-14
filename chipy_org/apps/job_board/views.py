@@ -1,11 +1,12 @@
 import datetime
 from itertools import chain
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render 
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
@@ -31,7 +32,7 @@ def create_job_post(request):
             job_user_form.save()
             job_profile_form.save()
 
-            return HttpResponseRedirect(reverse("after-submit-job-post"))
+            return HttpResponseRedirect(reverse("after-submit-job-post",kwargs={"action":"create"} ))
 
     else:
         job_post = JobPost(contact=request.user)
@@ -46,6 +47,7 @@ def create_job_post(request):
             "job_post_form": job_post_form,
             "job_user_form": job_user_form,
             "job_profile_form": job_profile_form,
+            "view_action": "create",
         },
     )
 
@@ -71,7 +73,7 @@ def update_job_post(request, pk):
                 job_user_form.save()
                 job_profile_form.save()
 
-                return HttpResponseRedirect(reverse("after-submit-job-post"))
+                return HttpResponseRedirect(reverse("after-submit-job-post", kwargs={"action":"update"}))
 
         else:
 
@@ -86,6 +88,7 @@ def update_job_post(request, pk):
                 "job_post_form": job_post_form,
                 "job_user_form": job_user_form,
                 "job_profile_form": job_profile_form,
+                "view_action": "update"
             },
         )
     
@@ -107,7 +110,7 @@ def delete_job_post(request, pk):
         if request.method == "POST":
             
             job_post.delete()
-            return HttpResponseRedirect(reverse("after-submit-job-post"))
+            return HttpResponseRedirect(reverse("after-submit-job-post", kwargs={"action":"delete"}))
         
         else:
             
@@ -125,10 +128,27 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
     context_object_name = "job_posts"
     template_name = "after_submit_job_post.html"
 
+    def get(self, request, *args, **kwargs):
+        if self.kwargs["action"] == "create":
+        
+            messages.success(request, 
+                "Thank you for submitting a job posting!\n It will have to be approved by an admin in order to show up on the job board.\n You'll be notified by email of the decision.\n ")
+        
+        elif self.kwargs["action"] == "update":
+            
+            messages.success(request, "Your job post has been successfully updated.")
+
+        elif self.kwargs["action"] == "delete":
+            
+            messages.success(request, "Your job post has been successfully deleted.")
+        
+        elif self.kwargs["action"] != "show":
+            raise Http404()
+        
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
-        
         job_posts = JobPost.objects.filter(contact=self.request.user)
-        
         return job_posts
 
 

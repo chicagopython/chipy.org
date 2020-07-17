@@ -29,7 +29,7 @@ urlpatterns = [
     url(r"^tinymce/", include("tinymce.urls")),
     url(r"^pages/", include("django.contrib.flatpages.urls")),
     url(r"^sponsors/", include("chipy_org.apps.sponsors.urls")),
-    url(r"^job/", include("chipy_org.apps.job_board.urls")),
+    url(r"^job-board/", include("chipy_org.apps.job_board.urls")),
 ]
 
 # Would love a back tracking url resolver

@@ -40,13 +40,14 @@ def create_job_post(request):
         job_user_form = JobUserForm(instance=request.user)
         job_profile_form = JobProfileForm(instance=request.user.profile)
 
+    job_user_and_profile_form = [job_user_form, job_profile_form]
+
     return render(
         request,
         "job_post_form.html",
         {
             "job_post_form": job_post_form,
-            "job_user_form": job_user_form,
-            "job_profile_form": job_profile_form,
+            "job_user_and_profile_form": job_user_and_profile_form,
             "view_action": "create",
         },
     )
@@ -81,13 +82,14 @@ def update_job_post(request, pk):
             job_user_form = JobUserForm(instance=request.user)
             job_profile_form = JobProfileForm(instance=request.user.profile)
 
+        job_user_and_profile_form = [job_user_form, job_profile_form]
+
         return render(
             request,
             "job_post_form.html",
             {
                 "job_post_form": job_post_form,
-                "job_user_form": job_user_form,
-                "job_profile_form": job_profile_form,
+                "job_user_and_profile_form": job_user_and_profile_form,
                 "view_action": "update"
             },
         )

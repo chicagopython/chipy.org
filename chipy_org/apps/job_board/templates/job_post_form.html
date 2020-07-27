@@ -3,6 +3,7 @@
 
 {% block body %}
 
+{% load widget_tweaks %}
 
   {% if view_action == "create" %}
       <h2>Create a Job Post</h2>
@@ -13,22 +14,46 @@
 
 <form action="." method="post">
     {% csrf_token %}
-    <p>
-    {{ job_user_form.as_p }}
-    <p>
-    {{ job_profile_form.as_p }}
-
-    {% for field in job_post_form %}
-      {% if field == job_post_form.agree_to_terms %}
-        {{field}} I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
-        <p>
-      {% else %}  
-        {{field.label_tag}} {{field.errors}}
-        {{field}} 
-        {{field.help_text}}
-        <p>
-      {% endif %}
-    {% endfor %}
+    
+    <table> 
+        <tbody>
+        {% for job_form in job_user_and_profile_form %}
+            {% for field in job_form %}
+                {% if field|field_type == "booleanfield" %}
+                    <tr>
+                        <td colspan="2" style="padding-right: 10px;"><div style="display:block;"><div style="display:inline">{{field}}</div><div style="display:inline">{{field.label_tag}}</div></div></td> 
+                        <td colspan="2" style="padding-right: 10px; vertical-align: top;"><label for="id_is_external_recruiter"><input type="checkbox" name="is_external_recruiter" id="id_is_external_recruiter" checked style="vertical-align: top;"> Are you an external recruiter?</label>  </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{field.label_tag}}</td>
+                        <td>{{field}} {{field.help_text}} {{field.errors}}</td> 
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+   
+        {% for field in job_post_form %}
+            {% if field == job_post_form.agree_to_terms %}
+                <tr>
+                    <td style="padding-right: 10px; text-align:right; vertical-align:top;">{{field}}</td>
+                    <td>I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.</td>
+                </tr>
+            {% elif field|field_type == "booleanfield" %}
+                <tr>
+                    <td style="padding-right: 10px; text-align:right; vertical-align:top;">{{field}}</td> 
+                    <td>{{field.label_tag}} {{field.help_text}} {{field.errors}}</td>
+                </tr>  
+            {% else %}
+                <tr>
+                    <td>{{field.label_tag}}</td>
+                    <td>{{field}} {{field.help_text}} {{field.errors}}</td> 
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+  
 
     {% if view_action == "create" %}
       <input type="submit" value="Create Post" class="btn btn-primary" >

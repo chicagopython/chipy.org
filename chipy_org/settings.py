@@ -241,6 +241,7 @@ INSTALLED_APPS = [
     "tinymce",
     "sorl.thumbnail",
     "ckeditor",
+    "widget_tweaks",
     # theme
     "django_forms_bootstrap",
     # project

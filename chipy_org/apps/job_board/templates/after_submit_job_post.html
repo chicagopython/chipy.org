@@ -3,23 +3,50 @@
 {% block body %}
 
 <h2>My Job Posts</h2>
-<ul>
-        
-    {% for post in job_posts %}
 
-        <li>{{post.position}} at {{ post.company_name }}, Created on {{post.created|date:"n/j/Y"}}
-            
-            <br>
-            {% if post.status == "SU" %}
-                <a href="{% url 'update-job-post' pk=post.pk %}" class="btn btn-primary">Update Post</a>
-            {% elif post.status == "AP" %}
-                <a href="{% url 'job-post-detail' pk=post.pk %}" class="btn btn-primary">View Post</a>
-            {% endif %}
-            
-            <a href="{% url 'delete-job-post' pk=post.pk %}" class="btn btn-danger">Delete Post</a>
-        </li>
+<table class="table table-hover">
+    
+    <thead>
+        <tr>
+            <th scope="col">Position</th>
+            <th scope="col">Company</th>
+            <th scope="col">Date Submitted</th>
+            <th scope="col">Option</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
 
-    {% endfor %}
-</ul>
+    <tbody>   
+        {% for post in job_posts %}
+            <tr>
+                <td>    
+                    {{post.position}}
+                </td>
+                <td>
+                    {{ post.company_name }}
+                </td>
+                <td>
+                    {{post.created|date:"n/j/Y"}}
+                </td>
+                
+            
+                {% if post.status == "SU" %}
+                    <td>
+                        <a href="{% url 'update-job-post' pk=post.pk %}" class="btn btn-primary">Update Post</a>
+                    </td>
+                {% elif post.status == "AP" %}
+                    <td>
+                        <a href="{% url 'job-post-detail' pk=post.pk %}" class="btn btn-primary">View Post</a>
+                    </td>
+                {% endif %}
+                
+                <td>
+                    <a href="{% url 'delete-job-post' pk=post.pk %}" class="btn btn-danger">Delete Post</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+    </tbody> 
+</table>
 
 {% endblock body %}

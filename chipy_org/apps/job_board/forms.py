@@ -26,7 +26,7 @@ class JobPostForm(forms.ModelForm):
         ]
 
         widgets = {
-            "description": Textarea(attrs={"cols": 80, "rows": 20}),
+            "description": Textarea(attrs={"cols": 80, "rows": 20, "placeholder": "2500 Character Limit"}),
             "contact": forms.HiddenInput(),
         }
 

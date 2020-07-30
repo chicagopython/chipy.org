@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     display_name = models.CharField(max_length=200, verbose_name="Name for Security Check In")
     show = models.BooleanField(default=False, verbose_name="Show my information in the member list")
     is_external_recruiter = models.BooleanField(
-        default=False, verbose_name="Are you an external recruiter?"
+        default=False, verbose_name="Is this posting from a recruiting agency?"
     )
 
 

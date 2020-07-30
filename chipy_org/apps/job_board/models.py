@@ -40,7 +40,7 @@ class JobPost(CommonModel):
     description = models.CharField(max_length=2500, help_text="2500 Character Limit")
 
     is_sponsor = models.BooleanField(
-        default=False, verbose_name="Is this posting from a recruiting agency?"
+        default=False, verbose_name="Is the company a sponsor of ChiPy?"
     )
 
     can_host_meeting = models.BooleanField(

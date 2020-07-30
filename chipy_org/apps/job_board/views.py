@@ -149,7 +149,12 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
                     "Thank you for submitting a job posting!\n"
                     "It will have to be approved by an admin in order"
                     " to show up on the job board.\n"
-                    "You'll be notified by email of the decision.\n"
+                    " \n"
+                    "You can check back on the decision status in the future.\n"
+                    "To do so:\n"
+                    "1. Log into chipy.org\n"
+                    "2. In the user login dropdown menu, click on 'My Jobs'.\n"
+                    "3. It will take you to this page."
                 ),
             )
 

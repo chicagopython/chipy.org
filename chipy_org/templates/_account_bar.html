@@ -15,6 +15,7 @@
                     {% block user_links %}
                         {% if user.is_authenticated %}
                           <li><a href="{% url 'my_topics' %}"><i class="icon-certificate"></i> {% trans "My Talks" %}</a></li>
+                          <li><a href="{% url 'after-submit-job-post' action='show' %}"><i class="icon-star"></i> {% trans "My Jobs" %}</a></li>
                         {% endif %}
                         <li><a href="{% url "profiles:edit" %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
                         {% if user.is_staff %}

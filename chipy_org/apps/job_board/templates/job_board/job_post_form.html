@@ -25,7 +25,7 @@
                 {% else %}
                     <tr>
                         <td>{{field.label_tag}}</td>
-                        <td>{{field}} {{field.help_text}} {{field.errors}}</td> 
+                        <td>{{field}}</td>           
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -39,6 +39,17 @@
                     I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
                     </td>
                 </tr>
+            {% elif field == job_post_form.location %}
+                <tr>
+                    <td style="width: 120px">{{field.label_tag}}</td>
+                    <td>{{field}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                        ChiPy is a locally based group. <button data-toggle="modal" data-target="#moreInfoModal" class="btn btn-info">more</buttondata-toggle="modal" data-target="#moreInfoModal" class="btn btn-info" >
+                    </td>
+                </tr>
             {% elif field|field_type == "booleanfield" %}
                 <tr>
                     <td colspan="2">{{field.label_tag|checkbox}}</td>
@@ -46,8 +57,9 @@
             {% else %}
                 <tr>
                     <td>{{field.label_tag}}</td>
-                    <td>{{field}} {{field.help_text}} {{field.errors}}</td> 
+                    <td>{{field}}</td> 
                 </tr>
+             
             {% endif %}
         {% endfor %}
     </table>
@@ -60,4 +72,31 @@
     {% endif %}
 
 </form>
+
+<!-- Modal Begins-->
+<div class="modal fade" id="moreInfoModal" tabindex="-1" role="dialog" aria-labelledby="moreInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="moreInfoModalLabel">Location Requirements for Job Posting</h5>
+          
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                ChiPy is a locally based group. The job position must not move the candidate out from Chicago. Working remotely or commuting is acceptable.
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--Modal Ends-->
+
 {% endblock body %}

@@ -66,7 +66,11 @@ class JobPost(CommonModel):
         max_length=2,
         choices=LOCATION_CHOICES,
         default="CH",
-        help_text="ChiPy is a locally based group. The job position must not move the candidate out from Chicago. Working remotely or commuting is acceptable.",
+        help_text=(
+            "ChiPy is a locally based group."
+            " The job position must not move the candidate out from Chicago."
+            " Working remotely or commuting is acceptable."
+        ),
     )
 
     job_type = models.CharField(max_length=2, choices=JOB_TYPE_CHOICES, default="FT")

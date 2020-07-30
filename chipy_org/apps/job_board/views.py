@@ -56,7 +56,7 @@ def create_job_post(request):
 
 
 @login_required
-def update_job_post(request, pk):
+def update_job_post(request, pk):  # pylint: disable=invalid-name
 
     job_post = get_object_or_404(JobPost, pk=pk)
 
@@ -71,9 +71,9 @@ def update_job_post(request, pk):
             job_profile_form = JobProfileForm(request.POST, instance=request.user.profile)
 
             if (
-                job_post_form.is_valid()
-                and job_user_form.is_valid()
-                and job_profile_form.is_valid()
+                job_post_form.is_valid()  # pylint: disable=bad-continuation
+                and job_user_form.is_valid()  # pylint: disable=bad-continuation
+                and job_profile_form.is_valid()  # pylint: disable=bad-continuation
             ):
 
                 job_post_form.save()
@@ -110,7 +110,7 @@ def update_job_post(request, pk):
 
 
 @login_required
-def delete_job_post(request, pk):
+def delete_job_post(request, pk):  # pylint: disable=invalid-name
 
     job_post = get_object_or_404(JobPost, pk=pk)
 
@@ -145,7 +145,12 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 
             messages.success(
                 request,
-                "Thank you for submitting a job posting!\n It will have to be approved by an admin in order to show up on the job board.\n You'll be notified by email of the decision.\n ",
+                (
+                    "Thank you for submitting a job posting!\n"
+                    "It will have to be approved by an admin in order"
+                    " to show up on the job board.\n"
+                    "You'll be notified by email of the decision.\n"
+                ),
             )
 
         elif self.kwargs["action"] == "update":

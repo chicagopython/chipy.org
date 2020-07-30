@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
-from chipy_org.apps.job_board.forms import JobPostForm, JobProfileForm, JobUserForm
+from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm
 
 from .models import JobPost
 
@@ -24,13 +24,11 @@ def create_job_post(request):
         job_post = JobPost(contact=request.user)
         job_post_form = JobPostForm(request.POST, instance=job_post)
         job_user_form = JobUserForm(request.POST, instance=request.user)
-        job_profile_form = JobProfileForm(request.POST, instance=request.user.profile)
 
-        if job_post_form.is_valid() and job_user_form.is_valid() and job_profile_form.is_valid():
+        if job_post_form.is_valid() and job_user_form.is_valid():
 
             job_post_form.save()
             job_user_form.save()
-            job_profile_form.save()
 
             return HttpResponseRedirect(
                 reverse("after-submit-job-post", kwargs={"action": "create"})
@@ -40,18 +38,11 @@ def create_job_post(request):
         job_post = JobPost(contact=request.user)
         job_post_form = JobPostForm(instance=job_post)
         job_user_form = JobUserForm(instance=request.user)
-        job_profile_form = JobProfileForm(instance=request.user.profile)
-
-    job_user_and_profile_form = [job_user_form, job_profile_form]
 
     return render(
         request,
         "job_board/job_post_form.html",
-        {
-            "job_post_form": job_post_form,
-            "job_user_and_profile_form": job_user_and_profile_form,
-            "view_action": "create",
-        },
+        {"job_post_form": job_post_form, "job_user_form": job_user_form, "view_action": "create",},
     )
 
 
@@ -68,17 +59,14 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
 
             job_post_form = JobPostForm(request.POST, instance=job_post)
             job_user_form = JobUserForm(request.POST, instance=request.user)
-            job_profile_form = JobProfileForm(request.POST, instance=request.user.profile)
 
             if (
                 job_post_form.is_valid()  # pylint: disable=bad-continuation
                 and job_user_form.is_valid()  # pylint: disable=bad-continuation
-                and job_profile_form.is_valid()  # pylint: disable=bad-continuation
             ):
 
                 job_post_form.save()
                 job_user_form.save()
-                job_profile_form.save()
 
                 return HttpResponseRedirect(
                     reverse("after-submit-job-post", kwargs={"action": "update"})
@@ -88,16 +76,13 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
 
             job_post_form = JobPostForm(instance=job_post)
             job_user_form = JobUserForm(instance=request.user)
-            job_profile_form = JobProfileForm(instance=request.user.profile)
-
-        job_user_and_profile_form = [job_user_form, job_profile_form]
 
         return render(
             request,
             "job_board/job_post_form.html",
             {
                 "job_post_form": job_post_form,
-                "job_user_and_profile_form": job_user_and_profile_form,
+                "job_user_form": job_user_form,
                 "view_action": "update",
             },
         )

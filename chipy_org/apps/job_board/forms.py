@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import Textarea
 
-from chipy_org.apps.profiles.models import UserProfile
-
 from .models import JobPost
 
 
@@ -16,6 +14,7 @@ class JobPostForm(forms.ModelForm):
         model = JobPost
 
         fields = [
+            "is_from_recruiting_agency",
             "company_name",
             "position",
             "job_type",
@@ -50,10 +49,3 @@ class JobUserForm(forms.ModelForm):
         model = User
 
         fields = ["first_name", "last_name", "email"]
-
-
-class JobProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-
-        fields = ["is_external_recruiter"]

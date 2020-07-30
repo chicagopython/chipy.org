@@ -16,21 +16,14 @@
     {% csrf_token %}
     
     <table style="margin-bottom: 25px;"> 
-        {% for job_form in job_user_and_profile_form %}
-            {% for field in job_form %}
-                {% if field|field_type == "booleanfield" %}
-                    <tr>
-                        <td colspan="2">{{field.label_tag|checkbox}}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>{{field.label_tag}}</td>
-                        <td>{{field}}</td>           
-                    </tr>
-                {% endif %}
-            {% endfor %}
+        
+        {% for field in job_user_form %}
+            <tr>
+                <td>{{field.label_tag}}</td>
+                <td>{{field}}</td>
+            </tr>
         {% endfor %}
-   
+     
         {% for field in job_post_form %}
             {% if field == job_post_form.agree_to_terms %}
                 <tr>

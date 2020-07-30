@@ -30,8 +30,8 @@
 <b>Job Posted by:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
 
 <p>
-{% if job_post.contact.profile.is_external_recruiter %}
-This posting is from a recruiting agency.
+{% if job_post.is_from_recruiting_agency %}
+    This posting is from a recruiting agency.
 {% endif %}
 
 <p>

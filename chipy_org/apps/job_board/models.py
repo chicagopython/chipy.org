@@ -86,6 +86,10 @@ class JobPost(CommonModel):
         "which includes giving a referral fee when a candidate is hired/placed."
     )
 
+    is_from_recruiting_agency = models.BooleanField(
+        default=False, verbose_name="Is this posting from a recruiting agency?"
+    )
+
     def __str__(self):
         return f"{self.position} at {self.company_name}"
 

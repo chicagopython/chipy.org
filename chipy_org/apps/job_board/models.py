@@ -22,12 +22,13 @@ LOCATION_CHOICES = [
 ]
 
 JOB_TYPE_CHOICES = [
-    ("FT","Full-Time"),
-    ("PT","Part-Time"),
-    ("CO","Contract to Hire Full-Time"),
-    ("PI","Paid Internship"),
-    ("PA","Paid Apprenticeship"),
+    ("FT", "Full-Time"),
+    ("PT", "Part-Time"),
+    ("CO", "Contract to Hire Full-Time"),
+    ("PI", "Paid Internship"),
+    ("PA", "Paid Apprenticeship"),
 ]
+
 
 class JobPost(CommonModel):
 
@@ -61,10 +62,14 @@ class JobPost(CommonModel):
 
     expiration_date = models.DateTimeField(editable=False, blank=True, null=True)
 
-    location = models.CharField(max_length=2, choices= LOCATION_CHOICES, default="CH",
-        help_text="ChiPy is a locally based group. The job position must not move the candidate out from Chicago. Working remotely or commuting is acceptable.")
+    location = models.CharField(
+        max_length=2,
+        choices=LOCATION_CHOICES,
+        default="CH",
+        help_text="ChiPy is a locally based group. The job position must not move the candidate out from Chicago. Working remotely or commuting is acceptable.",
+    )
 
-    job_type = models.CharField(max_length=2, choices= JOB_TYPE_CHOICES, default="FT")
+    job_type = models.CharField(max_length=2, choices=JOB_TYPE_CHOICES, default="FT")
 
     company_website = models.CharField(max_length=MAX_LENGTH)
 

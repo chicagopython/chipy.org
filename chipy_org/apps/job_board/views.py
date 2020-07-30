@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render 
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
@@ -32,7 +32,9 @@ def create_job_post(request):
             job_user_form.save()
             job_profile_form.save()
 
-            return HttpResponseRedirect(reverse("after-submit-job-post",kwargs={"action":"create"} ))
+            return HttpResponseRedirect(
+                reverse("after-submit-job-post", kwargs={"action": "create"})
+            )
 
     else:
         job_post = JobPost(contact=request.user)
@@ -55,26 +57,32 @@ def create_job_post(request):
 
 @login_required
 def update_job_post(request, pk):
-    
+
     job_post = get_object_or_404(JobPost, pk=pk)
-    
+
     # Make sure that the user owns this post.
     # If the use didn't create this post, they won't have permission to update it.
-    if job_post.contact == request.user:  
-        
+    if job_post.contact == request.user:
+
         if request.method == "POST":
 
             job_post_form = JobPostForm(request.POST, instance=job_post)
             job_user_form = JobUserForm(request.POST, instance=request.user)
             job_profile_form = JobProfileForm(request.POST, instance=request.user.profile)
 
-            if job_post_form.is_valid() and job_user_form.is_valid() and job_profile_form.is_valid():
+            if (
+                job_post_form.is_valid()
+                and job_user_form.is_valid()
+                and job_profile_form.is_valid()
+            ):
 
                 job_post_form.save()
                 job_user_form.save()
                 job_profile_form.save()
 
-                return HttpResponseRedirect(reverse("after-submit-job-post", kwargs={"action":"update"}))
+                return HttpResponseRedirect(
+                    reverse("after-submit-job-post", kwargs={"action": "update"})
+                )
 
         else:
 
@@ -90,13 +98,13 @@ def update_job_post(request, pk):
             {
                 "job_post_form": job_post_form,
                 "job_user_and_profile_form": job_user_and_profile_form,
-                "view_action": "update"
+                "view_action": "update",
             },
         )
-    
+
     else:
 
-        # Permission to see this page is denied since the person trying to 
+        # Permission to see this page is denied since the person trying to
         # access it isn't the correct user.
         raise PermissionDenied()
 
@@ -107,20 +115,22 @@ def delete_job_post(request, pk):
     job_post = get_object_or_404(JobPost, pk=pk)
 
     # Make sure that the user owns this post and has the right to delete it.
-    if job_post.contact == request.user:  
-        
+    if job_post.contact == request.user:
+
         if request.method == "POST":
-            
+
             job_post.delete()
-            return HttpResponseRedirect(reverse("after-submit-job-post", kwargs={"action":"delete"}))
-        
+            return HttpResponseRedirect(
+                reverse("after-submit-job-post", kwargs={"action": "delete"})
+            )
+
         else:
-            
-            return render(request, "job_board/delete_job_post.html", {"job_post":job_post} )
+
+            return render(request, "job_board/delete_job_post.html", {"job_post": job_post})
 
     else:
 
-        # Permission to see this page is denied since the person trying to 
+        # Permission to see this page is denied since the person trying to
         # access it isn't the correct user.
         raise PermissionDenied()
 
@@ -132,21 +142,23 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         if self.kwargs["action"] == "create":
-        
-            messages.success(request, 
-                "Thank you for submitting a job posting!\n It will have to be approved by an admin in order to show up on the job board.\n You'll be notified by email of the decision.\n ")
-        
+
+            messages.success(
+                request,
+                "Thank you for submitting a job posting!\n It will have to be approved by an admin in order to show up on the job board.\n You'll be notified by email of the decision.\n ",
+            )
+
         elif self.kwargs["action"] == "update":
-            
+
             messages.success(request, "Your job post has been successfully updated.")
 
         elif self.kwargs["action"] == "delete":
-            
+
             messages.success(request, "Your job post has been successfully deleted.")
-        
+
         elif self.kwargs["action"] != "show":
             raise Http404()
-        
+
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):

@@ -11,6 +11,14 @@
 
 <p>
 
+<b>Location:</b> {{job_post.get_location_display}}  
+
+<p>
+
+<b>Job Type:</b> {{job_post.get_job_type_display}}
+
+<p>
+
 <b>Description:</b> {{job_post.description}}
 
 <p>
@@ -19,12 +27,16 @@
 
 <p>
 
-<b>Contact:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
+<b>Job Posted by:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
+
+<p>
 {% if job_post.contact.profile.is_external_recruiter %}
-  , External Recruiter
+This posting is from a recruiting agency.
 {% endif %}
 
-<br>
-<b>Email:</b> {{job_post.contact.email}}
+<p>
+
+<b>How To Apply:</b> {{job_post.how_to_apply}}
+
 
 {% endblock body %}

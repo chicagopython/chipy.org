@@ -18,16 +18,20 @@ class JobPostForm(forms.ModelForm):
         fields = [
             "company_name",
             "position",
+            "job_type",
+            "location",
             "description",
             "is_sponsor",
             "can_host_meeting",
             "company_website",
+            "how_to_apply",
             "agree_to_terms",
         ]
 
         widgets = {
-            "description": Textarea(attrs={"cols": 80, "rows": 20, "placeholder": "2500 Character Limit"}),
+            "description": Textarea(attrs={"cols": 60, "rows": 20, "placeholder": "2500 Character Limit"}),
             "contact": forms.HiddenInput(),
+            "how_to_apply": Textarea(attrs={"cols": 60, "rows": 20}),
         }
 
 

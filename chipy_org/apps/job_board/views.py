@@ -44,7 +44,7 @@ def create_job_post(request):
 
     return render(
         request,
-        "job_post_form.html",
+        "job_board/job_post_form.html",
         {
             "job_post_form": job_post_form,
             "job_user_and_profile_form": job_user_and_profile_form,
@@ -86,7 +86,7 @@ def update_job_post(request, pk):
 
         return render(
             request,
-            "job_post_form.html",
+            "job_board/job_post_form.html",
             {
                 "job_post_form": job_post_form,
                 "job_user_and_profile_form": job_user_and_profile_form,
@@ -116,7 +116,7 @@ def delete_job_post(request, pk):
         
         else:
             
-            return render(request, "delete_job_post.html", {"job_post":job_post} )
+            return render(request, "job_board/delete_job_post.html", {"job_post":job_post} )
 
     else:
 
@@ -128,7 +128,7 @@ def delete_job_post(request, pk):
 class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 
     context_object_name = "job_posts"
-    template_name = "after_submit_job_post.html"
+    template_name = "job_board/after_submit_job_post.html"
 
     def get(self, request, *args, **kwargs):
         if self.kwargs["action"] == "create":
@@ -157,7 +157,7 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 class JobPostList(ListView):
 
     context_object_name = "job_posts"
-    template_name = "job_post_list.html"
+    template_name = "job_board/job_post_list.html"
 
     def get_queryset(self):
         # I've split these into two queries in anticipating that there might be
@@ -180,4 +180,4 @@ class JobPostList(ListView):
 class JobPostDetail(DetailView):
     model = JobPost
     context_object_name = "job_post"
-    template_name = "job_post_detail.html"
+    template_name = "job_board/job_post_detail.html"

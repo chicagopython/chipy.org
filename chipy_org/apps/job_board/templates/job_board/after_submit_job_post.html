@@ -1,0 +1,85 @@
+{% extends "job_board/base.html" %}
+
+{% block body %}
+
+<h2>My Job Posts</h2>
+
+<table class="table table-hover">
+    
+    <thead>
+        <tr>
+            <th scope="col">Position</th>
+            <th scope="col">Company</th>
+            <th scope="col">Date Submitted</th>
+            <th scope="col">Status</th>
+            <th scope="col">Option</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>   
+        {% for post in job_posts %}
+            <tr>
+                <td>    
+                    {{post.position}}
+                </td>
+                <td>
+                    {{ post.company_name }}
+                </td>
+                <td>
+                    {{post.created|date:"n/j/Y"}}
+                </td>
+                <td>
+                    {{ post.get_status_display }}
+                </td>
+            
+                {% if post.status == "SU" %}
+                    <td>
+                        <a href="{% url 'update-job-post' pk=post.pk %}" class="btn btn-primary">Update Post</a>
+                    </td>
+                {% elif post.status == "AP" %}
+                    <td>
+                        <a href="{% url 'job-post-detail' pk=post.pk %}" class="btn btn-success">View Post</a>
+                    </td>
+                {% elif post.status == "RE" %}
+                    <td>
+                        <button data-toggle="modal" data-target="#moreInfoModal" class="btn btn-info">More Info</button>
+                    </td>
+                {% endif %}
+                
+                <td>
+                    <a href="{% url 'delete-job-post' pk=post.pk %}" class="btn btn-danger">Delete Post</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+    </tbody> 
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="moreInfoModal" tabindex="-1" role="dialog" aria-labelledby="moreInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">More Info</h5>
+          
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                Unfortunately, your job post has been rejected for posting because it does not meet guidelines. If you have questions, 
+                please use the contact form to contact us.
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

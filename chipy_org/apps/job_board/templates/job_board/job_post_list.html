@@ -5,25 +5,51 @@
 
 <h2>Job Posts</h2>
 <a href="{% url 'create-job-post' %}" class="btn btn-primary" >Submit Jobs</a>
-    <ul>
-        
+    <table class="table table-hover" style="margin-top: 2em;">
+        <tbody>
         {% for post in job_posts %}
 
             {% ifchanged post.is_sponsor %}
                 {% if post.is_sponsor %}
-                    <h3>Sponsored Job Posts</h3>
+                <tr>
+                    <td colspan="2" style="background-color: #29435e; color:white">
+                        <h3>Sponsored Job Posts</h3>
+                    </td> 
+                </tr>
                 {% else %}
-                    <h3>Other Job Posts</h3>
+                <tr>
+                    <td colspan="2" style="background-color: #29435e; color:white ">
+                        <h3>Other Job Posts</h3>
+                    </td>
+                </tr>
                 {% endif %}
             {% endifchanged %}
 
-            <li><a href="{% url 'job-post-detail' pk=post.pk %}">{{post.position}} at {{ post.company_name }}</a>, 
-                    
-                Posted  {{post.days_elapsed}} day{{ post.days_elapsed|pluralize }} ago
-                
-            </li>
+            <tr data-href="{% url 'job-post-detail' pk=post.pk %}">
+                <td>
+                    <a href="{% url 'job-post-detail' pk=post.pk %}">{{ post.position }}</a></b> 
+                    <br>{{ post.company_name }}
+                    <br>{{ post.get_location_display }}
+                </td>
+                <td>        
+                    Posted  {{post.days_elapsed}} day{{ post.days_elapsed|pluralize }} ago
+                </td>
+            </tr>
 
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 
+    <script>
+        // Using vanilla JavaScript, this function attaches an event listener to each row in a table, making each row clickable
+        document.addEventListener("DOMContentLoaded", () => {
+            const rows = document.querySelectorAll("tr[data-href]");
+
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    window.location.href = row.dataset.href;
+                });
+            });
+        });
+    </script>
 {% endblock body %}

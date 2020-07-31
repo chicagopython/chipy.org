@@ -188,3 +188,18 @@ class JobPostDetail(DetailView):
     model = JobPost
     context_object_name = "job_post"
     template_name = "job_board/job_post_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        # Override the get method to make sure that a post
+        # only gets shown if it's been approved and hasn't expired.
+
+        pk = self.kwargs["pk"]  # pylint: disable=invalid-name
+        job_post = get_object_or_404(JobPost, pk=pk)
+        current_datetime = datetime.datetime.now()
+
+        # If the post was approved and the current date is less than
+        # the expiration date, then show the job post.
+        if job_post.status == "AP" and (current_datetime <= job_post.expiration_date):
+            return super().get(request, *args, **kwargs)
+        else:
+            raise Http404("Post doesn't have a status of 'approved' OR it has expired.")

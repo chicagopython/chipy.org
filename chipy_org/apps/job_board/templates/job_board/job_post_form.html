@@ -19,7 +19,7 @@
         {% for field in job_user_form %}
             <tr>
                 <td>{{field.label_tag}}</td>
-                <td>{{field}}</td>
+                <td>{{ field.errors }}{{field}}</td>
             </tr>
         {% endfor %}
      
@@ -29,41 +29,46 @@
                     <td colspan="2">
                     {{field}}
                     I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
+                    {{ field.errors }}
                     </td>
                 </tr>
             {% elif field == job_post_form.location %}
                 <tr>
                     <td style="width: 120px">{{field.label_tag}}</td>
-                    <td>{{field}}</td>
+                    <td>{{ field.errors }}{{field}}</td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
                     <td>
                         ChiPy is a locally based group. <button data-toggle="modal" data-target="#moreInfoModal" class="btn btn-info">more</buttondata-toggle="modal" data-target="#moreInfoModal" class="btn btn-info" >
+                        {{ field.errors }}
                     </td>
                 </tr>
             {% elif field == job_post_form.is_sponsor %}
                 <tr>
                     <td colspan="2">{{field}}
                         Is the company a sponsor of ChiPy?
+                        {{ field.errors }}
                     </td>
                 </tr>
             {% elif field == job_post_form.can_host_meeting %}
                 <tr>
                     <td colspan="2">{{field}}
                         Is your organization interested in hosting an event?
+                        {{ field.errors }}
                     </td>
                 </tr>
             {% elif field == job_post_form.is_from_recruiting_agency %}
                 <tr>
                     <td colspan="2">{{field}}
                         Is this posting from a recruiting agency?
+                        {{ field.errors }}
                     </td>
                 </tr>
             {% else %}
                 <tr>
                     <td>{{field.label_tag}}</td>
-                    <td>{{field}}</td> 
+                    <td>{{ field.errors }}{{field}}</td>
                 </tr>
              
             {% endif %}

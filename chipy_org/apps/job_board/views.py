@@ -140,7 +140,7 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
                     "You can check back on the decision status in the future.\n"
                     "To do so:\n"
                     "1. Log into chipy.org\n"
-                    "2. In the user login dropdown menu, click on 'My Jobs'.\n"
+                    "2. In the top main menu, click on 'my jobs'.\n"
                     "3. It will take you to this page."
                 ),
             )

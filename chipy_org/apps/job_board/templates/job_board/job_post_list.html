@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    <h2>Job Posts</h2>
+    <h2>Job Board</h2>
     <a href="{% url 'create-job-post' %}" class="btn btn-primary" >Submit Jobs</a>
     
     <table class="table table-hover" style="margin-top: 2em;">
@@ -20,7 +20,7 @@
                 {% else %}
                 <tr>
                     <td colspan="2" style="background-color: #29435e; color:white ">
-                        <h3>Other Job Posts</h3>
+                        <h3>Job Posts</h3>
                     </td>
                 </tr>
                 {% endif %}

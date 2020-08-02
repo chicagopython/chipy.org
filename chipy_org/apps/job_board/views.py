@@ -122,8 +122,10 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
 
 class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 
+    model = JobPost
     context_object_name = "job_posts"
     template_name = "job_board/after_submit_job_post.html"
+    paginate_by = 6
 
     def get(self, request, *args, **kwargs):
         if self.kwargs["action"] == "create":
@@ -163,8 +165,10 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 
 class JobPostList(ListView):
 
+    model = JobPost
     context_object_name = "job_posts"
     template_name = "job_board/job_post_list.html"
+    paginate_by = 8
 
     def get_queryset(self):
         # I've split these into two queries in anticipating that there might be

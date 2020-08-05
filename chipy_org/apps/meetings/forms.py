@@ -13,7 +13,7 @@ class TopicForm(forms.ModelForm):
         "email",
         "description",
         "experience_level",
-        "length_minutes",
+        "length",
     )
 
     meeting = forms.ModelChoiceField(
@@ -27,7 +27,7 @@ class TopicForm(forms.ModelForm):
         self.fields["meeting"].required = False
         self.fields["description"].required = True
         self.fields["experience_level"].required = True
-        self.fields["length_minutes"].required = True
+        self.fields["length"].required = True
         self.fields["email"].initial = request.user.email
         self.fields["name"].initial = request.user.get_full_name()
 
@@ -40,7 +40,7 @@ class TopicForm(forms.ModelForm):
             "name",
             "email",
             "meeting",
-            "length_minutes",
+            "length",
             "experience_level",
             "description",
             "notes",

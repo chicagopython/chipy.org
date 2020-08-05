@@ -114,7 +114,7 @@ def test_post_topic_sends_email():
         title="Test Meeting",
         meeting=m,
         experience_level="novice",
-        length_minutes=10,
+        length=10,
         description="Test Topic",
     )
     t.save()

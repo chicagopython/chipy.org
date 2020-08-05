@@ -229,7 +229,6 @@ INSTALLED_APPS = [
     # Third party
     "nocaptcha_recaptcha",
     "django_ical",
-    "envelope",
     "flatblocks",
     "django_gravatar",
     "django_bleach",

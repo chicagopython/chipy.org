@@ -1,6 +1,7 @@
+
 {% extends "site_base.html" %}
 
-{% load i18n envelope_tags %}
+{% load i18n %}
 {% block head_title %}{% trans 'Contact us' %}{% endblock %}
 
 {% block body %}
@@ -10,9 +11,6 @@
         <div id="contact">
           <form method="post" id="contact-us" action=".">
             {% csrf_token %}
-            {% autoescape off %}
-                {% antispam_fields %}
-            {% endautoescape %}
             {{ form.as_p }}
             <input class="btn btn-primary" type="submit" value="Send Email">
           </form>

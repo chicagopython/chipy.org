@@ -9,6 +9,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.template.response import TemplateResponse
 from django.contrib.admin.utils import unquote
+from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import redirect
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline

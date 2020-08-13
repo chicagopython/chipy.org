@@ -268,7 +268,7 @@ class TopicDraft(TopicBase):
         "title",
         "meeting",
         "experience_level",
-        "length_minutes",
+        "length",
         "description",
         "slides_link",
     ]

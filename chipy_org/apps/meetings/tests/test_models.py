@@ -18,7 +18,7 @@ pytestmark = pytest.mark.django_db
             {
                 "title": "hi",
                 "description": "test",
-                "length_minutes": 5,
+                "length": 5,
                 "slides_link": "http://www.chipy.org",
                 "experience_level": 0,
             },
@@ -30,7 +30,7 @@ pytestmark = pytest.mark.django_db
             {
                 "title": "hi",
                 "description": "test",
-                "length_minutes": 5,
+                "length": 5,
                 "slides_link": "http://www.chipy.org",
                 "experience_level": 0,
             },

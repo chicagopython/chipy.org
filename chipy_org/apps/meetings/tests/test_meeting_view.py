@@ -248,23 +248,3 @@ def test_topics_drafts_add_view(client, django_user_model):
     assert response.status_code == 302
     assert topic1.drafts.count() == 1
 
-
-def test_my_talks_with_multiple_presenters_with_same_user(client):
-    user = User.objects.create(username="chipy",)
-
-    p1 = Presentor.objects.create(user=user, name="name1",)
-    t1 = Topic.objects.create(title="title1")
-    t1.presentors.set(
-        [p1,]
-    )
-
-    p2 = Presentor.objects.create(user=user, name="name2",)
-    t2 = Topic.objects.create(title="title2")
-    t2.presentors.set(
-        [p2,]
-    )
-
-    client.force_login(user)
-    response = client.get(reverse("my_topics"))
-
-    assert response.status_code == 200

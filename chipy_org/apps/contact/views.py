@@ -1,11 +1,19 @@
-from nocaptcha_recaptcha.fields import NoReCaptchaField
-from envelope.views import ContactView
-from envelope.forms import ContactForm
+from django.contrib import messages
+from django.views.generic.edit import FormView
+
+from chipy_org.apps.contact.forms import ContactForm
 
 
-class ChipyContactForm(ContactForm):
-    captcha = NoReCaptchaField()
+class ContactView(FormView):
+    template_name = "contact/contact.html"
+    form_class = ContactForm
+    success_url = "/"
 
+    def form_valid(self, form):
+        try:
+            form.send_email()
+            messages.success(self.request, "Your message has been sent to Chipy's organizers")
+        except Exception:
+            messages.error(self.request, "Your message was NOT sent to Chipy's organizers")
 
-class ChipyContactView(ContactView):
-    form_class = ChipyContactForm
+        return super().form_valid(form)

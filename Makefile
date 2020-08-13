@@ -46,12 +46,20 @@ test:
 	docker-compose exec web pytest -v chipy_org/
 
 lint:
-	docker-compose exec web pylint chipy_org/
+	docker-compose exec web pylint -j 0 chipy_org/
 
 format:
+	docker-compose exec web isort -rc -tc --atomic .
 	docker-compose exec web black .
 
 format-check:
+	docker-compose exec web isort -rc -tc --atomic --diff .
 	docker-compose exec web black --diff .
 
 setup: setup_env build
+
+superuser: 
+	docker-compose exec web ./manage.py createsuperuser
+
+tail-logs: 
+	docker-compose logs -f web

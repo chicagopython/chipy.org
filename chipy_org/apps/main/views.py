@@ -1,15 +1,17 @@
 import datetime
-
 import sys
 import traceback
 
+from django.contrib import messages
+from django.contrib.auth.views import LogoutView
 from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader
 from django.views.generic import TemplateView
+
+from chipy_org.apps.announcements.models import Announcement
 from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
 from chipy_org.apps.sponsors.models import GeneralSponsor
-from chipy_org.apps.announcements.models import Announcement
 
 
 class Home(TemplateView, InitialRSVPMixin):
@@ -60,5 +62,13 @@ def custom_500(request):
     )
 
 
-def customer_404(request, exception):
+def custom_404(request, exception):
     return HttpResponse("<h1>404 - Page Not Found</h1>", status=404)
+
+
+class LogoutWithRedirectAndMessage(LogoutView):
+    next_page = "/"
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "You've been logged out")
+        return super().dispatch(request, *args, **kwargs)

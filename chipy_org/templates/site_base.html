@@ -1,6 +1,6 @@
 {% extends "theme_base.html" %}
 
-{% load i18n staticfiles %}
+{% load i18n static %}
 {% load flatpages %}
 
 {% block head_title %}{% block title %}{% endblock %}{% endblock %}
@@ -50,6 +50,11 @@
         <li><a href="https://chipymentor.org/">Mentorship</a></li>
         <li><a href="/pages/sigs/">SIGs</a></li>
         <li><a href="{% url 'contact' %}">Contact</a></li>
+        <li><a href="{% url 'job-board' %}">Job Board</a></li>
+        
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'after-submit-job-post' action='show' %}">My Jobs</a></li>
+        {% endif %}
     </ul>
 {% endblock %}
 

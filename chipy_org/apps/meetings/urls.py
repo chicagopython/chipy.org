@@ -1,8 +1,9 @@
-from django.conf.urls import url, include
+from django.conf.urls import include, url
 from django.contrib.auth.decorators import login_required
+
 from .feeds import MeetingFeed
 from .views import (
-    PastMeetings,
+    RSVP,
     MeetingDetail,
     ProposeTopic,
     ProposeTopicList,
@@ -13,9 +14,14 @@ from .views import (
     RSVPlistPrivate,
     RSVPlistHost,
     PastTopics,
+    PastMeetings,
     PastTopic,
+    PastTopics,
+    ProposeTopic,
+    RSVPlistHost,
+    RSVPlistPrivate,
+    UpdateRSVP,
 )
-
 
 urlpatterns = [
     url(r"^admin_tools/", include("admin_tools.urls")),

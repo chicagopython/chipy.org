@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Sponsor, SponsorGroup, MeetingSponsor, GeneralSponsor
+
+from .models import GeneralSponsor, MeetingSponsor, Sponsor, SponsorGroup
 
 
 class MeetingSponsorInline(admin.StackedInline):

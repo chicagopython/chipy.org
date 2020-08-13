@@ -1,5 +1,6 @@
-from django.contrib import admin
 from django import forms
+from django.contrib import admin
+
 from .models import JobPost
 
 
@@ -7,6 +8,7 @@ class JobPostAdmin(admin.ModelAdmin):
 
     list_display = (
         "position",
+        "id",
         "company_name",
         "is_sponsor",
         "created",

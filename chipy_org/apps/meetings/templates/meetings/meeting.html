@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load i18n staticfiles %}
+{% load i18n static %}
 
 {% load bleach_tags %}
 
@@ -69,8 +69,8 @@
                   {% if topic.experience_level %}
                   Experience Level: {{ topic.get_experience_level_display }}<br />
                   {% endif %}
-                  {% if topic.length_minutes %}
-                    Length: {{ topic.length_minutes }} Minutes<br />
+                  {% if topic.length%}
+                    Length: {{ topic.length}} Minutes<br />
                   {% endif %}
                   Description: {{ topic.description|bleach|safe }}
                 </li>

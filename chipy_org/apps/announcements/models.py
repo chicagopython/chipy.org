@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
-from django.utils import timezone
-from django.db import models
+
 from ckeditor.fields import RichTextField
+from django.db import models
+from django.utils import timezone
+
 from chipy_org.libs.models import CommonModel
 
 

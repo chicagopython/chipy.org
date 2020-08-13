@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import Textarea
-from chipy_org.apps.profiles.models import UserProfile
+
 from .models import JobPost
 
 
@@ -14,18 +14,27 @@ class JobPostForm(forms.ModelForm):
         model = JobPost
 
         fields = [
+            "is_from_recruiting_agency",
             "company_name",
             "position",
+            "job_type",
+            "location",
             "description",
             "is_sponsor",
             "can_host_meeting",
             "company_website",
+            "how_to_apply",
             "agree_to_terms",
         ]
 
         widgets = {
-            "description": Textarea(attrs={"cols": 80, "rows": 20}),
+            "description": Textarea(
+                attrs={"cols": 60, "rows": 20, "placeholder": "2500 Character Limit"}
+            ),
             "contact": forms.HiddenInput(),
+            "how_to_apply": Textarea(
+                attrs={"cols": 60, "rows": 20, "placeholder": "2500 Character Limit"}
+            ),
         }
 
 
@@ -40,10 +49,3 @@ class JobUserForm(forms.ModelForm):
         model = User
 
         fields = ["first_name", "last_name", "email"]
-
-
-class JobProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-
-        fields = ["is_external_recruiter"]

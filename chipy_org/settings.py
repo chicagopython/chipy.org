@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+
 import dj_database_url
 
 
@@ -54,7 +55,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS").split(",")]
+ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(",")]
 
 MANAGERS = ADMINS
 
@@ -228,7 +229,6 @@ INSTALLED_APPS = [
     # Third party
     "nocaptcha_recaptcha",
     "django_ical",
-    "envelope",
     "flatblocks",
     "django_gravatar",
     "django_bleach",
@@ -265,7 +265,7 @@ FIXTURE_DIRS = [
 ]
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
-ENVELOPE_EMAIL_RECIPIENTS = env_var("ENVELOPE_EMAIL_RECIPIENTS").split(",")
+ENVELOPE_EMAIL_RECIPIENTS = env_var("ENVELOPE_EMAIL_RECIPIENTS", "").split(",")
 
 EMAIL_BACKEND = env_var("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = env_var("EMAIL_HOST", "smtp.sendgrid.net")

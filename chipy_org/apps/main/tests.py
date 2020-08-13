@@ -1,9 +1,8 @@
 # pylint: disable=invalid-name,duplicate-code
 import pytest
-from django.test import TestCase, override_settings
-from django.test import Client
-from django.urls import reverse
 from django.conf import global_settings
+from django.test import Client, TestCase, override_settings
+from django.urls import reverse
 
 pytestmark = pytest.mark.django_db
 
@@ -43,3 +42,10 @@ def test_settingspy_env_list(monkeypatch, test_in, result):
     from chipy_org import settings  # pylint: disable=import-outside-toplevel
 
     assert settings.env_list("TEST_VAR") == result
+
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_logout_redirects_to_home(client):
+    response = client.post("/logout/", follow=True)
+    assert response.status_code == 200
+    assert response.request["PATH_INFO"] == "/"

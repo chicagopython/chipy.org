@@ -3,7 +3,6 @@ dj-database-url==0.5.0
 django-admin-tools==0.9.0
 django-bleach==0.6.1
 django-ckeditor==5.9.0
-django-envelope==1.4 # remove dependance; package no longer supported
 django-extensions==2.2.9
 django-flatblocks==0.9.4 # not using a tox file for testing
 django-flatpages-tinymce==0.1.1 # not using a tox file for testing
@@ -15,13 +14,11 @@ django-ical==1.7.0
 django-nocaptcha-recaptcha==0.0.20 # find a more standard recaptcha
 django-storages==1.9.1
 django-tinymce==2.8.0 # this looks abandoned
-Django==2.2.12
+Django==2.2.13
 djangorestframework==3.11.0 # how to test
 diff-match-patch==20181111
 feedparser==5.2.1
 gunicorn==20.0.4
-httplib2==0.17.0
-oauth2==1.9.0post1 # what's using this?
 probablepeople==0.5.4 # kill
 Pillow==6.2.2
 psycopg2-binary==2.8.4

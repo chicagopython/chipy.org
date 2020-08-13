@@ -5,11 +5,12 @@ DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memor
 DEBUG = True
 ADMINS = ["admin@chipy.org"]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-ENVELOPE_EMAIL_RECIPIENTS = "admin@example.com"
+ENVELOPE_EMAIL_RECIPIENTS = [
+    "admin@example.com",
+]
 
 SECRET_KEY = "somesecretkeyfordjangogoeshere"
+SECURE_SSL_REDIRECT = False
 
-USE_S3 = False
-
-NORECAPTCHA_SITE_KEY = "dummy_recaptcha_public_key"
-NORECAPTCHA_SECRET_KEY = "dummy_recaptcha_private_key"
+NORECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+NORECAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"

@@ -1,6 +1,6 @@
 import random
 import string
-from django.contrib import admin
+
 from django import forms
 from django.core import exceptions
 from django.shortcuts import get_object_or_404

@@ -1,15 +1,15 @@
-from django.conf import settings
-from django.conf.urls import url, include
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib import admin
-from django.views.generic import TemplateView
 import django.contrib.auth.views
 import django.views
+from django.conf import settings
+from django.conf.urls import include, url
+from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
-from chipy_org.apps.contact.views import ChipyContactView
-from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 import chipy_org.apps.main.views
-
+from chipy_org.apps.contact.views import ContactView
+from chipy_org.apps.main.views import LogoutWithRedirectAndMessage
+from chipy_org.apps.meetings.views import MeetingListAPIView, MeetingMeetupSync
 
 admin.autodiscover()
 
@@ -25,12 +25,12 @@ urlpatterns = [
     url(r"^profiles/", include("chipy_org.apps.profiles.urls")),
     url(r"^admin/", admin.site.urls),
     url(r"^about/", include("chipy_org.apps.about.urls")),
-    url(r"^logout", django.contrib.auth.views.LogoutView.as_view(), {"next_page": "/"}),
-    url(r"^contact/", ChipyContactView.as_view(), name="contact"),
+    url(r"^logout", LogoutWithRedirectAndMessage.as_view()),
+    url(r"^contact/", ContactView.as_view(), name="contact"),
     url(r"^tinymce/", include("tinymce.urls")),
     url(r"^pages/", include("django.contrib.flatpages.urls")),
     url(r"^sponsors/", include("chipy_org.apps.sponsors.urls")),
-    url(r"^job/", include("chipy_org.apps.job_board.urls")),
+    url(r"^job-board/", include("chipy_org.apps.job_board.urls")),
 ]
 
 # Would love a back tracking url resolver
@@ -49,4 +49,4 @@ if settings.SERVE_MEDIA:
     ]
     urlpatterns += staticfiles_urlpatterns()
 
-handler404 = chipy_org.apps.main.views.customer_404
+handler404 = chipy_org.apps.main.views.custom_404

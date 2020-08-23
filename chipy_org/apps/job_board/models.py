@@ -105,7 +105,8 @@ class JobPost(CommonModel):
             self.status_change_date = datetime.datetime.now()
             self.__original_status = self.status
 
-        if self.status == "AP":  # if post is approved, set the approval date and expiration date
+        # if post is approved, set the approval date and expiration date
+        if self.status == "AP" and not self.approval_date:
             self.approval_date = datetime.datetime.now()
             self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
 

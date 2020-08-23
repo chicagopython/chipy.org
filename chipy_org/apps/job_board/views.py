@@ -115,11 +115,13 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
 
         if request.method == "POST":
 
-            position = job_post.position
-            company = job_post.company_name
-            recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
-
-            send_email_to_admin_after_user_deletes_job_post(position, company, recipients)
+            # If the user deletes the job post before the admin approves/rejects it, send an
+            # email to the admin telling them this.
+            if job_post.status == "SU":
+                position = job_post.position
+                company = job_post.company_name
+                recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
+                send_email_to_admin_after_user_deletes_job_post(position, company, recipients)
 
             job_post.delete()
 

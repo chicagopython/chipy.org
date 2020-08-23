@@ -11,7 +11,7 @@ def send_email_to_admin_after_create_job_post(position, company, recipients):
 
         msg = (
             f"A new job post has been submitted for '{{position}} at {{company}}'."
-            "Please review it for approval."
+            " Please review it for approval."
         )
 
         from_email = "DoNotReply@chipy.org"
@@ -34,7 +34,7 @@ def send_email_to_admin_after_user_deletes_job_post(position, company, recipient
 
         msg = (
             f"The job post for '{{position}} at {{company}}' has been deleted by the user."
-            "You no longer have to review it."
+            " You no longer have to review it."
         )
 
         from_email = "DoNotReply@chipy.org"

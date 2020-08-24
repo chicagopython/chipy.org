@@ -73,7 +73,7 @@ class JobPost(CommonModel):
             "ChiPy is a locally based group."
             " Position must not move candidate out of the Chicago area."
             " Working remote or commuting is acceptable. Any position requiring relocation"
-            " out of the Chicago land is out of scope of the mission of the group."
+            " out of the Chicagoland area is out of scope of the mission of the group."
         ),
     )
 

@@ -103,6 +103,7 @@ class JobPost(CommonModel):
     def __init__(self, *args, **kwargs):
         super(JobPost, self).__init__(*args, **kwargs)
         self.__original_status = self.status
+        self.__original_days_to_expire = self.days_to_expire
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         # Every time a decision is made for the status of the post,
@@ -112,10 +113,31 @@ class JobPost(CommonModel):
             self.status_change_date = datetime.datetime.now()
             self.__original_status = self.status
 
-        # if post is approved, set the approval date and expiration date
+        # If post is approved and the approval_date hasn't been set yet,
+        # set the approval_date and expiration_date.
         if self.status == "AP" and not self.approval_date:
+
             self.approval_date = datetime.datetime.now()
             self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
+
+            # If days_to_expire is being changed from its initial default value,
+            # it will differ from the __original_days_to_expire field.
+            # If that's the case, change __original_days_to_expire so that in
+            # the future, we can keep track of when the days_to_expire field changes.
+            if self.__original_days_to_expire != self.days_to_expire:
+                self.__original_days_to_expire = self.days_to_expire
+
+        # If post is approved AND expiration_date has been set AND days_to_expire is changed,
+        # then recalculate expiration_date.
+        elif (
+            self.status == "AP"  # pylint: disable=bad-continuation
+            and self.approval_date  # pylint: disable=bad-continuation
+            and self.__original_days_to_expire  # pylint: disable=bad-continuation
+            != self.days_to_expire  # pylint: disable=bad-continuation
+        ):
+
+            self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
+            self.__original_days_to_expire = self.days_to_expire
 
         super(JobPost, self).save(*args, **kwargs)
 

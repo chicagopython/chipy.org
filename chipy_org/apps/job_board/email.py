@@ -10,7 +10,7 @@ def send_email_to_admin_after_create_job_post(position, company, recipients):
         subject = "ChiPy: New Job Post Created"
 
         msg = (
-            f"A new job post has been submitted for '{{position}} at {{company}}'."
+            f"A new job post has been submitted for '{position} at {company}'."
             " Please review it for approval."
         )
 
@@ -33,7 +33,7 @@ def send_email_to_admin_after_user_deletes_job_post(position, company, recipient
         subject = "ChiPy: User Has Deleted Job Post"
 
         msg = (
-            f"The job post for '{{position}} at {{company}}' has been deleted by the user."
+            f"The job post for '{position} at {company}' has been deleted by the user."
             " You no longer have to review it."
         )
 

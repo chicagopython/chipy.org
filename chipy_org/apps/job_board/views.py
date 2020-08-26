@@ -159,7 +159,7 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        job_posts = JobPost.objects.filter(contact=self.request.user)
+        job_posts = JobPost.objects.filter(contact=self.request.user).order_by("-created")
         return job_posts
 
 

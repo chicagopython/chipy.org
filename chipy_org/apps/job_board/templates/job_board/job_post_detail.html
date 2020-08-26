@@ -3,8 +3,8 @@
 {% block body %}
 
 <h2>
-    {% if job_post.is_verified_sponsor %}
-        Sponsored:
+    {% if job_post.is_sponsor %}
+        Featured:
     {% endif %}
 
     {{job_post.position}} at {{job_post.company_name}}</h2>
@@ -19,7 +19,7 @@
 
 <p>
 
-<b>Description:</b> {{job_post.description}}
+<b>Description:</b> {{ job_post.description|linebreaks }}
 
 <p>
 
@@ -36,7 +36,7 @@
 
 <p>
 
-<b>How To Apply:</b> {{job_post.how_to_apply}}
+<b>How To Apply:</b> {{ job_post.how_to_apply|linebreaks }}
 
 
 {% endblock body %}

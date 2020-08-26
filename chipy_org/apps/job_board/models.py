@@ -38,7 +38,10 @@ class JobPost(CommonModel):
 
     position = models.CharField(max_length=MAX_LENGTH)
 
-    description = models.CharField(max_length=2500, help_text="2500 Character Limit")
+    description = models.CharField(
+        max_length=2500,
+        help_text="2500 Character Limit. Create a new paragraph by pressing 'Enter' twice.",
+    )
 
     is_sponsor = models.BooleanField(
         default=False, verbose_name="Is the company a sponsor of ChiPy?"
@@ -68,8 +71,9 @@ class JobPost(CommonModel):
         default="CH",
         help_text=(
             "ChiPy is a locally based group."
-            " The job position must not move the candidate out from Chicago."
-            " Working remotely or commuting is acceptable."
+            " Position must not move candidate out of the Chicago area."
+            " Working remote or commuting is acceptable. Any position requiring relocation"
+            " out of the Chicagoland area is out of scope of the mission of the group."
         ),
     )
 
@@ -77,7 +81,10 @@ class JobPost(CommonModel):
 
     company_website = models.CharField(max_length=MAX_LENGTH)
 
-    how_to_apply = models.CharField(max_length=2500, help_text="2500 Character Limit")
+    how_to_apply = models.CharField(
+        max_length=2500,
+        help_text="2500 Character Limit. Create a new paragraph by pressing 'Enter' twice.",
+    )
 
     contact = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 

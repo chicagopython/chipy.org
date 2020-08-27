@@ -129,15 +129,14 @@ class JobPost(CommonModel):
 
         # If post is approved AND expiration_date has been set AND days_to_expire is changed,
         # then recalculate expiration_date.
-        elif (
-            self.status == "AP"  # pylint: disable=bad-continuation
-            and self.approval_date  # pylint: disable=bad-continuation
-            and self.__original_days_to_expire  # pylint: disable=bad-continuation
-            != self.days_to_expire  # pylint: disable=bad-continuation
-        ):
+        elif self.status == "AP" and self.approval_date:
+            if self.__original_days_to_expire != self.days_to_expire:
 
-            self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
-            self.__original_days_to_expire = self.days_to_expire
+                self.expiration_date = self.approval_date + datetime.timedelta(
+                    days=self.days_to_expire
+                )
+
+                self.__original_days_to_expire = self.days_to_expire
 
         super(JobPost, self).save(*args, **kwargs)
 

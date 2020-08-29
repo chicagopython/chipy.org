@@ -106,39 +106,40 @@ class JobPost(CommonModel):
         self.__original_days_to_expire = self.days_to_expire
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
+
         # Every time a decision is made for the status of the post,
         # the date that the decision is made is updated.
-
         if self.__original_status != self.status:
             self.status_change_date = datetime.datetime.now()
             self.__original_status = self.status
 
-        # If post is approved and the approval_date hasn't been set yet,
-        # set the approval_date and expiration_date.
-        if self.status == "AP" and not self.approval_date:
+        if self.status == "AP":
+            # If post is approved and the approval_date hasn't been set yet,
+            # set the approval_date and expiration_date.
+            if not self.approval_date:
+                self.approval_date = datetime.datetime.now()
+                self.update_expiration_date()
 
-            self.approval_date = datetime.datetime.now()
-            self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
-
-            # If days_to_expire is being changed from its initial default value,
+            # If days_to_expire is being changed,
             # it will differ from the __original_days_to_expire field.
             # If that's the case, change __original_days_to_expire so that in
             # the future, we can keep track of when the days_to_expire field changes.
+            # Also update the expiration date since it is dependent on days_to_expire.
             if self.__original_days_to_expire != self.days_to_expire:
                 self.__original_days_to_expire = self.days_to_expire
+                self.update_expiration_date()
 
-        # If post is approved AND expiration_date has been set AND days_to_expire is changed,
-        # then recalculate expiration_date.
-        elif self.status == "AP" and self.approval_date:
-            if self.__original_days_to_expire != self.days_to_expire:
-
-                self.expiration_date = self.approval_date + datetime.timedelta(
-                    days=self.days_to_expire
-                )
-
-                self.__original_days_to_expire = self.days_to_expire
+        # If post was approved but then changed to a different status,
+        # set the approval_date and expiration_date back to None
+        if self.status == "RE" or self.status == "SU":
+            if self.approval_date or self.expiration_date:
+                self.approval_date = None
+                self.expiration_date = None
 
         super(JobPost, self).save(*args, **kwargs)
+
+    def update_expiration_date(self):
+        self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
 
     @property
     def days_elapsed(self):

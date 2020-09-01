@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
+from django.db.models import F, Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -189,15 +189,26 @@ class JobPostList(ListView):
     paginate_by = 8
 
     def get_queryset(self):
+
         # I've split these into two queries in anticipating that there might be
         # different ordering or filtering based on sponsored vs non-sponsored
-        # job posts
+        # job posts.
+
+        now = datetime.datetime.now()
+
+        # For the 3rd Q() in sponsored_job_posts and other_job_posts, I tried to do
+        # datetime.timedelta(F('days_to_expire')) but you can't put a F() inside of
+        # timedelta. So instead I did datetime.timedelta(days=1)*F('days_to_expire')).
         sponsored_job_posts = JobPost.objects.filter(
-            Q(status="AP") & Q(is_sponsor=True) & Q(expiration_date__gte=datetime.datetime.now())
-        ).order_by("-id")
+            Q(status="AP")
+            & Q(is_sponsor=True)
+            & Q(approval_date__gte=now - (datetime.timedelta(days=1) * F("days_to_expire")))
+        ).order_by("-approval_date")
         other_job_posts = JobPost.objects.filter(
-            Q(status="AP") & Q(is_sponsor=False) & Q(expiration_date__gte=datetime.datetime.now())
-        ).order_by("-id")
+            Q(status="AP")
+            & Q(is_sponsor=False)
+            & Q(approval_date__gte=now - (datetime.timedelta(days=1) * F("days_to_expire")))
+        ).order_by("-approval_date")
 
         # I put the two groups of job posts back together so they can processed
         # by the same loop in the template

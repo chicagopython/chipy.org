@@ -37,7 +37,7 @@ def create_job_post(request):
 
             position = job_post_form.cleaned_data["position"]
             company = job_post_form.cleaned_data["company_name"]
-            recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
+            recipients = getattr(settings, "CHICAGO_ORGANIZER_EMAILS", [])
 
             send_email_to_admin_after_create_job_post(position, company, recipients)
 
@@ -120,7 +120,7 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
             if job_post.status == "SU":
                 position = job_post.position
                 company = job_post.company_name
-                recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
+                recipients = getattr(settings, "CHICAGO_ORGANIZER_EMAILS", [])
                 send_email_to_admin_after_user_deletes_job_post(position, company, recipients)
 
             job_post.delete()

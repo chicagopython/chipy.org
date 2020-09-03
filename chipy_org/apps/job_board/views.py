@@ -1,6 +1,7 @@
 import datetime
 from itertools import chain
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +14,10 @@ from django.views.generic import DetailView, ListView
 
 from chipy_org.apps.job_board.forms import JobPostForm, JobUserForm
 
+from .email import (
+    send_email_to_admin_after_create_job_post,
+    send_email_to_admin_after_user_deletes_job_post,
+)
 from .models import JobPost
 
 
@@ -29,6 +34,12 @@ def create_job_post(request):
 
             job_post_form.save()
             job_user_form.save()
+
+            position = job_post_form.cleaned_data["position"]
+            company = job_post_form.cleaned_data["company_name"]
+            recipients = getattr(settings, "CHICAGO_ORGANIZER_EMAILS", [])
+
+            send_email_to_admin_after_create_job_post(position, company, recipients)
 
             return HttpResponseRedirect(
                 reverse("after-submit-job-post", kwargs={"action": "create"})
@@ -104,7 +115,16 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
 
         if request.method == "POST":
 
+            # If the user deletes the job post before the admin approves/rejects it, send an
+            # email to the admin telling them this.
+            if job_post.status == "SU":
+                position = job_post.position
+                company = job_post.company_name
+                recipients = getattr(settings, "CHICAGO_ORGANIZER_EMAILS", [])
+                send_email_to_admin_after_user_deletes_job_post(position, company, recipients)
+
             job_post.delete()
+
             return HttpResponseRedirect(
                 reverse("after-submit-job-post", kwargs={"action": "delete"})
             )

@@ -53,7 +53,7 @@
         <li><a href="{% url 'job-board' %}">Job Board</a></li>
         
         {% if user.is_authenticated %}
-        <li><a href="{% url 'after-submit-job-post' action='show' %}">My Jobs</a></li>
+        <li><a href="{% url 'after-submit-job-post' %}">My Jobs</a></li>
         {% endif %}
     </ul>
 {% endblock %}

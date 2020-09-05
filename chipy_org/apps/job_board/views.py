@@ -213,7 +213,10 @@ def url_with_query_string(path, **kwargs):
     # to create url with query string parameters.
     # For example,
     # url_with_query_string(reverse('example'), action='create', num=1, msg="well done!")
-    # yields https://www.chipy.org/job-board/example/?action=create&num=1&msg=well+done%21
+    # yields https://www.chipy.org/job-board/example/?action=create&num=1&msg=well+done%21 .
+
+    # Code is from user 'geekQ' from
+    # https://stackoverflow.com/questions/2778247/how-do-i-construct-a-django-reverse-url-using-query-args
 
     encoded_url = path + "?" + urllib.parse.urlencode(kwargs)
     return encoded_url

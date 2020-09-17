@@ -187,7 +187,7 @@ class JobPostList(ListView):
     paginate_by = 8
 
     def get_queryset(self):
-        return JobPost.all_posts()
+        return JobPost.approved_posts()
 
 
 class JobPostDetail(DetailView):

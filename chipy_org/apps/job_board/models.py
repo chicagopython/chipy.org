@@ -136,7 +136,7 @@ class JobPost(CommonModel):
             return None
 
     @classmethod
-    def all_posts(cls):
+    def approved_posts(cls):
 
         # I've split these into two queries in anticipating that there might be
         # different ordering or filtering based on sponsored vs non-sponsored

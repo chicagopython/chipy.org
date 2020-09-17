@@ -1,7 +1,9 @@
 import datetime
+from itertools import chain
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import F, Q
 
 from chipy_org.libs.models import CommonModel
 
@@ -104,9 +106,8 @@ class JobPost(CommonModel):
 
         # If post was approved but then changed to a different status,
         # set the approval_date back to None.
-        elif self.status == "RE" or self.status == "SU":
-            if self.approval_date:
-                self.approval_date = None
+        elif self.approval_date:
+            self.approval_date = None
 
         super(JobPost, self).save(*args, **kwargs)
 
@@ -126,10 +127,42 @@ class JobPost(CommonModel):
     def expiration_date(self):
 
         # expiration_date shows up as a field in the admin panel.
-        # If post is approved and the approval_date is set, 
+        # If post is approved and the approval_date is set,
         # compute the expiration_date.
         if self.status == "AP" and self.approval_date:
             expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
             return expiration_date
         else:
             return None
+
+    @classmethod
+    def all_posts(cls):
+
+        # I've split these into two queries in anticipating that there might be
+        # different ordering or filtering based on sponsored vs non-sponsored
+        # job posts.
+
+        now = datetime.datetime.now()
+
+        # For the 3rd Q()in sponsored_job_post and other_job_posts, I tried to do
+        # datetime.timedelta(days=F('days_to_expire')) but you
+        # can't put a F() inside of timedelta.
+        # So instead I did datetime.timedelta(days=1)*F('days_to_expire')).
+
+        sponsored_job_posts = JobPost.objects.filter(
+            Q(status="AP")
+            & Q(is_sponsor=True)
+            & Q(approval_date__gte=now - (datetime.timedelta(days=1) * F("days_to_expire")))
+        ).order_by("-approval_date")
+
+        other_job_posts = JobPost.objects.filter(
+            Q(status="AP")
+            & Q(is_sponsor=False)
+            & Q(approval_date__gte=now - (datetime.timedelta(days=1) * F("days_to_expire")))
+        ).order_by("-approval_date")
+
+        # I put the two groups of job posts back together so they can processed
+        # by the same loop in the template.
+        job_posts = list(chain(sponsored_job_posts, other_job_posts))
+
+        return job_posts

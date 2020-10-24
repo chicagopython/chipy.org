@@ -1,4 +1,5 @@
 import datetime
+import urllib
 from itertools import chain
 
 from django.conf import settings
@@ -42,7 +43,7 @@ def create_job_post(request):
             send_email_to_admin_after_create_job_post(position, company, recipients)
 
             return HttpResponseRedirect(
-                reverse("after-submit-job-post", kwargs={"action": "create"})
+                url_with_query_string(reverse("after-submit-job-post"), action="create")
             )
 
     else:
@@ -80,7 +81,7 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
                 job_user_form.save()
 
                 return HttpResponseRedirect(
-                    reverse("after-submit-job-post", kwargs={"action": "update"})
+                    url_with_query_string(reverse("after-submit-job-post"), action="update")
                 )
 
         else:
@@ -126,7 +127,7 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
             job_post.delete()
 
             return HttpResponseRedirect(
-                reverse("after-submit-job-post", kwargs={"action": "delete"})
+                url_with_query_string(reverse("after-submit-job-post"), action="delete")
             )
 
         else:
@@ -148,8 +149,10 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
     paginate_by = 6
 
     def get(self, request, *args, **kwargs):
-        if self.kwargs["action"] == "create":
 
+        action = request.GET.get("action")
+
+        if action == "create":
             messages.success(
                 request,
                 (
@@ -165,16 +168,11 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
                 ),
             )
 
-        elif self.kwargs["action"] == "update":
-
+        elif action == "update":
             messages.success(request, "Your job post has been successfully updated.")
 
-        elif self.kwargs["action"] == "delete":
-
+        elif action == "delete":
             messages.success(request, "Your job post has been successfully deleted.")
-
-        elif self.kwargs["action"] != "show":
-            raise Http404()
 
         return super().get(request, *args, **kwargs)
 
@@ -227,3 +225,18 @@ class JobPostDetail(DetailView):
             return super().get(request, *args, **kwargs)
         else:
             raise Http404("Post doesn't have a status of 'approved' OR it has expired.")
+
+
+def url_with_query_string(path, **kwargs):
+
+    # This function is meant to be used with reverse() and kwargs
+    # to create url with query string parameters.
+    # For example,
+    # url_with_query_string(reverse('example'), action='create', num=1, msg="well done!")
+    # yields https://www.chipy.org/job-board/example/?action=create&num=1&msg=well+done%21 .
+
+    # Code is from user 'geekQ' from
+    # https://stackoverflow.com/questions/2778247/how-do-i-construct-a-django-reverse-url-using-query-args
+
+    encoded_url = path + "?" + urllib.parse.urlencode(kwargs)
+    return encoded_url

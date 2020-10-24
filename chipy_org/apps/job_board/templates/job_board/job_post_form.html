@@ -79,7 +79,7 @@
       <input type="submit" value="Create Post" class="btn btn-primary" >
     {% elif view_action == "update" %}
       <input type="submit" value="Update Post" class="btn btn-primary" >
-      <a href="{% url 'after-submit-job-post' action='show' %}" class="btn btn-info">Cancel</a>
+      <a href="{% url 'after-submit-job-post' %}" class="btn btn-info">Cancel</a>
     {% endif %}
 
 </form>

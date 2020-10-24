@@ -164,6 +164,7 @@ class Presentor(CommonModel):
 
 
 LICENSE_CHOISES = (
+    ("CC 0", "Creative Commons: No Rights Reserved"),
     ("CC BY", "Creative Commons: Attribution"),
     ("CC BY-SA", "Creative Commons: Attribution-ShareAlike"),
     ("CC BY-ND", "Creative Commons: Attribution-NoDerivs"),

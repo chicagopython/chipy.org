@@ -38,6 +38,9 @@ migrate:
 	docker-compose exec web python manage.py migrate auth || true
 	docker-compose exec web python manage.py migrate
 
+migration:
+	docker-compose exec web python manage.py makemigrations -n $(name) $(app)
+
 tag:
 	echo Making tag $(date_tag)
 	git tag -m $(date_tag) $(date_tag)
@@ -58,8 +61,8 @@ format-check:
 
 setup: setup_env build
 
-superuser: 
+superuser:
 	docker-compose exec web ./manage.py createsuperuser
 
-tail-logs: 
+tail-logs:
 	docker-compose logs -f web

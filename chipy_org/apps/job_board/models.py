@@ -130,3 +130,7 @@ class JobPost(CommonModel):
             return days_elapsed_from_posting
         else:
             return None
+
+    def approve(self):
+        self.status = "AP"
+        self.save()

@@ -1,16 +1,11 @@
 from django.contrib import admin
 
-from .models import GeneralSponsor, MeetingSponsor, Sponsor, SponsorGroup
+from .models import MeetingSponsor, Sponsor, SponsorGroup
 
 
 class MeetingSponsorInline(admin.StackedInline):
     extra = 0
     model = MeetingSponsor
-
-
-class GeneralSponsorAdmin(admin.ModelAdmin):
-    model = GeneralSponsor
-    list_display = ["sponsor", "about_short"]
 
 
 class SponsorAdmin(admin.ModelAdmin):
@@ -27,4 +22,3 @@ class SponsorGroupAdmin(admin.ModelAdmin):
 
 admin.site.register(Sponsor, SponsorAdmin)
 admin.site.register(SponsorGroup, SponsorGroupAdmin)
-admin.site.register(GeneralSponsor, GeneralSponsorAdmin)

@@ -15,7 +15,6 @@ class JobPostAdmin(admin.ModelAdmin):
         "status",
         "approval_date",
         "expiration_date",
-        "days_to_expire",
     )
 
     # Substitute the CharField Widget for a TextArea Widget.

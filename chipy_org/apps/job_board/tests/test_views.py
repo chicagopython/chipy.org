@@ -1,7 +1,5 @@
 import pytest
-from django.conf import global_settings
 from django.contrib.auth.models import User
-from django.test import override_settings
 from django.urls import reverse
 
 from chipy_org.apps.job_board.models import JobPost
@@ -18,25 +16,6 @@ def user():
 def authenticated_client(client, user):
     client.force_login(user)
     return client
-
-
-@pytest.fixture
-def job_post():
-    # create a job posting
-    post = JobPost(
-        company_name="test-company",
-        position="test-position",
-        description="test-description",
-        is_sponsor=False,
-        can_host_meeting=False,
-        status="SU",
-        days_to_expire=10,
-        company_website="www.example.com",
-        agree_to_terms=True,
-        is_from_recruiting_agency=False,
-    )
-    post.save()
-    return post
 
 
 @pytest.fixture
@@ -64,17 +43,6 @@ def create_post_params():
         "how_to_apply": "something",
         "agree_to_terms": "something",
     }
-
-
-@pytest.fixture(autouse=True)
-def enable_db_access_for_all_tests(db):  # pylint: disable=invalid-name
-    pass
-
-
-@pytest.fixture(autouse=True)
-def with_static_files():
-    with override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE):
-        yield
 
 
 def test_index_view_renders(client):

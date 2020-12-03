@@ -123,6 +123,10 @@ class JobPost(CommonModel):
         else:
             return None
 
+    def approve(self):
+        self.status = "AP"
+        self.save()
+
     @property
     def expiration_date(self):
 

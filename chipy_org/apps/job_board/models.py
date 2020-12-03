@@ -1,7 +1,9 @@
 import datetime
+from itertools import chain
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import F, Q
 
 from chipy_org.libs.models import CommonModel
 
@@ -53,17 +55,11 @@ class JobPost(CommonModel):
 
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default="SU")
 
-    # This field will change every time you update the 'status'
-    # field. Code for doing that is in the 'save' method.
-    status_change_date = models.DateTimeField(editable=False, auto_now_add=True)
-
     approval_date = models.DateTimeField(editable=False, blank=True, null=True)
 
     days_to_expire = models.IntegerField(
         default=NUM_DAYS_T0_EXPIRE, verbose_name="Num of days for post to show"
     )
-
-    expiration_date = models.DateTimeField(editable=False, blank=True, null=True)
 
     location = models.CharField(
         max_length=2,
@@ -100,22 +96,18 @@ class JobPost(CommonModel):
     def __str__(self):
         return f"{self.position} at {self.company_name}"
 
-    def __init__(self, *args, **kwargs):
-        super(JobPost, self).__init__(*args, **kwargs)
-        self.__original_status = self.status
-
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        # Every time a decision is made for the status of the post,
-        # the date that the decision is made is updated.
 
-        if self.__original_status != self.status:
-            self.status_change_date = datetime.datetime.now()
-            self.__original_status = self.status
+        if self.status == "AP":
+            # If post is approved and the approval_date hasn't been set yet,
+            # set the approval_date.
+            if not self.approval_date:
+                self.approval_date = datetime.datetime.now()
 
-        # if post is approved, set the approval date and expiration date
-        if self.status == "AP" and not self.approval_date:
-            self.approval_date = datetime.datetime.now()
-            self.expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
+        # If post was approved but then changed to a different status,
+        # set the approval_date back to None.
+        elif self.approval_date:
+            self.approval_date = None
 
         super(JobPost, self).save(*args, **kwargs)
 
@@ -134,3 +126,47 @@ class JobPost(CommonModel):
     def approve(self):
         self.status = "AP"
         self.save()
+
+    @property
+    def expiration_date(self):
+
+        # expiration_date shows up as a field in the admin panel.
+        # If post is approved and the approval_date is set,
+        # compute the expiration_date.
+        if self.status == "AP" and self.approval_date:
+            expiration_date = self.approval_date + datetime.timedelta(days=self.days_to_expire)
+            return expiration_date
+        else:
+            return None
+
+    @classmethod
+    def approved_posts(cls):
+
+        # I've split these into two queries in anticipating that there might be
+        # different ordering or filtering based on sponsored vs non-sponsored
+        # job posts.
+
+        now = datetime.datetime.now()
+
+        # For the 3rd Q()in sponsored_job_post and other_job_posts, I tried to do
+        # datetime.timedelta(days=F('days_to_expire')) but you
+        # can't put a F() inside of timedelta.
+        # So instead I did datetime.timedelta(days=1)*F('days_to_expire')).
+
+        sponsored_job_posts = JobPost.objects.filter(
+            Q(status="AP")
+            & Q(is_sponsor=True)
+            & Q(approval_date__gte=now - (datetime.timedelta(days=1) * F("days_to_expire")))
+        ).order_by("-approval_date")
+
+        other_job_posts = JobPost.objects.filter(
+            Q(status="AP")
+            & Q(is_sponsor=False)
+            & Q(approval_date__gte=now - (datetime.timedelta(days=1) * F("days_to_expire")))
+        ).order_by("-approval_date")
+
+        # I put the two groups of job posts back together so they can processed
+        # by the same loop in the template.
+        job_posts = list(chain(sponsored_job_posts, other_job_posts))
+
+        return job_posts

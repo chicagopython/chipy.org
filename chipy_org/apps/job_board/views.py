@@ -1,13 +1,11 @@
 import datetime
 import urllib
-from itertools import chain
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -189,21 +187,7 @@ class JobPostList(ListView):
     paginate_by = 8
 
     def get_queryset(self):
-        # I've split these into two queries in anticipating that there might be
-        # different ordering or filtering based on sponsored vs non-sponsored
-        # job posts
-        sponsored_job_posts = JobPost.objects.filter(
-            Q(status="AP") & Q(is_sponsor=True) & Q(expiration_date__gte=datetime.datetime.now())
-        ).order_by("-id")
-        other_job_posts = JobPost.objects.filter(
-            Q(status="AP") & Q(is_sponsor=False) & Q(expiration_date__gte=datetime.datetime.now())
-        ).order_by("-id")
-
-        # I put the two groups of job posts back together so they can processed
-        # by the same loop in the template
-        job_posts = list(chain(sponsored_job_posts, other_job_posts))
-
-        return job_posts
+        return JobPost.approved_posts()
 
 
 class JobPostDetail(DetailView):

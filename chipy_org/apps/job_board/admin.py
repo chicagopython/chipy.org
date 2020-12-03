@@ -18,8 +18,6 @@ class JobPostAdmin(admin.ModelAdmin):
         "days_to_expire",
     )
 
-    # readonly_fields = ('status_change_date')
-
     # Substitute the CharField Widget for a TextArea Widget.
     # This is used for the 'description' and 'how_to_apply' CharField in the admin
     def formfield_for_dbfield(self, db_field, **kwargs):  # pylint: disable=arguments-differ

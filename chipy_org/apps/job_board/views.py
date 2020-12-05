@@ -180,14 +180,12 @@ class AfterSubmitJobPost(LoginRequiredMixin, ListView):
 
 
 class JobPostList(ListView):
-
     model = JobPost
     context_object_name = "job_posts"
     template_name = "job_board/job_post_list.html"
+    ordering = ("-is_sponsor", "-approval_date")
     paginate_by = 8
-
-    def get_queryset(self):
-        return JobPost.approved_posts()
+    queryset = JobPost.approved_and_active
 
 
 class JobPostDetail(DetailView):

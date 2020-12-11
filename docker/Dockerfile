@@ -1,4 +1,4 @@
-FROM python:3.8.2
+FROM python:3.8.6
 
 # install os dependencies; clean apt cache
 RUN apt-get update && apt-get install -y \

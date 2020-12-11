@@ -11,20 +11,18 @@ django-grappelli==2.13.4 # check release notes for correct version
 django-gravatar2==1.4.4 # profiles only
 django-honeypot==0.8.0
 django-ical==1.7.0
-django-nocaptcha-recaptcha==0.0.20 # find a more standard recaptcha
+django-nocaptcha-recaptcha==0.0.20
 django-storages==1.9.1
-django-tinymce==2.8.0 # this looks abandoned
+django-tinymce==2.8.0
 Django==2.2.17
-djangorestframework==3.11.0 # how to test
+djangorestframework==3.11.0
 feedparser==5.2.1
 gunicorn==20.0.4
-probablepeople==0.5.4 # kill
 Pillow==6.2.2
 psycopg2-binary==2.8.4
-#pytest-cov==2.6.0 
-python-openid==2.2.5
+python-openid2==3.2
 requests==2.23.0
 six==1.14.0
-social-auth-app-django==3.1.0
+social-auth-app-django==3.4.0
 sorl-thumbnail==12.6.3
 whitenoise==5.0.1

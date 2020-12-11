@@ -188,8 +188,7 @@ class TopicsQuerySet(models.QuerySet):
 
 class Topic(CommonModel):
     def __str__(self):
-        out = self.title
-        return out
+        return self.title
 
     title = models.CharField(
         help_text="This will be the public title for your talk.", max_length=MAX_LENGTH

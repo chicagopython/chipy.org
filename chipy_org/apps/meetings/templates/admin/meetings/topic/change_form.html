@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+.object-tools a.drafts { background-color: #cc9900;}
+</style>
+
+{% endblock %}
+
+{% block object-tools-items %}{{ block.super }}
+    <li>
+        {% with outstanding_drafts=original.outstanding.count %}
+        <a href="{% url 'admin:topic_drafts' object_id=original.id %}" class="viewsitelink {% if outstanding_drafts %}drafts{% endif %}">{% trans "Drafts" %} <span>({{outstanding_drafts}})</span></a>
+        {% endwith %}
+    </li>
+{% endblock %}

@@ -181,12 +181,15 @@ EXPERIENCE_LEVELS = (
 )
 
 
-class TopicsQuerySet(models.QuerySet):
+class TopicQuerySet(models.QuerySet):
     def active(self):
         return self.filter(approved=True).order_by("start_time")
 
+    def get_user_topics(self, user):
+        return self.filter(presentors__user=user).order_by("-created")
 
-class Topic(CommonModel):
+
+class TopicBase(CommonModel):
     def __str__(self):
         out = self.title
         return out
@@ -199,7 +202,8 @@ class Topic(CommonModel):
         Meeting,
         blank=True,
         null=True,
-        related_name="topics",
+        related_name="%(class)ss",
+        related_query_name="%(class)ss",
         help_text=("Please select the meeting that you'd like to " "target your talk for."),
         on_delete=models.CASCADE,
     )
@@ -232,7 +236,80 @@ class Topic(CommonModel):
     start_time = models.DateTimeField(blank=True, null=True)
     approved = models.BooleanField(default=False)
 
-    objects = TopicsQuerySet.as_manager()
+    objects = TopicQuerySet.as_manager()
+
+    def outstanding(self):
+        return self.drafts.filter(
+            models.Q(topic__meeting__when__gte=timezone.now()) | models.Q(topic__meeting=None)
+        ).filter(approved=False)
+
+    class Meta:
+        abstract = True
+
+    def __eq__(self, other):
+        for fld in TopicDraft.tracked_fields:
+            if getattr(self, fld) != getattr(other, fld):
+                return False
+        return True
+
+
+class Topic(TopicBase):
+    pass
+
+
+class TopicDraftQuerySet(models.QuerySet):
+    def get_user_drafts(self, user):
+        return self.filter(topic__presentors__user=user)
+
+
+class TopicDraft(TopicBase):
+    topic = models.ForeignKey("meetings.Topic", on_delete=models.CASCADE, related_name="drafts")
+
+    tracked_fields = [
+        "title",
+        "meeting",
+        "experience_level",
+        "length",
+        "description",
+        "slides_link",
+    ]
+
+    objects = TopicDraftQuerySet.as_manager()
+
+    def _copy_tracked(self, src, dst):
+        for fld in TopicDraft.tracked_fields:
+            setattr(dst, fld, getattr(src, fld))
+        dst.save()
+
+    def publish(self):
+        topic = self.topic
+        orig_notes = topic.notes or ""
+        new_notes = self.notes or ""
+        topic.notes = (
+            orig_notes
+            + "\n----------------------------------------------\n"
+            + "Published Draft {} on {}\n".format(self.id, timezone.now())
+            + new_notes
+            + "\n----------------------------------------------"
+        )
+        self._copy_tracked(self, topic)
+
+    def __rrshift__(self, other):
+        self.topic = other
+        self._copy_tracked(other, self)
+
+    def __eq__(self, other):
+        for fld in TopicDraft.tracked_fields:
+            if getattr(self, fld) != getattr(other, fld):
+                return False
+        if other.id != self.topic.id:
+            return False
+        return True
+
+    def __hash__(self):
+        if self.pk is None:
+            raise TypeError("Model instances without primary key value are unhashable")
+        return hash(self.pk)
 
 
 class RSVP(CommonModel):

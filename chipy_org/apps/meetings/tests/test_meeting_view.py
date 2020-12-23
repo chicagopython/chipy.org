@@ -10,9 +10,8 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 import chipy_org.libs.test_utils as test_utils
-
-from . import email
-from .models import RSVP, Meeting, MeetingType, Presentor, Topic, Venue
+from ..models import RSVP, Meeting, Venue, Topic, MeetingType, Presentor
+from .. import email
 
 User = get_user_model()
 
@@ -207,22 +206,45 @@ def test_rsvp_fails_gracefully_with_missing_data(client):
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-def test_my_talks_with_multiple_presenters_with_same_user(client):
-    user = User.objects.create(username="chipy",)
+def test_topics_drafts_list_view(client, django_user_model):
+    username = "testtesterson"
+    password = "bar"
 
-    p1 = Presentor.objects.create(user=user, name="name1",)
-    t1 = Topic.objects.create(title="title1")
-    t1.presentors.set(
-        [p1,]
-    )
+    user1 = django_user_model.objects.create_user(username=username, password=password)
 
-    p2 = Presentor.objects.create(user=user, name="name2",)
-    t2 = Topic.objects.create(title="title2")
-    t2.presentors.set(
-        [p2,]
-    )
+    pr1 = Presentor(user=user1, name="u1")
+    pr1.save()
 
-    client.force_login(user)
-    response = client.get(reverse("my_topics"))
+    topic1 = Topic(title="test1")
+    topic1.save()
+    topic1.presentors.add(pr1)
+    topic2 = Topic(title="not-selected")
+    topic2.save()
 
-    assert response.status_code == 200
+    client.login(username=username, password=password)
+    response = client.get(reverse("propose_topics_user"))
+    assert list(response.context["topics"].values_list("id", flat=True)) == [user1.id]
+
+
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_topics_drafts_add_view(client, django_user_model):
+    username = "testtesterson"
+    password = "bar"
+
+    user1 = django_user_model.objects.create_user(username=username, password=password)
+
+    pr1 = Presentor(user=user1, name="u1")
+    pr1.save()
+
+    topic1 = Topic(title="test1")
+    topic1.save()
+    topic1.presentors.add(pr1)
+
+    client.login(username=username, password=password)
+
+    data = {"title": "some title", "description": "some desc"}
+    response = client.post(reverse("propose_topic_user_add", args=(topic1.id,)), data)
+
+    assert response.status_code == 302
+    assert topic1.drafts.count() == 1
+

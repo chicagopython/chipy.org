@@ -1,9 +1,9 @@
 import datetime
-
-from django import forms
 from nocaptcha_recaptcha.fields import NoReCaptchaField
-
-from .models import RSVP, Meeting, Presentor, Topic
+import bleach
+from django import forms
+from django.conf import settings
+from .models import Topic, TopicDraft, Presentor, RSVP, Meeting
 
 
 class TopicForm(forms.ModelForm):
@@ -65,6 +65,16 @@ class TopicForm(forms.ModelForm):
 
         instance.presentors.add(presenter)
         return instance
+
+
+class TopicDraftForm(forms.ModelForm):
+    def clean_description(self):
+        desc = self.cleaned_data.get("description", "")
+        return bleach.clean(desc, tags=settings.BLEACH_ALLOWED_TAGS)
+
+    class Meta:
+        model = TopicDraft
+        fields = TopicDraft.tracked_fields + ["notes"]
 
 
 class RSVPForm(forms.ModelForm):

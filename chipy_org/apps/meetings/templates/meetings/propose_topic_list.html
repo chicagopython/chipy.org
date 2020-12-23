@@ -1,0 +1,82 @@
+{% extends "site_base.html" %}
+
+{% load i18n staticfiles flatblocks diff_tags %}
+
+{% block head_title %}{% trans "Your Submitted Topics" %}{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+        .table th {width: 200px}
+        .topic-table-header {
+            border-radius: 5px;
+            padding: 4px;
+            background-color: #7ab6f3; color: white}
+        .topic-table-header h3 {
+            float: left;
+            margin: 2px;
+            padding: 0px;
+            line-height: inherit;
+        }
+        .topic-edit {
+            float: right;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<h1>{% trans "Your Submitted Talk Topics" %}</h1>
+
+<p>
+    <strong>Below are your previously submitted topics. If you need to make changes to
+    a submission, use the Edit button.</strong>
+</p>
+
+{% for topic in topics %}
+<table class="table topic-table">
+<tr>
+
+    <td class="topic-table-header" colspan="2">
+        <h3>{{ topic.title }}</h3>
+        <a href="{% url 'propose_topic_user_add' topic.pk %}" class="topic-edit btn btn-primary">Edit</a> 
+    </td>
+</tr>
+<tr style="background-color: {% if topic.approved %}#E6FFFF{% else %}#FFE6E6{% endif %}">
+    <th>Topic Approved</th>
+    <td>{{ topic.approved }}</td>
+</tr>
+<tr>
+    <th>Meeting</th>
+    <td>{{ topic.meeting }}</td>
+</tr>
+<tr> 
+    <th>Experience Level</th>
+    <td>{{ topic.experience_level }}</td>
+</tr>
+<tr>
+    <th>Length (min)</th>
+    <td>{{ topic.length }}</td>
+</tr>
+<tr>
+    <th>Description</th>
+    <td>{{ topic.description|safe }}</td>
+</tr>
+<tr>
+    <th colspan="2">Outstanding Edits - pending approval</th>
+</tr>
+{% for draft in topic.outstanding %}
+<tr>
+    <th colspan="2">
+        {% for field in draft.tracked_fields %}
+        <div>{{ field }}: {% diff_draft draft=draft field=field %}</div>
+        {% endfor %}
+    </th>
+</tr>
+{% empty %}
+<tr><td colspan="4">No Edits Pending</td></tr>
+{% endfor %}
+</table>
+<br>
+{% endfor %}
+
+{% endblock body %}

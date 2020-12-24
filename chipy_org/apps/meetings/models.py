@@ -258,7 +258,6 @@ class RSVP(CommonModel):
     class Meta:
         ordering = ["-meeting", "last_name", "first_name"]
         verbose_name = "RSVP"
-        verbose_name_plural = "RSPVs"
 
     def clean(self):
         if not self.user and not self.email:

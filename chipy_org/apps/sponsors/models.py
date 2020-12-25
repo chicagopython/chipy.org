@@ -30,6 +30,9 @@ class SponsorGroup(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ("list_priority",)
+
 
 class Sponsor(models.Model):
 

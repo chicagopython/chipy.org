@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:  # required for runs that don't use workflows
+  build: # required for runs that don't use workflows
     filters:
       branches:
         only:
@@ -10,7 +10,7 @@ jobs:
           - /feature/*
     working_directory: ~/circleci-app
     docker:
-      - image: circleci/python:3.8.2
+      - image: circleci/python:3.8.6
         environment:
           ALLOWED_HOSTS: "chipy.org,www.chipy.org,localhost"
           CONNECT_METHOD: http

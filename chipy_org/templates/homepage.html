@@ -239,7 +239,7 @@ h2 a {
                       {% if topic.experience_level %}
                       Experience Level: {{ topic.get_experience_level_display }}<br />
                       {% endif %}
-                      {{ topic.description|striptags|truncatewords:80|bleach|safe }}<br />
+                      {{ topic.description|bleach|truncatewords_html:80|safe }}<br />
                       <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
                     </li>
                   {% endfor %}

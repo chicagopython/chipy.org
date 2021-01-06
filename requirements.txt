@@ -18,7 +18,8 @@ Django==2.2.17
 djangorestframework==3.11.0
 feedparser==5.2.1
 gunicorn==20.0.4
-Pillow==6.2.2
+probablepeople==0.5.4 # kill
+Pillow==7.1.0
 psycopg2-binary==2.8.4
 python-openid2==3.2
 requests==2.23.0

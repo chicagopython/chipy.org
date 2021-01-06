@@ -1,5 +1,4 @@
 import datetime
-from itertools import chain
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -33,6 +32,15 @@ JOB_TYPE_CHOICES = [
 ]
 
 
+class ApprovedAndActive(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(Q(status="AP") & Q(approval_date__gte=Now() - F("time_to_expire")))
+        )
+
+
 class JobPost(CommonModel):
 
     __original_status = None
@@ -57,10 +65,6 @@ class JobPost(CommonModel):
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default="SU")
 
     approval_date = models.DateTimeField(editable=False, blank=True, null=True)
-
-    days_to_expire = models.IntegerField(
-        default=NUM_DAYS_T0_EXPIRE, verbose_name="Num of days for post to show"
-    )
 
     time_to_expire = models.DurationField(
         default=datetime.timedelta(days=NUM_DAYS_T0_EXPIRE),
@@ -145,30 +149,5 @@ class JobPost(CommonModel):
         else:
             return None
 
-    @classmethod
-    def unexpired_posts(cls):
-        return JobPost.objects.filter(
-            Q(status="AP") & Q(approval_date__gte=Now() - F("time_to_expire"))
-        )
-
-    @classmethod
-    def other_job_posts(cls):
-        return cls.unexpired_posts().filter(Q(is_sponsor=False))
-
-    @classmethod
-    def sponsored_job_posts(cls):
-        return cls.unexpired_posts().filter(Q(is_sponsor=True))
-
-    @classmethod
-    def approved_posts(cls):
-        # Split these into two queries in anticipating that there might be
-        # different ordering or filtering based on sponsored vs non-sponsored
-        # job posts.
-        job_posts = list(
-            chain(
-                cls.sponsored_job_posts().order_by("-approval_date"),
-                cls.other_job_posts().order_by("-approval_date"),
-            )
-        )
-
-        return job_posts
+    objects = models.Manager()
+    approved_and_active = ApprovedAndActive()

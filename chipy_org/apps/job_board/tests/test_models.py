@@ -13,4 +13,4 @@ def test_job_post_unexpired_posts_includes_recent_only(job_post):
     job_post.save()
 
     assert JobPost.objects.count() == 2
-    assert JobPost.unexpired_posts().count() == 1
+    assert JobPost.approved_and_active.count() == 1

@@ -9,7 +9,7 @@ from chipy_org.apps import announcements, job_board, meetings, profiles, sponsor
 
 
 class Command(BaseCommand):
-    help = "Adds initial data to the site for developement and testing purposes."
+    help = "Adds initial data to the site for development and testing purposes."
 
     def handle(self, *args, **options):
 
@@ -43,12 +43,17 @@ class Command(BaseCommand):
         )
 
         # announcement data'
-        for a in announcements.models.Announcement.objects.filter(headline__startswith="Dev"):
-            a.delete()
+        for announcement in announcements.models.Announcement.objects.filter(
+            headline__startswith="Dev"
+        ):
+            announcement.delete()
 
         for k, v in times.items():
             announcements.models.Announcement.objects.update_or_create(
-                headline=f"Dev Headline - {k}", text="Dev Announcement", active=True, end_date=v,
+                headline=f"Dev Headline - {k}",
+                text="Dev Announcement",
+                active=True,
+                end_date=v,
             )
 
         # meetings data
@@ -66,7 +71,7 @@ class Command(BaseCommand):
             address="1537 Paper Street, Bradford DE 19808",
         )
 
-        for meeting in meetings.models.Meeting.objects.filter(key__startswith="Dev"):
+        for meeting in meetings.models.Meeting.objects.filter(key__startswith="dev"):
             meeting.delete()
 
         count = 0
@@ -76,9 +81,8 @@ class Command(BaseCommand):
                 when=v + timedelta(days=7),
                 description=f"Dev Meeting {k}".title(),
                 reg_close_date=(v + timedelta(days=6)),
-                key=f"Dev-{count:04}",
+                key=f"dev{count:037}",
             )
-            count += 1
 
             topic, _ = meetings.models.Topic.objects.get_or_create(
                 meeting=meeting,
@@ -89,6 +93,8 @@ class Command(BaseCommand):
                 approved=True,
             )
             topic.presentors.set((presentor,))
+
+            count += 1
 
         for job in job_board.models.JobPost.objects.filter(position__startswith="DEV DATA"):
             job.delete()
@@ -124,5 +130,7 @@ class Command(BaseCommand):
         job_post.approve()
 
         # make some sponsors
-        gold_sponsor = sponsors.models.SponsorGroup.update_or_create(name="Gold", list_priority=1,)
-        gold_sponsor.save()
+        sponsors.models.SponsorGroup.objects.update_or_create(
+            name="Gold",
+            list_priority=1,
+        )

@@ -42,7 +42,7 @@ class Command(BaseCommand):
             email="narrator@paperstreet.com",
         )
 
-        # announcement data'
+        # announcement data
         for announcement in announcements.models.Announcement.objects.filter(
             headline__startswith="Dev"
         ):

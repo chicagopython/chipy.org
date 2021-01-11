@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 from chipy_org.apps.announcements.models import Announcement
 from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
-from chipy_org.apps.sponsors.models import GeneralSponsor
+from chipy_org.apps.sponsors.models import SponsorGroup
 
 
 class Home(TemplateView, InitialRSVPMixin):
@@ -37,9 +37,7 @@ class Home(TemplateView, InitialRSVPMixin):
         context.update(kwargs)
 
         context["other_meetings"] = self.get_non_main_meetings(num=3)
-        context["general_sponsors"] = GeneralSponsor.objects.all().order_by(
-            "sponsor__sponsor_group__list_priority", "sponsor__name"
-        )
+        context["sponsor_groups"] = SponsorGroup.objects.prefetch_related("sponsors")
         context["announcement"] = Announcement.objects.featured()
 
         context = self.add_extra_context(context)

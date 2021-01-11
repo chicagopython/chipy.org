@@ -257,7 +257,7 @@ h2 a {
         <div class="row-fluid">
             {% for meeting in other_meetings %}
             <div class="module span4 box-feature" itemscope itemtype="http://schema.org/Event">
-                
+
                 {% if meeting.title %}
                     <h4 itemprop="name">{{ meeting.title }}</h4>
                 {% endif %}
@@ -343,34 +343,34 @@ h2 a {
         <div class="row-fluid">
             <div class="module span12">
 
-                {% if general_sponsors %}
-                                 
-                    {% for general_sponsor in general_sponsors %}
-                        
-                        <div class="sponsor-home-block">
-                        
-                        {% ifchanged general_sponsor.sponsor.sponsor_group.name %}
-                            <h3>{{ general_sponsor.sponsor.sponsor_group.name }}</h3>
-                        {% endifchanged %}
-                        
-                        {% if general_sponsor.sponsor.logo %}
-                            {% thumbnail general_sponsor.sponsor.logo "400" crop="center" as im %}
+
+                {% for sponsor_group in sponsor_groups %}
+
+                    {% if sponsor_group.sponsors.count %}
+                    <div class="sponsor-home-block">
+
+                    <h3>{{ sponsor_group.name }}</h3>
+
+                    {% for sponsor in sponsor_group.sponsors.all %}
+                        {% if sponsor.logo %}
+                            {% thumbnail sponsor.logo "400" crop="center" as im %}
                                 <div class="sponsor-home-image">
-                                    <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
-                                        <img src="{{ im.url }}" alt="{{ general_sponsor.sponsor.name }} (Sponsor)">
+                                    <a href="{% url 'sponsor_detail' sponsor.slug %}">
+                                        <img src="{{ im.url }}" alt="{{ sponsor.name }} (Sponsor)">
                                     </a>
                                 </div>
                             {% endthumbnail %}
                         {% else %}
-                            <a href="{% url 'sponsor_detail' general_sponsor.sponsor.slug %}">
-                                <h4>{{general_sponsor.sponsor}}</h4>
+                            <a href="{% url 'sponsor_detail' sponsor.slug %}">
+                                <h4>{{ sponsor }}</h4>
                             </a>
                         {% endif %}
                         </div>
+                    {% endfor %}
 
-                    {% endfor %}                        
-                   
-                {% endif %}
+                   {% endif %}
+
+                {% endfor %}
 
             </div><!--/span-->
         </div><!-- #row-fluid -->

@@ -343,7 +343,6 @@ h2 a {
         <div class="row-fluid">
             <div class="module span12">
 
-
                 {% for sponsor_group in sponsor_groups %}
 
                     {% if sponsor_group.sponsors.count %}
@@ -365,9 +364,8 @@ h2 a {
                                 <h4>{{ sponsor }}</h4>
                             </a>
                         {% endif %}
-                        </div>
                     {% endfor %}
-
+                    </div>
                    {% endif %}
 
                 {% endfor %}

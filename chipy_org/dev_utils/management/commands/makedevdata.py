@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from chipy_org.apps import announcements, job_board, meetings, profiles, sponsors, subgroups
+from chipy_org.apps import announcements, job_board, meetings, sponsors
 
 
 class Command(BaseCommand):
@@ -50,10 +50,7 @@ class Command(BaseCommand):
 
         for k, v in times.items():
             announcements.models.Announcement.objects.update_or_create(
-                headline=f"Dev Headline - {k}",
-                text="Dev Announcement",
-                active=True,
-                end_date=v,
+                headline=f"Dev Headline - {k}", text="Dev Announcement", active=True, end_date=v,
             )
 
         # meetings data
@@ -130,7 +127,27 @@ class Command(BaseCommand):
         job_post.approve()
 
         # make some sponsors
-        sponsors.models.SponsorGroup.objects.update_or_create(
-            name="Gold",
-            list_priority=1,
-        )
+        sponsor_levels = [("Platinum", 1), ("Gold", 2), ("Silver", 3), ("Bronze", 4)]
+        sponsor_groups = dict()
+
+        for name, list_priority in sponsor_levels:
+            sponsor_group, _ = sponsors.models.SponsorGroup.objects.update_or_create(
+                name=name, list_priority=list_priority,
+            )
+            sponsor_groups[name] = sponsor_group
+
+        some_sponsors = [
+            ("Car company", "car-company", "A major one", "Platinum"),
+            ("Lou's Place", "lous-place", "A random bar", "Gold"),
+            ("Planet Starbucks", "planet-starbucks", "For your latte's in space.", "Silver"),
+            ("IBM Stellar Sphere", "ibm", "Making old tech new", "Bronze"),
+            ("The Microsoft Galaxy", "msft", "Newly discovered", "Bronze"),
+        ]
+
+        for name, slug, description, sponsor_level in some_sponsors:
+            sponsors.models.Sponsor.objects.update_or_create(
+                name=name,
+                slug=slug,
+                description=description,
+                sponsor_group=sponsor_groups[sponsor_level],
+            )

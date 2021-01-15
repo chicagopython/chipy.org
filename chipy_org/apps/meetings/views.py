@@ -217,11 +217,13 @@ class UpdateRSVP(UpdateView):
     success_url = reverse_lazy("home")
 
     def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        if not obj.meeting.can_register():
-            messages.error(self.request, "Registration for this meeting is closed.")
+        self.object = self.get_object()
+        if not self.object.meeting.can_register():
+            messages.error(
+                self.request, "Registration for this meeting on is closed.",
+            )
             return HttpResponseRedirect(reverse_lazy("home"))
-        return super().get(request, *args, **kwargs)
+        return self.render_to_response(self.get_context_data())
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

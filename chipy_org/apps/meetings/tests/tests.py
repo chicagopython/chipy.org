@@ -5,46 +5,15 @@ import pytest
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
 from django.core import mail
-from django.core.exceptions import ValidationError
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-import chipy_org.libs.test_utils as test_utils
-
-from . import email
-from .models import RSVP, Meeting, MeetingType, Presentor, Topic, Venue
+from chipy_org.apps.meetings import email
+from chipy_org.apps.meetings.models import Meeting, MeetingType, Presentor, Topic
 
 User = get_user_model()
 
 pytestmark = pytest.mark.django_db
-
-
-class MeetingsTest(test_utils.AuthenticatedTest):
-    def test_unique_rsvp(self):
-        """
-        Tests the uniqueness constraints on the rsvp model
-        """
-        test_venue = Venue.objects.create(name="Test")
-        meeting = Meeting.objects.create(when=datetime.date.today(), where=test_venue)
-        rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")
-
-        with self.assertRaises(ValidationError):
-            # RSVP needs to have a user or name
-            rsvp_no_user = RSVP.objects.create(meeting=meeting, response="Y")
-
-        with self.assertRaises(ValidationError):
-            # This should already exist
-            duplicate_rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")
-
-        with self.assertRaises(ValidationError):
-            name_rsvp = RSVP.objects.create(
-                name="Test Name", meeting=meeting, response="Y", email="dummy@example.com",
-            )
-
-            # Can't have two of the same name
-            duplicate_name_rsvp = RSVP.objects.create(
-                name="Test Name", meeting=meeting, response="Y", email="dummy@example.com",
-            )
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
@@ -126,27 +95,6 @@ def test_post_topic_sends_email():
     assert len(mail.outbox) == 1
 
 
-def test_anonymous_rsvp_email():
-    m = Meeting(
-        when=datetime.datetime.now(), reg_close_date=datetime.datetime.now(), description="Test",
-    )
-    m.save()
-    assert len(Meeting.objects.all()) == 1
-
-    rsvp = RSVP(
-        last_name="last name",
-        first_name="first_name",
-        email="test@test.com",
-        meeting=m,
-        response="Y",
-    )
-    rsvp.save()
-    assert len(RSVP.objects.all()) == 1
-
-    email.send_rsvp_email(rsvp)
-    assert len(mail.outbox) == 1
-
-
 class MeetingTitleTest(TestCase):
     # Tests if 'custom_title' from 'meeting' is available, it'll be used as
     # 'title' for meeting.  If 'custom_title' from 'meeting' isn't available,
@@ -181,29 +129,6 @@ class MeetingTitleTest(TestCase):
             when=datetime.date.today(), custom_title="Main Custom Title"
         )
         self.assertEqual(meeting.title, "Main Custom Title")
-
-
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-def test_rsvp_works_for_anonymous_user(client):
-    meeting = Meeting.objects.create(when=datetime.date.today() + datetime.timedelta(days=1))
-    route = reverse("rsvp")
-    response = client.post(
-        route,
-        data={
-            "meeting": meeting.id,
-            "first_name": "Some",
-            "last_name": "Body",
-            "email": "somebody@example.com",
-        },
-    )
-    assert response.status_code == 200
-
-
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
-def test_rsvp_fails_gracefully_with_missing_data(client):
-    meeting = Meeting.objects.create(when=datetime.date.today() + datetime.timedelta(days=1))
-    response = client.post(reverse("rsvp"), data={"meeting": meeting.id})
-    assert response.status_code == 200
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)

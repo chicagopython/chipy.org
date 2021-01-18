@@ -43,6 +43,8 @@ class Home(TemplateView, InitialRSVPMixin):
         context = self.add_extra_context(context)
         return context
 
+class PreviewHome(Home):
+    template_name = "shiny/homepage.html"
 
 def custom_500(request):
     template = loader.get_template("500.html")

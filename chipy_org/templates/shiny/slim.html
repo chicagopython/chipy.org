@@ -1,0 +1,25 @@
+{% extends 'shiny/site_base.html' %}
+{% load static %}
+{% block content %}
+<div class="screen-bg slim-screen-bg" style="background-image: url({% static 'img/slim-banner-navy50percent-1500px-100.jpg'%});">
+    {% include 'shiny/navbar.html' %}
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="title-medium">
+                {% block page_header %}{{ page_header }}{% endblock %}
+            </div>
+        </div><!--closes the col-->
+    </div> <!--closes the working together row-->
+
+
+</div> <!--closes fullscreen background-->
+
+<div class="row">
+    <div class="col-md-8 offset-md-2 px-5 my-4">
+        {% block body %}
+        {% endblock %}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'shiny/site_base.html' %}
+{% load static %}
+{% block content %}
+<div class="screen-bg full-screen-bg" style="background-image: url({% static 'img/HP-Hero-bg-1500-90.jpg' %}">
+    <div class="row gx-0">
+        <div class="col-12">  
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav font-montserrat-bold justify-content-center ">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#about-us">ABOUT US</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">CODE OF CONDUCT</a>
+                            </li>
+                            
+                            <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="support-us-navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        SUPPORT US
+                                    </a>
+                                    
+                                    <ul class="dropdown-menu" aria-labelledby="support-us-navbarDropdown">
+                                        <li><a class="dropdown-item font-montserrat-bold " href="#">SPONSOR</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item font-montserrat-bold " href="#">HOST</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item font-montserrat-bold" href="#">REFERRAL PROGRAM</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item font-montserrat-bold" href="#">VOLUNTEER</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item font-montserrat-bold" href="#">INDIVIDUAL DONATION</a></li>
+                                    </ul>
+                                </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    PROGRAMS
+                                </a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item font-montserrat-bold " href="#">SIGs</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item font-montserrat-bold " href="#">MENTORSHIP</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">SPEAK</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">JOB BOARD</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">CONTACT US</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a id="login-button" class="btn btn-info my-2 my-sm-0 mx-2 " href="#">LOG IN</a>
+                            </li>
+                        </ul>
+                
+                    </div> <!--closes id=navbarSupportedContent-->
+                </div> <!--closes container-fluid -->
+            </nav>
+        </div> <!--closes col right before nav-->
+        </div> <!--closes row right before nav-->
+            
+
+            <div class="row row-remove-right-gutter">
+                <div class="col-12 text-center">   
+                    <div class="title-large">
+                        WORKING TOGETHER <br> 
+                        TO GROW
+                    </div>
+                </div><!--closes the col-->
+            </div> <!--closes the working together row-->
+
+            <div class="d-flex flex-row justify-content-center flex-wrap ">
+                <div class="p-2" >
+                    <a id="events-button" class="btn btn-primary btn-lg" href="#next-event">NEXT EVENT: Jan 20</a>
+                </div>
+                <div class="p-2" >
+                    <a id="events-button" class="btn btn-danger btn-lg" href="">SEE ALL UPCOMING EVENTS</a>
+                </div>
+            </div>    
+            
+        
+        </div> <!--closes fullscreen background-->
+
+    <div class="d-flex flex-row justify-content-center my-4 px-5">
+        <div>
+            <h3 id="next-event">NEXT EVENT: MAIN MEETING</h3>
+            <p>Main meetings happen online remotely the second Thursday of every month.</p>
+
+            <p itemprop="startDate" content=""><strong>When: </strong> Jan. 14, 2021, 6 p.m.</p>
+
+            <p itemprop="address"><strong>Where: </strong>
+                <a id="where-link" href="#"> Remote Meeting</a>
+            </p>
+            <p></p>
+
+            <div id="where-dialog" title="Venue" style="display:none">
+                Remote Meeting<br>
+            <br>
+                
+                
+        </div>
+
+                
+        <p><a href="https://www.youtube.com/watch?v=5gEdAYJG2r4">Live Stream</a><p>
+                
+
+        <p><strong>RSVP (without login):</strong>
+
+        <a class="btn btn-mini rsvp">RSVP</a>
+        </p>
+
+        </div> <!--closes column-->
+    </div> <!--closes row--> 
+    
+    <div class="row background-tinted my-0 py-3"> 
+        <div class="col-12 px-5">
+        
+            <h3>MEETING TOPICS</h3>
+        </div>
+    </div>
+    
+    <div class="row background-tinted gx-2">
+        <div class="col-md-4 px-5">
+            <h5 class="black-text">First Time Advent of Coding</h5>
+            <strong>By:</strong> 
+                Stephen Ianno 
+            <br />
+                    
+            <strong>Experience Level:</strong> Intermediate
+            <p>
+            Recalling my experience doing Advent of Code for the first time. How being part of a small community of others completing each challenge really motivated me to complete each challenge myself. It was also really amazing being able to look at the solutions from other, more experienced participants and discuss the solutions through Slack. I learned a lot of really useful tricks and insight to going about challenging coding problems and it really helped prepare me for future technical interviews. …<br />
+            <a href="/meetings/169/">Learn more</a>
+
+        </div>
+            
+                
+        <div class="col-md-4 px-5 pb-4">
+            <h5 class="black-text">Making Scaled Data Science Work For People, And Not The Other Way Around</h5>
+            By: 
+                    Hugo Bowne-Anderson 
+            <br />
+                    
+            Experience Level: Intermediate<br />
+                    
+            Data science is too often discussed as a technical discipline, rather than a social and cultural one. But the role of data science is to both inform and automate decision-making processes, which require, in turn, humans to collaborate and communicate with each other and humans to collaborate with machines, both of which have key cultural and social dimensions. Why do so many executives feel that so little of the data work in their organizations actually delivers returns? How can we …<br />
+            <a href="/meetings/169/">Learn more</a>
+        </div>
+        
+    
+        <div class="col-md-4 px-5 pb-4">
+            <h5 class="black-text">From Python To Rust</h5>
+            By: 
+                Kevin Nasto 
+            <br />
+                    
+            Experience Level: Intermediate<br />
+                    
+            Ever been curious about the Rust programming language? This talk will describe the experience of going through the Advent of Code puzzles in Rust from the point of view of a Python user. Discover the alternatives to pip, functions and passing values, exception handling, and more.<br />
+            <a href="/meetings/169/">Learn more</a>
+        </div>
+        
+            
+    </div> <!--closes row-->
+
+    <!--ABOUT SECTION STARTS-->
+    <div class="row py-4">
+        <h3 id="about-us" class="px-5 red-text">ABOUT US</h3>
+        <div class="col-md-6 px-5 pt-1 pb-3">
+            Founded in 2003, Chicago Python User Group is one of the world's most active programming language special interest groups with over 1,000 active members and many more prestigious alumni. Our main focus is the Python Programming Language. There are many ways to get and stay involved. Meetings are open to all levels. Our main meetings are on the 2nd Thursday of every month and happen online remotely. We have SIGs (Special Interest Groups) in: Mentorship, Science, Web, and Financial.
+        </div>
+        <div class="col-md-6 py-1 pe-5 padding-left-med-5">
+            <div class="row">
+                <div class="col-6 bg-light pe-2">
+                    <img src="{% static 'img/lt@3x-cropped.jpg' %}" alt="ChiPy Attendees working on projects together" height="250" >
+                </div>
+                <div class="col-6 bg-light text-end">
+                    
+                    <img src="{% static 'img/rt@3x.jpg' %}" alt="ChiPy Attendees working on projects together" height="250" >
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--ABOUT SECTION ENDS-->
+
+{% endblock %}

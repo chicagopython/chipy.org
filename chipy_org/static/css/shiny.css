@@ -45,6 +45,11 @@ a:hover{
     padding: 0px;
 }
 
+.nav-link {
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
 .navbar-dark .navbar-nav .nav-link {
     color: #ffffff;
 }
@@ -52,6 +57,7 @@ a:hover{
 .navbar-dark .navbar-nav .nav-link:hover{
     color: #fbd82e;
 }
+
 .navbar-nav {
     background-color: rgba(7, 14, 41, 0.45);
     padding-top: 1rem;

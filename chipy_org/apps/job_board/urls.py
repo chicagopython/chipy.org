@@ -4,6 +4,7 @@ from .views import (
     AfterSubmitJobPost,
     JobPostDetail,
     JobPostList,
+    PreviewJobPostList,
     create_job_post,
     delete_job_post,
     update_job_post,
@@ -14,6 +15,7 @@ urlpatterns = [
     path(r"update/<int:pk>/", update_job_post, name="update-job-post"),
     path(r"delete/<int:pk>/", delete_job_post, name="delete-job-post"),
     path("", JobPostList.as_view(), name="job-board"),
+    path(r"preview", PreviewJobPostList.as_view(), name="job-board-preview"),
     path(r"detail/<int:pk>/", JobPostDetail.as_view(), name="job-post-detail"),
     path(r"after-submit/", AfterSubmitJobPost.as_view(), name="after-submit-job-post"),
 ]

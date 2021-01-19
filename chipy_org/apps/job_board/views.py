@@ -186,7 +186,18 @@ class JobPostList(ListView):
     ordering = ("-is_sponsor", "-approval_date")
     paginate_by = 8
     queryset = JobPost.approved_and_active
+    job_board_template = "site_base.html"
 
+    def get_queryset(self):
+        return JobPost.approved_posts()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["job_board_template"] = self.job_board_template
+        return context
+
+class PreviewJobPostList(JobPostList):
+    job_board_template = "shiny/slim.html"
 
 class JobPostDetail(DetailView):
     model = JobPost

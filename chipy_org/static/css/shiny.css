@@ -181,11 +181,11 @@ a:hover{
     --bs-gutter-x: 0;
 }
 
-
-li.bulleted-decoration::marker {
-    color: #00b5e5;
-    content: "✽ ";
+ul.footer-link-list>li{
+    margin-top: .5rem;
+    line-height: 100%;
 }
+
 ul.no-bullets {
     list-style-type: none; /* Remove bullets */
     padding: 0; 

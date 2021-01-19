@@ -211,6 +211,16 @@ ul.no-bullets {
     filter: brightness(80%);
   }
 
+.join-us-icon {
+    height: 10rem;
+    width: 10rem;
+    display: block;
+    margin: auto;
+    border: 1px solid #e2e6eb;
+    background-color: #eff5ff;
+    border-radius: 34px;
+}
+
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) { 
     .padding-left-med-5 {

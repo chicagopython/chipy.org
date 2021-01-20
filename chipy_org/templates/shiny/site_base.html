@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-6 pe-2">
                         <ul class="no-bullets footer-link-list" >
-                        <li><a href="/#about-us">ABOUT US</a></li>
+                        <li><a href="{% if not IS_HOMEPAGE %}/{% endif %}#about-us">ABOUT US</a></li>
                         <li><a href="{% url 'sponsor_list' %}">SPONSOR</a></li>
                         <li><a href="{% url 'contact' %}">CONTACT US</a></li>
                         <li><a href="/pages/host/">HOST US</a></li>

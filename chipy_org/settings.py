@@ -254,7 +254,6 @@ INSTALLED_APPS = [
 ]
 if DEBUG:
     INSTALLED_APPS.append("chipy_org.dev_utils")
-]
 
 TEST_RUNNER = "chipy_org.runner.PytestTestRunner"
 

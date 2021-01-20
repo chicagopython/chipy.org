@@ -1,5 +1,4 @@
 import pytest
-from django.conf.global_settings import DEBUG
 from django.core.management import call_command
 from django.test import override_settings
 

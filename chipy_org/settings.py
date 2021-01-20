@@ -141,6 +141,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.contrib.messages.context_processors.messages",
                 "social_django.context_processors.login_redirect",
+                "chipy_org.context_processors.site_preview",
             ],
             "loaders": [
                 "admin_tools.template_loaders.Loader",
@@ -334,6 +335,7 @@ BLEACH_STRIP_TAGS = True
 
 NORECAPTCHA_SITE_KEY = env_var("NORECAPTCHA_SITE_KEY")
 NORECAPTCHA_SECRET_KEY = env_var("NORECAPTCHA_SECRET_KEY")
+SITE_PREVIEW = env_var("SITE_PREVIEW", False)
 
 FLATPAGES_TINYMCE_ADMIN = True
 

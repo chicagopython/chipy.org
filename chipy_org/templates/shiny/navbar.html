@@ -106,11 +106,11 @@
                 <h5 class="modal-title black-text" id="loginModalLabel">Sign in With:</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        <div class="modal-body">
-            <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"><button class="btn-lg btn-danger font-montserrat-bold">GOOGLE</button></a>
-            <a href="{% url 'social:begin' 'github' %}?next={{ request.GET.next }}"><button class="btn-lg btn-primary font-montserrat-bold mx-3"><img src="{% static 'img/svg/social-icons-github-2.svg' %}" class="my-2 mx-1" alt="Github Icon" height="25" width="25">GITHUB</button></a><br>
+            <div class="modal-body">
+                <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"><button class="btn-lg btn-danger font-montserrat-bold">GOOGLE</button></a>
+                <a href="{% url 'social:begin' 'github' %}?next={{ request.GET.next }}"><button class="btn-lg btn-primary font-montserrat-bold mx-3"><img src="{% static 'img/svg/social-icons-github-2.svg' %}" class="my-2 mx-1" alt="Github Icon" height="25" width="25">GITHUB</button></a><br>
+            </div>
         </div>
-      </div>
     </div>
 </div>
 <!-- LOGIN MODAL ENDS-->

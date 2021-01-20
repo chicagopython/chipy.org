@@ -12,7 +12,7 @@
                             <a class="nav-link active" aria-current="page" href="#about-us">ABOUT US</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">CODE OF CONDUCT</a>
+                            <a class="nav-link" href="/pages/conduct">CODE OF CONDUCT</a>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -21,15 +21,15 @@
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="support-us-navbarDropdown">
-                                <li><a class="dropdown-item font-montserrat-bold " href="#">SPONSOR</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold " href="{% url 'sponsor_list' %}">SPONSOR</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item font-montserrat-bold " href="#">HOST</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold " href="/pages/host/">HOST</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item font-montserrat-bold" href="#">REFERRAL PROGRAM</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold" href="/pages/referrals/">REFERRAL PROGRAM</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item font-montserrat-bold" href="#">VOLUNTEER</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold" href="/pages/volunteer/">VOLUNTEER</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item font-montserrat-bold" href="#">INDIVIDUAL DONATION</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold" href="/pages/donate/">INDIVIDUAL DONATION</a></li>
                             </ul>
                         </li>
 
@@ -39,22 +39,25 @@
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item font-montserrat-bold " href="#">SIGs</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold " href="/pages/sigs/">SIGs</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item font-montserrat-bold " href="#">MENTORSHIP</a></li>
+                                <li><a class="dropdown-item font-montserrat-bold " href="https://chipymentor.org/">MENTORSHIP</a></li>
                             </ul>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">SPEAK</a>
+                            <a class="nav-link" href="{% url 'propose_topic' %}">SPEAK</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">JOB BOARD</a>
+                            <a class="nav-link" href="{% url 'contact' %}">CONTACT US</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'job-board' %}">JOB BOARD</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">CONTACT US</a>
-                        </li>
+                        {% if user.is_authenticated %}
+                        <li><a class="nav-link" href="{% url 'after-submit-job-post' %}">MY JOBS</a></li>
+                        {% endif %}
 
                         <li class="nav-item">
                             <a id="login-button" class="btn btn-info my-2 my-sm-0 mx-2 " href="#">LOG IN</a>

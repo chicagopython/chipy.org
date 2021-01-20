@@ -45,22 +45,23 @@
                 <div class="row">
                     <div class="col-6 pe-2">
                         <ul class="no-bullets footer-link-list" >
-                        <li><a href="">ABOUT US</a></li>
-                        <li><a href="">SPONSOR</a></li>
-                        <li><a href="">CONTACT US</a></li>
-                        <li><a href="">HOST US</a></li>
-                        <li><a href="">CODE OF CONDUCT</a></li>
-                        <li><a href="">INDIVIDUAL DONATION</a></li>
+                        <li><a href="/#about-us">ABOUT US</a></li>
+                        <li><a href="{% url 'sponsor_list' %}">SPONSOR</a></li>
+                        <li><a href="{% url 'contact' %}">CONTACT US</a></li>
+                        <li><a href="/pages/host/">HOST US</a></li>
+                        <li><a href="/pages/conduct">CODE OF CONDUCT</a></li>
+                        <li><a href="/pages/donate/">INDIVIDUAL DONATION</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 px-2">
                         <ul class="no-bullets footer-link-list">
-                        <li><a href="">ORGANIZERS</a></li>
-                        <li><a href="">JOB BOARD</a></li>
-                        <li><a href="">MENTORSHIP</a></li>
-                        <li><a href="">SIGS</a></li>
-                        <li><a href="">VOLUNTEER</a></li>
+                        <li><a href="/pages/organizers/">ORGANIZERS</a></li>
+                        <li><a href="{% url 'job-board' %}">JOB BOARD</a></li>
+                        <li><a href="/pages/referrals/">REFERRALS</a></li>
+                        <li><a href="https://chipymentor.org/">MENTORSHIP</a></li>
+                        <li><a href="/pages/sigs/">SIGS</a></li>
+                        <li><a href="/pages/volunteer/">VOLUNTEER</a></li>
                         </ul>
                     </div>
 
@@ -68,7 +69,7 @@
             </div>
 
             <div class="col-md-4 ps-md-2 text-md-end">
-                <a id="login-button" class="btn btn-info my-2 " href="#">SUBSCRIBE TO MAILING LIST</a><br>
+                <a id="login-button" class="btn btn-info my-2 " href="https://mail.python.org/mailman/listinfo/chicago">SUBSCRIBE TO MAILING LIST</a><br>
                 <span class="light-red-text"> Copyright &copy; Chicago Python User Group</span>
             </div>
         </div>

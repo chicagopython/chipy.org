@@ -14,18 +14,21 @@ local development.
 To get setup with chipy.org code, it is recommended that you use the following:
 
 For Mac and Linux:
-* Docker - https://docs.docker.com/install/
-* Docker Compose - https://docs.docker.com/compose/install/
-* Make - https://www.gnu.org/software/make/
+
+- Docker - https://docs.docker.com/install/
+- Docker Compose - https://docs.docker.com/compose/install/
+- Make - https://www.gnu.org/software/make/
 
 For Windows 10 Pro, 64-bit:
-* Docker - https://docs.docker.com/install/
-* Docker Compose - https://docs.docker.com/compose/install/
-* Chocolatey - https://chocolatey.org/install (package manager used to install Make)
+
+- Docker - https://docs.docker.com/install/
+- Docker Compose - https://docs.docker.com/compose/install/
+- Chocolatey - https://chocolatey.org/install (package manager used to install Make)
 
 For Windows 7 to 10 Non Pro, 64-bit:
-* Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/
-* Chocolatey - https://chocolatey.org/install (package manager used to install Make)
+
+- Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/
+- Chocolatey - https://chocolatey.org/install (package manager used to install Make)
 
 ### Instructions for Windows 7 to 10 Users (Non Pro)
 
@@ -41,13 +44,13 @@ For Windows users, we recommend using the package manager Chocolatey to install 
 
 2. Once Chocolatey is installed, run the following command in Powershell (as administrator):
 
-    `choco install make`
+   `choco install make`
 
 ## Setting up a Local Development Environment using Docker
 
 Sign into your GitHub account. Make a fork of the ChiPy repo at https://github.com/chicagopython/chipy.org by going there and clicking "Fork" on the upper right corner.
 
-Clone this forked repo to your local computer (replace your GitHub username without the brackets): 
+Clone this forked repo to your local computer (replace your GitHub username without the brackets):
 
     git clone https://github.com/<your-GitHub-username>/chipy.org.git chipy.org
 
@@ -64,7 +67,7 @@ docker/docker.env.
 You may customize the docker/docker.env as needed for your development needs.
 The docker/docker.env file should NOT be committed version control.
 
-To start the app, you can run the following command.  This will start
+To start the app, you can run the following command. This will start
 up the web app and a database as services using docker-compose.
 
     make up
@@ -104,7 +107,7 @@ If you would like to run the Pylint linting process, run the following:
 
     make lint
 
-Chipy.org uses Black to have consistently formatted code. We also use isort to 
+Chipy.org uses Black to have consistently formatted code. We also use isort to
 arrange import statements correctly. Code must be formatted before merging code.
 If you would like to format code, run the following:
 
@@ -123,6 +126,11 @@ If you want to see the application logs, use the following command. To stop
 viewing the logs, you can press ctl-c.
 
     make tail-logs
+
+The site is pretty bare when there is no data in the database. Use the below
+to create some data in the database.
+
+    make dev-data
 
 To run an arbitrary Django management command, you can use the following form.
 The below example shows you how to run the `help` management command, but

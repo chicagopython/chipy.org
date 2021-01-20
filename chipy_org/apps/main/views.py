@@ -35,7 +35,7 @@ class Home(TemplateView, InitialRSVPMixin):
     def get_context_data(self, **kwargs):
         context = {}
         context.update(kwargs)
-
+        context["IS_HOMEPAGE"] = True
         context["other_meetings"] = self.get_non_main_meetings(num=3)
         context["sponsor_groups"] = SponsorGroup.objects.prefetch_related("sponsors")
         context["announcement"] = Announcement.objects.featured()

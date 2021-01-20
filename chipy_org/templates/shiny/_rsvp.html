@@ -1,32 +1,76 @@
-{% if curr_meeting.can_register %}
-<p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
-  {% if rsvp %}
-    You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
-    <strong>Change your RSVP: </strong>
-  {% else %}
-  {% if curr_meeting.reg_close_date %}
-      <p style="color: red">Registration for this event will close on
-          {{ curr_meeting.reg_close_date|date:"l F j" }} at
-          {{ curr_meeting.reg_close_date|date:"g:i a" }}
-      </p>
-  {% endif %}
-  {% endif %}
-  <a class="btn btn-mini rsvp">RSVP</a>
-</p>
-<div id="rsvp-dialog" style="display:none;">
-    <form
-        id="rsvp-form"
-        method="POST"
-        action="{% url 'rsvp' %}"
-    >
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
-    </form>
+{% load static %}
+<div>
+    <strong>RSVPs</strong>
+    {% if curr_meeting.can_register %}
+        {% if curr_meeting.reg_close_date  %}
+            <p style="color: red">Registration for this event will close on
+                {{ curr_meeting.reg_close_date|date:"l F j" }} at
+                {{ curr_meeting.reg_close_date|date:"g:i a" }}
+            </p>
+        {% endif %}
+    {% else %}
+        <p style="color: red">This event is no longer accepting registrations.</p>
+    {% endif %}
+    <p>
+        <strong>Current Attendance:</strong>
+        {{ next_meeting.number_rsvps}} Pythonista{{next_meeting.number_rsvps|pluralize}}
+    </p>
+
+    <div>
+        {% if request.user.is_authenticated %}
+            {% if rsvp %}
+                You have RSVP'd <strong>{{ rsvp.get_response_display | upper }}</strong>
+                {% if curr_meeting.can_register %}
+                    <a id="rsvp-button"
+                       class="btn btn-primary my-2 my-sm-0 mx-2 rsvp"
+                       data-bs-toggle="modal"
+                    data-bs-target="#rsvp-modal" href="#">Change your RSVP</a>
+                {% endif %}
+            {% else %}
+                You have not RSVP'd
+                {% if curr_meeting.can_register %}
+                    <a id="rsvp-button"
+                       class="btn btn-primary my-2 my-sm-0 mx-2 rsvp"
+                       data-bs-toggle="modal"
+                       data-bs-target="#rsvp-modal" href="#">RSVP</a>
+                {% endif %}
+            {% endif %}
+        {% elif curr_meeting.can_register %}
+            <a id="rsvp-button"
+               class="btn btn-primary my-2 my-sm-0 mx-2 rsvp"
+               data-bs-toggle="modal"
+               data-bs-target="#rsvp-modal" href="#">RSVP</a>
+        {% endif %}
+    </div>
 </div>
-{% else %}
- <p style="color: red">This event is no longer accepting registrations.</p>
-{% endif %}
 
-<p>{{ curr_meeting.number_rsvps }} going so far</p>
-
+<!-- RSVP MODAL STARTS-->
+<div class="modal fade" id="rsvp-modal" tabindex="-1" aria-labelledby="RSVPModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title black-text" id="RSVPModalLabel">RSVP:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form
+                    id="rsvp-form"
+                    method="POST"
+                    action="{% url 'rsvp' %}"
+                >
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {% if field not in form.hidden_fields %}
+                                <div><label for="{{ field.name }}">{{ field.label_tag }}</label></div>
+                            {% endif %}
+                            {{ field.errors }}{{field}}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- RSVP MODAL ENDS-->

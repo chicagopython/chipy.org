@@ -36,8 +36,8 @@
                 Chicago Python User Group<br>
                 <a class="icon-link" href="https://www.youtube.com/channel/UCT372EAC1orBOSUd2fsA8WA" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-youtube-2.svg' %}" class="my-2 me-1" alt="Youtube Icon" height="35" width="35"></a>
                 <a class="icon-link" href="https://twitter.com/chicagopython"><img src="{% static 'img/svg/social-icons-twitter.svg' %}" target="_blank" rel="noopener noreferrer" class="my-2 mx-1" alt="Twitter Icon" height="35" width="35"></a>
-                <a class="icon-link" href="https://joinchipyslack.herokuapp.com/" target="_blank" rel="noopener noreferrer"> <img src="{% static 'img/svg/social-icons-slack.svg' %}" class="my-2 mx-1" alt="Slack Icon" height="40" width="35"></a>
-                <a class="icon-link" href="https://github.com/chicagopython/chipy.org" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-github.svg' %}" class="my-2 mx-1" alt="Github Icon" height="40" width="35"></a>
+                <a class="icon-link" href="https://joinchipyslack.herokuapp.com/" target="_blank" rel="noopener noreferrer"> <img src="{% static 'img/svg/social-icons-slack.svg' %}" class="my-2 mx-1" alt="Slack Icon" height="35" width="35"></a>
+                <a class="icon-link" href="https://github.com/chicagopython/chipy.org" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-github.svg' %}" class="my-2 mx-1" alt="Github Icon" height="35" width="35"></a>
                 <a class="icon-link" href="https://www.meetup.com/_ChiPy_/" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-meetup.svg' %}" class="my-2 mx-1" alt="Github Icon" height="40" width="35"></a>
             </div>
 
@@ -45,22 +45,23 @@
                 <div class="row">
                     <div class="col-6 pe-2">
                         <ul class="no-bullets footer-link-list" >
-                        <li><a href="">ABOUT US</a></li>
-                        <li><a href="">SPONSOR</a></li>
-                        <li><a href="">CONTACT US</a></li>
-                        <li><a href="">HOST US</a></li>
-                        <li><a href="">CODE OF CONDUCT</a></li>
-                        <li><a href="">INDIVIDUAL DONATION</a></li>
+                        <li><a href="/#about-us">ABOUT US</a></li>
+                        <li><a href="{% url 'sponsor_list' %}">SPONSOR</a></li>
+                        <li><a href="{% url 'contact' %}">CONTACT US</a></li>
+                        <li><a href="/pages/host/">HOST US</a></li>
+                        <li><a href="/pages/conduct">CODE OF CONDUCT</a></li>
+                        <li><a href="/pages/donate/">INDIVIDUAL DONATION</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 px-2">
                         <ul class="no-bullets footer-link-list">
-                        <li><a href="">ORGANIZERS</a></li>
-                        <li><a href="">JOB BOARD</a></li>
-                        <li><a href="">MENTORSHIP</a></li>
-                        <li><a href="">SIGS</a></li>
-                        <li><a href="">VOLUNTEER</a></li>
+                        <li><a href="/pages/organizers/">ORGANIZERS</a></li>
+                        <li><a href="{% url 'job-board' %}">JOB BOARD</a></li>
+                        <li><a href="/pages/referrals/">REFERRALS</a></li>
+                        <li><a href="https://chipymentor.org/">MENTORSHIP</a></li>
+                        <li><a href="/pages/sigs/">SIGS</a></li>
+                        <li><a href="/pages/volunteer/">VOLUNTEER</a></li>
                         </ul>
                     </div>
 
@@ -68,7 +69,7 @@
             </div>
 
             <div class="col-md-4 ps-md-2 text-md-end">
-                <a id="login-button" class="btn btn-info my-2 " href="#">SUBSCRIBE TO MAILING LIST</a><br>
+                <a id="login-button" class="btn btn-info my-2 " href="https://mail.python.org/mailman/listinfo/chicago">SUBSCRIBE TO MAILING LIST</a><br>
                 <span class="light-red-text"> Copyright &copy; Chicago Python User Group</span>
             </div>
         </div>

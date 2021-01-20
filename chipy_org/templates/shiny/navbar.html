@@ -1,3 +1,4 @@
+{% load static %}
 <div class="row">
     <div class="col-12">
         <nav class="navbar navbar-expand-lg navbar-dark">
@@ -60,12 +61,29 @@
                         {% endif %}
 
                         <li class="nav-item">
-                            <a id="login-button" class="btn btn-info my-2 my-sm-0 mx-2 " href="#">LOG IN</a>
+                            <a id="login-button" class="btn btn-info my-2 my-sm-0 mx-2 " data-bs-toggle="modal" data-bs-target="#login-modal" href="#">LOG IN</a>
                         </li>
                     </ul>
 
                 </div> <!--closes id=navbarSupportedContent-->
             </div> <!--closes container-fluid -->
         </nav>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title black-text" id="loginModalLabel">Sign in With:</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"><button class="btn-lg btn-danger font-montserrat-bold">GOOGLE</button></a>
+            <a href="{% url 'social:begin' 'github' %}?next={{ request.GET.next }}"><button class="btn-lg btn-primary font-montserrat-bold mx-3"><img src="{% static 'img/svg/social-icons-github-2.svg' %}" class="my-2 mx-1" alt="Github Icon" height="25" width="25">GITHUB</button></a><br>
+        </div>
+        
+      </div>
     </div>
 </div>

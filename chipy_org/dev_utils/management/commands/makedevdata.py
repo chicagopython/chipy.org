@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 
 from chipy_org.apps import announcements, job_board, meetings, sponsors
@@ -26,6 +28,14 @@ class Command(BaseCommand):
         future = now + timedelta(days=30)
         past = now - timedelta(days=30)
         times = {"past": past, "now": now, "future": future}
+        site,_ = Site.objects.get_or_create(domain="example.com")
+        for title in ["conduct", "donate", "giving", "host", "referrals", "sigs", "volunteer"]:
+            page,_ = FlatPage.objects.get_or_create(
+                url=f"/{title}/",
+                title=title,
+                content="Here is a page with content",
+            )
+            page.sites.add(site)
 
         # add user
         tyler, _ = User.objects.get_or_create(

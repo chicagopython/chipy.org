@@ -1,0 +1,32 @@
+{% if curr_meeting.can_register %}
+<p><strong>RSVP{% if not request.user.is_authenticated %} (without login){% endif %}:</strong>
+  {% if rsvp %}
+    You have RSVPed <strong>{{ rsvp.get_response_display }}</strong><br>
+    <strong>Change your RSVP: </strong>
+  {% else %}
+  {% if curr_meeting.reg_close_date %}
+      <p style="color: red">Registration for this event will close on
+          {{ curr_meeting.reg_close_date|date:"l F j" }} at
+          {{ curr_meeting.reg_close_date|date:"g:i a" }}
+      </p>
+  {% endif %}
+  {% endif %}
+  <a class="btn btn-mini rsvp">RSVP</a>
+</p>
+<div id="rsvp-dialog" style="display:none;">
+    <form
+        id="rsvp-form"
+        method="POST"
+        action="{% url 'rsvp' %}"
+    >
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
+    </form>
+</div>
+{% else %}
+ <p style="color: red">This event is no longer accepting registrations.</p>
+{% endif %}
+
+<p>{{ curr_meeting.number_rsvps }} going so far</p>
+

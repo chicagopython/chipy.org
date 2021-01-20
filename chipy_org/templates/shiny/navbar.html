@@ -59,10 +59,37 @@
                         {% if user.is_authenticated %}
                         <li><a class="nav-link" href="{% url 'after-submit-job-post' %}">MY JOBS</a></li>
                         {% endif %}
+                        
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Logged in as:<br> 
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </a>
 
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item font-montserrat-bold" href="{% url 'my_topics' %}">MY TALKS</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item font-montserrat-bold" href="{% url "profiles:edit" %}">ACCOUNT</a></li>
+                                    
+                                    {% if user.is_staff %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item font-montserrat-bold" href="{% url "admin:index" %}">ADMIN</a></li>
+                                    {% endif %}
+                                
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item font-montserrat-bold" href="#" data-bs-toggle="modal" data-bs-target="#login-modal">ADD ACCOUNT</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item font-montserrat-bold" href="/logout">LOG OUT</a></li>
+
+                                </ul>
+                            </li>
+
+                        {% else %}
                         <li class="nav-item">
                             <a id="login-button" class="btn btn-info my-2 my-sm-0 mx-2 " data-bs-toggle="modal" data-bs-target="#login-modal" href="#">LOG IN</a>
                         </li>
+                        {% endif %}
                     </ul>
 
                 </div> <!--closes id=navbarSupportedContent-->
@@ -71,19 +98,19 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- LOGIN MODAL STARTS-->
 <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title black-text" id="loginModalLabel">Sign in With:</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title black-text" id="loginModalLabel">Sign in With:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
         <div class="modal-body">
             <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"><button class="btn-lg btn-danger font-montserrat-bold">GOOGLE</button></a>
             <a href="{% url 'social:begin' 'github' %}?next={{ request.GET.next }}"><button class="btn-lg btn-primary font-montserrat-bold mx-3"><img src="{% static 'img/svg/social-icons-github-2.svg' %}" class="my-2 mx-1" alt="Github Icon" height="25" width="25">GITHUB</button></a><br>
         </div>
-        
       </div>
     </div>
 </div>
+<!-- LOGIN MODAL ENDS-->

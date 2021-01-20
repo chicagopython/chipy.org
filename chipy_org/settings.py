@@ -245,7 +245,6 @@ INSTALLED_APPS = [
     # project
     "chipy_org.apps.main",
     "chipy_org.apps.announcements",
-    "chipy_org.apps.about",
     "chipy_org.apps.contact",
     "chipy_org.apps.job_board",
     "chipy_org.apps.meetings",

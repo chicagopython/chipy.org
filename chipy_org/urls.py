@@ -24,7 +24,6 @@ urlpatterns = [
     url(r"^announcements/", include("chipy_org.apps.announcements.urls")),
     url(r"^profiles/", include("chipy_org.apps.profiles.urls")),
     url(r"^admin/", admin.site.urls),
-    url(r"^about/", include("chipy_org.apps.about.urls")),
     url(r"^logout", LogoutWithRedirectAndMessage.as_view()),
     url(r"^contact/", ContactView.as_view(), name="contact"),
     url(r"^tinymce/", include("tinymce.urls")),

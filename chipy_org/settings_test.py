@@ -9,6 +9,8 @@ ENVELOPE_EMAIL_RECIPIENTS = [
     "admin@example.com",
 ]
 
+INSTALLED_APPS.append("chipy_org.dev_utils")
+
 SECRET_KEY = "somesecretkeyfordjangogoeshere"
 SECURE_SSL_REDIRECT = False
 

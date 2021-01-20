@@ -252,8 +252,9 @@ INSTALLED_APPS = [
     "chipy_org.apps.profiles",
     "chipy_org.apps.sponsors",
     "chipy_org.apps.subgroups",
-    # utilities
-    "chipy_org.dev_utils",
+]
+if DEBUG:
+    INSTALLED_APPS.append("chipy_org.dev_utils")
 ]
 
 TEST_RUNNER = "chipy_org.runner.PytestTestRunner"

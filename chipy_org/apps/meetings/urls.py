@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .feeds import MeetingFeed
 from .views import (
     RSVP,
+    FutureMeetings,
     MeetingDetail,
     MyTopics,
     PastMeetings,
@@ -16,6 +17,7 @@ from .views import (
 )
 
 urlpatterns = [
+    url(r"^$", FutureMeetings.as_view(), name="future_meetings"),
     url(r"^admin_tools/", include("admin_tools.urls")),
     url(r"^ical/$", MeetingFeed(), name="ical_feed"),
     url(r"^past/$", PastMeetings.as_view(), name="past_meetings"),

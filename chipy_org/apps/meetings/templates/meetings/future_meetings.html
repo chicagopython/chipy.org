@@ -2,12 +2,12 @@
 
 {% load i18n static thumbnail %}
 
-{% block head_title %}{% trans "Past Meetings" %}{% endblock %}
+{% block head_title %}{% trans "Upcoming Meetings" %}{% endblock %}
 
 {% block body %}
 <h1>
-    <a href="{% url 'future_meetings' %}">Upcoming Meetings</a> &bull;
-    Past Meetings &bull;
+    Upcoming Meetings &bull;
+    <a href="{% url 'past_meetings' %}">Past Meetings</a> &bull;
     <a href="{% url 'past_topics' %}">Recent Topics</a>
 </h1>
 <hr>
@@ -33,12 +33,10 @@
   {% endif %}
 {% endfor %}
 
-<div>{{meeting.number_rsvps}} {% trans " Python enthusiasts attended this meeting." %}</div><br>
-
 <div class="sponsors">
     {% with meeting.meeting_sponsors.all as meeting_sponsors %}
     {% if meeting_sponsors %}
-    This meeting sponsored by:
+    This meeting is sponsored by:
     {% for meeting_sponsor in meeting_sponsors %}
         <div class="row sponsor-block">
             {% if meeting_sponsor.sponsor.logo %}

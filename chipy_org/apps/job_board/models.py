@@ -50,8 +50,8 @@ class JobPost(CommonModel):
     position = models.CharField(max_length=MAX_LENGTH)
 
     description = models.CharField(
-        max_length=2500,
-        help_text="2500 Character Limit. Create a new paragraph by pressing 'Enter' twice.",
+        max_length=5000,
+        help_text="5000 Character Limit. Create a new paragraph by pressing 'Enter' twice.",
     )
 
     is_sponsor = models.BooleanField(

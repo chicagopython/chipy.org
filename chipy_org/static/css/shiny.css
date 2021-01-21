@@ -28,6 +28,10 @@ h1, h2, h3, h4, h5 {
 .black-text {
     color: #000;
 }
+
+.white-text{
+    color: #fff;
+}
 .background-tinted {
     background-color: #f6f6f6;
 }

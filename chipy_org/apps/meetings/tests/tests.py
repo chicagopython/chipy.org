@@ -71,6 +71,22 @@ class SmokeTest(TestCase):
         # CHECK
         self.assertEqual(response.status_code, 200)
 
+@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+def test_future_meetings(client):
+    test_venue = Venue.objects.create(name="Test")
+    upcoming_meeting,_ = Meeting.objects.get_or_create(
+        when=datetime.date.today() + datetime.timedelta(days=1),
+        where=test_venue,
+        key="some_upcoming_meeting",
+    )
+    past_meeting,_ = Meeting.objects.get_or_create(
+        when=datetime.date.today() - datetime.timedelta(days=1),
+        where=test_venue,
+        key="some_past_meeting",
+    )
+    response = client.get(reverse("future_meetings"))
+    assert response.status_code == 200
+
 
 def test_post_topic_sends_email():
     m = Meeting(
@@ -129,6 +145,7 @@ class MeetingTitleTest(TestCase):
             when=datetime.date.today(), custom_title="Main Custom Title"
         )
         self.assertEqual(meeting.title, "Main Custom Title")
+
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)

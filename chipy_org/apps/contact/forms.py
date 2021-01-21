@@ -14,10 +14,10 @@ class ContactForm(forms.Form):
     subject = forms.CharField(max_length=256)
     message = forms.CharField(
         max_length=2000,
-        help_text="enter your message here; 2000 characters max",
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs=dict(cols=19, rows=10, placeholder="2000 character limit")),
     )
     captcha = NoReCaptchaField()
+
 
     def send_email(self):
         msg = EmailMessage(

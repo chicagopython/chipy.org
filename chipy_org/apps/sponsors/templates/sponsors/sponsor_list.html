@@ -8,33 +8,42 @@
 
 {% block body %}
 
-<h2>{{meeting_attendees|intcomma}} Python Enthusiasts Attended ChiPy Meetings in the Last Year!!</h2>
-
 <h2>ChiPy Sponsors</h2>
-<p>{% flatblock "sponsor_info_text" %}</p>
-
-{% for group in sponsor_groups %}
-  <div class="container">
-    <h3>{{ group.name }}</h3>
-  {% for sponsor in group.sponsors.all %}
-  <div class="row">
-
-      {% if sponsor.logo %}
-      {% thumbnail sponsor.logo "100" crop="center" as im %}
-      <div class="span2 sponsor-image">
-          <a href="{% url 'sponsor_detail' sponsor.slug %}"><img src="{{ im.url }}" alt="{{ sponsor.name }}"></a>
-      </div>
-      {% endthumbnail %}
-      {% else %}
-      <div class="span2 sponsor-image">&nbsp;</div>
-      {% endif %}
-      <h4 class="span3">{{ sponsor.name }}</h4>
-      <div class="span6"><a href="{% url 'sponsor_detail' sponsor.slug %}">More Info</a></div>
-
-  </div>
-  <hr>
-  {% endfor %}
-  </div>
-{% endfor %}
-
+    <div class="row">
+        <div class="col-md-8 pe-1 pt-1 pb-3">
+            {% flatblock "sponsor_info_text" %}
+            <h3>Stats</h3>
+            <div>
+                {{meeting_attendees|intcomma}} Python Enthusiasts Attended ChiPy
+                    Meetings in the Last Year!!
+            </div>
+        </div>
+        <div class="col-md-4 px-1 pt-1 pb-3">
+            <h2 class="text-center red-text">Our Sponsors</h2>
+            {% if not SITE_PREVIEW %}<div style="margin-left: 5rem">{% endif %}
+            {% for group in sponsor_groups %}
+                <div class="row py-3">
+                    <h3 class="text-center">{{ group.name }}</h3>
+                    {% for sponsor in group.sponsors.all %}
+                    <div class="col-md">
+                        {% if sponsor.logo %}
+                        {% thumbnail sponsor.logo "100" crop="center" as im %}
+                            <div class="sponsor-image text-center"  style="margin: auto">
+                                <a href="{% url 'sponsor_detail' sponsor.slug %}">
+                                    <img src="{{ im.url }}" alt="{{ sponsor.name }}">
+                                </a>
+                            </div>
+                        {% endthumbnail %}
+                        {% else %}
+                            <div class="sponsor-image text-center" style="margin: auto">
+                                <a href="{% url 'sponsor_detail' sponsor.slug %}">{{ sponsor.name }}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+               </div>
+            {% endfor %}
+            {% if not SITE_PREVIEW %}</div>{% endif %}
+        </div>
+    </div>
 {% endblock body %}

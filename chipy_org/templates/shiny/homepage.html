@@ -85,7 +85,7 @@
             <h3>MEETING TOPICS</h3>
         </div>
     </div>
-    <div class="row background-tinted gx-2">
+    <div class="row background-tinted">
         {% with topic_count=next_meeting.topics.active.count %}
         {% for topic in next_meeting.topics.active %}
             <div class="col-md{% if topic_count > 3%}-4{%endif%} px-5">

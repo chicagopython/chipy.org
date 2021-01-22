@@ -1,1 +1,13 @@
-<h1>404 Page not found</h1>
+{% extends "shiny/slim.html" %}
+
+{% block page_header %}NO SUCH PAGE{% endblock %}
+
+{% block content %}
+<p>
+    <strong>We're sorry, but that page does not seem to exist!</strong>
+    We realize that this may represent a less-than ideal
+    cul-de-sac on your journey for greater Python knowledge
+    and community, but we hope you'll take it in stride.
+</p>
+<p> ❤❤❤️ We're rooting for you! ❤❤❤️ </p>
+{% endblock %}

@@ -18,7 +18,6 @@ class ContactForm(forms.Form):
     )
     captcha = NoReCaptchaField()
 
-
     def send_email(self):
         msg = EmailMessage(
             subject=self.cleaned_data["subject"],

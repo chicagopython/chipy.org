@@ -76,12 +76,14 @@ class InitialRSVPMixin(metaclass=abc.ABCMeta):
                 ).first()
         return context
 
+
 class FutureMeetings(ListView):
     template_name = "meetings/future_meetings.html"
     queryset = Meeting.objects.filter(
         when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
     paginate_by = 5
+
 
 class PastMeetings(ListView):
     template_name = "meetings/past_meetings.html"

@@ -1,19 +1,20 @@
 {% extends "shiny/slim.html" %}
-
-{% load i18n static thumbnail %}
-
-{% block head_title %}{% trans "Upcoming Meetings" %}{% endblock %}
+{% load static thumbnail %}
+{% block page_header %}UPCOMING MEETINGS{% endblock %}
 
 {% block body %}
-<h1>
-    Upcoming Meetings &bull;
-    <a href="{% url 'past_meetings' %}">Past Meetings</a> &bull;
-    <a href="{% url 'past_topics' %}">Recent Topics</a>
-</h1>
+<div class="row">
+    <div>
+        <strong>See Also: </strong>
+        <a class="btn btn-danger mx-2" href="{% url 'past_meetings' %}">Past Meetings</a>
+        <a class="btn btn-primary mx-2"  href="{% url 'past_topics' %}">Recent Topics</a>
+    </div>
+</div>
+
 <hr>
 {% for meeting in meeting_list %}
 <div>
-<h2><a href="{% url 'meeting' meeting.id %}">{{ meeting }}</a></h2>
+<h3><a href="{% url 'meeting' meeting.id %}">{{ meeting }}</a></h3>
 {% for topic in meeting.topics.all %}
   {% if topic.approved %}
     <div class="topic">

@@ -1,19 +1,22 @@
 {% extends "shiny/slim.html" %}
 
-{% load i18n static %}
+{% load static %}
 
-{% block head_title %}{% trans "Recent Topics" %}{% endblock %}
-
-{% block body_class %}home{% endblock %}
+{% block page_header %}RECENT TOPICS{% endblock %}
 
 {% block body %}
-<div class="row-fluid">
+<div class="row">
+    <div>
+        <strong>See Also: </strong>
+        <a class="btn btn-danger mx-2" href="{% url 'future_meetings' %}">Upcoming Meetings</a>
+        <a class="btn btn-primary mx-2"  href="{% url 'past_meetings' %}">Past Meetings</a>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
   <div>
-    <h1>
-        <a href="{% url 'future_meetings' %}">Upcoming Meetings</a> &bull;
-        <a href="{% url 'past_meetings' %}">Past Meetings</a> &bull;
-        Recent Topics
-    </h1>
     {% for talk in topics %}
       {% include 'meetings/_talk.html' %}
     {% endfor %}

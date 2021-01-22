@@ -1,11 +1,6 @@
 {% extends "shiny/slim.html" %}
-
-{% load i18n %}
-{% block head_title %}{{ flatpage.title }}{% endblock %}<!--remove after cutover -->
 {% block page_header %}{{ flatpage.title | upper }}{% endblock %}
-
 {% block body %}
-  <h1>{{ flatpage.title }}</h1><!--remove after cutover -->
   <div class="content">
   {{ flatpage.content }}
   </div>  

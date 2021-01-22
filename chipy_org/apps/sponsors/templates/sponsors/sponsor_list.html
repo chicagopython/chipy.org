@@ -1,14 +1,12 @@
 {% extends "shiny/slim.html" %}
 
-{% load i18n static thumbnail flatblocks %}
+{% load static thumbnail flatblocks %}
 
-{% block head_title %}{% trans "Sponsor List" %}{% endblock %}
+{% block page_header %}OUR SPONSORS{% endblock %}
 
 {% load humanize %}
 
 {% block body %}
-
-<h2>ChiPy Sponsors</h2>
     <div class="row">
         <div class="col-md-8 pe-1 pt-1 pb-3">
             {% flatblock "sponsor_info_text" %}
@@ -19,7 +17,6 @@
             </div>
         </div>
         <div class="col-md-4 px-1 pt-1 pb-3">
-            <h2 class="text-center red-text">Our Sponsors</h2>
             {% for group in sponsor_groups %}
                 <div class="row py-3">
                     <h3 class="text-center">{{ group.name }}</h3>

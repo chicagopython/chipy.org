@@ -1,14 +1,8 @@
 {% extends "shiny/slim.html" %}
-
-{% load i18n static %}
-
-{% block head_title %}{% trans "Topic" %}{% endblock %}
-
-{% block body_class %}home{% endblock %}
+{% block page_header %}SPECIAL INTEREST GROUP{% endblock %}
 
 {% block body %}
 <div>
-
     <div class="row-fluid">
          <div class="span12">
           <h3>{{ group.name }}</h3>
@@ -17,8 +11,6 @@
           <p>{{ group.description }}</p>
         </div>
     </div>
-
-
 </div>
 
 {% endblock body %}

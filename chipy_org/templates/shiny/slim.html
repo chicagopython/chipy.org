@@ -14,7 +14,13 @@
 
 
 </div> <!--closes fullscreen background-->
-
+{% if messages %}
+<div class="row">
+    <div class="col-md-12">
+        {% include "_messages.html" %}
+    </div>
+</div>
+{% endif %}
 <div class="row">
     <div class="col-md-8 offset-md-2 px-5 my-4">
         {% block body %}

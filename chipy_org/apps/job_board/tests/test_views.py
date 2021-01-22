@@ -55,11 +55,11 @@ def test_login_required_to_create_post(client, create_post_params):
     # should not be able to hit create/update/delete views without login
     response = client.get(reverse("create-job-post"), follow=True)
     assert response.status_code == 200
-    assert b"Sign in with" in response.content
+    assert b"sign in with" in response.content.lower()
 
     response = client.post(reverse("create-job-post"), create_post_params, follow=True)
     assert response.status_code == 200
-    assert b"Sign in with" in response.content
+    assert b"sign in with" in response.content.lower()
 
     assert JobPost.objects.count() == 0
 
@@ -68,7 +68,7 @@ def test_login_required_to_create_post(client, create_post_params):
 def test_login_required_to_modify_posts(action, client, job_post):
     response = client.get(reverse(action, kwargs={"pk": job_post.id}), follow=True)
     assert response.status_code == 200
-    assert b"Sign in with" in response.content
+    assert b"sign in with" in response.content.lower()
 
 
 def test_can_get_create_form(authenticated_client):

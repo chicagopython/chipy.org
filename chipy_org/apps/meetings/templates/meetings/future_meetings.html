@@ -41,19 +41,19 @@
         <div class="row sponsor-block">
             {% if meeting_sponsor.sponsor.logo %}
             {% thumbnail meeting_sponsor.sponsor.logo "80" crop="center" as im %}
-            <div class="span2 sponsor-image">
+            <div>
                 <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">
                     <img src="{{ im.url }}" alt="{{ meeting_sponsor.sponsor.name }}"></a>
             </div>
             {% endthumbnail %}
             {% else %}
-            <div class="span2 sponsor-image">&nbsp;</div>
+            <div>&nbsp;</div>
             {% endif %}
-            <div class="span3 sponsor-name">
+            <div>
               <a href="{% url 'sponsor_detail' meeting_sponsor.sponsor.slug %}">{{ meeting_sponsor.sponsor.name }}</a>
             </div>
             {% if meeting_sponsor.about %}
-            <div class="span6 sponsor-about">{{ meeting_sponsor.about }}</div>
+            <div>{{ meeting_sponsor.about }}</div>
             {% endif %}
         </div>
     {% endfor %}

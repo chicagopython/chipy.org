@@ -11,12 +11,12 @@
 <div class="row">
 {% if sponsor.logo %}
 {% thumbnail sponsor.logo "400" crop="center" as im %}
-<div class="span4 sponsor-image"><a href="{{ sponsor.url }}">
+<div><a href="{{ sponsor.url }}">
     <img src="{{ im.url }}" alt="{{ sponsor.name }}"></a></div>
 {% endthumbnail %}
 {% endif %}
 
-<div class="span8">{{ sponsor.description }}
+<div>{{ sponsor.description }}
   {% if sponsor.url %}
   <div><a href="{{ sponsor.url }}">Visit Site</a></div>
   {% endif %}

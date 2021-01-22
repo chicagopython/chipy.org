@@ -77,7 +77,9 @@ class Sponsor(models.Model):
           will complete in 100 seconds. If set to 1, it will be 200 seconds, 2 is
           400 seconds, and 12 is 409600 or 4.75 days.
         """
-        sponsors = cls.objects.select_related("sponsor_group").all()
+        sponsors = (
+            cls.objects.select_related("sponsor_group").filter(sponsor_group__isnull=False).all()
+        )
 
         current_time_mod = (int(time.time()) >> second_shift_constant) % 100  # eg 36
 

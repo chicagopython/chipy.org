@@ -15,7 +15,7 @@ from chipy_org.apps.sponsors.models import Sponsor, SponsorGroup
 
 
 class Home(TemplateView, InitialRSVPMixin):
-    template_name = "homepage_preview.html"
+    template_name = "shiny/homepage.html"
 
     def get_non_main_meetings(self, num):
         return (
@@ -43,10 +43,6 @@ class Home(TemplateView, InitialRSVPMixin):
 
         context = self.add_extra_context(context)
         return context
-
-
-class PreviewHome(Home):
-    template_name = "shiny/homepage.html"
 
 
 def custom_500(request):

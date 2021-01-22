@@ -1,0 +1,20 @@
+{% load thumbnail %}
+<div class="border px-3 py-3" style="width: 400px; margin: auto">
+<h3 class="text-center">FEATURED SPONSOR</h3>
+    <div class="text-center">
+        We'd like to thank {{ featured_sponsor.name }} for their amazing support.
+        Without sponsors like them we couldn't exist.
+        {% if featured_sponsor.logo %}
+            {% thumbnail featured_sponsor.logo "200" crop="center" as im %}
+                <div class="sponsor-image text-center py-3"  style="margin: auto">
+                    <a href="{% url 'sponsor_detail' featured_sponsor.slug %}">
+                        <img src="{{ im.url }}" alt="{{ featured_sponsor.name }}">
+                    </a>
+                </div>
+        {% endthumbnail %}
+        {% endif %}
+        <p>Learn more about {{ featured_sponsor.name }} <br/>
+            and <a href="{% url 'sponsor_list' %}">all of our sponsors today</a>
+        </p>
+    </div>
+</div>

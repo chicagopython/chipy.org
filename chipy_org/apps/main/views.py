@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 from chipy_org.apps.announcements.models import Announcement
 from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
-from chipy_org.apps.sponsors.models import SponsorGroup
+from chipy_org.apps.sponsors.models import Sponsor, SponsorGroup
 
 
 class Home(TemplateView, InitialRSVPMixin):
@@ -37,6 +37,7 @@ class Home(TemplateView, InitialRSVPMixin):
         context.update(kwargs)
         context["IS_HOMEPAGE"] = True
         context["other_meetings"] = self.get_non_main_meetings(num=3)
+        context["featured_sponsor"] = Sponsor.featured_sponsor()
         context["sponsor_groups"] = SponsorGroup.objects.prefetch_related("sponsors")
         context["announcement"] = Announcement.objects.featured()
 

@@ -22,12 +22,10 @@
             <a id="events-button" class="btn btn-danger btn-lg" href="{% url 'future_meetings' %}">SEE ALL UPCOMING EVENTS</a>
         </div>
     </div>
+</div> <!--closes fullscreen background-->
 
-
-        </div> <!--closes fullscreen background-->
-
-    <div class="d-flex flex-row justify-content-center my-4 px-5 py-3">
-        <div>
+    <div class="row">
+        <div class="col-md-6 my-4 px-5 pb-3" style="padding-top: 2.15rem">
                 {% if next_meeting.title %}
                     <h3 id="next-event">NEXT EVENT: {{ next_meeting.title | upper }}</h3>
                 {% endif %}
@@ -77,6 +75,11 @@
                     {% include "shiny/_rsvp.html" with curr_meeting=next_meeting %}
                 {% endif %}
         </div> <!--closes column-->
+        <div class="col-md-6 my-4 px-5 py-3">
+                    {% include "shiny/_featured_sponsor.html" %}
+        </div> <!--closes column-->
+
+
     </div> <!--closes row-->
 
     <div class="row background-tinted my-0 py-3">

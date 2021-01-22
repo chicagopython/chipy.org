@@ -1,1 +1,15 @@
-An error has occurred, the site administrators have been notified
+{% extends "shiny/slim.html" %}
+
+{% block page_header %}NO SUCH PAGE{% endblock %}
+
+{% block content %}
+<p>
+    <strong>
+        Uh-oh! An error has occurred, the site administrators
+        have been notified.
+    </strong>
+    They're very, very, very competent. They should have a fix for you soon.
+    If nothing else, reach us in Slack by dropping a note in the #web-guild
+    channel!
+</p>
+{% endblock %}

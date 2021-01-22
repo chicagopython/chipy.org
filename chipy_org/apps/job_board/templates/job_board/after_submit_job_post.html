@@ -1,8 +1,9 @@
 {% extends "job_board/base.html" %}
 
+{% block page_header %}MY JOBS{% endblock %}
 {% block body %}
 
-<h2>My Jobs</h2>
+
 <a href="{% url 'create-job-post' %}" class="btn btn-danger" >Submit Jobs</a>
 <a href="/pages/referrals/" class="btn btn-primary" >View Referral Policy</a>
 

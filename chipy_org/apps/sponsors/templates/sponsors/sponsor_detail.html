@@ -2,14 +2,12 @@
 
 {% load i18n static thumbnail %}
 
-{% block head_title %}{% trans "Past Meetings" %}{% endblock %}
+{% block page_header %}OUR SPONSORS{% endblock %}
 
 {% block body %}
-<h2>ChiPy Sponsor</h2>
-
 <div class="row">
-<h3 class="span12">{{ sponsor.name }}</h3>
-</row>
+    <h3>{{ sponsor.name }}</h3>
+</div>
 <div class="row">
 {% if sponsor.logo %}
 {% thumbnail sponsor.logo "400" crop="center" as im %}

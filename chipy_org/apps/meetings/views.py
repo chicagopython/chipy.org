@@ -216,6 +216,15 @@ class UpdateRSVP(UpdateView):
     form_class = RSVPForm
     success_url = reverse_lazy("home")
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.meeting.can_register():
+            messages.error(
+                self.request, "Registration for this meeting on is closed.",
+            )
+            return HttpResponseRedirect(reverse_lazy("home"))
+        return self.render_to_response(self.get_context_data())
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
@@ -228,9 +237,6 @@ class UpdateRSVP(UpdateView):
 
     def get_object(self, queryset=None):
         obj = get_object_or_404(RSVPModel, key=self.kwargs["rsvp_key"])
-        if not obj.meeting.can_register():
-            messages.error(self.request, "Registration for this meeting is closed.")
-            return redirect(reverse_lazy("home"))
         return obj
 
     def get_template_names(self):

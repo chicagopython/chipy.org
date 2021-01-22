@@ -81,15 +81,15 @@
 
 
     </div> <!--closes row-->
-
-    <div class="row background-tinted my-0 py-3">
+    {% with topic_count=next_meeting.topics.active.count %}
+    {% if topic_count > 0 %}
+    <div class="row my-0 py-3">
         <div class="col-12 px-5">
-
-            <h3>MEETING TOPICS</h3>
+            <h3>TOPICS FOR NEXT EVENT</h3>
         </div>
     </div>
-    <div class="row background-tinted">
-        {% with topic_count=next_meeting.topics.active.count %}
+    <div class="row">
+
         {% for topic in next_meeting.topics.active %}
             <div class="col-md{% if topic_count > 3%}-4{%endif%} px-5">
                 <h5 class="black-text">{{ topic.title }}</h5>
@@ -110,13 +110,14 @@
                 </p>
             </div>
         {% endfor %}
-        {% endwith %}
     </div> <!--closes row-->
+    {% endif %}
+    {% endwith %}
 
 
     <!--PARTICIPATE SECTION STARTS -->
-    <div class="row py-5">
-        <h3 id="join-us" class="px-5">JOIN US</h3>
+    <div class="row py-5 background-tinted">
+        <h3 id="join-us" class="px-5 red-text">JOIN US</h3>
         <div class="col-md-8 offset-md-2">
             <div class="row">
                 <div class="col-md py-2">
@@ -163,25 +164,22 @@
             </div>
         </div>
     </div>
+</div>
     <!--PARTICIPATE SECTION ENDS -->
 
     <!--ABOUT SECTION STARTS-->
-    <div class="row py-5">
-        <h3 id="about-us" class="px-5 red-text">ABOUT US</h3>
-        <div class="col-md-6 px-5 pt-1 pb-3">
-            Founded in 2003, Chicago Python User Group is one of the world's most active programming language special interest groups with over 1,000 active members and many more prestigious alumni. Our main focus is the Python Programming Language. There are many ways to get and stay involved. Meetings are open to all levels. Our main meetings are on the 2nd Thursday of every month and happen online remotely. We have SIGs (Special Interest Groups) in: Mentorship, Science, Web, and Financial.
-        </div>
-        <div class="col-md-6 py-1 pe-5 padding-left-med-5">
-            <div class="row">
-                <div class="col-6 pe-2">
-                    <img src="{% static 'img/lt@3x-cropped.jpg' %}" alt="Happy ChiPy people" height="250" >
-                </div>
-                <div class="col-6 text-end">
-
-                    <img src="{% static 'img/rt@3x.jpg' %}" alt="ChiPy Attendees working on projects together" height="250" >
-
-                </div>
-
+<div class="row py-5">
+    <h3 id="about-us" class="px-5">ABOUT US</h3>
+    <div class="col-md-6 px-5 pt-1 pb-3">
+        Founded in 2003, Chicago Python User Group is one of the world's most active programming language special interest groups with over 1,000 active members and many more prestigious alumni. Our main focus is the Python Programming Language. There are many ways to get and stay involved. Meetings are open to all levels. Our main meetings are on the 2nd Thursday of every month and happen online remotely. We have SIGs (Special Interest Groups) in: Mentorship, Science, Web, and Financial.
+    </div>
+    <div class="col-md-6 py-1 pe-5 padding-left-med-5">
+        <div class="row">
+            <div class="col-6 pe-2">
+                <img src="{% static 'img/lt@3x-cropped.jpg' %}" alt="Happy ChiPy people" height="250" >
+            </div>
+            <div class="col-6 text-end">
+                <img src="{% static 'img/rt@3x.jpg' %}" alt="ChiPy Attendees working on projects together" height="250" >
             </div>
         </div>
     </div>

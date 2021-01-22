@@ -76,6 +76,10 @@ a:hover{
     width: 100%;
 }
 
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #007896;
+}
+
 .logo-header {
     background-color: black;
 }

@@ -81,6 +81,9 @@ class Sponsor(models.Model):
         current_time_mod = (int(time.time()) >> second_shift_constant) % 100  # eg 36
 
         total_number_of_chunks = sum(s.featured_sponsor_weight for s in sponsors)
+        if total_number_of_chunks == 0:
+            return
+
         chunk_size = 100 / total_number_of_chunks
         chunk_end = 0
         for sponsor in sponsors:

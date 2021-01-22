@@ -9,7 +9,7 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from chipy_org.apps.meetings import email
-from chipy_org.apps.meetings.models import Meeting, MeetingType, Presentor, Topic
+from chipy_org.apps.meetings.models import Meeting, MeetingType, Presentor, Topic, Venue
 
 User = get_user_model()
 

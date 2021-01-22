@@ -1,4 +1,4 @@
-{% extends SITE_PREVIEW|yesno:"shiny/slim.html,site_base.html" %}
+{% extends "shiny/slim.html" %}
 
 {% load i18n static thumbnail flatblocks %}
 
@@ -20,7 +20,6 @@
         </div>
         <div class="col-md-4 px-1 pt-1 pb-3">
             <h2 class="text-center red-text">Our Sponsors</h2>
-            {% if not SITE_PREVIEW %}<div style="margin-left: 5rem">{% endif %}
             {% for group in sponsor_groups %}
                 <div class="row py-3">
                     <h3 class="text-center">{{ group.name }}</h3>
@@ -43,7 +42,6 @@
                     {% endfor %}
                </div>
             {% endfor %}
-            {% if not SITE_PREVIEW %}</div>{% endif %}
         </div>
     </div>
 {% endblock body %}

@@ -235,3 +235,9 @@ ul.no-bullets {
         padding-left: 3rem;
     }
 }
+
+@media (max-width: 767.98px) {
+    .title-large{
+        font-size: 30px;
+    }
+}

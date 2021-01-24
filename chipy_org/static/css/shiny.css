@@ -106,15 +106,15 @@ a:hover{
 }
 
 .btn-primary {
-    background-color: #00b5e5;
-    border-color: #00b5e5;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
+    background-color: #007896;
+    border-color: #007896;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #007896;
-    border-color: #007896;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
+    background-color: #07475e;
+    border-color: #07475e;
+    color: #fff;
 }
 
 .btn-danger {
@@ -129,14 +129,14 @@ a:hover{
 
 
 .btn-info{
-    background-color: #007896;
-    border-color: #007896;
+    background-color: #24398a;
+    border-color: #24398a;
     color: #fff;
 }
 
 .btn-info:hover {
-    background-color: #07475e;
-    border-color: #07475e;
+    background-color: #121e4b;
+    border-color: #121e4b;
     color: #fff;
 }
 

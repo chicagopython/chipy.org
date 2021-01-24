@@ -114,7 +114,7 @@
                 </div>
                 {% endif %}
                 <p>
-                  {{ topic.description|bleach|truncatewords_html:80|safe }} -
+                  {{ topic.description|bleach|truncatewords_html:80|safe }}
                     <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
                 </p>
             </div>

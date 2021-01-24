@@ -240,4 +240,11 @@ ul.no-bullets {
     .title-large{
         font-size: 30px;
     }
+
+    .join-us-icon {
+        height: 3.5rem;
+        width: 3.5rem;
+       
+        border-radius: 25px;
+    }
 }

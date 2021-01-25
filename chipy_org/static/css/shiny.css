@@ -144,6 +144,10 @@ a:hover{
     font-weight: 700;
 }
 
+#chicago-python-logo{
+    height:50px;
+}
+
 #footer {
     background-color: #000000;
     color: #ffffff;
@@ -234,11 +238,7 @@ ul.no-bullets {
     .padding-left-med-5 {
         padding-left: 3rem;
     }
-}
 
-
-
-@media (max-width: 767.98px) {
     #navigation {position: absolute; width: 100%; margin: 0 auto;}
 
     .title-large{
@@ -252,17 +252,16 @@ ul.no-bullets {
     .nav-sticky-top.scrolled {
         position: fixed !important; 
         top: 0;
-        
     }
 
     .navbar-nav.text-align-center{
         text-align: center;
     }
 
+
     .join-us-icon {
-        height: 3.5rem;
-        width: 3.5rem;
-       
+        height: 4rem;
+        width: 4rem;
         border-radius: 25px;
     }
 
@@ -275,5 +274,34 @@ ul.no-bullets {
         filter: brightness(80%);
         position: relative;
         z-index: -1;
+    }
+}
+
+
+@media (max-width: 767.98px) {
+
+    .title-large{
+        font-size: 30px;
+    }
+
+    .join-us-icon {
+        height: 3.5rem;
+        width: 3.5rem;
+       
+        border-radius: 25px;
+    }
+
+}
+
+@media (max-width: 332px) {
+    .join-us-icon {
+        height: 3rem;
+        width: 3rem;
+       
+        border-radius: 25px;
+    }
+
+    #chicago-python-logo{
+        height:40px;
     }
 }

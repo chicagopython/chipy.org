@@ -163,9 +163,9 @@ a:hover{
 
 .title-large{
     color: #ffffff;
-    margin-top:60px;
+    margin-top:80px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 900;
     letter-spacing: 0.97px;
 }
@@ -236,9 +236,27 @@ ul.no-bullets {
     }
 }
 
+
+
 @media (max-width: 767.98px) {
+    #navigation {position: absolute; width: 100%; margin: 0 auto;}
+
     .title-large{
         font-size: 30px;
+    }
+    
+    .navbar{
+        background-color: #000;
+    }
+
+    .nav-sticky-top.scrolled {
+        position: fixed !important; 
+        top: 0;
+        
+    }
+
+    .navbar-nav.text-align-center{
+        text-align: center;
     }
 
     .join-us-icon {

@@ -258,22 +258,10 @@ ul.no-bullets {
         text-align: center;
     }
 
-
     .join-us-icon {
         height: 4rem;
         width: 4rem;
         border-radius: 25px;
-    }
-
-    #footer {
-        position: relative;
-        z-index: -2;
-    }
-
-    .icon-link {
-        filter: brightness(80%);
-        position: relative;
-        z-index: -1;
     }
 }
 
@@ -290,7 +278,6 @@ ul.no-bullets {
        
         border-radius: 25px;
     }
-
 }
 
 @media (max-width: 332px) {

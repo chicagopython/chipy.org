@@ -233,13 +233,20 @@ ul.no-bullets {
     border-radius: 34px;
 }
 
+#navigation {position: absolute; width: 100%; margin: 0 auto;}
+
+.nav-sticky-top.scrolled {
+    position: fixed !important; 
+    top: 0;
+}
+
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) { 
     .padding-left-med-5 {
         padding-left: 3rem;
     }
 
-    #navigation {position: absolute; width: 100%; margin: 0 auto;}
+
 
     .title-large{
         font-size: 30px;
@@ -247,11 +254,6 @@ ul.no-bullets {
     
     .navbar{
         background-color: #000;
-    }
-
-    .nav-sticky-top.scrolled {
-        position: fixed !important; 
-        top: 0;
     }
 
     .navbar-nav.text-align-center{

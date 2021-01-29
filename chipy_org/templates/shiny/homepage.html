@@ -1,7 +1,8 @@
 {% extends 'shiny/site_base.html' %}
 {% load bleach_tags %}
 {% load static %}
-{% block content %}
+
+{% block background-pic-header %}
 <div class="screen-bg full-screen-bg" style="background-image: url({% static 'img/HP-Hero-bg-1500-90.jpg' %}">
 
     <div class="row row-remove-right-gutter">
@@ -22,6 +23,9 @@
         </div>
     </div>
 </div> <!--closes fullscreen background-->
+{% endblock %}
+
+{% block content %}
 
 {% if messages %}
 <div class="row">

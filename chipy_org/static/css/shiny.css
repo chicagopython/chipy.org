@@ -127,7 +127,6 @@ a:hover{
     border-color: #9a0a0a;
 }
 
-
 .btn-info{
     background-color: #24398a;
     border-color: #24398a;
@@ -163,8 +162,6 @@ a:hover{
     color: #fbd82e;
 }
 
-
-
 .title-large{
     color: #ffffff;
     margin-top:80px;
@@ -198,7 +195,6 @@ a:hover{
     height: 200px;
 }
 
-
 .row {
     --bs-gutter-x: 0;
 }
@@ -217,11 +213,11 @@ ul.no-bullets {
 
 .icon-link:hover {
     filter: brightness(100%);
-  }
-  
+}
+
 .icon-link {
     filter: brightness(80%);
-  }
+}
 
 .join-us-icon {
     height: 5rem;
@@ -236,8 +232,10 @@ ul.no-bullets {
 #navigation {position: absolute; width: 100%; margin: 0 auto;}
 
 .nav-sticky-top.scrolled {
+    background-color: #000 !important;
     position: fixed !important; 
     top: 0;
+    z-index: 100;
 }
 
 /* Medium devices (tablets, less than 992px) */
@@ -246,12 +244,10 @@ ul.no-bullets {
         padding-left: 3rem;
     }
 
-
-
     .title-large{
         font-size: 30px;
     }
-    
+
     .navbar{
         background-color: #000;
     }
@@ -286,7 +282,7 @@ ul.no-bullets {
     .join-us-icon {
         height: 3rem;
         width: 3rem;
-       
+
         border-radius: 25px;
     }
 

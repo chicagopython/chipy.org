@@ -40,7 +40,11 @@
 
         <div class="col-lg-6 my-4 px-5 pb-3" style="padding-top: 2.15rem">
                 {% if next_meeting.title %}
-                    <h3 id="next-event">NEXT EVENT: {{ next_meeting.title | upper }}</h3>
+                  <h3 id="next-event"
+                      style="cursor: pointer"
+                      onclick="window.location='{% url 'meeting' next_meeting.id %}'>
+                      NEXT EVENT: {{ next_meeting.title | upper }}
+                  </h3>
                 {% endif %}
 
                 {% if next_meeting %}

@@ -20,27 +20,37 @@
     </head>
 
     <body>
-        <!--LOGO SECTION STARTS-->
-        <div class="row">
-            <div class="logo-header p-4">
-                <img id="chicago-python-logo" src="{% static 'img/chicago-python-logo.png' %}" class="mx-auto d-block" alt="Chicago Python User Group Logo">
+        <header>
+
+            <!--LOGO SECTION STARTS-->
+            <div class="row">
+                <div class="logo-header p-4">
+                    <img id="chicago-python-logo" src="{% static 'img/chicago-python-logo.png' %}" class="mx-auto d-block" alt="Chicago Python User Group Logo">
+                </div>
             </div>
-        </div>
-        <!--LOGO SECTION ENDS-->
+            <!--LOGO SECTION ENDS-->
 
-        <!--NAVBAR SECTION STARTS-->
-        {% include 'shiny/navbar.html' %}
-        <!--NAVBAR SECTION ENDS-->
+            <!--NAVBAR SECTION STARTS-->
+            {% include 'shiny/navbar.html' %}
+            <!--NAVBAR SECTION ENDS-->
 
-        <!--BACKGROUND PIC HEADER SECTION STARTS-->
-        {% block background-pic-header %}{% endblock %}
-        <!--BACKGROUND PIC HEADER SECTION ENDS-->
+            <!--BACKGROUND PIC HEADER SECTION STARTS-->
+            {% block background-pic-header %}{% endblock %}
+            <!--BACKGROUND PIC HEADER SECTION ENDS-->
 
-        <!--CONTENT SECTION STARTS-->
-        {% block content %}{% endblock %}
-        <!--CONTENT SECTION ENDS-->
+        </header>
+        
+        <main>
+
+            <!--CONTENT SECTION STARTS-->
+            {% block content %}{% endblock %}
+            <!--CONTENT SECTION ENDS-->
+
+        </main>
 
         <!--FOOTER SECTION STARTS-->
+        <footer>
+
         <div id="footer" class="row py-4 px-5">
             <div class="col-md-3">
                 <img src="{% static 'img/chipy-logo.png' %}" class="pb-2" alt="Chipy: Chicago Python User Group Logo" height="37"><br>
@@ -86,6 +96,8 @@
                 <div class="light-red-text"> Copyright &copy; Chicago Python User Group</div>
             </div>
         </div>
+
+        </footer>
         <!--FOOTER SECTION ENDS-->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"

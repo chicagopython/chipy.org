@@ -20,17 +20,26 @@
     </head>
 
     <body>
-        <!-- BEGINNING OF LOGO SECTION -->
+        <!--LOGO SECTION STARTS-->
         <div class="row">
             <div class="logo-header p-4">
                 <img id="chicago-python-logo" src="{% static 'img/chicago-python-logo.png' %}" class="mx-auto d-block" alt="Chicago Python User Group Logo">
             </div>
         </div>
-        <!-- END OF LOGO SECTION -->
+        <!--LOGO SECTION ENDS-->
 
+        <!--NAVBAR SECTION STARTS-->
         {% include 'shiny/navbar.html' %}
+        <!--NAVBAR SECTION ENDS-->
 
+        <!--BACKGROUND PIC HEADER SECTION STARTS-->
+        {% block background-pic-header %}{% endblock %}
+        <!--BACKGROUND PIC HEADER SECTION ENDS-->
+
+        <!--CONTENT SECTION STARTS-->
         {% block content %}{% endblock %}
+        <!--CONTENT SECTION ENDS-->
+
         <!--FOOTER SECTION STARTS-->
         <div id="footer" class="row py-4 px-5">
             <div class="col-md-3">

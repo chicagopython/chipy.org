@@ -1,6 +1,7 @@
 {% extends 'shiny/site_base.html' %}
 {% load static %}
-{% block content %}
+
+{% block background-pic-header %}
 <div class="screen-bg slim-screen-bg" style="background-image: url({% static 'img/slim-banner-navy50percent-1500px-100.jpg'%});">
 
     <div class="row">
@@ -12,6 +13,9 @@
     </div> <!--closes the working together row-->
 
 </div> <!--closes fullscreen background-->
+{% endblock %}
+
+{% block content %}
 {% if messages %}
 <div class="row">
     <div class="col-md-12">

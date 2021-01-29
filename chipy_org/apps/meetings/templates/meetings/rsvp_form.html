@@ -18,7 +18,19 @@
 {{ form.non_field_errors }}
 <form method="POST" id="rsvp-form" action=".">
   {% csrf_token %}
-  {{ form.as_p }}  
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-3">
+            {% if field not in form.hidden_fields %}
+                <div><label for="{{ field.name }}">{{ field.label_tag }}</label></div>
+            {% endif %}
+            {{ field.errors }}{{field}}
+        </div>
+    {% endfor %}
   <input type="submit" name="submit" value="Change RSVP" class="btn btn-primary">
 </form>
 {% endblock body %}
+
+{% block extra-javascript %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

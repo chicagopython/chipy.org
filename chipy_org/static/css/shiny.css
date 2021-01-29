@@ -32,6 +32,11 @@ h1, h2, h3, h4, h5 {
 .white-text{
     color: #fff;
 }
+
+.background-black {
+    background-color: #000;
+}
+
 .background-tinted {
     background-color: #f6f6f6;
 }
@@ -164,7 +169,7 @@ a:hover{
 
 .title-large{
     color: #ffffff;
-    margin-top:80px;
+    margin-top:95px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
     font-size: 40px;
     font-weight: 900;

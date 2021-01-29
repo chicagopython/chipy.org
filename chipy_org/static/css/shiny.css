@@ -266,6 +266,10 @@ ul.no-bullets {
         width: 4rem;
         border-radius: 25px;
     }
+    .container-xl{
+        padding-right: var(--bs-gutter-x,0rem);
+        padding-left: var(--bs-gutter-x,0rem);
+    }
 }
 
 

@@ -4,7 +4,7 @@
 
 {% block background-pic-header %}
 <div class="screen-bg full-screen-bg" style="background-image: url({% static 'img/HP-Hero-bg-1500-90.jpg' %}">
-    <div class="container">
+    <div class="container-xl">
         <div class="row row-remove-right-gutter">
             <div class="col-12 text-center">
                 <div class="title-large">
@@ -29,7 +29,7 @@
 {% block content %}
 
 {% if messages %}
-<div class="container">
+<div class="container-xl">
     <div class="row">
         <div class="col">
             {% include "_messages.html" %}
@@ -38,7 +38,7 @@
 </div><!--closes container-->
 {% endif %}
 
-<div class="container">
+<div class="container-xl">
     <div class="row flex-md-row-reverse">
 
         <div class="col-lg-6 mt-4 px-5 pt-3">
@@ -102,7 +102,7 @@
 
 {% with topic_count=next_meeting.topics.active.count %}
 {% if topic_count > 0 %}
-<div class="container">
+<div class="container-xl">
     <div class="row my-0 py-3">
         <div class="col-12 px-5">
             <h3>TOPICS FOR NEXT EVENT</h3>
@@ -138,7 +138,7 @@
 
     <!--PARTICIPATE SECTION STARTS -->
 <div class="background-tinted">
-    <div class="container">
+    <div class="container-xl">
         <div class="row py-5 ">
             <h3 id="join-us" class="px-5 red-text text-center">JOIN US</h3>
             <div class="col-lg-8 offset-lg-2">
@@ -193,7 +193,7 @@
     <!--PARTICIPATE SECTION ENDS -->
 
     <!--ABOUT SECTION STARTS-->
-<div class="container">
+<div class="container-xl">
     <div class="row py-5">
         <h3 id="about-us" class="px-5">ABOUT US</h3>
         <div class="col-lg-5 px-5 pt-1 pb-3">

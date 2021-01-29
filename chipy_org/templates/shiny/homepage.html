@@ -42,7 +42,7 @@
                 {% if next_meeting.title %}
                   <h3 id="next-event"
                       style="cursor: pointer"
-                      onclick="window.location='{% url 'meeting' next_meeting.id %}'>
+                      onclick="window.location='{% url 'meeting' next_meeting.id %}'">
                       NEXT EVENT: {{ next_meeting.title | upper }}
                   </h3>
                 {% endif %}

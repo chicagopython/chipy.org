@@ -178,7 +178,7 @@ a:hover{
 
 .title-medium{
     color: #ffffff;
-    margin-top:45px;
+    margin-top:100px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
     font-size: 30px;
     font-weight: 900;
@@ -251,6 +251,7 @@ ul.no-bullets {
 
     .title-large{
         font-size: 30px;
+        margin-top: 150px;
     }
 
     .navbar{
@@ -287,6 +288,15 @@ ul.no-bullets {
     }
 }
 
+@media (max-width: 380px) {
+
+    .title-large{
+        font-size: 28px;
+        margin-top: 135px;
+    }
+
+}
+
 @media (max-width: 332px) {
     .join-us-icon {
         height: 3rem;
@@ -299,3 +309,4 @@ ul.no-bullets {
         height:40px;
     }
 }
+

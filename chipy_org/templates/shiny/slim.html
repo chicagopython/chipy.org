@@ -16,17 +16,24 @@
 {% endblock %}
 
 {% block content %}
+
 {% if messages %}
-<div class="row">
-    <div class="col-md-12">
-        {% include "_messages.html" %}
+<div class="container-xl">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "_messages.html" %}
+        </div>
     </div>
-</div>
+</div><!--closes container xl-->
 {% endif %}
-<div class="row">
-    <div class="col-md-8 offset-md-2 px-5 my-4">
-        {% block body %}
-        {% endblock %}
+
+<div class="container-xl">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 px-5 my-4">
+            {% block body %}
+            {% endblock %}
+        </div>
     </div>
-</div>
+</div><!--closes container xl-->
+
 {% endblock %}

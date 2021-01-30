@@ -63,8 +63,14 @@
                         {% if user.is_authenticated %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Logged in as:<br> 
-                                    {{ user.first_name }} {{ user.last_name }}
+                                    Hi
+                                    {% if user.first_name %}
+                                        , {{ user.first_name }}
+                                    {% elif user.last_name %}
+                                        , {{user.last_name}}
+                                    {% else %}
+                                        , {{username}}
+                                    {% endif %}
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

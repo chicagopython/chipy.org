@@ -13,6 +13,10 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
+        <!--Material Design Icons-->
+        <!--See https://google.github.io/material-design-icons/ for documentation-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
         <link rel="stylesheet" href="{% static 'css/shiny.css' %}">
         {% block extra_head %}{% endblock %}
 
@@ -106,6 +110,7 @@
                 integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
                 crossorigin="anonymous"></script>
 
+        <!--JAVASCRIPT FOR Sticky Navbar STARTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         
         <script>
@@ -118,6 +123,8 @@
             });
 
         </script>
+        <!--JAVASCRIPT FOR Sticky Navbar ENDS -->
+
         {% block extra-javascript %}{% endblock %}
     </body>
 </html>

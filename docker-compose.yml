@@ -1,6 +1,5 @@
-version: '2'
+version: "2"
 services:
-
   db:
     image: postgres:10-alpine
     env_file:
@@ -13,6 +12,19 @@ services:
       - POSTGRES_PASSWORD=insecure
       - POSTGRES_USER=chipy
       - POSTGRES_DB=chipy
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6379"
+
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+
+    environment:
+      - REDIS_REPLICATION_MODE=master
 
   web:
     build:

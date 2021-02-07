@@ -73,3 +73,6 @@ venv/
 
 .vscode
 htmlcov
+
+# redis
+dump.rdb

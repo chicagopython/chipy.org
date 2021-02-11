@@ -240,6 +240,7 @@ INSTALLED_APPS = [
     "tinymce",
     "sorl.thumbnail",
     "ckeditor",
+    "django_rq",
     # theme
     "django_forms_bootstrap",
     # project
@@ -354,11 +355,54 @@ LOGGING = {
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "handlers": {
-        "null": {"level": "DEBUG", "class": "logging.NullHandler",},
+        "null": {
+            "level": "DEBUG",
+            "class": "logging.NullHandler",
+        },
         "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "verbose"},
     },
-    "loggers": {"chipy_org": {"handlers": ["console"], "level": "INFO",}},
+    "loggers": {
+        "chipy_org": {
+            "handlers": ["console"],
+            "level": "INFO",
+        }
+    },
 }
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+# django-rq settings
+RQ_QUEUES = {
+    "default": {
+        "HOST": "redis",
+        "PORT": 6379,
+        "DB": 0,
+        "PASSWORD": env_var("REDIS_PASSWORD"),
+        "DEFAULT_TIMEOUT": 360,
+    },
+    # 'with-sentinel': {
+    #     'SENTINELS': [('redis', 26736), ('localhost', 26737)],
+    #     'MASTER_NAME': 'redismaster',
+    #     'DB': 0,
+    #     # 'PASSWORD': 'secret',
+    #     'SOCKET_TIMEOUT': None,
+    #     'CONNECTION_KWARGS': {
+    #         'socket_connect_timeout': 0.3
+    #     },
+    # },
+    "high": {
+        "HOST": "redis",
+        "PORT": 6379,
+        "DB": 0,
+        "PASSWORD": env_var("REDIS_PASSWORD"),
+        "DEFAULT_TIMEOUT": 360,
+    },
+    "low": {
+        "HOST": "redis",
+        "PORT": 6379,
+        "DB": 0,
+        "PASSWORD": env_var("REDIS_PASSWORD"),
+    },
+}

@@ -70,3 +70,6 @@ tail-logs:
 
 dev-data:
 	docker-compose exec web python manage.py makedevdata
+
+background-workers:
+	docker-compose exec web python manage.py rqworker default high low dev

@@ -38,6 +38,11 @@ urlpatterns += [
     url(r"^api/meetings/(?P<meeting_id>\d+)/meetup/sync$", MeetingMeetupSync.as_view()),
 ]
 
+
+urlpatterns += [
+    url(r"^django-rq/", include("django_rq.urls")),
+]
+
 if settings.SERVE_MEDIA:
     urlpatterns += [
         url(

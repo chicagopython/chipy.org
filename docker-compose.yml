@@ -15,7 +15,7 @@ services:
 
   redis:
     image: "redis:alpine"
-    command: redis-server --requirepass insecure
+    command: redis-server #--requirepass insecure
     ports:
       - "6379"
 

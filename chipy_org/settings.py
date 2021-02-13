@@ -376,33 +376,15 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # django-rq settings
 RQ_QUEUES = {
     "default": {
-        "HOST": "redis",
-        "PORT": 6379,
-        "DB": 0,
-        "PASSWORD": env_var("REDIS_PASSWORD"),
-        "DEFAULT_TIMEOUT": 360,
+        "URL": os.getenv("REDISTOGO_URL", "redis://redis:6379/0"),
+        "DEFAULT_TIMEOUT": 500,
     },
-    # 'with-sentinel': {
-    #     'SENTINELS': [('redis', 26736), ('localhost', 26737)],
-    #     'MASTER_NAME': 'redismaster',
-    #     'DB': 0,
-    #     # 'PASSWORD': 'secret',
-    #     'SOCKET_TIMEOUT': None,
-    #     'CONNECTION_KWARGS': {
-    #         'socket_connect_timeout': 0.3
-    #     },
-    # },
     "high": {
-        "HOST": "redis",
-        "PORT": 6379,
-        "DB": 0,
-        "PASSWORD": env_var("REDIS_PASSWORD"),
-        "DEFAULT_TIMEOUT": 360,
+        "URL": os.getenv("REDISTOGO_URL", "redis://redis:6379/0"),
+        "DEFAULT_TIMEOUT": 500,
     },
     "low": {
-        "HOST": "redis",
-        "PORT": 6379,
-        "DB": 0,
-        "PASSWORD": env_var("REDIS_PASSWORD"),
+        "URL": os.getenv("REDISTOGO_URL", "redis://redis:6379/0"),
+        "DEFAULT_TIMEOUT": 500,
     },
 }

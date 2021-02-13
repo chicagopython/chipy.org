@@ -240,6 +240,7 @@ INSTALLED_APPS = [
     "tinymce",
     "sorl.thumbnail",
     "ckeditor",
+    "django_rq",
     # theme
     "django_forms_bootstrap",
     # project
@@ -362,3 +363,11 @@ LOGGING = {
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+# django-rq settings
+RQ_QUEUES = {
+    "default": {"URL": os.getenv("REDISTOGO_URL", "redis://redis:6379/0"), "DEFAULT_TIMEOUT": 500,},
+    "high": {"URL": os.getenv("REDISTOGO_URL", "redis://redis:6379/0"), "DEFAULT_TIMEOUT": 500,},
+    "low": {"URL": os.getenv("REDISTOGO_URL", "redis://redis:6379/0"), "DEFAULT_TIMEOUT": 500,},
+}

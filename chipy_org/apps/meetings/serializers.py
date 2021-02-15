@@ -20,7 +20,7 @@ class PresenterSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    presenters = PresenterSerializer(many=True, source="presenters")
+    presenters = PresenterSerializer(many=True)
 
     class Meta:
         model = Topic

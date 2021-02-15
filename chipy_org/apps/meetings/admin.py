@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 
-from .models import RSVP, Meeting, MeetingType, Presentor, Topic, Venue
+from .models import RSVP, Meeting, MeetingType, Presenter, Topic, Venue
 
 
 class VenueAdmin(admin.ModelAdmin):
@@ -20,7 +20,7 @@ class VenueAdmin(admin.ModelAdmin):
 
 class TopicInline(admin.StackedInline):
     model = Topic
-    filter_horizontal = ["presentors"]
+    filter_horizontal = ["presenters"]
     readonly_fields = [
         "modified",
         "created",
@@ -45,15 +45,15 @@ class TopicAdmin(admin.ModelAdmin):
     ]
     list_filter = ["approved", "experience_level"]
     search_fields = ["title"]
-    filter_horizontal = ["presentors"]
+    filter_horizontal = ["presenters"]
 
     def get_presenters(self, obj):
         return format_html(
             " &bull; ".join(
                 [
-                    f"<a href='{reverse('admin:meetings_presentor_change', args=[p.id])}'>"
+                    f"<a href='{reverse('admin:meetings_presenter_change', args=[p.id])}'>"
                     f"{p.name}</a>"
-                    for p in obj.presentors.all()
+                    for p in obj.presenters.all()
                 ]
             )
         )
@@ -109,7 +109,7 @@ class MeetingAdmin(admin.ModelAdmin):
     ordering = ("-when",)
 
 
-class PresentorAdmin(admin.ModelAdmin):
+class PresenterAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "user", "email", "phone"]
     search_fields = ["user__username", "user__first_name", "user__last_name", "email", "phone"]
     readonly_fields = ["created", "modified"]
@@ -146,6 +146,6 @@ class MeetingTypeAdmin(admin.ModelAdmin):
 admin.site.register(Venue, VenueAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Topic, TopicAdmin)
-admin.site.register(Presentor, PresentorAdmin)
+admin.site.register(Presenter, PresenterAdmin)
 admin.site.register(RSVP, RSVPAdmin)
 admin.site.register(MeetingType, MeetingTypeAdmin)

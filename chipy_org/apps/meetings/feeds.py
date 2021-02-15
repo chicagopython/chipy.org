@@ -20,8 +20,8 @@ class MeetingFeed(ICalFeed):
         description = "RSVP at http://chipy.org\n\n"
         for topic in item.topics.all():
             presenter_name = "None Given"
-            if topic.presentors.count() > 0:
-                presenter_name = topic.presentors.all()[0].name
+            if topic.presenters.count() > 0:
+                presenter_name = topic.presenters.all()[0].name
 
             description += f"{topic.title} by {presenter_name}\n{topic.description}\n\n"
         return description

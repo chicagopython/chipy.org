@@ -152,7 +152,7 @@ class Meeting(CommonModel):
         return "In the Loop"  # quasi default title for the main meeting
 
 
-class Presentor(CommonModel):
+class Presenter(CommonModel):
     def __str__(self):
         return f"{self.name} | ({self.email})"
 
@@ -193,7 +193,7 @@ class Topic(CommonModel):
     title = models.CharField(
         help_text="This will be the public title for your talk.", max_length=MAX_LENGTH
     )
-    presentors = models.ManyToManyField(Presentor, blank=True)
+    presenters = models.ManyToManyField(Presenter, blank=True)
     meeting = models.ForeignKey(
         Meeting,
         blank=True,

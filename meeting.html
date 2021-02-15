@@ -1,8 +1,6 @@
-{% extends "shiny/slim.html" %}
+{% extends "site_base.html" %}
 
 {% load i18n static %}
-
-{% load bleach_tags %}
 
 {% block head_title %}{% trans "Topic" %}{% endblock %}
 
@@ -12,15 +10,14 @@
 <div itemscope itemtype="http://schema.org/Event">
 
     <div class="row-fluid">
-      <div>
-          {% if meeting.title %}
-              <h3 itemprop="name">{{ meeting.title }}</h3>
+      <div class="span12">
+          {% if meeting.meeting_type %}
+          <h3 itemprop="name">{{ meeting.meeting_type.name }}</h3>
+          {% if meeting.meeting_type.subgroup %}<p><a href="{% url 'groups' meeting.meeting_type.subgroup.slug %}">{{ meeting.meeting_type.subgroup.name }}</a></p>{% endif %}
           {% endif %}
-
           <hr />
-
           {% if meeting.description %}
-          <p itemprop="description">{{ meeting.description|bleach|safe }}</p>
+          <p itemprop="description">{{ meeting.description|safe }}</p>
           {% endif %}
 
           <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
@@ -50,7 +47,7 @@
 
           {% endif %}
 
-          {% include "shiny/_rsvp.html" with curr_meeting=meeting %}
+          {% include "_rsvp.html" with curr_meeting=meeting %}
       </div>
 
   </div>
@@ -63,16 +60,16 @@
               {% for topic in meeting.topics.active %}
                 <li>
                   <strong>{{ topic.title }}</strong><br />
+                  {% if topic.length%}
+                    ({{ topic.length}} Minutes)<br />
+                  {% endif %}
                   By: {% for presenter in topic.presenters.all %}
                         {{presenter.name}} {% if not forloop.last %}, {% endif %}
                       {% endfor %}<br />
                   {% if topic.experience_level %}
                   Experience Level: {{ topic.get_experience_level_display }}<br />
                   {% endif %}
-                  {% if topic.length%}
-                    Length: {{ topic.length}} Minutes<br />
-                  {% endif %}
-                  Description: {{ topic.description|bleach|safe }}
+                  {{ topic.description|safe }}
                 </li>
               {% endfor %}
             </ul>

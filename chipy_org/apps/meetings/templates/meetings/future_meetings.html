@@ -22,8 +22,8 @@
       {% if topic.length %}
         ({{ topic.length }} Minutes)<br />
       {% endif %}
-      By: {% for presentor in topic.presentors.all %}
-            {{presentor.name}}{% if not forloop.last %}, {% endif %}
+      By: {% for presenter in topic.presenters.all %}
+            {{presenter.name}}{% if not forloop.last %}, {% endif %}
           {% endfor %}<br />
       {% if topic.experience_level %}
       Experience Level: {{ topic.get_experience_level_display }}<br />

@@ -1,0 +1,222 @@
+@import "bootstrap/bootstrap.less";
+@import "bootstrap/responsive.less";
+@import "chipy-variables.less";
+
+body {
+  padding-top: 0px;
+}
+
+h1 {
+  color: @blue;
+  font-family: @sanshdFontFamily;
+  font-size: 36px;
+  margin-bottom: .2em;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+h2 {
+  color: @bluehd;
+  font-family: @sanshdFontFamily;
+}
+
+a {
+  .transition(all .1s linear);
+}
+
+li {
+  margin-bottom: .4em;
+}
+
+hr {
+  border-top: 1px solid @blueLight;
+}
+
+#content {
+  margin-bottom: 30px;
+}
+
+.navbar {
+  .brand {
+    background: url('../img/chipmunk-sm.png') no-repeat left;
+    padding-left: 100px;
+    height: 20px;
+  }
+  .navbar-inner {
+    .border-radius(0);
+    min-height: 42px;
+    padding-top: 4px;
+  }
+  .navbar-text {
+    line-height: 36px;
+  }
+  .nav {
+    font-weight: bold;
+    margin: 0;
+    text-transform: lowercase;
+    &.pull-right {
+      font-weight: normal;
+      > li, > li > a {
+        display: inline;
+        line-height: 40px!important;
+        padding: 0 3px;
+      }
+      a {
+        text-transform: uppercase;
+      }
+    }
+  }
+  .dropdown .caret {
+    margin-top: 18px;
+  }
+}
+
+#home-header {
+  border: 1px solid #FAF3D8;
+  .border-radius(6px);
+  .box-shadow(0 1px 3px #adadad);
+  font-size: 18px;
+  #gradient > .vertical (#f4efd7, @yellowLight);
+  margin-bottom: 24px;
+  #home-content {
+    padding: 20px;
+    p {
+      letter-spacing: 1px;
+      line-height: 1.2em;
+    }
+  }
+  img {
+    float: right;
+    max-width: 90%;
+    padding: 10% 5% 20px;
+  }
+  .boxes_links {
+    font-size: 13px;
+  }
+  .content {
+    line-height: 1.5em;
+    font-size: 0.9em;
+  }
+}
+
+#footer {
+  margin-top: 0;
+  background-color: #d8e6ff;
+}
+
+@media (max-width: 979px) {
+.navbar {
+  .brand {
+    padding-right: 40px;
+  }
+  .btn-navbar {
+    position: absolute;
+    right: 30px;
+  }
+}
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding: 0.15em 1em;
+}
+
+#login-dialog {
+  .zocial {
+    width: 153px;
+    margin-top: 0.5em;
+    }
+}
+
+#propose-topic {
+  input, textarea, select {
+    width: 300px;
+
+    &.btn {
+      width: 200px;
+      }
+    }
+  .interval_label {
+    color: lighten(@textColor, 40%);
+    font-size: @baseFontSize * 0.9;
+    }
+  }
+
+#contact {
+  textarea {
+    width: 400px;
+    }
+}
+
+#edit-profile {
+  input[type="submit"]{
+    margin-top: 10px;
+    }
+}
+
+form {
+  .help-text {
+      color: #888;
+  }
+  .errorlist {
+    margin: 0px;
+    width: 314px;
+
+    li {
+      .border-radius(5px);
+      list-style-type:none;
+      padding: 5px;
+      display: block;
+      background-color: @errorBackground;
+      color: @errorText;
+      border: @errorBorder;
+      }
+    }
+  }
+
+.talk-list {
+  .talk {
+    .border-radius(3px);
+    padding: 5px;
+    margin-bottom: 5px;
+    float: left;
+    clear: both;
+    border: 1px solid @infoBorder;
+    background-color: @infoBackground;
+    min-width: 500px;
+
+    .title {
+      display:block;
+      font-size: 1.4em;
+      }
+
+    .presenter {
+      font-style: italic;
+      }
+    }
+
+  .count {
+    display: block;
+    font-style: italic;
+    clear: both;
+    }
+}
+
+.profile {
+  clear: both;
+  padding: 5px;
+  min-height: 90px;
+
+  h3 {
+    margin: 0px;
+    line-height: 32px;
+    }
+
+  .gravatar {
+    float: left;
+    padding: 5px;
+    padding-right: 10px;
+    }
+}
+
+.topic {
+  margin-bottom: 2em;
+}

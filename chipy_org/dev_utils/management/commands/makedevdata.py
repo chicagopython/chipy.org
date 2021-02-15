@@ -65,7 +65,7 @@ class Command(BaseCommand):
                 active=True,
                 end_date=v,
             )
-
+hi
         # meetings data
         presenter, _ = meetings.models.Presenter.objects.get_or_create(
             user=tyler,

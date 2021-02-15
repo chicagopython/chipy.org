@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 
-from .models import RSVP, Meeting, Presentor, Topic
+from .models import RSVP, Meeting, Presenter, Topic
 
 
 class TopicForm(forms.ModelForm):
@@ -55,15 +55,15 @@ class TopicForm(forms.ModelForm):
             user.email = self.cleaned_data.get("email")
             user.save()
 
-        if self.request and not instance.presentors.count():
-            presenter, _ = Presentor.objects.get_or_create(
+        if self.request and not instance.presenters.count():
+            presenter, _ = Presenter.objects.get_or_create(
                 user=user,
                 name=self.cleaned_data.get("name"),
                 email=self.cleaned_data.get("email"),
                 release=True,
             )
 
-        instance.presentors.add(presenter)
+        instance.presenters.add(presenter)
         return instance
 
 

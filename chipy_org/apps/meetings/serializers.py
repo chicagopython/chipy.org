@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Meeting, Presentor, Topic
+from .models import Meeting, Presenter, Topic
 
 
 class PresenterSerializer(serializers.ModelSerializer):
@@ -15,12 +15,12 @@ class PresenterSerializer(serializers.ModelSerializer):
             return ""
 
     class Meta:
-        model = Presentor
+        model = Presenter
         fields = ("id", "name", "release", "email")
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    presenters = PresenterSerializer(many=True, source="presentors")
+    presenters = PresenterSerializer(many=True, source="presenters")
 
     class Meta:
         model = Topic

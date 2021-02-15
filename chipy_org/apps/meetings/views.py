@@ -24,7 +24,7 @@ from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 from .email import send_meeting_topic_submitted_email, send_rsvp_email
 from .forms import RSVPForm, RSVPFormWithCaptcha, TopicForm
 from .models import RSVP as RSVPModel
-from .models import Meeting, Presentor, Topic
+from .models import Meeting, Presenter, Topic
 from .serializers import MeetingSerializer
 from .utils import meetup_meeting_sync
 
@@ -131,11 +131,11 @@ class MyTopics(ListView):
 
     def get_queryset(self):
         try:
-            presenter = Presentor.objects.filter(user=self.request.user)
-        except Presentor.DoesNotExist:
+            presenter = Presenter.objects.filter(user=self.request.user)
+        except Presenter.DoesNotExist:
             return Topic.objects.none()
 
-        return Topic.objects.filter(presentors__in=presenter)
+        return Topic.objects.filter(presenters__in=presenter)
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):

@@ -62,7 +62,7 @@ class Command(BaseCommand):
             )
 
         # meetings data
-        presentor, _ = meetings.models.Presentor.objects.get_or_create(
+        presenter, _ = meetings.models.Presenter.objects.get_or_create(
             user=tyler,
             name=tyler.first_name + " " + tyler.last_name,
             email=tyler.email,
@@ -97,7 +97,7 @@ class Command(BaseCommand):
                 description=f"Saponification - Part {count}",
                 approved=True,
             )
-            topic.presentors.set((presentor,))
+            topic.presenters.set((presenter,))
 
             count += 1
 

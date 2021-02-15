@@ -8,8 +8,8 @@ from django.core import mail
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from chipy_org.apps.meetings import email
-from chipy_org.apps.meetings.models import Meeting, MeetingType, Presentor, Topic, Venue
+from .. import email
+from ..models import Meeting, MeetingType, Presenter, Topic, Venue
 
 User = get_user_model()
 
@@ -152,15 +152,15 @@ class MeetingTitleTest(TestCase):
 def test_my_talks_with_multiple_presenters_with_same_user(client):
     user = User.objects.create(username="chipy",)
 
-    p1 = Presentor.objects.create(user=user, name="name1",)
+    p1 = Presenter.objects.create(user=user, name="name1",)
     t1 = Topic.objects.create(title="title1")
-    t1.presentors.set(
+    t1.presenters.set(
         [p1,]
     )
 
-    p2 = Presentor.objects.create(user=user, name="name2",)
+    p2 = Presenter.objects.create(user=user, name="name2",)
     t2 = Topic.objects.create(title="title2")
-    t2.presentors.set(
+    t2.presenters.set(
         [p2,]
     )
 

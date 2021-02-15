@@ -63,7 +63,7 @@
               {% for topic in meeting.topics.active %}
                 <li>
                   <strong>{{ topic.title }}</strong><br />
-                  By: {% for presenter in topic.presentors.all %}
+                  By: {% for presenter in topic.presenters.all %}
                         {{presenter.name}} {% if not forloop.last %}, {% endif %}
                       {% endfor %}<br />
                   {% if topic.experience_level %}

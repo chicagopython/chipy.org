@@ -8,8 +8,6 @@ from django.core import mail
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-import chipy_org.libs.test_utils as test_utils
-
 from .. import email
 from ..models import Meeting, MeetingType, Presenter, Topic, Venue
 
@@ -22,9 +20,7 @@ pytestmark = pytest.mark.django_db
 class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create(
-            username="chipy",
-        )
+        self.user = User.objects.create(username="chipy",)
         self.meeting = Meeting.objects.create(
             when=datetime.datetime.now() + datetime.timedelta(days=7)
         )
@@ -95,9 +91,7 @@ def test_future_meetings(client):
 
 def test_post_topic_sends_email():
     m = Meeting(
-        when=datetime.datetime.now(),
-        reg_close_date=datetime.datetime.now(),
-        description="Test",
+        when=datetime.datetime.now(), reg_close_date=datetime.datetime.now(), description="Test",
     )
     m.save()
     assert len(Meeting.objects.all()) == 1
@@ -156,30 +150,18 @@ class MeetingTitleTest(TestCase):
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_my_talks_with_multiple_presenters_with_same_user(client):
-    user = User.objects.create(
-        username="chipy",
-    )
+    user = User.objects.create(username="chipy",)
 
-    p1 = Presenter.objects.create(
-        user=user,
-        name="name1",
-    )
+    p1 = Presenter.objects.create(user=user, name="name1",)
     t1 = Topic.objects.create(title="title1")
     t1.presenters.set(
-        [
-            p1,
-        ]
+        [p1,]
     )
 
-    p2 = Presenter.objects.create(
-        user=user,
-        name="name2",
-    )
+    p2 = Presenter.objects.create(user=user, name="name2",)
     t2 = Topic.objects.create(title="title2")
     t2.presenters.set(
-        [
-            p2,
-        ]
+        [p2,]
     )
 
     client.force_login(user)

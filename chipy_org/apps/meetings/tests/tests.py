@@ -10,8 +10,8 @@ from django.urls import reverse
 
 import chipy_org.libs.test_utils as test_utils
 
-from . import email
-from .models import Meeting, MeetingType, Presenter, Topic, Venue
+from .. import email
+from ..models import Meeting, MeetingType, Presenter, Topic, Venue
 
 User = get_user_model()
 

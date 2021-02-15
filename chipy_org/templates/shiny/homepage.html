@@ -119,7 +119,7 @@
                 <h5 class="black-text">{{ topic.title }}</h5>
                 <div>
                     <strong>By:</strong>
-                    {% for presenter in topic.presentors.all %}
+                    {% for presenter in topic.presenters.all %}
                      {{presenter.name}} {% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </div>

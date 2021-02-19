@@ -1,11 +1,6 @@
 {% extends "shiny/slim.html" %}
 
-{% block page_header %}
-{% if view_action == "create" %}
-CREATE A JOB POST
-{% elif view_action == "update" %}
-UPDATE A JOB POST
-{% endif %}{% endblock %}
+{% block page_header %}JOB BOARD{% endblock %}
 
 {% block extra_head %}
 <script>

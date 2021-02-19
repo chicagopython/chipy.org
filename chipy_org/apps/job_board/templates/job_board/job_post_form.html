@@ -1,5 +1,12 @@
 {% extends "job_board/base.html" %}
     
+{% block page_header %}
+{% if view_action == "create" %}
+    CREATE A JOB POST
+{% elif view_action == "update" %}
+    UPDATE A JOB POST
+{% endif %}
+{% endblock %}
 
 {% block body %}
   

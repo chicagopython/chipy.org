@@ -1,13 +1,6 @@
 version: 2
 jobs:
   build: # required for runs that don't use workflows
-    filters:
-      branches:
-        only:
-          - main
-          - develop
-          - /rc-.*/
-          - /feature/*
     working_directory: ~/circleci-app
     docker:
       - image: circleci/python:3.8.6

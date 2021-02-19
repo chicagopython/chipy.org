@@ -15,7 +15,7 @@ from chipy_org.apps.sponsors.models import Sponsor, SponsorGroup
 
 
 class Home(TemplateView, InitialRSVPMixin):
-    template_name = "shiny/homepage.html"
+    template_name = "main/homepage.html"
 
     def get_non_main_meetings(self, num):
         return (

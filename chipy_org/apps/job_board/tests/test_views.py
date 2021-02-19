@@ -74,7 +74,7 @@ def test_login_required_to_modify_posts(action, client, job_post):
 def test_can_get_create_form(authenticated_client):
     response = authenticated_client.get(reverse("create-job-post"))
     assert response.status_code == 200
-    assert b"Create a Job Post" in response.content
+    assert b"CREATE A JOB POST" in response.content
 
 
 def test_cannot_view_before_approval(client, job_post):

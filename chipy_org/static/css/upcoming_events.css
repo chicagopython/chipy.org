@@ -73,7 +73,7 @@ body {
 /* The circles on the timeline */
 
   .left-container-inactive::after {
-    content: url("img/icon-inactive-node-29px.png");
+    content: url("/static/img/icon-inactive-node-29px.png");
     position: absolute;
     right: 0px;
     top: 45px;
@@ -81,29 +81,30 @@ body {
   }
 
   .right-container-inactive::after {
-    content: url("img/icon-inactive-node-29px.png");
+    content: url("/static/img/icon-inactive-node-29px.png");
     position: absolute;
     left: 0px;
     top: 45px;
     z-index: 1;
   }
 
-
-  .left-container-active::after {
-    content: url("img/icon-active-node-29px.png");
+.left-container-active::after {
+    content: url("/static/img/icon-active-node-29px.png");
     position: absolute;
     right: 0px;
     top: 45px;
     z-index: 1;
   }
 
+
   .right-container-active::after {
-    content: url("img/icon-active-node-29px.png");
+    content: url("/static/img/icon-active-node-29px.png");
     position: absolute;
     left: 0px;
     top: 45px;
     z-index: 1;
   }
+
 
   /* Place the container to the left */
   .left {

@@ -253,3 +253,99 @@ a.no-underline{
   }
 
 }
+
+@media screen and (max-width: 412px) {
+  .timeline{
+    width: 375px;  
+}
+/* Container around content */
+.right-container-inactive {
+  padding-left: 60px;
+  padding-right: 0px;
+  padding-top: 30px;
+  padding-bottom: 0px;
+  position: relative;
+  background-color: inherit;
+  width: 335px;
+}
+
+.left-container-inactive {
+  padding-left: 0px;
+  padding-right: 60px;
+  padding-top: 30px;
+  padding-bottom: 0px;
+  position: relative;
+  background-color: inherit;
+  width: 335px;
+}
+
+ /* Container around content */
+ .right-container-active {
+  padding-left: 60px;
+  padding-right: 0px;
+  padding-top: 30px;
+  padding-bottom: 0px;
+  position: relative;
+  background-color: inherit;
+  width: 335px;
+}
+
+.left-container-active {
+  padding-left: 0px;
+  padding-right: 60px;
+  padding-top: 30px;
+  padding-bottom: 0px;
+  position: relative;
+  background-color: inherit;
+  width: 335px;
+
+}
+
+/* Arrow */
+.right::before {
+  display:none;
+}
+
+/* Arrows */
+.left::before {
+  display:none;
+}
+
+/* Move left container to the left */
+.left {
+  left: 58px;
+}
+
+/* Make sure all circles are at the same spot */
+.left::after{
+  left: -42px;
+}
+
+.day-text{
+  font-weight: 900;
+  letter-spacing: 0.15px;
+  color: #555;
+  font-size: 44px;
+  line-height: .93;
+}
+
+.day-of-week-text{
+  font-weight: 800;
+  letter-spacing: 0.15px;
+  color: #555;
+  font-size: 17px;
+  line-height: 1;
+  padding-left:4px;
+  padding-top:3px;
+}
+
+.month-and-year-text{
+  font-weight: 400;
+  letter-spacing: 0.15px;
+  color: #555;
+  font-size: 17px;
+  line-height: 1.1;
+  padding-left:4px;
+}
+
+}

@@ -215,8 +215,7 @@ a.no-underline{
   .timeline::after {
         left: 31px;
       }
-    
-  
+
     /* Make sure all circles are at the same spot */
       .left::after, .right::after {
         left: 15px;
@@ -226,7 +225,7 @@ a.no-underline{
       .right {
         left: 0;
       }
-    
+
       .left-container-inactive, .left-container-active {
           padding-left: 80px;
           padding-right: 0px;
@@ -234,20 +233,18 @@ a.no-underline{
           padding-bottom: 0px;
           width: 394px;
       }
-  
+
       /* Container around content */
     .right-container-inactive, .right-container-active {
       padding-left: 80px;
       width: 394px;
-    }  
-  
-  
-  
+    }
+
   /* Arrows */
   .right::before {
       left: 65px;
   }
-  
+
   /* Arrows */
   .left::before {
       left: 65px;

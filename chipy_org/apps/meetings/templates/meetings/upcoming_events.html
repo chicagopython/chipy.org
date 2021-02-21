@@ -8,100 +8,50 @@
 {% block page_header %}UPCOMING EVENTS{% endblock %}
 
 {% block content %}
-<div class="container-fluid blue-gradient-bg">
+    <div class="container-fluid blue-gradient-bg">
         <div class="timeline">
-            <div class="left-container-inactive left">
-                <div class="content">
-                    <div class="d-flex flex-column">  
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="d-flex justify-content-start" >
-                                <div class="day-text">
-                                    12
-                                </div> <!--closes day-text-->
-                                <div class="d-flex flex-column">
-                                    <div class="day-of-week-text">
-                                        Wednesday
-                                    </div><!--closes day of the week text-->
-                                    <div class="month-and-year-text">
-                                        FEB 2021
-                                    </div><!--closes month and year text-->
-                                </div><!--closes flex-column-->
-                            </div><!--closes d-flex justify content start-->
-                            <!--<a id="rsvp-button"
-                                class="btn btn-primary my-2 my-sm-0 mx-3 rsvp"
-                                data-bs-toggle="modal"
-                                data-bs-target="#rsvp-modal" href="#">RSVP
-                            </a>-->
-                        </div><!--closes d-flex justify content between-->
-                        
-                        <div class="mt-2">
-                        <a class="no-underline" href="#">ChiPy __Main__ Meetings</a>
-                        </div><!--closes mt-2-->
-                    
-                    </div><!--closes d-flex justify-content-between-->
-                </div> <!--closes content-->
-            </div> <!--closes node-->
 
-            <div class="right-container-active right">
-              <div class="content">
-                    <div class="d-flex flex-column">  
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="d-flex justify-content-start" >
-                                    <div class="day-text">28</div>
-                                    <div class="d-flex flex-column">
-                                        <div class="day-of-week-text">Wednesday</div>
-                                        <div class="month-and-year-text">FEB 2021</div>
-                                    </div>
-                                </div>
-                                <a id="rsvp-button"
-                                        class="btn btn-danger my-2 my-sm-0 mx-3 rsvp"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#rsvp-modal" href="#">RSVP</a>
-                            </div>
-                            <div class="mt-2">
-                                <a class="no-underline" href="#">ChiPy __Main__ Meetings</a>
-                            </div>
-                            </div>
-              </div>
-            </div>
-            
-            <div class="left-container-active left">
+            {% for event in events%}
+
+            <div class="{{ event.node_orientation}}-container-{{event.time_status}} {{ event.node_orientation}}">
                 <div class="content">
                     <div class="d-flex flex-column">  
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="d-flex justify-content-start" >
                                 <div class="day-text">
-                                    6
+                                    {{ event.meeting.when|date:"j" }}
                                 </div> <!--closes day-text-->
                                 <div class="d-flex flex-column">
                                     <div class="day-of-week-text">
-                                        Wednesday
+                                        {{ event.meeting.when|date:"l" }}
                                     </div><!--closes day of the week text-->
                                     <div class="month-and-year-text">
-                                        MAR 2021
+                                        {{ event.meeting.when|date:"M Y"|upper }}
                                     </div><!--closes month and year text-->
                                 </div><!--closes flex-column-->
                             </div><!--closes d-flex justify content start-->
-                            <a id="rsvp-button"
-                                class="btn btn-primary my-2 my-sm-0 mx-3 rsvp"
-                                data-bs-toggle="modal"
-                                data-bs-target="#rsvp-modal" href="#">RSVP
+                            
+                            {% if event.time_status == "active" %}
+                            <a href="#">
+                                <button class="btn btn-primary my-2 my-sm-0 mx-3 rsvp">RSVP</button>
                             </a>
+                            {% endif %}
+
                         </div><!--closes d-flex justify content between-->
                         
                         <div class="mt-2">
-                        <a class="no-underline" href="#">ChiPy __Main__ Meetings</a>
+                        <a class="no-underline" href="#">{{ event.meeting.title }}</a>
                         </div><!--closes mt-2-->
                     
                     </div><!--closes d-flex justify-content-between-->
                 </div> <!--closes content-->
             </div> <!--closes node-->
-
+            {% endfor %}
 
         </div><!--closes timeline-->
 
         <div id="upcoming-events-button" class="d-flex justify-content-center py-5">
-            <a href="#"><button class="btn btn-lg btn-danger">ALL UPCOMING EVENTS</button></a>
+            <a href="{% url 'future_meetings' %}"><button class="btn btn-lg btn-danger">SEE MORE EVENTS</button></a>
         </div>
     </div><!--closes container-->
 

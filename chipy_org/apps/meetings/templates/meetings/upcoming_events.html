@@ -1,0 +1,106 @@
+{% extends 'shiny/site_base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/upcoming_events.css' %}">
+{% endblock %}
+
+{% block content %}
+
+        <div class="timeline">
+            <div class="left-container-inactive left">
+                <div class="content">
+                    <div class="d-flex flex-column">  
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex justify-content-start" >
+                                <div class="day-text">
+                                    12
+                                </div> <!--closes day-text-->
+                                <div class="d-flex flex-column">
+                                    <div class="day-of-week-text">
+                                        Wednesday
+                                    </div><!--closes day of the week text-->
+                                    <div class="month-and-year-text">
+                                        FEB 2021
+                                    </div><!--closes month and year text-->
+                                </div><!--closes flex-column-->
+                            </div><!--closes d-flex justify content start-->
+                            <!--<a id="rsvp-button"
+                                class="btn btn-primary my-2 my-sm-0 mx-3 rsvp"
+                                data-bs-toggle="modal"
+                                data-bs-target="#rsvp-modal" href="#">RSVP
+                            </a>-->
+                        </div><!--closes d-flex justify content between-->
+                        
+                        <div class="mt-2">
+                        <a class="no-underline" href="#">ChiPy __Main__ Meetings</a>
+                        </div><!--closes mt-2-->
+                    
+                    </div><!--closes d-flex justify-content-between-->
+                </div> <!--closes content-->
+            </div> <!--closes node-->
+
+            <div class="right-container-active right">
+              <div class="content">
+                    <div class="d-flex flex-column">  
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="d-flex justify-content-start" >
+                                    <div class="day-text">28</div>
+                                    <div class="d-flex flex-column">
+                                        <div class="day-of-week-text">Wednesday</div>
+                                        <div class="month-and-year-text">FEB 2021</div>
+                                    </div>
+                                </div>
+                                <a id="rsvp-button"
+                                        class="btn btn-danger my-2 my-sm-0 mx-3 rsvp"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#rsvp-modal" href="#">RSVP</a>
+                            </div>
+                            <div class="mt-2">
+                                <a class="no-underline" href="#">ChiPy __Main__ Meetings</a>
+                            </div>
+                            </div>
+              </div>
+            </div>
+            
+            <div class="left-container-active left">
+                <div class="content">
+                    <div class="d-flex flex-column">  
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex justify-content-start" >
+                                <div class="day-text">
+                                    6
+                                </div> <!--closes day-text-->
+                                <div class="d-flex flex-column">
+                                    <div class="day-of-week-text">
+                                        Wednesday
+                                    </div><!--closes day of the week text-->
+                                    <div class="month-and-year-text">
+                                        MAR 2021
+                                    </div><!--closes month and year text-->
+                                </div><!--closes flex-column-->
+                            </div><!--closes d-flex justify content start-->
+                            <a id="rsvp-button"
+                                class="btn btn-primary my-2 my-sm-0 mx-3 rsvp"
+                                data-bs-toggle="modal"
+                                data-bs-target="#rsvp-modal" href="#">RSVP
+                            </a>
+                        </div><!--closes d-flex justify content between-->
+                        
+                        <div class="mt-2">
+                        <a class="no-underline" href="#">ChiPy __Main__ Meetings</a>
+                        </div><!--closes mt-2-->
+                    
+                    </div><!--closes d-flex justify-content-between-->
+                </div> <!--closes content-->
+            </div> <!--closes node-->
+
+
+        </div><!--closes timeline-->
+
+        <div id="upcoming-events-button" class="d-flex justify-content-center mt-4">
+            <a href="#"><button class="btn btn-lg btn-danger">ALL UPCOMING EVENTS</button></a>
+        </div>
+
+
+{% endblock %}

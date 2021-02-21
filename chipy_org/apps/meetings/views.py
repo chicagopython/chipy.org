@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, ModelFormMixin, ProcessFormView, UpdateView
 from rest_framework.generics import ListAPIView
@@ -357,3 +357,6 @@ class MeetingMeetupSync(APIView):
         meeting = get_object_or_404(Meeting, pk=meeting_id)
         meetup_meeting_sync(settings.MEETUP_API_KEY, meeting.meetup_id)
         return Response()
+
+class UpcomingEvents(TemplateView):
+    template_name = "meetings/upcoming_events.html"

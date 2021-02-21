@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="{% static 'css/upcoming_events.css' %}">
 {% endblock %}
 
+<!--Code reference: https://www.w3schools.com/howto/howto_css_timeline.asp-->
+
 {% block page_header %}UPCOMING EVENTS{% endblock %}
 
 {% block content %}
@@ -32,7 +34,7 @@
                             </div><!--closes d-flex justify content start-->
                             
                             {% if event.time_status == "active" %}
-                            <a href="#">
+                            <a href="{% url 'meeting' event.meeting.id %}">
                                 <button class="btn btn-primary my-2 my-sm-0 mx-3 rsvp">RSVP</button>
                             </a>
                             {% endif %}
@@ -40,7 +42,7 @@
                         </div><!--closes d-flex justify content between-->
                         
                         <div class="mt-2">
-                        <a class="no-underline" href="#">{{ event.meeting.title }}</a>
+                        <a class="no-underline" href="{% url 'meeting' event.meeting.id %}">{{ event.meeting.title }}</a>
                         </div><!--closes mt-2-->
                     
                     </div><!--closes d-flex justify-content-between-->

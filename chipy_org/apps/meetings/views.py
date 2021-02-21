@@ -358,5 +358,54 @@ class MeetingMeetupSync(APIView):
         meetup_meeting_sync(settings.MEETUP_API_KEY, meeting.meetup_id)
         return Response()
 
+
 class UpcomingEvents(TemplateView):
     template_name = "meetings/upcoming_events.html"
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        upcoming_events = Meeting.objects.filter(
+            when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
+        ).order_by("when")[:5]
+
+        if upcoming_events.count() > 1:
+            past_events = Meeting.objects.filter(
+                when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+            ).order_by("-when")[:1]
+        else:
+            past_events = Meeting.objects.filter(
+                when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+            ).order_by("when")[:2]
+
+        events = []
+
+        node_orientation = "left"
+        for past_event in past_events:
+            events.append(
+                {
+                    "meeting": past_event,
+                    "time_status": "inactive",
+                    "node_orientation": node_orientation,
+                }
+            )
+            if node_orientation == "left":
+                node_orientation = "right"
+            else:
+                node_orientation = "left"
+
+        for upcoming_event in upcoming_events:
+            events.append(
+                {
+                    "meeting": upcoming_event,
+                    "time_status": "active",
+                    "node_orientation": node_orientation,
+                }
+            )
+            if node_orientation == "left":
+                node_orientation = "right"
+            else:
+                node_orientation = "left"
+
+        data["events"] = events
+        return data

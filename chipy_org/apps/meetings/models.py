@@ -149,7 +149,7 @@ class Meeting(CommonModel):
             return self.custom_title
         if self.meeting_type and self.meeting_type.default_title:
             return self.meeting_type.default_title
-        return "In the Loop"  # quasi default title for the main meeting
+        return "ChiPy __Main__ Meeting"  # quasi default title for the main meeting
 
 
 class Presenter(CommonModel):

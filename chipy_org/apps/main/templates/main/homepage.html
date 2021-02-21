@@ -19,7 +19,7 @@
                 <a id="events-button" class="btn btn-primary btn-lg" href="#next-event">NEXT EVENT: {{ next_meeting.when|date:"M j" }}</a>
             </div>
             <div class="p-2" >
-                <a id="future-events-button" class="btn btn-danger btn-lg" href="{% url 'future_meetings' %}">SEE ALL UPCOMING EVENTS</a>
+                <a id="future-events-button" class="btn btn-danger btn-lg" href="{% url 'upcoming_events' %}">SEE ALL UPCOMING EVENTS</a>
             </div>
         </div>
     </div><!--closes container-->

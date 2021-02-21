@@ -379,6 +379,7 @@ class UpcomingEvents(TemplateView):
             ).order_by("when")[:2]
 
         events = []
+        # append both past_events and current_events together
 
         node_orientation = "left"
         for past_event in past_events:

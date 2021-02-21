@@ -13,6 +13,7 @@ from .views import (
     ProposeTopic,
     RSVPlistHost,
     RSVPlistPrivate,
+    UpcomingEvents,
     UpdateRSVP,
 )
 
@@ -38,4 +39,5 @@ urlpatterns = [
     url(r"^topics/mine/$", login_required(MyTopics.as_view()), name="my_topics"),
     url(r"^topics/past/$", PastTopics.as_view(), name="past_topics"),
     url(r"^topics/past/(?P<id>\d+)/$", PastTopic.as_view(), name="past_topic"),
+    url(r"^upcoming_events/", UpcomingEvents.as_view(), name="upcoming_events"),
 ]

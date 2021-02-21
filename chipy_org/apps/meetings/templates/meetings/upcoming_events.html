@@ -1,12 +1,14 @@
-{% extends 'shiny/site_base.html' %}
+{% extends 'shiny/slim.html' %}
 {% load static %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/upcoming_events.css' %}">
 {% endblock %}
 
-{% block content %}
+{% block page_header %}UPCOMING EVENTS{% endblock %}
 
+{% block content %}
+<div class="container-fluid blue-gradient-bg">
         <div class="timeline">
             <div class="left-container-inactive left">
                 <div class="content">
@@ -98,9 +100,9 @@
 
         </div><!--closes timeline-->
 
-        <div id="upcoming-events-button" class="d-flex justify-content-center mt-4">
+        <div id="upcoming-events-button" class="d-flex justify-content-center py-5">
             <a href="#"><button class="btn btn-lg btn-danger">ALL UPCOMING EVENTS</button></a>
         </div>
-
+    </div><!--closes container-->
 
 {% endblock %}

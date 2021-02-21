@@ -3,7 +3,7 @@
   }
   
 /* Set a background color */
-body {
+.blue-gradient-bg {
    background-image: linear-gradient(106deg, #0aacda 11%, #3bcde9 44%, #44cbc7 88%);
 }
   
@@ -12,7 +12,6 @@ body {
     position: relative;
     width: 720px;
     margin: 0 auto;
-    
   }
   
   /* The actual timeline (the vertical ruler) */

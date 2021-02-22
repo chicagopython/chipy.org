@@ -369,13 +369,12 @@ class UpcomingEvents(TemplateView):
             when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
         ).order_by("when")[:5]
 
-
         all_past_events = Meeting.objects.filter(
-                when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
-            ).order_by("-when")
-        
+            when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+        ).order_by("-when")
+
         if upcoming_events.count() > 1:
-            past_events=all_past_events[:1]
+            past_events = all_past_events[:1]
         else:
             # Assume you have past events [event1, event2, event3].
             # When you order by "-when", it will give you the result [event3, event2, event1].
@@ -385,11 +384,12 @@ class UpcomingEvents(TemplateView):
             # Finally, you must reverse this result order so that it becomes [event2, event3].
 
             # This is because assume you have upcoming event [event4].
-            # When you merge past_events and upcoming_events together, they have to be  chronological.
+            # When you merge past_events and upcoming_events
+            # together, they have to be chronological.
             # So [event2, event3] + [event4] --> [event2, event3, event4]
 
             past_events = all_past_events[:2]
-            past_events= list(reversed(past_events))
+            past_events = list(reversed(past_events))
 
         events = []
         # append both past_events and current_events together

@@ -143,11 +143,11 @@
     padding-left:5px;
 }
 
-.no-underline {
+.meeting-title-text {
     text-decoration: none;
 }
 
-a.no-underline {
+a.meeting-title-text {
     font-weight:800;
 }
 

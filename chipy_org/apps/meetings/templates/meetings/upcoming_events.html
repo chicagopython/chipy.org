@@ -35,14 +35,14 @@
                             
                             {% if event.time_status == "active" %}
                             <a href="{% url 'meeting' event.meeting.id %}">
-                                <button class="btn btn-primary mx-3 rsvp">RSVP</button>
+                                <button class="btn btn-primary mx-3">RSVP</button>
                             </a>
                             {% endif %}
 
                         </div><!--closes d-flex justify content between-->
                         
                         <div class="mt-2">
-                        <a class="no-underline" href="{% url 'meeting' event.meeting.id %}">{{ event.meeting.title }}</a>
+                        <a class="meeting-title-text" href="{% url 'meeting' event.meeting.id %}">{{ event.meeting.title }}</a>
                         </div><!--closes mt-2-->
                     
                     </div><!--closes d-flex justify-content-between-->

@@ -236,13 +236,17 @@ ul.no-bullets {
     border-radius: 34px;
 }
 
-#navigation {position: absolute; width: 100%; margin: 0 auto;}
+#navigation {
+    position: absolute; 
+    width: 100%; 
+    margin: 0 auto;
+    z-index: 100;
+}
 
 .nav-sticky-top.scrolled {
     background-color: #000 !important;
     position: fixed !important; 
     top: 0;
-    z-index: 100;
 }
 
 /* Medium devices (tablets, less than 992px) */

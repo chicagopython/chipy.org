@@ -27,102 +27,62 @@
   }
   
   /* Container around content */
-  .event-container-right-inactive {
-    padding-left: 60px;
-    padding-right: 0px;
-    padding-top: 30px;
-    padding-bottom: 0px;
-    position: relative;
+  .event-container {
     background-color: inherit;
-    width: 374px;
-  }
-  
-  .event-container-left-inactive {
-    padding-left: 0px;
-    padding-right: 60px;
-    padding-top: 30px;
     padding-bottom: 0px;
+    padding-top: 30px;
     position: relative;
-    background-color: inherit;
     width: 374px;
   }
 
-   /* Container around content */
-   .event-container-right-active {
+  .event-container-right {
+    left: 346px;
     padding-left: 60px;
     padding-right: 0px;
-    padding-top: 30px;
-    padding-bottom: 0px;
-    position: relative;
-    background-color: inherit;
-    width: 374px;
   }
   
-  .event-container-left-active {
+  .event-container-left {
+    left: 0;
     padding-left: 0px;
     padding-right: 60px;
-    padding-top: 30px;
-    padding-bottom: 0px;
-    position: relative;
-    background-color: inherit;
-    width: 374px;
-  
   }
 
 /* The circles on the timeline */
-
-  .event-container-left-inactive::after {
-    content: url("/static/img/icon-inactive-node-29px.png");
+  .event-container::after {
     position: absolute;
+    z-index: 1;
+  }
+
+  .event-container-left::after {
     right: 0px;
     top: 45px;
-    z-index: 1;
   }
 
-  .event-container-right-inactive::after {
+  .event-container-right::after {
+    left: -1px;
+    top: 45px;
+    /* Fix the circle for containers on the right side */
+  }
+
+  .event-container-inactive::after{
     content: url("/static/img/icon-inactive-node-29px.png");
-    position: absolute;
-    left: 0px;
-    top: 45px;
-    z-index: 1;
   }
 
-.event-container-left-active::after {
+  .event-container-active::after {
     content: url("/static/img/icon-active-node-29px.png");
-    position: absolute;
-    right: 0px;
-    top: 45px;
-    z-index: 1;
-  }
-
-
-  .event-container-right-active::after {
-    content: url("/static/img/icon-active-node-29px.png");
-    position: absolute;
-    left: 0px;
-    top: 45px;
-    z-index: 1;
-  }
-
-
-  /* Place the container to the left */
-  .event-container-left {
-    left: 0;
-  }
-  
-  /* Place the container to the right */
-  .event-container-right {
-    left: 346px;
   }
   
   /* Add arrows to the left container (pointing right) */
-  .event-container-left::before {
+  .event-container::before {
     content: " ";
     height: 0;
     position: absolute;
     top: 45px;
     width: 0;
     z-index: 1;
+  }
+
+  .event-container-left::before {
     right: 45px;
     border: medium solid orange;
     border-width: 15px 0 15px 15px;
@@ -131,21 +91,10 @@
   
   /* Add arrows to the right container (pointing left) */
   .event-container-right::before {
-    content: " ";
-    height: 0;
-    position: absolute;
-    top: 45px;
-    width: 0;
-    z-index: 1;
     left: 45px;
     border: medium solid white;
     border-width: 15px 15px 15px 0;
     border-color: transparent white transparent transparent;
-  }
-  
-  /* Fix the circle for containers on the right side */
-  .event-container-right::after {
-    left: -1px;
   }
   
   /* The actual content */
@@ -217,7 +166,7 @@ a.no-underline{
       }
 
     /* Make sure all circles are at the same spot */
-      .event-container-left::after, .event-container-right::after {
+      .event-container::after {
         left: 15px;
       }
     
@@ -226,7 +175,7 @@ a.no-underline{
         left: 0;
       }
 
-      .event-container-left-inactive, .event-container-left-active {
+      .event-container-left {
           padding-left: 80px;
           padding-right: 0px;
           padding-top: 30px;
@@ -234,20 +183,18 @@ a.no-underline{
           width: 394px;
       }
 
-      /* Container around content */
-    .event-container-right-inactive, .event-container-right-active {
-      padding-left: 80px;
-      width: 394px;
-    }
+      .event-container-right {
+        padding-left: 80px;
+        width: 394px;
+      }
 
   /* Arrows */
-  .event-container-right::before {
+  .event-container::before {
       left: 65px;
   }
 
   /* Arrows */
   .event-container-left::before {
-      left: 65px;
       border-width: 15px 15px 15px 0;
       border-color: transparent white transparent transparent;
   }
@@ -259,55 +206,27 @@ a.no-underline{
     width: 375px;  
 }
 /* Container around content */
-.event-container-right-inactive {
+.event-container {
+  background-color: inherit;
+  padding-bottom: 0px;
+  padding-top: 30px;
+  position: relative;
+  width: 335px;
+}
+
+.event-container-right {
   padding-left: 60px;
   padding-right: 0px;
-  padding-top: 30px;
-  padding-bottom: 0px;
-  position: relative;
-  background-color: inherit;
-  width: 335px;
 }
 
-.event-container-left-inactive {
+.event-container-left {
   padding-left: 0px;
   padding-right: 60px;
-  padding-top: 30px;
-  padding-bottom: 0px;
-  position: relative;
-  background-color: inherit;
-  width: 335px;
 }
 
- /* Container around content */
- .event-container-right-active {
-  padding-left: 60px;
-  padding-right: 0px;
-  padding-top: 30px;
-  padding-bottom: 0px;
-  position: relative;
-  background-color: inherit;
-  width: 335px;
-}
-
-.event-container-left-active {
-  padding-left: 0px;
-  padding-right: 60px;
-  padding-top: 30px;
-  padding-bottom: 0px;
-  position: relative;
-  background-color: inherit;
-  width: 335px;
-
-}
 
 /* Arrow */
-.event-container-right::before {
-  display:none;
-}
-
-/* Arrows */
-.event-container-left::before {
+.event-container::before {
   display:none;
 }
 

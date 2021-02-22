@@ -27,7 +27,7 @@
   }
   
   /* Container around content */
-  .right-container-inactive {
+  .event-container-right-inactive {
     padding-left: 60px;
     padding-right: 0px;
     padding-top: 30px;
@@ -37,7 +37,7 @@
     width: 374px;
   }
   
-  .left-container-inactive {
+  .event-container-left-inactive {
     padding-left: 0px;
     padding-right: 60px;
     padding-top: 30px;
@@ -48,7 +48,7 @@
   }
 
    /* Container around content */
-   .right-container-active {
+   .event-container-right-active {
     padding-left: 60px;
     padding-right: 0px;
     padding-top: 30px;
@@ -58,7 +58,7 @@
     width: 374px;
   }
   
-  .left-container-active {
+  .event-container-left-active {
     padding-left: 0px;
     padding-right: 60px;
     padding-top: 30px;
@@ -71,7 +71,7 @@
 
 /* The circles on the timeline */
 
-  .left-container-inactive::after {
+  .event-container-left-inactive::after {
     content: url("/static/img/icon-inactive-node-29px.png");
     position: absolute;
     right: 0px;
@@ -79,7 +79,7 @@
     z-index: 1;
   }
 
-  .right-container-inactive::after {
+  .event-container-right-inactive::after {
     content: url("/static/img/icon-inactive-node-29px.png");
     position: absolute;
     left: 0px;
@@ -87,7 +87,7 @@
     z-index: 1;
   }
 
-.left-container-active::after {
+.event-container-left-active::after {
     content: url("/static/img/icon-active-node-29px.png");
     position: absolute;
     right: 0px;
@@ -96,7 +96,7 @@
   }
 
 
-  .right-container-active::after {
+  .event-container-right-active::after {
     content: url("/static/img/icon-active-node-29px.png");
     position: absolute;
     left: 0px;
@@ -226,7 +226,7 @@ a.no-underline{
         left: 0;
       }
 
-      .left-container-inactive, .left-container-active {
+      .event-container-left-inactive, .event-container-left-active {
           padding-left: 80px;
           padding-right: 0px;
           padding-top: 30px;
@@ -235,7 +235,7 @@ a.no-underline{
       }
 
       /* Container around content */
-    .right-container-inactive, .right-container-active {
+    .event-container-right-inactive, .event-container-right-active {
       padding-left: 80px;
       width: 394px;
     }
@@ -259,7 +259,7 @@ a.no-underline{
     width: 375px;  
 }
 /* Container around content */
-.right-container-inactive {
+.event-container-right-inactive {
   padding-left: 60px;
   padding-right: 0px;
   padding-top: 30px;
@@ -269,7 +269,7 @@ a.no-underline{
   width: 335px;
 }
 
-.left-container-inactive {
+.event-container-left-inactive {
   padding-left: 0px;
   padding-right: 60px;
   padding-top: 30px;
@@ -280,7 +280,7 @@ a.no-underline{
 }
 
  /* Container around content */
- .right-container-active {
+ .event-container-right-active {
   padding-left: 60px;
   padding-right: 0px;
   padding-top: 30px;
@@ -290,7 +290,7 @@ a.no-underline{
   width: 335px;
 }
 
-.left-container-active {
+.event-container-left-active {
   padding-left: 0px;
   padding-right: 60px;
   padding-top: 30px;

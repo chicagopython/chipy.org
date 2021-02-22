@@ -112,6 +112,14 @@
     letter-spacing: 0.25px;
 }
 
+.event-container-inactive .event-text {
+    color: #ccc;
+}
+
+.event-container-inactive a {
+    color: #def;
+}
+
 .day-text {
     font-weight: 900;
     font-size: 48px;
@@ -241,6 +249,11 @@ a.no-underline {
     .event-text {
         color: #555;
         letter-spacing: 0.15px;
+    }
+
+    .event-container-inactive .event-text {
+        color: #def;
+        opacity: .2;
     }
 
     .day-text {

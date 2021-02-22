@@ -112,6 +112,16 @@
     letter-spacing: 0.25px;
 }
 
+/* Lighten the texts for the inactive nodes */
+.event-container-inactive .event-text {
+    color: #888;
+}
+
+.event-container-inactive a {
+    color: #34abc9;
+}
+
+/* Normal text */
 .day-text {
     font-weight: 900;
     font-size: 48px;
@@ -240,7 +250,6 @@ a.no-underline {
     }
 
     .event-text {
-        color: #555;
         letter-spacing: 0.15px;
         }
 

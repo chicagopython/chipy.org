@@ -161,6 +161,16 @@ a.meeting-title-text {
     color: #fff;
 }
 
+/* this rsvp button shows up in desktop/tablet and larger phone size */
+.rsvp-right-button {
+    display: block;
+}
+
+/* this rsvp button is invisible in desktop/tablet and larger phone size */
+.rsvp-bottom-button {
+    display: none;
+}
+
 /* Media queries - Responsive timeline on screens less than 731px wide */
 @media screen and (max-width: 730px) {
 
@@ -272,5 +282,36 @@ a.meeting-title-text {
         font-size: 17px;
         line-height: 1.1;
         padding-left:4px;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .timeline {
+        width: 300px;
+    }
+ 
+    /* Container around content */
+    .event-container {
+        width: 280px;
+    }
+
+    a.meeting-title-text {
+        font-size: 16px;
+    }
+
+    /* At x-small phone size, this rsvp button disappears */
+    .rsvp-right-button {
+        display: none;
+    }
+
+    /* At x-small phone size, this rsvp button appears */
+    .rsvp-bottom-button {
+        display:block;
+    }
+
+    /* This is text for the title in the header. */
+    /* Normally, this would be in shiny.css */
+    .title-medium {
+        font-size: 27px;
     }
 }

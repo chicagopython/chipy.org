@@ -10,7 +10,7 @@
 /* The actual timeline (the vertical ruler) */
 .timeline {
     position: relative;
-    width: 720px;
+    width: 736px;
     margin: 0 auto;
     background-color: royalblue;
 }
@@ -23,7 +23,7 @@
     background-color: #d4d4d4;
     top: 0;
     bottom: 0;
-    left: 360px;
+    left: 368px;
     margin-left: -2px;
 }
 
@@ -33,7 +33,7 @@
     padding-bottom: 0px;
     padding-top: 0px;
     position: relative;
-    width: 314px;
+    width: 322px;
     box-shadow: 0px 0px 6px #555;
     border-radius: 8px;
     background-color: white;
@@ -41,7 +41,7 @@
 }
 
 .event-container-right {
-    left: 406px;
+    left: 414px;
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -90,7 +90,7 @@
 
 /* Add arrows to both left container(pointing right) */
 .event-container-left::before {
-    left: 304px;
+    left: 312px;
     transform:             rotate( 225deg );
         -moz-transform:    rotate( 225deg );
         -ms-transform:     rotate( 225deg );
@@ -205,6 +205,9 @@ a.meeting-title-text {
         left: 0;
     }
 
+    .event-container{
+        width: 
+    }
     .event-container-left {
         padding-left: 80px;
         padding-right: 0px;

@@ -81,12 +81,11 @@
     background-color: white;
     content: "\00a0";
     height: 20px;
-    position: relative;
+    position: absolute;
     top: 20px;
     width: 20px;
     box-shadow: -2px 2px 2px 0px #555;
     display: block;
-
 }
 
 /* Add arrows to both left container(pointing right) */

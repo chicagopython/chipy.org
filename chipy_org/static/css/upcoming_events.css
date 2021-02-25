@@ -2,17 +2,13 @@
     box-sizing: border-box;
 }
 
-/* Set a background color */
-.blue-gradient-bg {
-    background-image: white;
-}
 
 /* The actual timeline (the vertical ruler) */
 .timeline {
     position: relative;
     width: 736px;
     margin: 0 auto;
-    background-color: blue;
+    background-color: white;
     padding-top:5px;
 }
 
@@ -34,7 +30,7 @@
     width: 322px;
     box-shadow: 0px 0px 6px #555;
     border-radius: 8px;
-    background-color: yellow;
+    background-color: white;
     margin-top: 30px;
 }
 
@@ -102,7 +98,6 @@
         -webkit-transform: rotate( 45deg );
 }
 
-
 /* The actual content */
 .content {
     padding: 20px 15px;
@@ -124,6 +119,10 @@
 
 .event-container-inactive a {
     color: #34abc9;
+}
+
+.event-container-inactive a:hover {
+    color: #007896;
 }
 
 /* Normal text */
@@ -169,6 +168,10 @@ a.meeting-title-text {
 /* this rsvp button shows up in desktop/tablet and larger phone size */
 .rsvp-right-button {
     display: block;
+}
+
+a, a:hover{
+    text-decoration:none;
 }
 
 /* this rsvp button is invisible in desktop/tablet and larger phone size */
@@ -234,13 +237,10 @@ a.meeting-title-text {
         display:none;
     }
 
-
-
     /* Make sure all circles are at the same spot */
     .event-container-left::after, .event-container-right::after {
         left: -53px;
     }
-
 
     .event-text {
         letter-spacing: 0.15px;

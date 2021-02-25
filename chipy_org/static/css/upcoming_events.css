@@ -197,6 +197,10 @@ a, a:hover{
         left: -66px;
     }
 
+    .event-container-left::after {
+        right: 0px;
+    }
+
     /* Make all right containers behave like the left ones */
 
     .event-container-left, .event-container-right{

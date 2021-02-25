@@ -131,7 +131,7 @@ class MeetingTitleTest(TestCase):
 
     def test_main_meeting_without_custom_field(self):
         meeting = Meeting.objects.create(when=datetime.date.today())
-        self.assertEqual(meeting.title, "In the Loop")
+        self.assertEqual(meeting.title, "ChiPy __Main__ Meeting")
 
     def test_non_main_meeting_with_custom_field(self):
         meeting = Meeting.objects.create(

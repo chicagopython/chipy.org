@@ -222,9 +222,6 @@ a.meeting-title-text {
  
     /* Container around content */
     .event-container {
-
-
-
         width: 288px;
     }
 
@@ -268,14 +265,14 @@ a.meeting-title-text {
     }
 }
 
-@media screen and (max-width: 370px) {
+@media screen and (max-width: 374px) {
     .timeline {
-        width: 300px;
+        width: 310px;
     }
  
     /* Container around content */
     .event-container {
-        width: 280px;
+        width: 230px;
     }
 
     a.meeting-title-text {

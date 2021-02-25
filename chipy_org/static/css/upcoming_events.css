@@ -78,29 +78,37 @@
 
 /* Add arrows to both left and right containers */
 .event-container::before {
-    content: " ";
-    height: 0;
-    position: absolute;
-    top: 45px;
-    width: 0;
-    z-index: 1;
+    background-color: white;
+    content: "\00a0";
+    height: 20px;
+    position: relative;
+    top: 20px;
+    width: 20px;
+    box-shadow: -2px 2px 2px 0px #555;
+    display: block;
+
 }
 
 /* Add arrows to both left container(pointing right) */
 .event-container-left::before {
-    right: 45px;
-    border: medium solid white;
-    border-width: 15px 0 15px 15px;
-    border-color: transparent transparent transparent red;
+    left: 304px;
+    transform:             rotate( 225deg );
+        -moz-transform:    rotate( 225deg );
+        -ms-transform:     rotate( 225deg );
+        -o-transform:      rotate( 225deg );
+        -webkit-transform: rotate( 225deg );
 }
 
 /* Add arrows to the right container (pointing left) */
 .event-container-right::before {
-    left: 45px;
-    border: medium solid white;
-    border-width: 15px 15px 15px 0;
-    border-color: transparent red transparent transparent;
+    left: -10px;
+    transform:             rotate( 45deg );
+        -moz-transform:    rotate( 45deg );
+        -ms-transform:     rotate( 45deg );
+        -o-transform:      rotate( 45deg );
+        -webkit-transform: rotate( 45deg );
 }
+
 
 /* The actual content */
 .content {

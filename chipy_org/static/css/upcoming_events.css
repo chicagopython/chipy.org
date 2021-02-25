@@ -4,7 +4,7 @@
 
 /* Set a background color */
 .blue-gradient-bg {
-    background-image: linear-gradient(106deg, #0aacda 11%, #3bcde9 44%, #44cbc7 88%);
+    background-image: white;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -12,7 +12,7 @@
     position: relative;
     width: 736px;
     margin: 0 auto;
-    background-color: royalblue;
+    background-color: white;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -29,9 +29,6 @@
 
 /* Container around content */
 .event-container {
-    background-color: inherit;
-    padding-bottom: 0px;
-    padding-top: 0px;
     position: relative;
     width: 322px;
     box-shadow: 0px 0px 6px #555;
@@ -42,14 +39,10 @@
 
 .event-container-right {
     left: 414px;
-    padding-left: 0px;
-    padding-right: 0px;
 }
 
 .event-container-left {
     left: 0;
-    padding-left: 0px;
-    padding-right: 0px;
 }
 
 /* The circles on the timeline */
@@ -84,7 +77,7 @@
     position: absolute;
     top: 20px;
     width: 20px;
-    box-shadow: -2px 2px 2px 0px #555;
+    box-shadow: -2px 2px 2px 0px #aaa;
     display: block;
 }
 
@@ -182,12 +175,12 @@ a.meeting-title-text {
     display: none;
 }
 
-/* Media queries - Responsive timeline on screens less than 731px wide */
-@media screen and (max-width: 730px) {
+/* Media queries - Responsive timeline on screens less than 743px wide */
+@media screen and (max-width: 742px) {
 
     /* Place the timelime to the left */
     .timeline {
-        width: 400px;
+        width: 408px;
     }
 
     /* The actual timeline (the vertical ruler) */
@@ -197,39 +190,26 @@ a.meeting-title-text {
 
     /* Make sure all circles are at the same spot */
     .event-container::after {
-        left: 15px;
+        left: -66px;
     }
 
     /* Make all right containers behave like the left ones */
-    .event-container-right {
-        left: 0;
-    }
 
     .event-container{
-        width: 
-    }
-    .event-container-left {
-        padding-left: 80px;
-        padding-right: 0px;
-        padding-top: 30px;
-        padding-bottom: 0px;
-        width: 394px;
-    }
-
-    .event-container-right {
-        padding-left: 80px;
-        width: 394px;
+        left: 82px;
     }
 
     /* Arrow */
     .event-container::before {
-        left: 65px;
+        left: -10px;
     }
 
-    /* Arrow */
     .event-container-left::before {
-        border-width: 15px 15px 15px 0;
-        border-color: transparent white transparent transparent;
+        transform:         rotate( 45deg );
+        -moz-transform:    rotate( 45deg );
+        -ms-transform:     rotate( 45deg );
+        -o-transform:      rotate( 45deg );
+        -webkit-transform: rotate( 45deg );
     }
 
 }

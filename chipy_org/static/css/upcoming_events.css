@@ -12,7 +12,8 @@
     position: relative;
     width: 736px;
     margin: 0 auto;
-    background-color: white;
+    background-color: blue;
+    padding-top:5px;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -33,7 +34,7 @@
     width: 322px;
     box-shadow: 0px 0px 6px #555;
     border-radius: 8px;
-    background-color: white;
+    background-color: yellow;
     margin-top: 30px;
 }
 
@@ -195,7 +196,7 @@ a.meeting-title-text {
 
     /* Make all right containers behave like the left ones */
 
-    .event-container{
+    .event-container-left, .event-container-right{
         left: 82px;
     }
 
@@ -214,28 +215,21 @@ a.meeting-title-text {
 
 }
 
-@media screen and (max-width: 412px) {
+@media screen and (max-width: 415px) {
     .timeline {
         width: 375px;
     }
  
     /* Container around content */
     .event-container {
-        background-color: inherit;
-        padding-bottom: 0px;
-        padding-top: 30px;
-        position: relative;
-        width: 335px;
+
+
+
+        width: 288px;
     }
 
-    .event-container-right {
-        padding-left: 60px;
-        padding-right: 0px;
-    }
-
-    .event-container-left {
-        padding-left: 0px;
-        padding-right: 60px;
+    .event-container-left, .event-container-right {
+        left: 70px;
     }
 
     /* Arrow */
@@ -243,28 +237,24 @@ a.meeting-title-text {
         display:none;
     }
 
-    /* Move left container to the left */
-    .event-container-left {
-        left: 58px;
-    }
+
 
     /* Make sure all circles are at the same spot */
-    .event-container-left::after {
-        left: -42px;
+    .event-container-left::after, .event-container-right::after {
+        left: -53px;
     }
+
 
     .event-text {
         letter-spacing: 0.15px;
         }
 
     .day-text {
-        font-weight: 900;
         font-size: 44px;
         line-height: .93;
     }
 
     .day-of-week-text {
-        font-weight: 800;
         font-size: 17px;
         line-height: 1;
         padding-left:4px;
@@ -272,7 +262,6 @@ a.meeting-title-text {
     }
 
     .month-and-year-text {
-        font-weight: 400;
         font-size: 17px;
         line-height: 1.1;
         padding-left:4px;

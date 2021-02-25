@@ -12,6 +12,7 @@
     position: relative;
     width: 720px;
     margin: 0 auto;
+    background-color: royalblue;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -30,21 +31,25 @@
 .event-container {
     background-color: inherit;
     padding-bottom: 0px;
-    padding-top: 30px;
+    padding-top: 0px;
     position: relative;
-    width: 374px;
+    width: 314px;
+    box-shadow: 0px 0px 6px #555;
+    border-radius: 8px;
+    background-color: white;
+    margin-top: 30px;
 }
 
 .event-container-right {
-    left: 346px;
-    padding-left: 60px;
+    left: 406px;
+    padding-left: 0px;
     padding-right: 0px;
 }
 
 .event-container-left {
     left: 0;
     padding-left: 0px;
-    padding-right: 60px;
+    padding-right: 0px;
 }
 
 /* The circles on the timeline */
@@ -54,13 +59,13 @@
 }
 
 .event-container-left::after {
-    right: 0px;
-    top: 45px;
+    right: -60px;
+    top: 15px;
 }
 
 .event-container-right::after {
-    left: -1px;
-    top: 45px;
+    left: -61px;
+    top: 15px;
 }
 
 .event-container-inactive::after {
@@ -86,7 +91,7 @@
     right: 45px;
     border: medium solid white;
     border-width: 15px 0 15px 15px;
-    border-color: transparent transparent transparent white;
+    border-color: transparent transparent transparent red;
 }
 
 /* Add arrows to the right container (pointing left) */
@@ -94,15 +99,14 @@
     left: 45px;
     border: medium solid white;
     border-width: 15px 15px 15px 0;
-    border-color: transparent white transparent transparent;
+    border-color: transparent red transparent transparent;
 }
 
 /* The actual content */
 .content {
     padding: 20px 15px;
-    background-color: white;
+
     position: relative;
-    border-radius: 8px;
 }
 
 /* CSS for the text */

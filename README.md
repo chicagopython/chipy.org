@@ -65,7 +65,7 @@ docker/docker.env.
     make setup_env
 
 You may customize the docker/docker.env as needed for your development needs.
-The docker/docker.env file should NOT be committed version control.
+The docker/docker.env file should NOT be committed to version control.
 
 To start the app, you can run the following command. This will start
 up the web app and a database as services using docker-compose.

@@ -1,6 +1,6 @@
 {% for message in messages %}
-    <div class="alert {% if message.tags %} {% for tag in message.tags.split %}alert-{{ tag }} {% endfor %}{% endif %}">
-        <a class="close" href="#" data-dismiss="alert">&times;</a>
+    <div class="alert alert-dismissible {% if message.tags %} {% for tag in message.tags.split %}alert-{{ tag }} {% endfor %}{% endif %} fade show">
+        <a class="close" href="#" data-bs-dismiss="alert" aria-label="Close">&times;</a>
         {{ message|linebreaks }}
     </div>
 {% endfor %}

@@ -17,16 +17,9 @@ from chipy_org.apps.sponsors.models import Sponsor, SponsorGroup
 class Home(TemplateView, InitialRSVPMixin):
     template_name = "main/homepage.html"
 
-    def get_non_main_meetings(self, num):
-        return (
-            Meeting.objects.filter(meeting_type__isnull=False)
-            .filter(when__gt=datetime.datetime.now() - datetime.timedelta(hours=6))
-            .order_by("when")[:num]
-        )
-
     def get_meeting(self):
         return (
-            Meeting.objects.filter(meeting_type__isnull=True)
+            Meeting.objects
             .filter(when__gt=datetime.datetime.now() - datetime.timedelta(hours=6))
             .order_by("when")
             .first()
@@ -36,10 +29,7 @@ class Home(TemplateView, InitialRSVPMixin):
         context = {}
         context.update(kwargs)
         context["IS_HOMEPAGE"] = True
-        context["other_meetings"] = self.get_non_main_meetings(num=3)
         context["featured_sponsor"] = Sponsor.featured_sponsor()
-        context["sponsor_groups"] = SponsorGroup.objects.prefetch_related("sponsors")
-        context["announcement"] = Announcement.objects.featured()
 
         context = self.add_extra_context(context)
         return context

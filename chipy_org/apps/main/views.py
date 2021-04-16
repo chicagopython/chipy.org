@@ -8,10 +8,9 @@ from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader
 from django.views.generic import TemplateView
 
-from chipy_org.apps.announcements.models import Announcement
 from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
-from chipy_org.apps.sponsors.models import Sponsor, SponsorGroup
+from chipy_org.apps.sponsors.models import Sponsor
 
 
 class Home(TemplateView, InitialRSVPMixin):

@@ -36,7 +36,9 @@ For Windows users, we recommend using the package manager Chocolatey to install 
 
 ## Setting up a Local Development Environment using Docker
 
-Sign into your GitHub account. Make a fork of the ChiPy repo at https://github.com/chicagopython/chipy.org by going there and clicking "Fork" on the upper right corner.
+_Note: For a list of steps on how to make your first contribution, see [CONTRIBUTING.md](CONTRIBUTING.md)._
+
+First, sign into your GitHub account. Make a fork of the ChiPy repo at https://github.com/chicagopython/chipy.org by going there and clicking "Fork" on the upper right corner.
 
 Clone this forked repo to your local computer (replace your GitHub username without the brackets):
 

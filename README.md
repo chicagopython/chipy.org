@@ -46,6 +46,8 @@ Make the project directory your working directory:
 
     cd chipy.org
 
+**Note: The `make` commands require Make to be installed, and Docker must be running. Please follow the [Installation](#installation) guide before running the below steps**
+
 Run the setup command to configure the environment. This will copy
 a default configuration file from docker/docker.env.sample to
 docker/docker.env.

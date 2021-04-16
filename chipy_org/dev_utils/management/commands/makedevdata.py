@@ -1,4 +1,6 @@
+import random
 import sys
+import uuid
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -35,7 +37,7 @@ class Command(BaseCommand):
             )
             page.sites.add(site)
 
-        # add user
+        # Add a user
         tyler, _ = User.objects.get_or_create(
             username="tdurden",
             first_name="tyler",
@@ -50,7 +52,7 @@ class Command(BaseCommand):
             email="narrator@paperstreet.com",
         )
 
-        # announcement data
+        # Announcements
         for announcement in announcements.models.Announcement.objects.filter(
             headline__startswith="Dev"
         ):
@@ -61,7 +63,7 @@ class Command(BaseCommand):
                 headline=f"Dev Headline - {k}", text="Dev Announcement", active=True, end_date=v,
             )
 
-        # meetings data
+        # Meetings
         presenter, _ = meetings.models.Presenter.objects.get_or_create(
             user=tyler,
             name=tyler.first_name + " " + tyler.last_name,
@@ -101,6 +103,23 @@ class Command(BaseCommand):
 
             count += 1
 
+        # Add a bunch of past meetings too for pagination testing
+        for _ in range(10):
+            meeting_id = str(uuid.uuid4())
+            random_days_ago = random.randint(10, 30)
+            meeting_date = now - timedelta(days=random_days_ago)
+            meeting_description = f"Dev meeting{random.randint(1000, 2000)}"
+            meeting_registration_end = meeting_date + timedelta(days=6)
+
+            meeting, _ = meetings.models.Meeting.objects.update_or_create(
+                where=venue,
+                when=meeting_date,
+                description=meeting_description,
+                reg_close_date=meeting_registration_end,
+                key=meeting_id,
+            )
+
+        # Jobs
         for job in job_board.models.JobPost.objects.filter(position__startswith="DEV DATA"):
             job.delete()
 
@@ -134,7 +153,7 @@ class Command(BaseCommand):
         )
         job_post.approve()
 
-        # make some sponsors
+        # Sponsors
         sponsor_levels = [("Platinum", 1), ("Gold", 2), ("Silver", 3), ("Bronze", 4)]
         sponsor_groups = dict()
 

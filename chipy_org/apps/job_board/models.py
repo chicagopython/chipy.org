@@ -95,8 +95,11 @@ class JobPost(CommonModel):
     contact = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     agree_to_terms = models.BooleanField(
-        verbose_name="I have read and agree to the referral terms, "
-        "which includes giving a referral fee when a candidate is hired/placed."
+        verbose_name="I have read and agree to the referral terms. "
+        "Job posts are FREE for existing and new ChiPy sponsors. "
+        "If you are not a ChiPy sponsor, a job post REQUIRES a $50 DONATION to ChiPy"
+        " per eligible post. Job posts will not be approved to show up in the job board"
+        " if these requirements aren't met."
     )
 
     is_from_recruiting_agency = models.BooleanField(

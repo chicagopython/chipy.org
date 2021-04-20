@@ -27,6 +27,11 @@
             {% if field == job_post_form.agree_to_terms %}
                 <tr>
                     <td colspan="2">
+                    <!--
+                        IMPORTANT: If you change the verbage below for this field, 
+                        you must also change the job_board/models.py, specifically the "verbose_name" in the "agree_to_terms" field, to make them have the same wording. 
+                        This is so the wording for this field in the admin panel can match the wording in this template.
+                    -->    
                     {{field}}
                     I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>. Job posts are <b>FREE for existing and new ChiPy sponsors</b>. If you are <b>not a ChiPy sponsor</b>, a job post <b>REQUIRES a $50 DONATION</b> to ChiPy per eligible post. Job posts will not be approved to show up in the job board if these requirements aren't met.
                     {{ field.errors }}

@@ -97,9 +97,7 @@ class JobPost(CommonModel):
     agree_to_terms = models.BooleanField(
         verbose_name="I have read and agree to the referral terms. "
         "Job posts are FREE for existing and new ChiPy sponsors. "
-        "If you are not a ChiPy sponsor, a job post REQUIRES a $50 DONATION to ChiPy"
-        " per eligible post. Job posts will not be approved to show up in the job board"
-        " if these requirements aren't met."
+        "If you are not a ChiPy sponsor, each job post REQUIRES a $50 DONATION."
     )
 
     is_from_recruiting_agency = models.BooleanField(

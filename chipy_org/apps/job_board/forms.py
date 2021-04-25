@@ -21,11 +21,16 @@ class JobPostForm(forms.ModelForm):
             "location",
             "description",
             "is_sponsor",
+            "affiliation",
             "can_host_meeting",
             "company_website",
             "how_to_apply",
             "agree_to_terms",
         ]
+
+        help_texts = {
+            "affiliation": ("Let us know if this job posting is associated with a third party."),
+        }
 
         widgets = {
             "description": Textarea(

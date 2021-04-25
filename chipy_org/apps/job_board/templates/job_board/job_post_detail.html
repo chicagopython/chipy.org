@@ -38,5 +38,8 @@
 
 <b>How To Apply:</b> {{ job_post.how_to_apply|linebreaks }}
 
+{% if job_post.affiliation %}
+    This posting is affiliated with <a href="{{job_post.affiliation.url}}">{{ job_post.affiliation }}</a>
+{% endif %}
 
 {% endblock body %}

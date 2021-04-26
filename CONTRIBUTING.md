@@ -2,15 +2,21 @@
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to the Chicago Python User Group website, which are hosted in the [Chicago Python User Group Organization](https://github.com/chicagopython). These are guidelines, not rules. Use your best judgement, and feel free to propose changes to this document in a pull request (PR).
+The following is a set of guidelines for contributing to the Chicago Python User Group website, which is
+hosted in the [Chicago Python User Group Organization](https://github.com/chicagopython). These are
+guidelines, not rules. Use your best judgement, and feel free to propose changes to this document in a pull
+request (PR).
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Chipy Code of Conduct](https://www.chipy.org/pages/conduct/). By participating, you are expected to uphold this code. Please report unacceptable behavior [here](https://www.chipy.org/contact/).
+This project and everyone participating in it is governed by the
+[Chipy Code of Conduct](https://www.chipy.org/pages/conduct/). By participating, you are expected to uphold
+this code. Please report unacceptable behavior [here](https://www.chipy.org/contact/).
 
 ## How Can I Contribute?
 
-Unsure where to begin contributing? You can start by looking through issues tagged `difficulty: easy` on the [issues page](https://github.com/chicagopython/chipy.org/issues).
+Unsure where to begin contributing? You can start by looking through issues tagged `difficulty: easy` on the
+[issues page](https://github.com/chicagopython/chipy.org/issues).
 
 ### Local Development
 
@@ -40,10 +46,12 @@ Please follow these steps to make your first PR!
 
     $ make format
     ```
-6. If any of the commands above fail, make changes to your code to successfully pass the three comamnds above.
-7. Once your changes pass the automated tests and formatters, add your changes to the branch and make a commit with a descriptive message:
+6. If any of the commands above fail, make changes to your code to successfully pass the three commands above.
+7. Once your changes pass the automated tests and formatters, add your changes to the branch. Using `git status`, double check that the files are the files that you want to commit. Then make a commit with a descriptive message
     ```
     $ git add .
+
+    $ git status
 
     $ git commit -m "Adding a new feature to Chipy.org"
     ```
@@ -51,5 +59,5 @@ Please follow these steps to make your first PR!
     ```
     $ git push origin BRANCH_NAME
     ```
-9. Create a pull request by going to your repository fork on GitHub and clicking "Compare & pull request)
+9.  Create a pull request by going to your repository fork on GitHub and clicking "Compare & pull request)
 10. Congratulations! You've made your very first pull request.

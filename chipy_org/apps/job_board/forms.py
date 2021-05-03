@@ -29,7 +29,7 @@ class JobPostForm(forms.ModelForm):
         ]
 
         help_texts = {
-            "affiliation": ("Let us know if this job posting is associated with a third party."),
+            "affiliation": ("Is this posting affiliated with a 3rd party? Please select:"),  # pylint: disable=line-too-long
         }
 
         widgets = {

@@ -65,6 +65,13 @@
                         {{ field.errors }}
                     </td>
                 </tr>
+            {% elif field == job_post_form.affiliation %}
+                <tr>
+                    <td colspan="2">
+                        {{field.help_text}} {{field}}
+                        {{ field.errors }}
+                    </td>
+                </tr>
             {% else %}
                 <tr>
                     <td>{{field.label_tag}}</td>

@@ -34,12 +34,14 @@
     <b>This posting is from a recruiting agency.</b>
 {% endif %}
 
+{% if job_post.affiliation %}
+    <p><b>This posting is affiliated with</b> <a href="{{job_post.affiliation.url}}">{{ job_post.affiliation.description }}</a>
+{% endif %}
+
 <p>
 
 <b>How To Apply:</b> {{ job_post.how_to_apply|linebreaks }}
 
-{% if job_post.affiliation %}
-    This posting is affiliated with <a href="{{job_post.affiliation.url}}">{{ job_post.affiliation.description }}</a>
-{% endif %}
+
 
 {% endblock body %}

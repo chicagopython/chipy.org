@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from .models import JobPost
+from .models import Affiliation, JobPost
 
 
 class JobPostAdmin(admin.ModelAdmin):
@@ -27,3 +27,4 @@ class JobPostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(JobPost, JobPostAdmin)
+admin.site.register(Affiliation)

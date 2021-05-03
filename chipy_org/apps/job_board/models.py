@@ -41,6 +41,14 @@ class ApprovedAndActive(models.Manager):
         )
 
 
+class Affiliation(CommonModel):
+    description = models.CharField(max_length=MAX_LENGTH)
+    url = models.URLField()
+
+    def __str__(self):
+        return self.description
+
+
 class JobPost(CommonModel):
 
     __original_status = None
@@ -56,6 +64,10 @@ class JobPost(CommonModel):
 
     is_sponsor = models.BooleanField(
         default=False, verbose_name="Is the company a sponsor of ChiPy?"
+    )
+
+    affiliation = models.ForeignKey(
+        Affiliation, blank=True, null=True, on_delete=models.DO_NOTHING,
     )
 
     can_host_meeting = models.BooleanField(

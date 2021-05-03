@@ -59,5 +59,5 @@ Please follow these steps to make your first PR!
     ```
     $ git push origin BRANCH_NAME
     ```
-9. Create a pull request by going to your repository fork on GitHub and clicking "Compare & pull request")
+9. Create a pull request by going to your repository fork on GitHub and clicking "Compare & pull request".
 10. Congratulations! You've made your very first pull request.

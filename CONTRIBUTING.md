@@ -37,7 +37,7 @@ Please follow these steps to make your first PR!
     ```
     $ git checkout -b BRANCH_NAME
     ```
-4. Make changes to the branch to fix the issue you selected
+4. Make changes to the branch to fix the issue you selected.
 5. Chipy.org uses Pytest, Pylint, and Black to encourage good software development techniques. Before you commit and push your changes, run our test suite, linter, and formatter:
     ```
     $ make test
@@ -47,7 +47,7 @@ Please follow these steps to make your first PR!
     $ make format
     ```
 6. If any of the commands above fail, make changes to your code to successfully pass the three commands above.
-7. Once your changes pass the automated tests and formatters, add your changes to the branch. Using `git status`, double check that the files are the files that you want to commit. Then make a commit with a descriptive message
+7. Once your changes pass the automated tests and formatters, add your changes to the branch. Using `git status`, double check that the files are the files that you want to commit. Then make a commit with a descriptive message:
     ```
     $ git add .
 
@@ -59,5 +59,5 @@ Please follow these steps to make your first PR!
     ```
     $ git push origin BRANCH_NAME
     ```
-9.  Create a pull request by going to your repository fork on GitHub and clicking "Compare & pull request)
+9. Create a pull request by going to your repository fork on GitHub and clicking "Compare & pull request")
 10. Congratulations! You've made your very first pull request.

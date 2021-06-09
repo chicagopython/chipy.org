@@ -14,7 +14,7 @@ django-ical==1.7.0
 django-nocaptcha-recaptcha==0.0.20
 django-storages==1.9.1
 django-tinymce==2.8.0
-Django==2.2.20
+Django==2.2.22
 djangorestframework==3.11.2
 feedparser==5.2.1
 gunicorn==20.0.4

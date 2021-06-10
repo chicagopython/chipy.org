@@ -61,8 +61,6 @@ MANAGERS = ADMINS
 
 CHIPY_TOPIC_SUBMIT_EMAILS = env_var("CHIPY_TOPIC_SUBMIT_EMAILS", "").split(",")
 
-CHICAGO_ORGANIZER_EMAILS = env_var("CHICAGO_ORGANIZER_EMAILS", "").split(",")
-
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {"default": dj_database_url.config(default="postgres://localhost:5432/chipy_org")}
 

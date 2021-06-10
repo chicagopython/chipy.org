@@ -41,14 +41,6 @@ class ApprovedAndActive(models.Manager):
         )
 
 
-class Affiliation(CommonModel):
-    description = models.CharField(max_length=MAX_LENGTH)
-    url = models.URLField()
-
-    def __str__(self):
-        return self.description
-
-
 class JobPost(CommonModel):
 
     __original_status = None
@@ -64,10 +56,6 @@ class JobPost(CommonModel):
 
     is_sponsor = models.BooleanField(
         default=False, verbose_name="Is the company a sponsor of ChiPy?"
-    )
-
-    affiliation = models.ForeignKey(
-        Affiliation, blank=True, null=True, on_delete=models.DO_NOTHING,
     )
 
     can_host_meeting = models.BooleanField(
@@ -107,9 +95,8 @@ class JobPost(CommonModel):
     contact = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     agree_to_terms = models.BooleanField(
-        verbose_name="I have read and agree to the referral terms. "
-        "Job posts are FREE for existing and new ChiPy sponsors. "
-        "If you are not a ChiPy sponsor, each job post REQUIRES a $50 DONATION."
+        verbose_name="I have read and agree to the referral terms, "
+        "which includes giving a referral fee when a candidate is hired/placed."
     )
 
     is_from_recruiting_agency = models.BooleanField(

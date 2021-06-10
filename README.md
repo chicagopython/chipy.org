@@ -19,10 +19,22 @@ For Mac and Linux:
 - Docker Compose - https://docs.docker.com/compose/install/
 - Make - https://www.gnu.org/software/make/
 
-For Windows 10 Pro 64-bit, Windows 10 Home 64-bit:
+For Windows 10 Pro, 64-bit:
 
-- Docker Desktop - https://docs.docker.com/docker-for-windows/install/
+- Docker - https://docs.docker.com/install/
+- Docker Compose - https://docs.docker.com/compose/install/
 - Chocolatey - https://chocolatey.org/install (package manager used to install Make)
+
+For Windows 7 to 10 Non Pro, 64-bit:
+
+- Docker Toolbox - https://docs.docker.com/toolbox/toolbox_install_windows/
+- Chocolatey - https://chocolatey.org/install (package manager used to install Make)
+
+### Instructions for Windows 7 to 10 Users (Non Pro)
+
+For Windows 7 to 10 users not using Windows 10 Pro, we recommend using Docker Toolbox. Use the package manager Chocolatey to install Make. (See instructions in the section below for that.) Then click on `Docker Quickstart` on your Desktop to get the Docker Toolbox terminal. Using the Docker Toolbox terminal, follow the "Setting up a Local Development Environment Using Docker" instructions below. Once you have the database and web app up, select the `default` virtual machine in VirtualBox. Set up NAT port forwarding, where the Guest Port is 8000 and the Host Port is 8000. Guest IP and Host IP are left empty. Go to `localhost:8000` on your browser to see the site.
+
+Note: A `.gitattributes` file has been provided to keep line endings as LF, instead of CRLF, on checkout and commit. Issues related to developing on Windows with Docker Toolbox are likely related to files having incorrect line endings.
 
 ### Using Chocolatey to install Make
 
@@ -36,9 +48,7 @@ For Windows users, we recommend using the package manager Chocolatey to install 
 
 ## Setting up a Local Development Environment using Docker
 
-_Note: For a list of steps on how to make your first contribution, see [CONTRIBUTING.md](CONTRIBUTING.md)._
-
-First, sign into your GitHub account. Make a fork of the ChiPy repo at https://github.com/chicagopython/chipy.org by going there and clicking "Fork" on the upper right corner.
+Sign into your GitHub account. Make a fork of the ChiPy repo at https://github.com/chicagopython/chipy.org by going there and clicking "Fork" on the upper right corner.
 
 Clone this forked repo to your local computer (replace your GitHub username without the brackets):
 
@@ -48,8 +58,6 @@ Make the project directory your working directory:
 
     cd chipy.org
 
-**Note: The `make` commands require Make to be installed, and Docker must be running. Please follow the [Installation](#installation) guide before running the below steps**
-
 Run the setup command to configure the environment. This will copy
 a default configuration file from docker/docker.env.sample to
 docker/docker.env.
@@ -57,7 +65,7 @@ docker/docker.env.
     make setup_env
 
 You may customize the docker/docker.env as needed for your development needs.
-The docker/docker.env file should NOT be committed to version control.
+The docker/docker.env file should NOT be committed version control.
 
 To start the app, you can run the following command. This will start
 up the web app and a database as services using docker-compose.

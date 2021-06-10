@@ -70,27 +70,25 @@
 {% endfor %}
 
 
-<nav aria-label="Page navigation">
-  <ul class="pagination">
-      {% if page_obj.has_previous %}
-          <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+{% if is_paginated %}
+  <ul class="pagination" style='display:flex;justify-content:center;'>
+    {% if page_obj.has_previous %}
+      <li style='margin-left:10px;'><a href="?page={{ page_obj.previous_page_number }}"> &laquo; </a></li>
+    {% else %}
+      <li class="disabled" style='margin-left:10px;'> <span> &laquo; </span> </li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active" style='margin-left:10px;'><span> {{ i }} </span></li>
       {% else %}
-          <li class="page-item disabled"><a class="page-link" >&laquo;</a></li>
-          <li class="page-item disabled"><a class="page-link">&lt;</a></li>
+        <li style='margin-left:10px;'><a href="?page={{ i }}"> {{ i }} </a></li>
       {% endif %}
-
-      <li class="page-item">
-          <a class="page-link" style="color: black; background-color: white;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
-      </li>
-
-      {% if page_obj.has_next %}
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a>
-          <li class="page-item"></li><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
-      {% else %}
-          <li class="page-item disabled"><a class="page-link" >&gt;</a>
-          <li class="page-item disabled"><a class="page-link">&raquo;</a></li>
-      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li style='margin-left:10px;'><a href="?page={{ page_obj.next_page_number }}"> &raquo;</a> </li>
+    {% else %}
+      <li class="disabled" style='margin-left:10px;'><span>&raquo;</span></li>
+    {% endif %}
   </ul>
-</nav>
+{% endif %}
 {% endblock body %}

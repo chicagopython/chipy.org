@@ -27,13 +27,8 @@
             {% if field == job_post_form.agree_to_terms %}
                 <tr>
                     <td colspan="2">
-                    <!--
-                        IMPORTANT: If you change the verbage below for this field, 
-                        you must also change the job_board/models.py, specifically the "verbose_name" in the "agree_to_terms" field, to make them have the same wording. 
-                        This is so the wording for this field in the admin panel can match the wording in this template.
-                    -->    
                     {{field}}
-                    I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>. Job posts are <b>FREE for existing and new ChiPy sponsors</b>. If you are <b>not a ChiPy sponsor</b>, each job post <b>REQUIRES a $50 DONATION</b>.
+                    I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>, which includes giving a referral fee when a candidate is hired/placed.
                     {{ field.errors }}
                     </td>
                 </tr>
@@ -45,7 +40,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-                        ChiPy is a locally based group. <button data-bs-toggle="modal" data-bs-target="#moreInfoModal" class="btn btn-info">more</button>
+                        ChiPy is a locally based group. <button data-toggle="modal" data-target="#moreInfoModal" class="btn btn-info">more</buttondata-toggle="modal" data-target="#moreInfoModal" class="btn btn-info" >
                         {{ field.errors }}
                     </td>
                 </tr>
@@ -67,13 +62,6 @@
                 <tr>
                     <td colspan="2">{{field}}
                         Is this posting from a recruiting agency?
-                        {{ field.errors }}
-                    </td>
-                </tr>
-            {% elif field == job_post_form.affiliation %}
-                <tr>
-                    <td colspan="2">
-                        {{field.help_text}} {{field}}
                         {{ field.errors }}
                     </td>
                 </tr>
@@ -104,7 +92,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="moreInfoModalLabel">Location Requirements for Job Posting</h5>
           
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -114,7 +102,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
 
         </div>

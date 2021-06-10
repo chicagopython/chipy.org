@@ -21,11 +21,16 @@ class JobPostForm(forms.ModelForm):
             "location",
             "description",
             "is_sponsor",
+            "affiliation",
             "can_host_meeting",
             "company_website",
             "how_to_apply",
             "agree_to_terms",
         ]
+
+        help_texts = {
+            "affiliation": ("Is this posting affiliated with a 3rd party? Please select:"),  # pylint: disable=line-too-long
+        }
 
         widgets = {
             "description": Textarea(

@@ -29,6 +29,11 @@
                 <td>
                     <a href="{% url 'job-post-detail' pk=post.pk %}">{{ post.position }}</a></b> 
                     <br>{{ post.company_name }}
+
+                    {% if post.affiliation %}
+                        <br>{{ post.affiliation }} Opportunity
+                    {% endif %}
+                    
                     <br>{{ post.get_location_display }}
                 </td>
                 <td>        

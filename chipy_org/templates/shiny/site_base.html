@@ -16,8 +16,11 @@
         <!--Material Design Icons-->
         <!--See https://google.github.io/material-design-icons/ for documentation-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        
+
         <link rel="stylesheet" href="{% static 'css/shiny.css' %}">
+
+        {{ form.media }}
+
         {% block extra_head %}{% endblock %}
 
         <title>Chicago Python User Group</title>
@@ -45,7 +48,7 @@
             <!--BACKGROUND PIC HEADER SECTION ENDS-->
 
         </header>
-        
+
         <main>
 
             <!--CONTENT SECTION STARTS-->
@@ -67,7 +70,7 @@
                             <a class="icon-link" href="https://twitter.com/chicagopython"><img src="{% static 'img/svg/social-icons-twitter.svg' %}" target="_blank" rel="noopener noreferrer" class="my-2 mx-1" alt="Twitter Icon" height="35" width="35"></a>
                             <a class="icon-link" href="https://joinchipyslack.herokuapp.com/" target="_blank" rel="noopener noreferrer"> <img src="{% static 'img/svg/social-icons-slack.svg' %}" class="my-2 mx-1" alt="Slack Icon" height="35" width="35"></a>
                             <a class="icon-link" href="https://github.com/chicagopython/chipy.org" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-github.svg' %}" class="my-2 mx-1" alt="Github Icon" height="35" width="35"></a>
-                            <a class="icon-link" href="https://www.meetup.com/_ChiPy_/" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-meetup.svg' %}" class="my-2 mx-1" alt="Github Icon" height="35" width="35"></a>
+                            <a class="icon-link" href="https://www.meetup.com/_ChiPy_/" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/svg/social-icons-meetup.svg' %}" class="my-2 mx-1" alt="Meetup Icon" height="35" width="35"></a>
                         </div>
 
                         <div class="col-md-5">
@@ -115,9 +118,9 @@
 
         <!--JAVASCRIPT FOR Sticky Navbar STARTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        
+
         <script>
-        
+
             $(function () {
               $(document).scroll(function () {
                 var $nav = $(".nav-sticky-top");

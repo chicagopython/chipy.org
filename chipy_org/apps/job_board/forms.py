@@ -29,7 +29,9 @@ class JobPostForm(forms.ModelForm):
         ]
 
         help_texts = {
-            "affiliation": ("Is this posting affiliated with a 3rd party? Please select:"),  # pylint: disable=line-too-long
+            "affiliation": (
+                "Is this posting affiliated with a 3rd party? Please select:"
+            ),  # pylint: disable=line-too-long
         }
 
         widgets = {

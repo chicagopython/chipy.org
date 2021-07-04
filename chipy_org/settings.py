@@ -111,6 +111,9 @@ if USE_S3:
 else:
     MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, "mediafiles"))
 
+
+JOB_POST_KEY = env_var("JOB_POST_KEY", "")
+
 STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, "..", "staticfiles"))
 
 STATIC_URL = "/static/"

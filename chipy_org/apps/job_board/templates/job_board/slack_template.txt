@@ -1,0 +1,12 @@
+
+The are currently {{ posts.count }} job{{ posts.count|pluralize }} on the Chipy job board
+
+{% for post in posts %}
+    {{post.company_name}} has a posting for a {{post.position}}.
+    
+    Description:
+    {{ post.description }}
+
+{% endfor %}
+
+See all the posts on https://www.chipy.org/job-board/

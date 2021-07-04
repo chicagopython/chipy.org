@@ -21,7 +21,6 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        print("These are the Active Postings on the Job Board", "\n")
         posts = JobPost.approved_and_active.all()
 
         if posts.count():

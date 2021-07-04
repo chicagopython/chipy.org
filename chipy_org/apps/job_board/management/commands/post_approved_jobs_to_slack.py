@@ -1,4 +1,5 @@
 import json
+import logging
 
 import requests
 from django.conf import settings
@@ -6,6 +7,8 @@ from django.core.management.base import BaseCommand
 from django.template import loader
 
 from chipy_org.apps.job_board.models import JobPost
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -36,8 +39,5 @@ class Command(BaseCommand):
                 headers={"Content-Type": "application/json"},
             )
 
-            if response.status_code == 200:
-                print("success")
-            else:
-                # do some logging
-                pass
+            if response.status_code != 200:
+                logger.info("Failed to post to slack job channel.")

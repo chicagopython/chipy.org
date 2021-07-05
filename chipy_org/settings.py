@@ -114,6 +114,7 @@ else:
 
 JOB_POST_KEY = env_var("JOB_POST_KEY", "")
 
+
 STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, "..", "staticfiles"))
 
 STATIC_URL = "/static/"
@@ -126,7 +127,7 @@ MEDIA_URL = "/media/"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env_var("SECRET_KEY")
-
+DAY_TO_POST = int(env_var("DAY_TO_POST", 6))
 
 ROOT_URLCONF = "chipy_org.urls"
 

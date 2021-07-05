@@ -1,5 +1,6 @@
 import json
 import logging
+import datetime
 
 import requests
 from django.conf import settings
@@ -20,10 +21,21 @@ class Command(BaseCommand):
     slack jobs channel.  
     """
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "weekdays",
+            nargs="+",
+            type=int,
+            help="""
+            The desired weekdays to post represented an integer where Monday=0, Tuesday=1, ... , Saturday=5, and Sunday=6.
+            Posts to the slack channel will only occur on the selected weekdays.
+            """,
+        )
+
     def handle(self, *args, **options):
         posts = JobPost.approved_and_active.all()
 
-        if posts.count():
+        if posts.count() and datetime.date.today().weekday() in options["weekdays"]:
             context = {"posts": posts}
             template = loader.get_template("job_board/slack_template.txt")
             msg = template.render(context)

@@ -1,10 +1,10 @@
+import datetime
 import json
 import logging
-import datetime
 
 import requests
 from django.conf import settings
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.template import loader
 
 from chipy_org.apps.job_board.models import JobPost
@@ -51,4 +51,6 @@ class Command(BaseCommand):
             )
 
             if response.status_code != 200:
-                logger.info("Failed to post to slack job channel.")
+                raise CommandError(
+                    f"Failed to post to slack job channel - status code: {response.status_code}."
+                )

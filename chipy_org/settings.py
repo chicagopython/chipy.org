@@ -127,7 +127,6 @@ MEDIA_URL = "/media/"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env_var("SECRET_KEY")
-DAY_TO_POST = int(env_var("DAY_TO_POST", 6))
 
 ROOT_URLCONF = "chipy_org.urls"
 

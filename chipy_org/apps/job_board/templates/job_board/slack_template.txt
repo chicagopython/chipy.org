@@ -1,0 +1,11 @@
+There {{ posts.count|pluralize:"is,are" }} currently *{{ posts.count }}* job{{ posts.count|pluralize }} on the Chipy job board.
+
+{% for post in posts %}
+*{{ post.company_name }}* posted a *{{ post.position }}* opportunity.
+
+*Description*:
+{{ post.description }}
+
+{% endfor %}
+
+See all the open job posts on https://www.chipy.org/job-board/

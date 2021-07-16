@@ -3,7 +3,7 @@ There {{ posts.count|pluralize:"is,are" }} currently *{{ posts.count }}* job{{ p
 {% for post in posts %}
 *Company*: {{ post.company_name }} 
 *Position*: {{ post.position }}
-*Description*: {{ post.description | truncatewords:50 }}
+*Description*: {{ post.description | truncatewords:25 }}
 *Link*: https://www.chipy.org{% url 'job-post-detail' pk=post.pk %}
 {% endfor %}
 See all the open job posts on https://www.chipy.org/job-board/

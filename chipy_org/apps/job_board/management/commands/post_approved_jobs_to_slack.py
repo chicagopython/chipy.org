@@ -1,5 +1,4 @@
 import datetime
-import json
 import logging
 
 import requests
@@ -8,6 +7,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.template import loader
 
 from chipy_org.apps.job_board.models import JobPost
+from chipy_org.libs.slack_utils import post_message_to_slack
 
 logger = logging.getLogger(__name__)
 
@@ -39,18 +39,12 @@ class Command(BaseCommand):
             context = {"posts": posts}
             template = loader.get_template("job_board/slack_template.txt")
             msg = template.render(context)
-
             job_post_key = settings.JOB_POST_KEY
-            webhook_url = f"https://hooks.slack.com/services/{job_post_key}"
-            slack_data = {"text": msg}
 
-            response = requests.post(
-                webhook_url,
-                data=json.dumps(slack_data),
-                headers={"Content-Type": "application/json"},
-            )
-
-            if response.status_code != 200:
-                raise CommandError(
-                    f"Failed to post to slack job channel - status code: {response.status_code}."
+            try:
+                post_message_to_slack(
+                    channel_key=job_post_key, channel_name="job board", message=msg
                 )
+            except requests.HTTPError as error:
+                logger.error(error)
+                print(error)

@@ -3,7 +3,7 @@ import logging
 
 import requests
 from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.template import loader
 
 from chipy_org.apps.job_board.models import JobPost

@@ -19,7 +19,7 @@ djangorestframework==3.11.2
 feedparser==5.2.1
 gunicorn==20.0.4
 probablepeople==0.5.4 # kill
-Pillow==8.2.0
+Pillow==8.3.2
 psycopg2-binary==2.8.4
 python-openid2==3.2
 requests==2.23.0

@@ -7,7 +7,7 @@ from chipy_org.apps.contact.forms import ContactForm
 class ContactView(FormView):
     template_name = "contact/contact.html"
     form_class = ContactForm
-    success_url = "/"
+    success_url = "/contact"
 
     def form_valid(self, form):
         try:

@@ -19,7 +19,9 @@
                     </table>
                     <div class="text-center">
                         <input class="btn btn-primary" type="submit" value="Send Email">
+                        <!-- <input class="btn btn-primary" type="submit" value="Send Email" data-bs-toggle="modal" data-bs-target="#contact-modal"> -->
                     </div>
+                    <div id="contact-modal-show" style="display:none" data-bs-toggle="modal" data-bs-target="#contact-modal"></div>
                   </form>
                 </div>
               </div>
@@ -35,7 +37,35 @@
           </div>
         </div>
     </div>
+    
+    {% if messages %}
+      <!-- CONTACT MODAL STARTS-->
+      <div class="modal fade" id="contact-modal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="https://via.placeholder.com/150"></img>
+                    <h5 class="modal-title black-text" id="contactModalLabel">Thank You.</h5>
+                </div>
+                <div class="modal-body">
+                    {% include "_messages.html" %}
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Return to site</button>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- CONTACT MODAL ENDS-->
+
+      <script>
+        window.addEventListener('load', function () {
+          document.querySelector("#contact-modal-show").click();
+        });
+      </script>
+
+    {% endif %}
 {% endblock %}
+
+
 
 {% block extra-javascript %}
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>

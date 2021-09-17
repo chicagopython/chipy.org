@@ -49,19 +49,25 @@
                 </div>
                 <div class="modal-body">
                     {% include "_messages.html" %}
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Return to site</button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      onclick="javascript:window.location='/'">
+                      Return to home
+                    </button>
                 </div>
             </div>
         </div>
       </div>
-      <!-- CONTACT MODAL ENDS-->
 
       <script>
         window.addEventListener('load', function () {
           document.querySelector("#contact-modal-show").click();
         });
       </script>
-
+      <!-- CONTACT MODAL ENDS-->
     {% endif %}
 {% endblock %}
 

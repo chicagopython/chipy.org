@@ -1,0 +1,29 @@
+<div id="modal-show" style="display:none" data-bs-toggle="modal" data-bs-target="#modal"></div>
+    
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="https://via.placeholder.com/150"></img>
+                <h5 class="modal-title black-text" id="modalLabel">Thank You.</h5>
+            </div>
+            <div class="modal-body">
+                {% include "_messages.html" %}
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onclick="javascript:window.location='/'">
+                  Return to home
+                </button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', function () {
+      document.querySelector("#modal-show").click();
+    });
+  </script>

@@ -1,12 +1,19 @@
-{% for message in messages %}
-    <div>{{ message|linebreaks }}</div>
-{% endfor %}
+{% if message_as_modal %}
+    {% for message in messages %}
+        <div>{{ message|linebreaks }}</div>
+    {% endfor %}
 
-<!-- ORIGINAL
-{% for message in messages %}
-    <div class="alert alert-dismissible {% if message.tags %} {% for tag in message.tags.split %}alert-{{ tag }} {% endfor %}{% endif %} fade show">
-        <a class="close" href="#" data-bs-dismiss="alert" aria-label="Close">&times;</a>
-        {{ message|linebreaks }}
-    </div>
-{% endfor %}
--->
+{% else %}
+    {% for message in messages %}
+    <div class="container-xl">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-dismissible {% if message.tags %} {% for tag in message.tags.split %}alert-{{ tag }} {% endfor %}{% endif %} fade show">
+                    <a class="close" href="#" data-bs-dismiss="alert" aria-label="Close">&times;</a>
+                    {{ message|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div><!--closes container xl-->
+    {% endfor %}
+{% endif %}

@@ -1,6 +1,8 @@
 {% if message_as_modal %}
     {% for message in messages %}
-        <div>{{ message|linebreaks }}</div>
+        <div class="modal-message">
+            {{ message|linebreaks }}
+        </div>
     {% endfor %}
 
 {% else %}

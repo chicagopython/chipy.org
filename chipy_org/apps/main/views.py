@@ -15,7 +15,6 @@ from chipy_org.apps.sponsors.models import Sponsor
 
 class Home(TemplateView, InitialRSVPMixin):
     template_name = "main/homepage.html"
-    message_as_modal = True
 
     def get_meeting(self):
         return (
@@ -29,7 +28,6 @@ class Home(TemplateView, InitialRSVPMixin):
         context.update(kwargs)
         context["IS_HOMEPAGE"] = True
         context["featured_sponsor"] = Sponsor.featured_sponsor()
-        context["message_as_modal"] = self.message_as_modal
 
         context = self.add_extra_context(context)
         return context

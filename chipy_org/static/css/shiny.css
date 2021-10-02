@@ -249,6 +249,31 @@ ul.no-bullets {
     top: 0;
 }
 
+/*
+An id of "modal" refers only to modals created via
+the chipy_org/templates/_modal.html template.
+Using the #modal selector below, only the templated modals
+are affected.
+
+Currently, other modals have ids such as "rsvp-modal", etc.
+*/
+#modal .modal-header {
+    display: flex;
+    flex-direction: column;
+}
+
+#modal .modal-header > img {
+    padding-top: 5%;
+}
+
+#modal .modal-title {
+    padding-top: 1rem;
+}
+
+#modal .modal-body {
+    text-align: center;
+}
+
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) { 
     .padding-left-med-5 {

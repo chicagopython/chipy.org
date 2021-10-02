@@ -22,5 +22,5 @@ class ContactView(FormView):
     def get_context_data(self, **kwargs):
         """ Used to access message_as_modal in template as context """
         context = super(ContactView, self).get_context_data(**kwargs)
-        context.update({'message_as_modal': self.message_as_modal})
+        context.update({"message_as_modal": self.message_as_modal})
         return context

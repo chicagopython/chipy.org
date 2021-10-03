@@ -1,5 +1,6 @@
 import logging
 
+import django_rq
 from django import forms
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -26,4 +27,4 @@ class ContactForm(forms.Form):
             to=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
             reply_to=[self.cleaned_data["email"]],
         )
-        msg.send()
+        django_rq.enqueue(msg.send)

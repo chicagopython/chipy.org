@@ -1,10 +1,19 @@
 import pytest
+from django_rq import get_worker
+from django.conf import settings
 from django.conf import global_settings
 from django.core import mail
 from django.test import override_settings
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 
 from .forms import ContactForm
+
+
+# @pytest.fixture
+# def syc_queues():
+#     for queue_config in settings.RQ_QUEUES.itervalues():
+#         queue_config["ASYNC"] = False
+#     yield
 
 
 @pytest.fixture
@@ -22,12 +31,19 @@ def test_clean_captcha(no_recaptcha):  # pylint: disable=redefined-outer-name
     by pass the captcha when the form is cleaned.
     """
     field = NoReCaptchaField()
-    value = field.widget.value_from_datadict({"g-recaptcha-response": "PASSED",}, {}, {})
+    value = field.widget.value_from_datadict(
+        {
+            "g-recaptcha-response": "PASSED",
+        },
+        {},
+        {},
+    )
     field.clean(value)
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_chipy_contact_form(no_recaptcha):  # pylint: disable=redefined-outer-name
+    get_worker().work(burst=True)
     assert len(mail.outbox) == 0
 
     form_data = {
@@ -47,6 +63,7 @@ def test_chipy_contact_form(no_recaptcha):  # pylint: disable=redefined-outer-na
 @pytest.mark.django_db
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_chipy_contact_view(client, no_recaptcha):  # pylint: disable=redefined-outer-name
+    get_worker().work(burst=True)
     assert len(mail.outbox) == 0
 
     response = client.post(

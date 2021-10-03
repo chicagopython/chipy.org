@@ -245,6 +245,7 @@ INSTALLED_APPS = [
     "tinymce",
     "sorl.thumbnail",
     "ckeditor",
+    "django_rq",
     # theme
     "django_forms_bootstrap",
     # project
@@ -359,11 +360,40 @@ LOGGING = {
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "handlers": {
-        "null": {"level": "DEBUG", "class": "logging.NullHandler",},
+        "null": {
+            "level": "DEBUG",
+            "class": "logging.NullHandler",
+        },
         "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "verbose"},
     },
-    "loggers": {"chipy_org": {"handlers": ["console"], "level": "INFO",}},
+    "loggers": {
+        "chipy_org": {
+            "handlers": ["console"],
+            "level": "INFO",
+        }
+    },
 }
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+# django-rq settings
+RQ_QUEUES = {
+    "default": {
+        "URL": os.getenv("REDISCLOUD_URL", "redis://redis:6379/0"),
+        "DEFAULT_TIMEOUT": 500,
+    },
+    "high": {
+        "URL": os.getenv("REDISCLOUD_URL", "redis://redis:6379/0"),
+        "DEFAULT_TIMEOUT": 500,
+    },
+    "low": {
+        "URL": os.getenv("REDISCLOUD_URL", "redis://redis:6379/0"),
+        "DEFAULT_TIMEOUT": 500,
+    },
+}
+
+if DEBUG:
+    for queue_config in RQ_QUEUES.values():
+        queue_config["ASYNC"] = False

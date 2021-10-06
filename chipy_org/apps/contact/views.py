@@ -9,6 +9,10 @@ class ContactView(FormView):
     form_class = ContactForm
     success_url = "/contact"
     message_as_modal = True
+    modal_config = {
+        "close_button_redirect": "/",
+        "close_button_label": "Return to home"
+    }
 
     def form_valid(self, form):
         try:
@@ -23,4 +27,5 @@ class ContactView(FormView):
         """ Used to access message_as_modal in template as context """
         context = super(ContactView, self).get_context_data(**kwargs)
         context.update({"message_as_modal": self.message_as_modal})
+        context.update({"modal_config": self.modal_config})
         return context

@@ -9,10 +9,7 @@ class ContactView(FormView):
     form_class = ContactForm
     success_url = "/contact"
     message_as_modal = True
-    modal_config = {
-        "close_button_redirect": "/",
-        "close_button_label": "Return to home"
-    }
+    modal_config = {"close_button_redirect": "/", "close_button_label": "Return to home"}
 
     def form_valid(self, form):
         try:

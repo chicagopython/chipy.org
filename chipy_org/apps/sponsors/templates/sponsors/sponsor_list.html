@@ -10,11 +10,16 @@
     <div class="row">
         <div class="col-md-8 pe-1 pt-1 pb-3">
             {% flatblock "sponsor_info_text" %}
+            {# These numbers are unrealistic during COVID times (all virtual
+            attendance, no RSVP). Adding a baseline filter to remove when we
+            aren't tracking RSVPs so as to not give the wrong impression. #}
+            {% if meeting_attendees and meeting_attendees > 500 %}
             <h3>Stats</h3>
             <div>
                 {{meeting_attendees|intcomma}} Python Enthusiasts Attended ChiPy
                     Meetings in the Last Year!!
             </div>
+            {% endif %}
         </div>
         <div class="col-md-4 px-1 pt-1 pb-3">
             {% for group in sponsor_groups %}

@@ -43,7 +43,7 @@ migrate:
 	docker-compose exec web python manage.py migrate
 
 migration:
-	docker-compose exec web python manage.py makemigrations -n $(name) $(app)
+	docker-compose exec web python manage.py makemigrations
 
 tag:
 	echo Making tag $(date_tag)

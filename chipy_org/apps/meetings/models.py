@@ -241,6 +241,17 @@ class RSVP(CommonModel):
         ("N", "No"),
     )
 
+    RSVP_STATUS = (
+        ("A", "Accepted"),
+        ("D", "Declined"),
+        ("W", "Wait Listed"),
+    )
+
+    RSVP_VENUE = (
+        ("I", "In Person"),
+        ("V", "Virtual"),
+    )
+
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
     # willdo: remove name field keeping for migration purposes
@@ -249,8 +260,13 @@ class RSVP(CommonModel):
     last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
+
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+
     response = models.CharField(max_length=1, choices=RSVP_CHOICES)
+    status = models.CharField(max_length=1, choices=RSVP_STATUS)
+    venue = models.CharField(max_length=1, choices=RSVP_VENUE)
+
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)
 

@@ -117,6 +117,11 @@ class Meeting(CommonModel):
     )
     description = tinymce_models.HTMLField(blank=True, null=True)
 
+    in_person_capacity = models.PositiveSmallIntegerField(null=False)
+    virtual_capacity = models.PositiveSmallIntegerField(
+        blank=True, null=True, help_text="Leave blank for no maximum"
+    )
+
     def can_register(self):
         can_reg = True
         if self.reg_close_date and timezone.now() > self.reg_close_date:

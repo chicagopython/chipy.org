@@ -6,19 +6,19 @@
 
 {% block body %}
 
-{% if not sponsor.logo %}
 <div class="row">
-    <h3>{{ sponsor.name }}</h3>
-</div>
-{% endif %}
 
-<div class="row">
-{% if sponsor.logo %}
 {% thumbnail sponsor.logo "400" crop="center" as im %}
-<div><a href="{{ sponsor.url }}">
-    <img src="{{ im.url }}" alt="{{ sponsor.name }}"></a></div>
+  <div>
+    <a href="{{ sponsor.url }}">
+    <img src="{{ im.url }}" alt="{{ sponsor.name }}"></a>
+  </div>
+{% empty %}
+  <div class="row">
+    <h3>{{ sponsor.name }}</h3>
+  </div>
 {% endthumbnail %}
-{% endif %}
+
 
 <div>
   <br />

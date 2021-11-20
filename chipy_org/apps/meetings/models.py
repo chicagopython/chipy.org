@@ -248,8 +248,8 @@ class RSVP(CommonModel):
     )
 
     RSVP_VENUE = (
-        ("I", "In Person"),
-        ("V", "Virtual"),
+        ("I", "In-Person"),
+        ("V", "Virtually"),
     )
 
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
@@ -263,9 +263,9 @@ class RSVP(CommonModel):
 
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
 
-    response = models.CharField(max_length=1, choices=RSVP_CHOICES)
+    response = models.CharField(max_length=1, choices=RSVP_CHOICES, default="Y")
     status = models.CharField(max_length=1, choices=RSVP_STATUS)
-    venue = models.CharField(max_length=1, choices=RSVP_VENUE)
+    venue = models.CharField(max_length=1, choices=RSVP_VENUE, default="I")
 
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)

@@ -1,13 +1,17 @@
 {% extends "shiny/slim.html" %}
 
-{% load i18n static thumbnail %}
+{% load i18n static thumbnail bleach_tags %}
 
 {% block page_header %}OUR SPONSORS{% endblock %}
 
 {% block body %}
+
+{% if not sponsor.logo %}
 <div class="row">
     <h3>{{ sponsor.name }}</h3>
 </div>
+{% endif %}
+
 <div class="row">
 {% if sponsor.logo %}
 {% thumbnail sponsor.logo "400" crop="center" as im %}
@@ -16,10 +20,15 @@
 {% endthumbnail %}
 {% endif %}
 
-<div>{{ sponsor.description }}
+<div>
+  <br />
+  {{ sponsor.description | bleach | safe}}
+
   {% if sponsor.url %}
+  <br />
   <div><a href="{{ sponsor.url }}">Visit Site</a></div>
   {% endif %}
+
 </div>
 
 </div>

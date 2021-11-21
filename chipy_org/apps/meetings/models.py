@@ -15,6 +15,8 @@ from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel
 
+from .email import send_rsvp_email
+
 MAX_LENGTH = 255
 
 MEETING = (
@@ -142,8 +144,12 @@ class Meeting(CommonModel):
         return self.rsvp_set.exclude(response=RSVP.NO).count()
 
     def has_in_person_capacity(self):
+
         max_capacity = self.in_person_capacity
-        rsvps = self.rsvp_set.filter(venue=RSVP.IN_PERSON, response=RSVP.YES).count()
+        rsvps = self.rsvp_set.filter(
+            venue=RSVP.IN_PERSON, response=RSVP.YES, status=RSVP.ACCEPTED
+        ).count()
+
         return max_capacity > rsvps
 
     def has_virtual_capacity(self):
@@ -151,7 +157,9 @@ class Meeting(CommonModel):
             return True
 
         max_capacity = self.virtual_capacity
-        rsvps = self.rsvp_set.filter(venue=RSVP.VIRTUAL, response=RSVP.YES).count()
+        rsvps = self.rsvp_set.filter(
+            venue=RSVP.VIRTUAL, response=RSVP.YES, status=RSVP.ACCEPTED
+        ).count()
         return max_capacity > rsvps
 
     def get_absolute_url(self):
@@ -314,24 +322,30 @@ class RSVP(CommonModel):
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         self.full_clean()
 
+        original = None
+        if self.id:
+            original = RSVP.objects.get(id=self.id)
+
         # Generate a key for this RSVP
         if not self.key:
             self.key = "".join(
                 random.choice(string.digits + string.ascii_lowercase) for x in range(40)
             )
 
-        if self.response == self.YES:
-            if self.venue == self.IN_PERSON:
-                if self.meeting.has_in_person_capacity():
-                    self.status = self.ACCEPTED
-                else:
-                    self.status = self.WAIT_LISTED
+        if not (original and original.response == self.response and original.venue == self.venue):
+            if self.response == self.YES:
+                if self.venue == self.IN_PERSON:
+                    if self.meeting.has_in_person_capacity():
 
-            if self.venue == self.VIRTUAL:
-                if self.meeting.has_virtual_capacity():
-                    self.status = self.ACCEPTED
-                else:
-                    self.status = self.WAIT_LISTED
+                        self.status = self.ACCEPTED
+                    else:
+                        self.status = self.WAIT_LISTED
+
+                if self.venue == self.VIRTUAL:
+                    if self.meeting.has_virtual_capacity():
+                        self.status = self.ACCEPTED
+                    else:
+                        self.status = self.WAIT_LISTED
 
         if self.response == self.NO:
             self.status = self.DECLINED
@@ -355,22 +369,29 @@ def rsvp_post_save(sender, instance, **kwargs):
         return
 
     # send an email to the user by email
-    if kwargs["created"]:
-        # send initial email
-        pass
-
-    if kwargs["update_fields"]:
-        # send updated email
-        pass
+    if instance.email:
+        send_rsvp_email(instance)
 
     meeting: Meeting = instance.meeting
 
     if meeting.has_in_person_capacity():
-        RSVP.objects.filter(
-            meeting=meeting, venue=RSVP.IN_PERSON, status=RSVP.WAIT_LISTED
-        ).order_by("created").first()
+        first_on_in_person_wait_list = (
+            RSVP.objects.filter(meeting=meeting, venue=RSVP.IN_PERSON, status=RSVP.WAIT_LISTED)
+            .order_by("created")
+            .first()
+        )
+
+        if first_on_in_person_wait_list:
+            first_on_in_person_wait_list.status = RSVP.ACCEPTED
+            first_on_in_person_wait_list.save()
 
     if meeting.has_virtual_capacity():
-        RSVP.objects.filter(meeting=meeting, venue=RSVP.VIRTUAL, status=RSVP.WAIT_LISTED).order_by(
-            "created"
-        ).first()
+        first_on_virtual_wait_list = (
+            RSVP.objects.filter(meeting=meeting, venue=RSVP.VIRTUAL, status=RSVP.WAIT_LISTED)
+            .order_by("created")
+            .first()
+        )
+
+        if first_on_virtual_wait_list:
+            first_on_virtual_wait_list.status = RSVP.ACCEPTED
+            first_on_virtual_wait_list.save()

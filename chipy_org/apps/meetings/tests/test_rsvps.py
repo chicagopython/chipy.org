@@ -32,7 +32,9 @@ def venue():
 @pytest.fixture
 def meeting_in_past(random_meeting_key):
     m = Meeting.objects.create(
-        when=datetime.date.today() - datetime.timedelta(days=30), key=random_meeting_key
+        when=datetime.date.today() - datetime.timedelta(days=30),
+        key=random_meeting_key,
+        in_person_capacity=5,
     )
     return m
 
@@ -43,6 +45,7 @@ def meeting_in_future_registration_closed(random_meeting_key):
         when=datetime.date.today() + datetime.timedelta(days=30),
         key=random_meeting_key,
         reg_close_date=datetime.date.today() - datetime.timedelta(days=1),
+        in_person_capacity=5,
     )
     return m
 
@@ -50,7 +53,9 @@ def meeting_in_future_registration_closed(random_meeting_key):
 @pytest.fixture
 def meeting_can_register(random_meeting_key):
     m = Meeting.objects.create(
-        when=datetime.date.today() + datetime.timedelta(days=30), key=random_meeting_key
+        when=datetime.date.today() + datetime.timedelta(days=30),
+        key=random_meeting_key,
+        in_person_capacity=5,
     )
     return m
 
@@ -109,7 +114,9 @@ class MeetingsTest(test_utils.AuthenticatedTest):
         Tests the uniqueness constraints on the rsvp model
         """
         test_venue = Venue.objects.create(name="Test")
-        meeting = Meeting.objects.create(when=datetime.date.today(), where=test_venue)
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=test_venue, in_person_capacity=5
+        )
         rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")
 
         with self.assertRaises(ValidationError):
@@ -122,12 +129,18 @@ class MeetingsTest(test_utils.AuthenticatedTest):
 
         with self.assertRaises(ValidationError):
             name_rsvp = RSVP.objects.create(
-                name="Test Name", meeting=meeting, response="Y", email="dummy@example.com",
+                name="Test Name",
+                meeting=meeting,
+                response="Y",
+                email="dummy@example.com",
             )
 
             # Can't have two of the same name
             duplicate_name_rsvp = RSVP.objects.create(
-                name="Test Name", meeting=meeting, response="Y", email="dummy@example.com",
+                name="Test Name",
+                meeting=meeting,
+                response="Y",
+                email="dummy@example.com",
             )
 
 

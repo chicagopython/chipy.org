@@ -143,6 +143,16 @@ class Meeting(CommonModel):
     def number_rsvps(self):
         return self.rsvp_set.exclude(response=RSVP.NO).count()
 
+    def number_in_person_rsvps(self):
+        return self.rsvp_set.filter(
+            response=RSVP.YES, status=RSVP.ACCEPTED, venue=RSVP.IN_PERSON
+        ).count()
+
+    def number_virtual_rsvps(self):
+        return self.rsvp_set.filter(
+            response=RSVP.YES, status=RSVP.ACCEPTED, venue=RSVP.VIRTUAL
+        ).count()
+
     def has_in_person_capacity(self):
 
         max_capacity = self.in_person_capacity

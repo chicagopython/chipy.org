@@ -12,8 +12,9 @@
         <p style="color: red">This event is no longer accepting registrations.</p>
     {% endif %}
     <p>
-        <strong>Current Attendance:</strong>
-        {{ next_meeting.number_rsvps}} Pythonista{{next_meeting.number_rsvps|pluralize}}
+        <strong>Current Attendance:</strong><br />
+        In Person Pythonistas: {{ next_meeting.number_in_person_rsvps}}<br />
+        Virtual Pythonistas: {{next_meeting.number_virtual_rsvps}}<br />
     </p>
 
     <div>

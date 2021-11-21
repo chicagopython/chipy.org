@@ -261,11 +261,13 @@ class RSVPlist(ListView):
         return (
             RSVPModel.objects.filter(meeting=self.meeting)
             .exclude(response="N")
+            .filter(venue=RSVPModel.IN_PERSON, status=RSVPModel.ACCEPTED)
             .order_by("last_name", "first_name")
         )
 
     def get_context_data(self, **kwargs):  # pylint: disable=arguments-differ
-        rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
+        # rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
+        rsvp_yes = self.get_queryset().count()
         context = {"meeting": self.meeting, "guests": (rsvp_yes)}
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context

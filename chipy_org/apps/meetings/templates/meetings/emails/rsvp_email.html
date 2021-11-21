@@ -1,1 +1,24 @@
-To change your rsvp, click <a href="http://{{ site.domain }}{% url 'update_rsvp_with_key' key %}">here</a>
+Your {{ rsvp.get_venue_display }} RSVP for {{ rsvp.meeting }} has been {{ rsvp.get_status_display }}.
+
+{% if rsvp.status == "A" %}
+<p>If you no longer plan to attend this meeting, kindly 
+    
+    {% if not rsvp.user %}
+    use the link below 
+    {% else %}
+    go to <a href="http://{{ site.domain }}">chipy.org</a>
+    {% endif %}
+
+to change your response to "No". 
+This will allow wait listed participants to attend the meeting.</p>
+{% endif %}
+
+{% if rsvp.status == "W" %}
+<p>If your reservation is accepted you will be notified by email.</p>
+{% endif %}
+
+{% if not rsvp.user %}
+<p>
+To change your RSVP, click <a href="http://{{ site.domain }}{% url 'update_rsvp_with_key' rsvp.key %}">here</a>
+</p>
+{% endif %}

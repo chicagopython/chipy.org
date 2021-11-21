@@ -6,9 +6,9 @@ import string
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy
-
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from tinymce import models as tinymce_models
@@ -139,19 +139,19 @@ class Meeting(CommonModel):
         raise NotImplementedError
 
     def number_rsvps(self):
-        return self.rsvp_set.exclude(response=RSVP.RESPONSE.NO).count()
+        return self.rsvp_set.exclude(response=RSVP.NO).count()
 
-    def is_in_person_capacity_available(self):
+    def has_in_person_capacity(self):
         max_capacity = self.in_person_capacity
-        rsvps = self.rsvp_set.filter(venue=RSVP.VENUE.IN_PERSON, respone=RSVP.RESPONSE.YES).count()
+        rsvps = self.rsvp_set.filter(venue=RSVP.IN_PERSON, response=RSVP.YES).count()
         return max_capacity > rsvps
 
-    def is_virtual_capacity_available(self):
+    def has_virtual_capacity(self):
         if self.virtual_capacity is None:
             return True
 
         max_capacity = self.virtual_capacity
-        rsvps = self.rsvp_set.filter(venue=RSVP.VENUE.VIRTUAL, respone=RSVP.RESPONSE.YES).count()
+        rsvps = self.rsvp_set.filter(venue=RSVP.VIRTUAL, response=RSVP.YES).count()
         return max_capacity > rsvps
 
     def get_absolute_url(self):
@@ -252,18 +252,27 @@ class Topic(CommonModel):
 
 
 class RSVP(CommonModel):
-    class RESPONSE(models.TextChoices):
-        YES = "Y", gettext_lazy("Yes")
-        NO = "N", gettext_lazy("No")
 
-    class STATUS(models.TextChoices):
-        ACCEPTED = "A", gettext_lazy("Accepted")
-        DECLINED = "D", gettext_lazy("Declined")
-        WAIT_LISTED = "W", gettext_lazy("Wait Listed")
+    YES = "Y"
+    NO = "N"
+    RSVP_RESPONSE = ((YES, "Yes"), (NO, "No"))
 
-    class VENUE(models.TextChoices):
-        IN_PERSON = "I", gettext_lazy("In-Person")
-        VIRTUAL = "V", gettext_lazy("Virtually")
+    ACCEPTED = "A"
+    DECLINED = "D"
+    WAIT_LISTED = "W"
+
+    RSVP_STATUS = (
+        (ACCEPTED, "Accepted"),
+        (DECLINED, "Declined"),
+        (WAIT_LISTED, "Wait Listed"),
+    )
+
+    IN_PERSON = "I"
+    VIRTUAL = "V"
+    RSVP_VENUE = (
+        (IN_PERSON, "In-Person"),
+        (VIRTUAL, "Virtually"),
+    )
 
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
@@ -276,9 +285,9 @@ class RSVP(CommonModel):
 
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
 
-    response = models.CharField(max_length=1, choices=RESPONSE.choices, default=RESPONSE.YES)
-    status = models.CharField(max_length=1, choices=STATUS.choices)
-    venue = models.CharField(max_length=1, choices=VENUE.choices, default=VENUE.IN_PERSON)
+    response = models.CharField(max_length=1, choices=RSVP_RESPONSE, default=YES)
+    status = models.CharField(max_length=1, choices=RSVP_STATUS, blank=True, null=True)
+    venue = models.CharField(max_length=1, choices=RSVP_VENUE, default=IN_PERSON)
 
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)
@@ -311,21 +320,21 @@ class RSVP(CommonModel):
                 random.choice(string.digits + string.ascii_lowercase) for x in range(40)
             )
 
-        if self.response == self.RESPONSE.YES:
-            if self.venue == self.VENUE.IN_PERSON:
-                if self.meeting.is_in_person_capacity_available():
-                    self.status = self.STATUS.ACCEPTED
+        if self.response == self.YES:
+            if self.venue == self.IN_PERSON:
+                if self.meeting.has_in_person_capacity():
+                    self.status = self.ACCEPTED
                 else:
-                    self.status = self.STATUS.WAIT_LISTED
+                    self.status = self.WAIT_LISTED
 
-            if self.venue == self.VENUE.VIRTUAL:
-                if self.meeting.is_virtual_capacity_available():
-                    self.status = self.STATUS.ACCEPTED
+            if self.venue == self.VIRTUAL:
+                if self.meeting.has_virtual_capacity():
+                    self.status = self.ACCEPTED
                 else:
-                    self.status = self.STATUS.WAIT_LISTED
+                    self.status = self.WAIT_LISTED
 
-        if self.response == self.RESPONSE.NO:
-            self.status = self.STATUS.DECLINED
+        if self.response == self.NO:
+            self.status = self.DECLINED
 
         return super().save(*args, **kwargs)
 
@@ -335,3 +344,33 @@ class RSVP(CommonModel):
 
     def __str__(self):
         return f"{self.meeting}: {self.full_name}"
+
+
+@receiver(post_save, sender=RSVP)
+def rsvp_post_save(sender, instance, **kwargs):
+    print("in post save")
+    print(kwargs)
+
+    if kwargs["raw"]:
+        return
+
+    # send an email to the user by email
+    if kwargs["created"]:
+        # send initial email
+        pass
+
+    if kwargs["update_fields"]:
+        # send updated email
+        pass
+
+    meeting: Meeting = instance.meeting
+
+    if meeting.has_in_person_capacity():
+        RSVP.objects.filter(
+            meeting=meeting, venue=RSVP.IN_PERSON, status=RSVP.WAIT_LISTED
+        ).order_by("created").first()
+
+    if meeting.has_virtual_capacity():
+        RSVP.objects.filter(meeting=meeting, venue=RSVP.VIRTUAL, status=RSVP.WAIT_LISTED).order_by(
+            "created"
+        ).first()

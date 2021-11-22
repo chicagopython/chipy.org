@@ -33,9 +33,7 @@ class Command(BaseCommand):
         site, _ = Site.objects.get_or_create(domain="example.com")
         for title in ["conduct", "donate", "giving", "host", "referrals", "sigs", "volunteer"]:
             page, _ = FlatPage.objects.get_or_create(
-                url=f"/{title}/",
-                title=title,
-                content="Here is a page with content",
+                url=f"/{title}/", title=title, content="Here is a page with content",
             )
             page.sites.add(site)
 
@@ -62,10 +60,7 @@ class Command(BaseCommand):
 
         for k, v in times.items():
             announcements.models.Announcement.objects.update_or_create(
-                headline=f"Dev Headline - {k}",
-                text="Dev Announcement",
-                active=True,
-                end_date=v,
+                headline=f"Dev Headline - {k}", text="Dev Announcement", active=True, end_date=v,
             )
 
         # Meetings
@@ -166,8 +161,7 @@ class Command(BaseCommand):
 
         for name, list_priority in sponsor_levels:
             sponsor_group, _ = sponsors.models.SponsorGroup.objects.update_or_create(
-                name=name,
-                list_priority=list_priority,
+                name=name, list_priority=list_priority,
             )
             sponsor_groups[name] = sponsor_group
 

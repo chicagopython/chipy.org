@@ -361,8 +361,8 @@ class RSVP(CommonModel):
             and original.response == self.response
             and original.attendance_type == self.attendance_type
         ):
-            if self.response == self.YES:
-                if self.attendance_type == self.Responses.IN_PERSON:
+            if self.response == self.Responses.YES:
+                if self.attendance_type == self.AttendanceTypes.IN_PERSON:
                     if self.meeting.has_in_person_capacity():
 
                         self.status = self.Statuses.ACCEPTED
@@ -398,8 +398,8 @@ def rsvp_post_save(sender, instance, **kwargs):
     meeting: Meeting = instance.meeting
 
     # don't updated anything if registration is closed
-    if not meeting.can_register():
-        return
+    # if not meeting.can_register():
+    #     return
 
     # send an email to the user by email
     if instance.email:

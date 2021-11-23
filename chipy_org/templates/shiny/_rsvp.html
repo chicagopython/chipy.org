@@ -13,10 +13,10 @@
     {% endif %}
     <p>
         <strong>Current Attendance:</strong><br />
-        {% if next_meeting.in_person_capacity!=0 %}
+        {% if next_meeting.in_person_capacity != 0 %}
         In Person Pythonistas: {{ next_meeting.number_in_person_rsvps}}<br />
         {% endif %}
-        {if next_meeting.virtual_capacity!=0 %}
+        {% if next_meeting.virtual_capacity != 0 %}
         Virtual Pythonistas: {{next_meeting.number_virtual_rsvps}}<br />
         {% endif %}
     </p>

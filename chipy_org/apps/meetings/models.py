@@ -382,9 +382,6 @@ class RSVP(CommonModel):
 
 @receiver(post_save, sender=RSVP)
 def rsvp_post_save(sender, instance, **kwargs):
-    print("in post save")
-    print(kwargs)
-
     if kwargs["raw"]:
         return
 

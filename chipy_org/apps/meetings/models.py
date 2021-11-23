@@ -382,14 +382,20 @@ class RSVP(CommonModel):
 
 @receiver(post_save, sender=RSVP)
 def rsvp_post_save(sender, instance, **kwargs):
+
+    # don't run on bulk or raw updates
     if kwargs["raw"]:
+        return
+
+    meeting: Meeting = instance.meeting
+
+    # don't updated anything if registration is closed
+    if not meeting.can_register():
         return
 
     # send an email to the user by email
     if instance.email:
         send_rsvp_email(instance)
-
-    meeting: Meeting = instance.meeting
 
     if meeting.has_in_person_capacity():
         first_on_in_person_wait_list = (

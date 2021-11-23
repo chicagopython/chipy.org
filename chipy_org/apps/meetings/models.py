@@ -141,23 +141,29 @@ class Meeting(CommonModel):
         raise NotImplementedError
 
     def number_rsvps(self):
-        return self.rsvp_set.exclude(response=RSVP.NO).count()
+        return self.rsvp_set.exclude(response=RSVP.Responses.NO).count()
 
     def number_in_person_rsvps(self):
         return self.rsvp_set.filter(
-            response=RSVP.YES, status=RSVP.ACCEPTED, venue=RSVP.IN_PERSON
+            response=RSVP.Responses.YES,
+            status=RSVP.Statuses.ACCEPTED,
+            attendance_type=RSVP.AttendanceTypes.IN_PERSON,
         ).count()
 
     def number_virtual_rsvps(self):
         return self.rsvp_set.filter(
-            response=RSVP.YES, status=RSVP.ACCEPTED, venue=RSVP.VIRTUAL
+            response=RSVP.Responses.YES,
+            status=RSVP.Statuses.ACCEPTED,
+            attendance_type=RSVP.AttendanceTypes.VIRTUAL,
         ).count()
 
     def has_in_person_capacity(self):
 
         max_capacity = self.in_person_capacity
         rsvps = self.rsvp_set.filter(
-            venue=RSVP.IN_PERSON, response=RSVP.YES, status=RSVP.ACCEPTED
+            attendance_type=RSVP.AttendanceTypes.IN_PERSON,
+            response=RSVP.Responses.YES,
+            status=RSVP.Statuses.ACCEPTED,
         ).count()
 
         return max_capacity > rsvps
@@ -168,7 +174,9 @@ class Meeting(CommonModel):
 
         max_capacity = self.virtual_capacity
         rsvps = self.rsvp_set.filter(
-            venue=RSVP.VIRTUAL, response=RSVP.YES, status=RSVP.ACCEPTED
+            attendance_type=RSVP.AttendanceTypes.VIRTUAL,
+            response=RSVP.Responses.YES,
+            status=RSVP.Statuses.ACCEPTED,
         ).count()
         return max_capacity > rsvps
 
@@ -351,7 +359,7 @@ class RSVP(CommonModel):
         if not (
             original
             and original.response == self.response
-            and original.venue == self.attendance_type
+            and original.attendance_type == self.attendance_type
         ):
             if self.response == self.YES:
                 if self.attendance_type == self.Responses.IN_PERSON:

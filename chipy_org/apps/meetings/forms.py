@@ -78,11 +78,19 @@ class RSVPForm(forms.ModelForm):
 
     class Meta:
         model = RSVP
-        fields = ("user", "response", "venue", "meeting", "first_name", "last_name", "email")
+        fields = (
+            "user",
+            "response",
+            "attendance_type",
+            "meeting",
+            "first_name",
+            "last_name",
+            "email",
+        )
         labels = {
             "first_name": "First name on your legal ID",
             "last_name": "Last name on your legal ID",
-            "venue": "Do you want to attend in-person or virtually",
+            "attendance_type": "Do you want to attend in-person or virtually",
         }
         widgets = {
             "meeting": forms.HiddenInput(),

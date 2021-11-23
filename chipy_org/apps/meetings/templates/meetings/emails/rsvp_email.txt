@@ -1,4 +1,4 @@
-Your {{ rsvp.get_venue_display }} RSVP for {{ rsvp.meeting }} has been {{ rsvp.get_status_display }}.
+Your {{ rsvp.get_attendance_type_display }} RSVP for {{ rsvp.meeting }} has been {{ rsvp.get_status_display }}.
 
 {% if rsvp.status == "A" %}
 If you no longer plan to attend this meeting, kindly {% if not rsvp.user %} use the link below {% else %} go to http://{{ site.domain }}> {% endif %} to change your response to "No". 

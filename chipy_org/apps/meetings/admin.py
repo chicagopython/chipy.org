@@ -126,7 +126,7 @@ class RSVPAdmin(admin.ModelAdmin):
         "meeting",
         "response",
         "status",
-        "venue",
+        "attendance_type",
         "created",
     ]
     readonly_fields = ["created", "modified"]
@@ -137,7 +137,7 @@ class RSVPAdmin(admin.ModelAdmin):
         "last_name",
         "email",
     ]
-    list_filter = ["response", "status", "venue"]
+    list_filter = ["response", "status", "attendance_type"]
 
 
 class MeetingTypeAdmin(admin.ModelAdmin):

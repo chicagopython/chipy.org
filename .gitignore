@@ -73,6 +73,3 @@ venv/
 
 .vscode
 htmlcov
-
-Pipfile
-Pipfile.lock

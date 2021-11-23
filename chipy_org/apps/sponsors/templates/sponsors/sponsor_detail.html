@@ -11,7 +11,7 @@
 {% thumbnail sponsor.logo "400" crop="center" as im %}
   <div>
     <a href="{{ sponsor.url }}">
-    <img src="{{ im.url }}" alt="{{ sponsor.name }}"></a>
+    <img class="img-fluid" src="{{ im.url }}" alt="{{ sponsor.name }}"></a>
   </div>
 {% empty %}
   <div class="row">

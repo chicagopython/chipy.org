@@ -270,27 +270,31 @@ class Topic(CommonModel):
 
 
 class RSVP(CommonModel):
+    class Responses:
+        YES = "Y"
+        NO = "N"
+        ALL = [YES, NO]
+        CHOICE_LIST = [(YES, "Yes"), (NO, "No")]
 
-    YES = "Y"
-    NO = "N"
-    RSVP_RESPONSE = ((YES, "Yes"), (NO, "No"))
+    class Statuses:
+        ACCEPTED = "A"
+        DECLINED = "D"
+        WAIT_LISTED = "W"
+        ALL = [ACCEPTED, DECLINED, WAIT_LISTED]
+        CHOICE_LIST = [
+            (ACCEPTED, "Accepted"),
+            (DECLINED, "Declined"),
+            (WAIT_LISTED, "Wait Listed"),
+        ]
 
-    ACCEPTED = "A"
-    DECLINED = "D"
-    WAIT_LISTED = "W"
-
-    RSVP_STATUS = (
-        (ACCEPTED, "Accepted"),
-        (DECLINED, "Declined"),
-        (WAIT_LISTED, "Wait Listed"),
-    )
-
-    IN_PERSON = "I"
-    VIRTUAL = "V"
-    RSVP_VENUE = (
-        (IN_PERSON, "In-Person"),
-        (VIRTUAL, "Virtually"),
-    )
+    class AttendanceTypes:
+        IN_PERSON = "I"
+        VIRTUAL = "V"
+        ALL = [IN_PERSON, VIRTUAL]
+        CHOICE_LIST = [
+            (IN_PERSON, "In-Person"),
+            (VIRTUAL, "Virtually"),
+        ]
 
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
@@ -303,9 +307,11 @@ class RSVP(CommonModel):
 
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
 
-    response = models.CharField(max_length=1, choices=RSVP_RESPONSE, default=YES)
-    status = models.CharField(max_length=1, choices=RSVP_STATUS, blank=True, null=True)
-    venue = models.CharField(max_length=1, choices=RSVP_VENUE, default=IN_PERSON)
+    response = models.CharField(max_length=1, choices=Responses.CHOICE_LIST, default=Responses.YES)
+    status = models.CharField(max_length=1, choices=Statuses.CHOICE_LIST, blank=True, null=True)
+    attendance_type = models.CharField(
+        max_length=1, choices=AttendanceTypes.CHOICE_LIST, default=AttendanceTypes.IN_PERSON
+    )
 
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)
@@ -342,23 +348,27 @@ class RSVP(CommonModel):
                 random.choice(string.digits + string.ascii_lowercase) for x in range(40)
             )
 
-        if not (original and original.response == self.response and original.venue == self.venue):
+        if not (
+            original
+            and original.response == self.response
+            and original.venue == self.attendance_type
+        ):
             if self.response == self.YES:
-                if self.venue == self.IN_PERSON:
+                if self.attendance_type == self.Responses.IN_PERSON:
                     if self.meeting.has_in_person_capacity():
 
-                        self.status = self.ACCEPTED
+                        self.status = self.Statuses.ACCEPTED
                     else:
-                        self.status = self.WAIT_LISTED
+                        self.status = self.Statuses.WAIT_LISTED
 
-                if self.venue == self.VIRTUAL:
+                if self.attendance_type == self.AttendanceTypes.VIRTUAL:
                     if self.meeting.has_virtual_capacity():
-                        self.status = self.ACCEPTED
+                        self.status = self.Statuses.ACCEPTED
                     else:
-                        self.status = self.WAIT_LISTED
+                        self.status = self.Statuses.WAIT_LISTED
 
-        if self.response == self.NO:
-            self.status = self.DECLINED
+        if self.response == self.Responses.NO:
+            self.status = self.Statuses.DECLINED
 
         return super().save(*args, **kwargs)
 
@@ -386,22 +396,30 @@ def rsvp_post_save(sender, instance, **kwargs):
 
     if meeting.has_in_person_capacity():
         first_on_in_person_wait_list = (
-            RSVP.objects.filter(meeting=meeting, venue=RSVP.IN_PERSON, status=RSVP.WAIT_LISTED)
+            RSVP.objects.filter(
+                meeting=meeting,
+                attendance_type=RSVP.AttendanceTypes.IN_PERSON,
+                status=RSVP.Statuses.WAIT_LISTED,
+            )
             .order_by("created")
             .first()
         )
 
         if first_on_in_person_wait_list:
-            first_on_in_person_wait_list.status = RSVP.ACCEPTED
+            first_on_in_person_wait_list.status = RSVP.Statuses.ACCEPTED
             first_on_in_person_wait_list.save()
 
     if meeting.has_virtual_capacity():
         first_on_virtual_wait_list = (
-            RSVP.objects.filter(meeting=meeting, venue=RSVP.VIRTUAL, status=RSVP.WAIT_LISTED)
+            RSVP.objects.filter(
+                meeting=meeting,
+                attendance_type=RSVP.AttendanceTypes.VIRTUAL,
+                status=RSVP.Statuses.WAIT_LISTED,
+            )
             .order_by("created")
             .first()
         )
 
         if first_on_virtual_wait_list:
-            first_on_virtual_wait_list.status = RSVP.ACCEPTED
+            first_on_virtual_wait_list.status = RSVP.Statuses.ACCEPTED
             first_on_virtual_wait_list.save()

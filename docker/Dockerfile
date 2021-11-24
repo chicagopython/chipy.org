@@ -24,7 +24,7 @@ RUN install -d proj/ var/log/ htdocs/ htdocs/static/
 
 # Install python packages
 ADD Pipfile ${SITE_DIR}Pipfile
-ADD Pipfile.lock ${SITE_DIR}
+ADD Pipfile.lock ${SITE_DIR}Pipfile.lock
 RUN pipenv install --dev --system
 RUN pip install uwsgi
 

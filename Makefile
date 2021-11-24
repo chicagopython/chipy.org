@@ -17,8 +17,12 @@ run:
 up:
 	docker-compose up -d
 
+up-services:
+	docker-compose up -d db
+
 down:
 	docker-compose down
+
 
 shell:
 	@echo "Opening shell in docker container"

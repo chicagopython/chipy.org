@@ -164,3 +164,13 @@ regardless you can deploy a feature branch with the following command:
 
     # Deploy feature branch
     git push heroku feature/mybranch:master
+
+
+## Alternate Local Development
+
+You can use `make up-services` to start the background services
+locally. Then, if you copy `docker/docker.env` to `.env` you can
+use pipenv to run the service locally: `pipenv run python manage.py runserver`.
+
+If you develop locally you are on your own! All contributions must work in
+docker.

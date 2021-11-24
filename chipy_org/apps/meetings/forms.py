@@ -81,7 +81,6 @@ class RSVPForm(forms.ModelForm):
         fields = (
             "user",
             "response",
-            "attendance_type",
             "meeting",
             "first_name",
             "last_name",
@@ -90,7 +89,7 @@ class RSVPForm(forms.ModelForm):
         labels = {
             "first_name": "First name on your legal ID",
             "last_name": "Last name on your legal ID",
-            "attendance_type": "Do you want to attend in-person or virtually",
+            "response": "Do you want to attend in-person or virtually",
         }
         widgets = {
             "meeting": forms.HiddenInput(),

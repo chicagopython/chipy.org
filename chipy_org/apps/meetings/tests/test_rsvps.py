@@ -67,7 +67,7 @@ def rsvp(meeting_can_register):
         first_name="first_name",
         email="test@test.com",
         meeting=meeting_can_register,
-        response="Y",
+        response=RSVP.Responses.IN_PERSON,
     )
     return r
 
@@ -79,7 +79,7 @@ def rsvp_can_update(meeting_can_register):
         first_name="first_name",
         email="test@test.com",
         meeting=meeting_can_register,
-        response="Y",
+        response=RSVP.Responses.IN_PERSON,
     )
     return r
 
@@ -91,7 +91,7 @@ def rsvp_cannot_update(meeting_in_future_registration_closed):
         first_name="first_name",
         email="test@test.com",
         meeting=meeting_in_future_registration_closed,
-        response="Y",
+        response=RSVP.Responses.IN_PERSON,
     )
     return r
 
@@ -103,7 +103,7 @@ def rsvp_meeting_in_past(meeting_in_past):
         first_name="first_name",
         email="test@test.com",
         meeting=meeting_in_past,
-        response="Y",
+        response=RSVP.Responses.IN_PERSON,
     )
     return r
 
@@ -117,21 +117,25 @@ class MeetingsTest(test_utils.AuthenticatedTest):
         meeting = Meeting.objects.create(
             when=datetime.date.today(), where=test_venue, in_person_capacity=5
         )
-        rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")
+        rsvp = RSVP.objects.create(
+            user=self.user, meeting=meeting, response=RSVP.Responses.IN_PERSON
+        )
 
         with self.assertRaises(ValidationError):
             # RSVP needs to have a user or name
-            rsvp_no_user = RSVP.objects.create(meeting=meeting, response="Y")
+            rsvp_no_user = RSVP.objects.create(meeting=meeting, response=RSVP.Responses.IN_PERSON)
 
         with self.assertRaises(ValidationError):
             # This should already exist
-            duplicate_rsvp = RSVP.objects.create(user=self.user, meeting=meeting, response="Y")
+            duplicate_rsvp = RSVP.objects.create(
+                user=self.user, meeting=meeting, response=RSVP.Responses.IN_PERSON
+            )
 
         with self.assertRaises(ValidationError):
             name_rsvp = RSVP.objects.create(
                 name="Test Name",
                 meeting=meeting,
-                response="Y",
+                response=RSVP.Responses.IN_PERSON,
                 email="dummy@example.com",
             )
 
@@ -139,7 +143,7 @@ class MeetingsTest(test_utils.AuthenticatedTest):
             duplicate_name_rsvp = RSVP.objects.create(
                 name="Test Name",
                 meeting=meeting,
-                response="Y",
+                response=RSVP.Responses.IN_PERSON,
                 email="dummy@example.com",
             )
 

@@ -155,6 +155,12 @@ class Meeting(CommonModel):
             status=RSVP.Statuses.CONFIRMED,
         ).count()
 
+    def is_in_person(self):
+        return self.in_person_capacity != 0
+
+    def is_virtual(self):
+        return self.virtual_capacity != 0
+
     def has_in_person_capacity(self):
 
         max_capacity = self.in_person_capacity

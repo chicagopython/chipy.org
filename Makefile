@@ -17,8 +17,12 @@ run:
 up:
 	docker-compose up -d
 
+up-services:
+	docker-compose up -d db
+
 down:
 	docker-compose down
+
 
 shell:
 	@echo "Opening shell in docker container"
@@ -46,7 +50,7 @@ tag:
 	git tag -m $(date_tag) $(date_tag)
 
 test:
-	docker-compose exec web pytest -v chipy_org/
+	docker-compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
 lint:
 	docker-compose exec web pylint -j 0 chipy_org/

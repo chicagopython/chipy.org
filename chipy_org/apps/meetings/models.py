@@ -295,7 +295,7 @@ class RSVP(CommonModel):
         ALL = [PENDING, CONFIRMED, WAIT_LISTED, REJECTED]
         CHOICE_LIST = [
             (PENDING, "pending"),
-            (CONFIRMED, "confirimed"),
+            (CONFIRMED, "confirmed"),
             (REJECTED, "rejected"),
             (WAIT_LISTED, "wait listed"),
         ]

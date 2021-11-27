@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.test import override_settings
 from django.urls import reverse
 
-import chipy_org.libs.test_utils as test_utils
+from chipy_org.libs import test_utils
 from chipy_org.apps.meetings import email
 from chipy_org.apps.meetings.models import RSVP, Meeting, Venue
 

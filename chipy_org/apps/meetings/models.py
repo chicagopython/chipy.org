@@ -143,12 +143,14 @@ class Meeting(CommonModel):
     def number_rsvps(self):
         return self.rsvp_set.exclude(response=RSVP.Responses.DECLILNED).count()
 
+    @property
     def number_in_person_rsvps(self):
         return self.rsvp_set.filter(
             response=RSVP.Responses.IN_PERSON,
             status=RSVP.Statuses.CONFIRMED,
         ).count()
 
+    @property
     def number_virtual_rsvps(self):
         return self.rsvp_set.filter(
             response=RSVP.Responses.VIRTUAL,
@@ -162,25 +164,13 @@ class Meeting(CommonModel):
         return self.virtual_capacity != 0
 
     def has_in_person_capacity(self):
-
-        max_capacity = self.in_person_capacity
-        rsvps = self.rsvp_set.filter(
-            response=RSVP.Responses.IN_PERSON,
-            status=RSVP.Statuses.CONFIRMED,
-        ).count()
-
-        return max_capacity > rsvps
+        return self.in_person_capacity > self.number_in_person_rsvps
 
     def has_virtual_capacity(self):
         if self.virtual_capacity is None:
             return True
 
-        max_capacity = self.virtual_capacity
-        rsvps = self.rsvp_set.filter(
-            response=RSVP.Responses.VIRTUAL,
-            status=RSVP.Statuses.CONFIRMED,
-        ).count()
-        return max_capacity > rsvps
+        return self.virtual_capacity > self.number_virtual_rsvps
 
     def get_absolute_url(self):
         return reverse("meeting", args=[self.id])
@@ -285,7 +275,7 @@ class RSVP(CommonModel):
         VIRTUAL = "virtual"
         DECLILNED = "declined"
         ALL = [IN_PERSON, VIRTUAL, DECLILNED]
-        CHOICE_LIST = [(IN_PERSON, "In-Person"), (VIRTUAL, "Virtually"), (DECLILNED, "Declined")]
+        CHOICE_LIST = [(IN_PERSON, "in-person"), (VIRTUAL, "virtual"), (DECLILNED, "declined")]
 
     class Statuses:
         PENDING = "pending"
@@ -365,7 +355,7 @@ class RSVP(CommonModel):
                     self.status = self.Statuses.WAIT_LISTED
 
         if self.response == self.Responses.DECLILNED:
-            self.status = self.Statuses.REJECTED
+            self.status = self.Statuses.CONFIRMED
 
         return super().save(*args, **kwargs)
 

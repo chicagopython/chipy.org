@@ -1,24 +1,25 @@
-Your {{ rsvp.get_attendance_type_display }} RSVP for {{ rsvp.meeting }} has been {{ rsvp.get_status_display }}.
 
-{% if rsvp.status == "A" %}
+Your RSVP response, {{ rsvp.response | upper }}, for {{ rsvp.meeting }} is {{ rsvp.get_status_display | upper }}.
+
+{% if rsvp.response != "declined" %}
 <p>If you no longer plan to attend this meeting, kindly 
     
     {% if not rsvp.user %}
-    use the link below 
+    use the link below
     {% else %}
     go to <a href="http://{{ site.domain }}">chipy.org</a>
     {% endif %}
 
-to change your response to "No". 
-This will allow wait listed participants to attend the meeting.</p>
+to change your response to "DECLINED". 
+This will help those who still wish to attend receive a confirmation.</p>
 {% endif %}
 
-{% if rsvp.status == "W" %}
-<p>If your reservation is accepted you will be notified by email.</p>
+{% if rsvp.status == "wait listed" %}
+<p>If your reservation is confirmed you will be notified by email.</p>
 {% endif %}
 
 {% if not rsvp.user %}
-<p>
-To change your RSVP, click <a href="http://{{ site.domain }}{% url 'update_rsvp_with_key' rsvp.key %}">here</a>
-</p>
+<p>Click <a href="http://{{ site.domain }}{% url 'update_rsvp_with_key' rsvp.key %}">here</a> to change your RSVP.</p>
+{% else %}
+<p>Go to <a href="http://{{ site.domain }}">chipy.org</a> to change your RSVP.</p>
 {% endif %}

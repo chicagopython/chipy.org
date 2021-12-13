@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 
 from .views import GroupDetail
 
 urlpatterns = [
-    url(r"^(?P<slug>[a-zA-Z0-9\-\_]*)/$", GroupDetail.as_view(), name="groups"),
+    path("<slug:slug>/", GroupDetail.as_view(), name="groups"),
 ]

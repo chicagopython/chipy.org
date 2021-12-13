@@ -65,6 +65,7 @@ CHICAGO_ORGANIZER_EMAILS = env_var("CHICAGO_ORGANIZER_EMAILS", "").split(",")
 
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {"default": dj_database_url.config(default="postgres://localhost:5432/chipy_org")}
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

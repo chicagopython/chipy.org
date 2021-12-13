@@ -15,6 +15,7 @@
   </div>
   <div>
     <form action="{% url 'propose_topic' %}" method="post" id="propose-topic">{% csrf_token %}
+      {{ form.media }}
       {% for field in form %}
       <div class="fieldWrapper">
         {% if field.name not in form.required %}

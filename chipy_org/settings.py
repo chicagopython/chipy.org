@@ -243,7 +243,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "social_django",
     "storages",
-    "tinymce",
     "sorl.thumbnail",
     "ckeditor",
     # theme
@@ -287,18 +286,6 @@ HONEYPOT_FIELD_NAME = "email2"
 if env_var("PRODUCTION", False):
     PREPEND_WWW = True
 
-TINYMCE_DEFAULT_CONFIG = {
-    "height": "500",
-    # custom plugins
-    "plugins": "table,spellchecker,paste,searchreplace,inlinepopups",
-    # editor theme
-    "theme": "advanced",
-    # custom CSS file for styling editor area
-    "content_css": MEDIA_URL + "css/custom_tinymce.css",
-    # use absolute urls when inserting links/images
-    "relative_urls": False,
-}
-
 BLEACH_ALLOWED_TAGS = [
     "p",
     "b",
@@ -340,8 +327,6 @@ BLEACH_STRIP_TAGS = True
 
 NORECAPTCHA_SITE_KEY = env_var("NORECAPTCHA_SITE_KEY")
 NORECAPTCHA_SECRET_KEY = env_var("NORECAPTCHA_SECRET_KEY")
-
-FLATPAGES_TINYMCE_ADMIN = True
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 

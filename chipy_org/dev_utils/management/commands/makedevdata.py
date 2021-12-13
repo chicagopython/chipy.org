@@ -89,6 +89,7 @@ class Command(BaseCommand):
                 description=f"Dev Meeting {k}".title(),
                 reg_close_date=(v + timedelta(days=6)),
                 key=f"dev{count:037}",
+                in_person_capacity=5,
             )
 
             topic, _ = meetings.models.Topic.objects.get_or_create(
@@ -117,6 +118,7 @@ class Command(BaseCommand):
                 description=meeting_description,
                 reg_close_date=meeting_registration_end,
                 key=meeting_id,
+                in_person_capacity=5,
             )
 
         # Jobs

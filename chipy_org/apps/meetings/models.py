@@ -7,11 +7,15 @@ import string
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel
+
+from .email import send_rsvp_email
 
 MAX_LENGTH = 255
 
@@ -117,6 +121,11 @@ class Meeting(CommonModel):
     )
     description = tinymce_models.HTMLField(blank=True, null=True)
 
+    in_person_capacity = models.PositiveSmallIntegerField(null=False)
+    virtual_capacity = models.PositiveSmallIntegerField(
+        blank=True, null=True, help_text="Leave blank for no maximum"
+    )
+
     def can_register(self):
         can_reg = True
         if self.reg_close_date and timezone.now() > self.reg_close_date:
@@ -131,11 +140,37 @@ class Meeting(CommonModel):
     def rsvp_user_yes(self):
         raise NotImplementedError
 
-    def rsvp_user_maybe(self):
-        raise NotImplementedError
-
     def number_rsvps(self):
-        return self.rsvp_set.exclude(response="N").count()
+        return self.rsvp_set.exclude(response=RSVP.Responses.DECLILNED).count()
+
+    @property
+    def number_in_person_rsvps(self):
+        return self.rsvp_set.filter(
+            response=RSVP.Responses.IN_PERSON,
+            status=RSVP.Statuses.CONFIRMED,
+        ).count()
+
+    @property
+    def number_virtual_rsvps(self):
+        return self.rsvp_set.filter(
+            response=RSVP.Responses.VIRTUAL,
+            status=RSVP.Statuses.CONFIRMED,
+        ).count()
+
+    def is_in_person(self):
+        return self.in_person_capacity != 0
+
+    def is_virtual(self):
+        return self.virtual_capacity != 0
+
+    def has_in_person_capacity(self):
+        return self.in_person_capacity > self.number_in_person_rsvps
+
+    def has_virtual_capacity(self):
+        if self.virtual_capacity is None:
+            return True
+
+        return self.virtual_capacity > self.number_virtual_rsvps
 
     def get_absolute_url(self):
         return reverse("meeting", args=[self.id])
@@ -235,11 +270,25 @@ class Topic(CommonModel):
 
 
 class RSVP(CommonModel):
+    class Responses:
+        IN_PERSON = "in-person"
+        VIRTUAL = "virtual"
+        DECLILNED = "declined"
+        ALL = [IN_PERSON, VIRTUAL, DECLILNED]
+        CHOICE_LIST = [(IN_PERSON, "in-person"), (VIRTUAL, "virtual"), (DECLILNED, "declined")]
 
-    RSVP_CHOICES = (
-        ("Y", "Yes"),
-        ("N", "No"),
-    )
+    class Statuses:
+        PENDING = "pending"
+        CONFIRMED = "confirmed"
+        WAIT_LISTED = "wait listed"
+        REJECTED = "rejected"
+        ALL = [PENDING, CONFIRMED, WAIT_LISTED, REJECTED]
+        CHOICE_LIST = [
+            (PENDING, "pending"),
+            (CONFIRMED, "confirmed"),
+            (REJECTED, "rejected"),
+            (WAIT_LISTED, "wait listed"),
+        ]
 
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
@@ -249,8 +298,14 @@ class RSVP(CommonModel):
     last_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     first_name = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
+
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    response = models.CharField(max_length=1, choices=RSVP_CHOICES)
+
+    response = models.CharField(
+        max_length=50, choices=Responses.CHOICE_LIST, default=Responses.IN_PERSON
+    )
+    status = models.CharField(max_length=50, choices=Statuses.CHOICE_LIST, default=Statuses.PENDING)
+
     key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     meetup_user_id = models.IntegerField(blank=True, null=True)
 
@@ -276,13 +331,33 @@ class RSVP(CommonModel):
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         self.full_clean()
 
+        original = None
+        if self.id:
+            original = RSVP.objects.get(id=self.id)
+
         # Generate a key for this RSVP
         if not self.key:
             self.key = "".join(
                 random.choice(string.digits + string.ascii_lowercase) for x in range(40)
             )
 
-        return super(RSVP, self).save(*args, **kwargs)
+        if not (original and original.response == self.response):
+            if self.response == self.Responses.IN_PERSON:
+                if self.meeting.has_in_person_capacity():
+                    self.status = self.Statuses.CONFIRMED
+                else:
+                    self.status = self.Statuses.WAIT_LISTED
+
+            if self.response == self.Responses.VIRTUAL:
+                if self.meeting.has_virtual_capacity():
+                    self.status = self.Statuses.CONFIRMED
+                else:
+                    self.status = self.Statuses.WAIT_LISTED
+
+        if self.response == self.Responses.DECLILNED:
+            self.status = self.Statuses.CONFIRMED
+
+        return super().save(*args, **kwargs)
 
     @property
     def full_name(self):
@@ -290,3 +365,51 @@ class RSVP(CommonModel):
 
     def __str__(self):
         return f"{self.meeting}: {self.full_name}"
+
+
+@receiver(post_save, sender=RSVP)
+def rsvp_post_save(sender, instance, **kwargs):
+
+    # don't run on bulk or raw updates
+    if kwargs["raw"]:
+        return
+
+    meeting: Meeting = instance.meeting
+
+    # don't updated anything if registration is closed
+    # if not meeting.can_register():
+    #     return
+
+    # send an email to the user by email
+    if instance.email:
+        send_rsvp_email(instance)
+
+    if meeting.has_in_person_capacity():
+        first_on_in_person_wait_list = (
+            RSVP.objects.filter(
+                meeting=meeting,
+                response=RSVP.Responses.IN_PERSON,
+                status=RSVP.Statuses.WAIT_LISTED,
+            )
+            .order_by("created")
+            .first()
+        )
+
+        if first_on_in_person_wait_list:
+            first_on_in_person_wait_list.status = RSVP.Statuses.CONFIRMED
+            first_on_in_person_wait_list.save()
+
+    if meeting.has_virtual_capacity():
+        first_on_virtual_wait_list = (
+            RSVP.objects.filter(
+                meeting=meeting,
+                response=RSVP.Responses.VIRTUAL,
+                status=RSVP.Statuses.WAIT_LISTED,
+            )
+            .order_by("created")
+            .first()
+        )
+
+        if first_on_virtual_wait_list:
+            first_on_virtual_wait_list.status = RSVP.Statuses.CONFIRMED
+            first_on_virtual_wait_list.save()

@@ -22,7 +22,7 @@ class SmokeTest(TestCase):
         self.client = Client()
         self.user = User.objects.create(username="chipy",)
         self.meeting = Meeting.objects.create(
-            when=datetime.datetime.now() + datetime.timedelta(days=7)
+            when=datetime.datetime.now() + datetime.timedelta(days=7), in_person_capacity=5,
         )
         self.topic = Topic.objects.create(title="test topic")
 
@@ -79,11 +79,13 @@ def test_future_meetings(client):
         when=datetime.date.today() + datetime.timedelta(days=1),
         where=test_venue,
         key="some_upcoming_meeting",
+        in_person_capacity=5,
     )
     past_meeting, _ = Meeting.objects.get_or_create(
         when=datetime.date.today() - datetime.timedelta(days=1),
         where=test_venue,
         key="some_past_meeting",
+        in_person_capacity=5,
     )
     response = client.get(reverse("future_meetings"))
     assert response.status_code == 200
@@ -91,7 +93,10 @@ def test_future_meetings(client):
 
 def test_post_topic_sends_email():
     m = Meeting(
-        when=datetime.datetime.now(), reg_close_date=datetime.datetime.now(), description="Test",
+        when=datetime.datetime.now(),
+        reg_close_date=datetime.datetime.now(),
+        description="Test",
+        in_person_capacity=5,
     )
     m.save()
     assert len(Meeting.objects.all()) == 1
@@ -120,17 +125,19 @@ class MeetingTitleTest(TestCase):
 
     def setUp(self):
         self.meeting_type_non_main = MeetingType.objects.create(
-            name="Non Main Sig ", default_title="Non Main Default Title"
+            name="Non Main Sig ", default_title="Non Main Default Title",
         )
 
     def test_non_main_meeting_without_custom_field(self):
         meeting = Meeting.objects.create(
-            when=datetime.date.today(), meeting_type=self.meeting_type_non_main
+            when=datetime.date.today(),
+            meeting_type=self.meeting_type_non_main,
+            in_person_capacity=5,
         )
         self.assertEqual(meeting.title, "Non Main Default Title")
 
     def test_main_meeting_without_custom_field(self):
-        meeting = Meeting.objects.create(when=datetime.date.today())
+        meeting = Meeting.objects.create(when=datetime.date.today(), in_person_capacity=5)
         self.assertEqual(meeting.title, "ChiPy __Main__ Meeting")
 
     def test_non_main_meeting_with_custom_field(self):
@@ -138,12 +145,13 @@ class MeetingTitleTest(TestCase):
             when=datetime.date.today(),
             meeting_type=self.meeting_type_non_main,
             custom_title="Non Main Custom Title",
+            in_person_capacity=5,
         )
         self.assertEqual(meeting.title, "Non Main Custom Title")
 
     def test_main_meeting_with_custom_field(self):
         meeting = Meeting.objects.create(
-            when=datetime.date.today(), custom_title="Main Custom Title"
+            when=datetime.date.today(), custom_title="Main Custom Title", in_person_capacity=5,
         )
         self.assertEqual(meeting.title, "Main Custom Title")
 

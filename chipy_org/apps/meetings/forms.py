@@ -76,9 +76,26 @@ class RSVPForm(forms.ModelForm):
         if self.instance.pk:
             del self.fields["email"]
 
+        meeting = kwargs.get("initial").get("meeting", None)
+        if meeting:
+            if not meeting.is_in_person():
+                choices = [(i, j) for i, j in self.fields["response"].choices if j != "in-person"]
+                self.fields["response"] = forms.ChoiceField(choices=choices)
+
+            if not meeting.is_virtual():
+                choices = [(i, j) for i, j in self.fields["response"].choices if j != "virtual"]
+                self.fields["response"] = forms.ChoiceField(choices=choices)
+
     class Meta:
         model = RSVP
-        fields = ("user", "response", "meeting", "first_name", "last_name", "email")
+        fields = (
+            "user",
+            "response",
+            "meeting",
+            "first_name",
+            "last_name",
+            "email",
+        )
         labels = {
             "first_name": "First name on your legal ID",
             "last_name": "Last name on your legal ID",

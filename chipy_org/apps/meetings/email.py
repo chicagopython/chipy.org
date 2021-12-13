@@ -11,7 +11,7 @@ def send_rsvp_email(rsvp):
     try:
         plaintext = get_template("meetings/emails/rsvp_email.txt")
         htmly = get_template("meetings/emails/rsvp_email.html")
-        context = {"key": rsvp.key, "site": Site.objects.get_current()}
+        context = {"rsvp": rsvp, "site": Site.objects.get_current()}
         subject = "Chipy: Link to Change your RSVP"
         from_email = "DoNotReply@chipy.org"
         text_content = plaintext.render(context)

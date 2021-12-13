@@ -21,7 +21,7 @@ from rest_framework.views import APIView
 
 from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
 
-from .email import send_meeting_topic_submitted_email, send_rsvp_email
+from .email import send_meeting_topic_submitted_email
 from .forms import RSVPForm, RSVPFormWithCaptcha, TopicForm
 from .models import RSVP as RSVPModel
 from .models import Meeting, Presenter, Topic
@@ -195,11 +195,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     def form_valid(self, form):
         # calling super.form_valid(form) also does self.object = form.save()
         response = super().form_valid(form)
-
-        messages.success(self.request, "RSVP Successful.")
-        if not self.object.user and self.object.email:
-            send_rsvp_email(self.object)
-
+        status = self.object.get_status_display()
+        messages.success(self.request, f"Your RSVP has been {status.upper()}.")
         return response
 
     def get_initial(self):
@@ -263,11 +260,13 @@ class RSVPlist(ListView):
         return (
             RSVPModel.objects.filter(meeting=self.meeting)
             .exclude(response="N")
+            .filter(venue=RSVPModel.IN_PERSON, status=RSVPModel.ACCEPTED)
             .order_by("last_name", "first_name")
         )
 
     def get_context_data(self, **kwargs):  # pylint: disable=arguments-differ
-        rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
+        # rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
+        rsvp_yes = self.get_queryset().count()
         context = {"meeting": self.meeting, "guests": (rsvp_yes)}
         context.update(super(RSVPlist, self).get_context_data(**kwargs))
         return context

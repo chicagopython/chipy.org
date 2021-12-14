@@ -4,6 +4,7 @@ import datetime
 import random
 import string
 
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -11,7 +12,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
-from tinymce import models as tinymce_models
 
 from chipy_org.libs.models import CommonModel
 
@@ -75,7 +75,7 @@ class MeetingType(CommonModel):
     name = models.CharField(max_length=64)
     default_title = models.CharField(max_length=64, null=True, blank=True)
     slug = models.SlugField(max_length=64, unique=True)
-    description = tinymce_models.HTMLField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.id} | ({self.name})"
@@ -119,7 +119,7 @@ class Meeting(CommonModel):
             "will show up as the title of the event."
         ),
     )
-    description = tinymce_models.HTMLField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
 
     in_person_capacity = models.PositiveSmallIntegerField(null=False)
     virtual_capacity = models.PositiveSmallIntegerField(
@@ -146,15 +146,13 @@ class Meeting(CommonModel):
     @property
     def number_in_person_rsvps(self):
         return self.rsvp_set.filter(
-            response=RSVP.Responses.IN_PERSON,
-            status=RSVP.Statuses.CONFIRMED,
+            response=RSVP.Responses.IN_PERSON, status=RSVP.Statuses.CONFIRMED,
         ).count()
 
     @property
     def number_virtual_rsvps(self):
         return self.rsvp_set.filter(
-            response=RSVP.Responses.VIRTUAL,
-            status=RSVP.Statuses.CONFIRMED,
+            response=RSVP.Responses.VIRTUAL, status=RSVP.Statuses.CONFIRMED,
         ).count()
 
     def is_in_person(self):
@@ -247,11 +245,8 @@ class Topic(CommonModel):
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default="CC BY")
     length = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
-    description = tinymce_models.HTMLField(
-        "Public Description",
-        blank=True,
-        null=True,
-        help_text="This will be the public talk description.",
+    description = RichTextField(
+        blank=True, null=True, help_text="This will be the public talk description.",
     )
     notes = models.TextField(
         "Private Submission Notes",
@@ -402,9 +397,7 @@ def rsvp_post_save(sender, instance, **kwargs):
     if meeting.has_virtual_capacity():
         first_on_virtual_wait_list = (
             RSVP.objects.filter(
-                meeting=meeting,
-                response=RSVP.Responses.VIRTUAL,
-                status=RSVP.Statuses.WAIT_LISTED,
+                meeting=meeting, response=RSVP.Responses.VIRTUAL, status=RSVP.Statuses.WAIT_LISTED,
             )
             .order_by("created")
             .first()

@@ -39,10 +39,9 @@ resetdb:
 web: run
 
 migrate:
-	docker-compose exec web python manage.py migrate auth || true
 	docker-compose exec web python manage.py migrate
 
-migration:
+migrations:
 	docker-compose exec web python manage.py makemigrations
 
 tag:

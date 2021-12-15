@@ -1,5 +1,7 @@
 import datetime
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django import forms
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 
@@ -23,13 +25,18 @@ class TopicForm(forms.ModelForm):
     email = forms.EmailField(label="Your Email", required=True)
 
     def __init__(self, request, *args, **kwargs):
-        super(TopicForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["meeting"].required = False
         self.fields["description"].required = True
         self.fields["experience_level"].required = True
         self.fields["length"].required = True
         self.fields["email"].initial = request.user.email
         self.fields["name"].initial = request.user.get_full_name()
+
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.form_id = "propose_topic"
+        self.helper.add_input(Submit("submit", "Submit Topic"))
 
         self.request = request
 

@@ -1,32 +1,21 @@
 {% extends "shiny/slim.html" %}
+{% load crispy_forms_tags %}
+
 {% block page_header %}CONTACT US{% endblock %}
 
 {% block body %}
     <div class="row">
-        <div class="col-md-9 px-3 pt-1 pb-3">
+        <div class="col-md-8 px-3 pt-1 pb-3">
           <div class="row-fluid">
               <div class="module span6">
                 <div id="contact">
-                  <form method="post" id="contact-us" action=".">
-                    {% csrf_token %}
-                    <table style="margin-bottom: 25px;">
-                        {% for field in form %}
-                            <tr>
-                                <td style="width: 120px">{{field.label_tag}}</td>
-                                <td>{{ field.errors }}{{field}}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                    <div class="text-center">
-                        <input class="btn btn-primary" type="submit" value="Send Email">
-                    </div>
-                  </form>
+                  {% crispy form %}
                 </div>
               </div>
           </div><!-- #row-fluid -->
        </div>
 
-        <div class="col-md-3 px-3 pt-1 pb-3">
+        <div class="col-md-4 px-3 pt-1 pb-3">
           <div class="module">
               <h3>Did you know ChiPy has a mailing list?</h3>
               <p>It's a great place to post a tough question, make an announcement,

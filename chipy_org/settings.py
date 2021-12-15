@@ -265,6 +265,7 @@ TEST_RUNNER = "chipy_org.runner.PytestTestRunner"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 if DEBUG:
     # Add the command extensions
@@ -357,3 +358,8 @@ LOGGING = {
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+CKEDITOR_CONFIGS = {
+    "default": {"toolbar": "Basic", "display": None, "width": "100%"},
+}

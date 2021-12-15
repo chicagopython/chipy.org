@@ -246,7 +246,8 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "ckeditor",
     # theme
-    "django_forms_bootstrap",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # project
     "chipy_org.apps.main",
     "chipy_org.apps.announcements",
@@ -261,6 +262,9 @@ if DEBUG:
     INSTALLED_APPS.append("chipy_org.dev_utils")
 
 TEST_RUNNER = "chipy_org.runner.PytestTestRunner"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 if DEBUG:
     # Add the command extensions

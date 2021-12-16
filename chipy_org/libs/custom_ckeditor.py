@@ -25,7 +25,7 @@ class CustomCKEditorWidget(CKEditorWidget):
 
         return mark_safe(
             renderer.render(
-                "ckeditor_widget.html",
+                "custom_ckeditor/widget.html",
                 {
                     "final_attrs": flatatt(final_attrs),
                     "value": conditional_escape(force_text(value)),

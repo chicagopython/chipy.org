@@ -1,4 +1,7 @@
 {% load static %}
+{% load crispy_forms_tags %}
+
+
 <div>
     <strong>RSVPs</strong>
     {% if curr_meeting.can_register %}
@@ -58,22 +61,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form
-                    id="rsvp-form"
-                    method="POST"
-                    action="{% url 'rsvp' %}"
-                >
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            {% if field not in form.hidden_fields %}
-                                <div><label for="{{ field.name }}">{{ field.label_tag }}</label></div>
-                            {% endif %}
-                            {{ field.errors }}{{field}}
-                        </div>
-                    {% endfor %}
-                    <input type="submit" name="submit" value="RSVP" class="btn btn-primary">
-                </form>
+                {% crispy form %}
             </div>
         </div>
     </div>

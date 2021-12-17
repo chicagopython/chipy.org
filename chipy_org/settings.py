@@ -362,5 +362,10 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 CKEDITOR_CONFIGS = {
-    "default": {"toolbar": "Basic", "display": None, "width": "100%"},
+    "default": {
+        "toolbar": "Basic",
+        "display": None,
+        "width": "100%",
+        "contentsCss": "/static/css/custom_contents.css",
+    },
 }

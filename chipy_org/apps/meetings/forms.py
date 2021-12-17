@@ -3,6 +3,7 @@ import datetime
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
+from django.urls import reverse
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 
 from .models import RSVP, Meeting, Presenter, Topic
@@ -36,6 +37,7 @@ class TopicForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.form_id = "propose_topic"
+        self.helper.form_action = reverse("propose_topic")
         self.helper.add_input(Submit("submit", "Submit Topic"))
 
         self.request = request
@@ -92,6 +94,12 @@ class RSVPForm(forms.ModelForm):
             if not meeting.is_virtual():
                 choices = [(i, j) for i, j in self.fields["response"].choices if j != "virtual"]
                 self.fields["response"] = forms.ChoiceField(choices=choices)
+
+        self.helper = FormHelper()
+        self.helper.form_id = "rsvp-form"
+        self.helper.form_method = "post"
+        self.helper.form_action = reverse("rsvp")
+        self.helper.add_input(Submit("submit", "RSVP"))
 
     class Meta:
         model = RSVP

@@ -1,30 +1,19 @@
 {% extends "shiny/slim.html" %}
-
 {% load i18n static %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}{% trans "Update RSVP" %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
 
+
 {% block body %}
-{% for field in form %}
-  {% if field.errors %}
-    {{ field.name }} has the errors:
-    {% for error in field.errors %}
-      {{ error }}
-    {% endfor %}
-  {% endif %}
-{% endfor %}
-{{ form.non_field_errors }}
+
 <form method="POST" id="rsvp-form" action=".">
-  {% csrf_token %}
     {% csrf_token %}
     {% for field in form %}
         <div class="mb-3">
-            {% if field not in form.hidden_fields %}
-                <div><label for="{{ field.name }}">{{ field.label_tag }}</label></div>
-            {% endif %}
-            {{ field.errors }}{{field}}
+          {{ field|as_crispy_field }}
         </div>
     {% endfor %}
   <input type="submit" name="submit" value="Change RSVP" class="btn btn-primary">

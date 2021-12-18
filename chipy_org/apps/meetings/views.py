@@ -19,8 +19,6 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from chipy_org.apps.meetings.forms import RSVPForm, RSVPFormWithCaptcha
-
 from .email import send_meeting_topic_submitted_email
 from .forms import RSVPForm, RSVPFormWithCaptcha, TopicForm
 from .models import RSVP as RSVPModel

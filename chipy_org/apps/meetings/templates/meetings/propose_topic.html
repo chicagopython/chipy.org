@@ -1,11 +1,10 @@
 {% extends "shiny/slim.html" %}
 
 {% load i18n static flatblocks %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}{% trans "Propose a meeting topic" %}{% endblock %}
-
 {% block body_class %}home{% endblock %}
-
 {% block page_header %}GIVE A TALK{% endblock %}
 
 {% block body %}
@@ -14,21 +13,8 @@
     <p>{% flatblock "speaker_text" %}</p>
   </div>
   <div>
-    <form action="{% url 'propose_topic' %}" method="post" id="propose-topic">{% csrf_token %}
       {{ form.media }}
-      {% for field in form %}
-      <div class="fieldWrapper">
-        {% if field.name not in form.required %}
-        <label for="id_{{ field.html_name }}"><strong>{{ field.label }}</strong> (optional)</label>
-        {% else %}
-        <strong><label for="id_{{ field.html_name }}"><strong>{{ field.label }}</strong></label></strong>
-        {% endif %}
-        {{ field.errors }}
-        <div class="help-text">{{ field.help_text }}</div>{{ field }}
-      </div>
-      {% endfor %}
-      <p><input type="submit" value="Submit topic" id="propose_submit" class="btn btn-primary"/></p>
-    </form>
+      {% crispy form %}
     <div id="tos-dialog" style="display: none;">
       <p>I, the Author(s), hereby grant the Chicago Python User Group (herby refered to as ChiPy) a worldwide, royalty-free, fully paid-up, non-exclusive, perpetual (for the duration of the applicable copyright), sublicensable and transferable license to exercise the rights in the User Submission as follows:<br>
         <ol>

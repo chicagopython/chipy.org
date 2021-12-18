@@ -1,5 +1,7 @@
 {% extends "job_board/base.html" %}
-    
+
+{% load crispy_forms_tags %}
+
 {% block page_header %}
 {% if view_action == "create" %}
     CREATE A JOB POST
@@ -13,113 +15,14 @@
 
 <form action="." method="post">
     {% csrf_token %}
-    
-    <table style="margin-bottom: 25px;"> 
-        
-        {% for field in job_user_form %}
-            <tr>
-                <td>{{field.label_tag}}</td>
-                <td>{{ field.errors }}{{field}}</td>
-            </tr>
-        {% endfor %}
-     
-        {% for field in job_post_form %}
-            {% if field == job_post_form.agree_to_terms %}
-                <tr>
-                    <td colspan="2">
-                    <!--
-                        IMPORTANT: If you change the verbage below for this field, 
-                        you must also change the job_board/models.py, specifically the "verbose_name" in the "agree_to_terms" field, to make them have the same wording. 
-                        This is so the wording for this field in the admin panel can match the wording in this template.
-                    -->    
-                    {{field}}
-                    I have read and agree to the <a href="/pages/referrals/" target="_blank">referral terms</a>. Job posts are <b>FREE for existing and new ChiPy sponsors</b>. If you are <b>not a ChiPy sponsor</b>, each job post <b>REQUIRES a $50 DONATION</b>.
-                    {{ field.errors }}
-                    </td>
-                </tr>
-            {% elif field == job_post_form.location %}
-                <tr>
-                    <td style="width: 120px">{{field.label_tag}}</td>
-                    <td>{{ field.errors }}{{field}}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                        ChiPy is a locally based group. <button data-bs-toggle="modal" data-bs-target="#moreInfoModal" class="btn btn-info">more</button>
-                        {{ field.errors }}
-                    </td>
-                </tr>
-            {% elif field == job_post_form.is_sponsor %}
-                <tr>
-                    <td colspan="2">{{field}}
-                        Is the company a sponsor of ChiPy?
-                        {{ field.errors }}
-                    </td>
-                </tr>
-            {% elif field == job_post_form.can_host_meeting %}
-                <tr>
-                    <td colspan="2">{{field}}
-                        Is your organization interested in hosting an event?
-                        {{ field.errors }}
-                    </td>
-                </tr>
-            {% elif field == job_post_form.is_from_recruiting_agency %}
-                <tr>
-                    <td colspan="2">{{field}}
-                        Is this posting from a recruiting agency?
-                        {{ field.errors }}
-                    </td>
-                </tr>
-            {% elif field == job_post_form.affiliation %}
-                <tr>
-                    <td colspan="2">
-                        {{field.help_text}} {{field}}
-                        {{ field.errors }}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td>{{field.label_tag}}</td>
-                    <td>{{ field.errors }}{{field}}</td>
-                </tr>
-             
-            {% endif %}
-        {% endfor %}
-    </table>
-  
+    {{ job_user_form | crispy}}
+    {{ job_post_form | crispy}}
     {% if view_action == "create" %}
       <input type="submit" value="Create Post" class="btn btn-primary" >
     {% elif view_action == "update" %}
       <input type="submit" value="Update Post" class="btn btn-primary" >
       <a href="{% url 'after-submit-job-post' %}" class="btn btn-info">Cancel</a>
     {% endif %}
-
 </form>
-
-<!-- Modal Begins-->
-<div class="modal fade" id="moreInfoModal" tabindex="-1" role="dialog" aria-labelledby="moreInfoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title" id="moreInfoModalLabel">Location Requirements for Job Posting</h5>
-          
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                ChiPy is a locally based group. Position must not move candidate out of the Chicago area. Working remote or commuting is acceptable. Any position requiring relocation out of the Chicagoland area is out of scope of the mission of the group.
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!--Modal Ends-->
 
 {% endblock body %}

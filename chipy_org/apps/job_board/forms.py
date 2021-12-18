@@ -14,6 +14,7 @@ class JobPostForm(forms.ModelForm):
         model = JobPost
 
         fields = [
+            "contact",
             "is_from_recruiting_agency",
             "company_name",
             "position",

@@ -246,7 +246,8 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "ckeditor",
     # theme
-    "django_forms_bootstrap",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # project
     "chipy_org.apps.main",
     "chipy_org.apps.announcements",
@@ -256,11 +257,16 @@ INSTALLED_APPS = [
     "chipy_org.apps.profiles",
     "chipy_org.apps.sponsors",
     "chipy_org.apps.subgroups",
+    "chipy_org.libs",
 ]
 if DEBUG:
     INSTALLED_APPS.append("chipy_org.dev_utils")
 
 TEST_RUNNER = "chipy_org.runner.PytestTestRunner"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 if DEBUG:
     # Add the command extensions
@@ -353,3 +359,30 @@ LOGGING = {
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+            ["Bold", "Italic", "Underline"],
+            [
+                "NumberedList",
+                "BulletedList",
+                "-",
+                "Outdent",
+                "Indent",
+                "-",
+                "JustifyLeft",
+                "JustifyCenter",
+                "JustifyRight",
+                "JustifyBlock",
+            ],
+            ["Link", "Unlink"],
+            ["RemoveFormat", "Source"],
+        ],
+        "display": None,
+        "width": "100%",
+        "contentsCss": "/static/css/custom_contents.css",
+    },
+}

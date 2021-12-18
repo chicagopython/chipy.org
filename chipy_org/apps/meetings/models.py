@@ -13,6 +13,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 
+from chipy_org.libs.custom_ckeditor import CustomRichTextField
 from chipy_org.libs.models import CommonModel
 
 from .email import send_rsvp_email
@@ -245,9 +246,10 @@ class Topic(CommonModel):
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default="CC BY")
     length = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
-    description = RichTextField(
+    description = CustomRichTextField(
         blank=True, null=True, help_text="This will be the public talk description.",
     )
+
     notes = models.TextField(
         "Private Submission Notes",
         blank=True,

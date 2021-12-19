@@ -29,7 +29,7 @@ psycopg2-binary = "==2.8.4"
 python-openid2 = "==3.2"
 requests = "==2.23.0"
 six = "==1.14.0"
-social-auth-app-django = "==3.4.0"
+social-auth-app-django = "==5.0.0"
 sorl-thumbnail = "==12.7.0"
 whitenoise = "==5.0.1"
 

@@ -122,7 +122,6 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
     if job_post.contact == request.user:
 
         if request.method == "POST":
-            print("DELETE IN POST: ", "delete" in request.POST)
             # If the user deletes the job post before the admin approves/rejects it, send an
             # email to the admin telling them this.
             if job_post.status == "SU":

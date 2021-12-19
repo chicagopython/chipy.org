@@ -44,10 +44,9 @@ def create_job_post(request):
                 url_with_query_string(reverse("after-submit-job-post"), action="create")
             )
 
-    else:
-        job_post = JobPost(contact=request.user)
-        job_post_form = JobPostForm(instance=job_post)
-        job_user_form = JobUserForm(instance=request.user)
+    job_post = JobPost(contact=request.user)
+    job_post_form = JobPostForm(instance=job_post)
+    job_user_form = JobUserForm(instance=request.user)
 
     return render(
         request,

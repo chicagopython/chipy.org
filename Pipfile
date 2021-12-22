@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-boto3 = "==1.12.16"
+boto3 = "==1.20.26"
 crispy-bootstrap5 = "~=0.6"
 dj-database-url = "==0.5.0"
 django = "~=3.2.0"

@@ -1,10 +1,12 @@
 import datetime
 
+from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
 from django.urls import reverse
-from nocaptcha_recaptcha.fields import NoReCaptchaField
+
+from chipy_org.libs.custom_captcha import CustomCaptchaTextInput
 
 from .models import RSVP, Meeting, Presenter, Topic
 
@@ -131,8 +133,4 @@ class RSVPForm(forms.ModelForm):
 
 
 class RSVPFormWithCaptcha(RSVPForm):
-    captcha = NoReCaptchaField()
-
-    def __init__(self, request, *args, **kwargs):
-        super().__init__(request, *args, **kwargs)
-        self.fields["captcha"].label = ""
+    captcha = CaptchaField(widget=CustomCaptchaTextInput)

@@ -232,19 +232,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.forms",
     # Third party
-    "nocaptcha_recaptcha",
+    "captcha",
+    "ckeditor",
+    "django_bleach",
+    "django_gravatar",
     "django_ical",
     "flatblocks",
-    "django_gravatar",
-    "django_bleach",
     "gunicorn",
     "honeypot",
     "rest_framework",
     "social_django",
-    "storages",
     "sorl.thumbnail",
-    "ckeditor",
+    "storages",
     # theme
     "crispy_forms",
     "crispy_bootstrap5",
@@ -267,6 +268,7 @@ TEST_RUNNER = "chipy_org.runner.PytestTestRunner"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_FAIL_SILENTLY = not DEBUG
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 if DEBUG:
     # Add the command extensions

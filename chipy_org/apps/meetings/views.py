@@ -193,8 +193,13 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
     def form_valid(self, form):
         # calling super.form_valid(form) also does self.object = form.save()
         response = super().form_valid(form)
-        status = self.object.get_status_display()
-        messages.success(self.request, f"Your RSVP has been {status.upper()}.")
+        status = self.object.get_status_display().upper()
+        msg = f"Your RSVP has been {status}."
+
+        if self.object.status == RSVPModel.Statuses.CONFIRMED:
+            messages.success(self.request, msg)
+        else:
+            messages.warning(self.request, msg)
         return response
 
     def get_initial(self):

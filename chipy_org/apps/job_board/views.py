@@ -73,10 +73,7 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
             job_post_form = JobPostForm(request.POST, instance=job_post)
             job_user_form = JobUserForm(request.POST, instance=request.user)
 
-            if (
-                job_post_form.is_valid()  # pylint: disable=bad-continuation
-                and job_user_form.is_valid()  # pylint: disable=bad-continuation
-            ):
+            if job_post_form.is_valid() and job_user_form.is_valid():
 
                 job_post_form.save()
                 job_user_form.save()

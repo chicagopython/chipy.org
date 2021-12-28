@@ -74,7 +74,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
-        exclude = []
+        exclude = []  # pylint: disable=modelform-uses-exclude
 
 
 class MeetingAdmin(admin.ModelAdmin):

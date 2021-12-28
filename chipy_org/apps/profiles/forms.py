@@ -6,4 +6,7 @@ from .models import UserProfile
 class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ("user",)
+        fields = [
+            "display_name",
+            "show",
+        ]

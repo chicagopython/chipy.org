@@ -45,7 +45,7 @@ class CustomRichTextField(RichTextField):
 
 
 class CustomRichTextFormField(forms.fields.CharField):
-    # pylint: disable=bad-continuation, keyword-arg-before-vararg
+    # pylint: disable=keyword-arg-before-vararg
     def __init__(
         self,
         config_name="default",

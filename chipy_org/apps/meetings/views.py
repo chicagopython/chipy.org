@@ -166,8 +166,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
             try:
                 meeting_id = int(meeting_id)
-            except (ValueError, TypeError):
-                raise Http404("The meeting must be an integer")
+            except (ValueError, TypeError) as ex:
+                raise Http404("The meeting must be an integer") from ex
 
             return get_object_or_404(Meeting, pk=meeting_id)
 
@@ -228,8 +228,7 @@ class UpdateRSVP(UpdateView):
         self.object = self.get_object()
         if not self.object.meeting.can_register():
             messages.error(
-                self.request,
-                "Registration for this meeting on is closed.",
+                self.request, "Registration for this meeting on is closed.",
             )
             return HttpResponseRedirect(reverse_lazy("home"))
         return self.render_to_response(self.get_context_data())

@@ -55,11 +55,11 @@ lint:
 	docker-compose exec web pylint -j 0 chipy_org/
 
 format:
-	docker-compose exec web isort -rc -tc --atomic .
+	docker-compose exec web isort --recursive .
 	docker-compose exec web black .
 
 format-check:
-	docker-compose exec web isort -rc -tc --atomic --diff .
+	docker-compose exec web isort --recursive --check-only .
 	docker-compose exec web black --diff .
 
 setup: setup_env build

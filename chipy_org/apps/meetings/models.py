@@ -147,13 +147,15 @@ class Meeting(CommonModel):
     @property
     def number_in_person_rsvps(self):
         return self.rsvp_set.filter(
-            response=RSVP.Responses.IN_PERSON, status=RSVP.Statuses.CONFIRMED,
+            response=RSVP.Responses.IN_PERSON,
+            status=RSVP.Statuses.CONFIRMED,
         ).count()
 
     @property
     def number_virtual_rsvps(self):
         return self.rsvp_set.filter(
-            response=RSVP.Responses.VIRTUAL, status=RSVP.Statuses.CONFIRMED,
+            response=RSVP.Responses.VIRTUAL,
+            status=RSVP.Statuses.CONFIRMED,
         ).count()
 
     def is_in_person(self):
@@ -247,7 +249,9 @@ class Topic(CommonModel):
     length = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = CustomRichTextField(
-        blank=True, null=True, help_text="This will be the public talk description.",
+        blank=True,
+        null=True,
+        help_text="This will be the public talk description.",
     )
 
     notes = models.TextField(
@@ -399,7 +403,9 @@ def rsvp_post_save(sender, instance, **kwargs):
     if meeting.has_virtual_capacity():
         first_on_virtual_wait_list = (
             RSVP.objects.filter(
-                meeting=meeting, response=RSVP.Responses.VIRTUAL, status=RSVP.Statuses.WAIT_LISTED,
+                meeting=meeting,
+                response=RSVP.Responses.VIRTUAL,
+                status=RSVP.Statuses.WAIT_LISTED,
             )
             .order_by("created")
             .first()

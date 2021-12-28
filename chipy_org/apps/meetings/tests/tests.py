@@ -20,9 +20,12 @@ pytestmark = pytest.mark.django_db
 class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create(username="chipy",)
+        self.user = User.objects.create(
+            username="chipy",
+        )
         self.meeting = Meeting.objects.create(
-            when=datetime.datetime.now() + datetime.timedelta(days=7), in_person_capacity=5,
+            when=datetime.datetime.now() + datetime.timedelta(days=7),
+            in_person_capacity=5,
         )
         self.topic = Topic.objects.create(title="test topic")
 
@@ -125,7 +128,8 @@ class MeetingTitleTest(TestCase):
 
     def setUp(self):
         self.meeting_type_non_main = MeetingType.objects.create(
-            name="Non Main Sig ", default_title="Non Main Default Title",
+            name="Non Main Sig ",
+            default_title="Non Main Default Title",
         )
 
     def test_non_main_meeting_without_custom_field(self):
@@ -151,25 +155,39 @@ class MeetingTitleTest(TestCase):
 
     def test_main_meeting_with_custom_field(self):
         meeting = Meeting.objects.create(
-            when=datetime.date.today(), custom_title="Main Custom Title", in_person_capacity=5,
+            when=datetime.date.today(),
+            custom_title="Main Custom Title",
+            in_person_capacity=5,
         )
         self.assertEqual(meeting.title, "Main Custom Title")
 
 
 @override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_my_talks_with_multiple_presenters_with_same_user(client):
-    user = User.objects.create(username="chipy",)
-
-    p1 = Presenter.objects.create(user=user, name="name1",)
-    t1 = Topic.objects.create(title="title1")
-    t1.presenters.set(
-        [p1,]
+    user = User.objects.create(
+        username="chipy",
     )
 
-    p2 = Presenter.objects.create(user=user, name="name2",)
+    p1 = Presenter.objects.create(
+        user=user,
+        name="name1",
+    )
+    t1 = Topic.objects.create(title="title1")
+    t1.presenters.set(
+        [
+            p1,
+        ]
+    )
+
+    p2 = Presenter.objects.create(
+        user=user,
+        name="name2",
+    )
     t2 = Topic.objects.create(title="title2")
     t2.presenters.set(
-        [p2,]
+        [
+            p2,
+        ]
     )
 
     client.force_login(user)

@@ -51,7 +51,11 @@ def create_job_post(request):
     return render(
         request,
         "job_board/job_post_form.html",
-        {"job_post_form": job_post_form, "job_user_form": job_user_form, "view_action": "create",},
+        {
+            "job_post_form": job_post_form,
+            "job_user_form": job_user_form,
+            "view_action": "create",
+        },
     )
 
 

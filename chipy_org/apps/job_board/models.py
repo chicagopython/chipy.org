@@ -67,7 +67,10 @@ class JobPost(CommonModel):
     )
 
     affiliation = models.ForeignKey(
-        Affiliation, blank=True, null=True, on_delete=models.DO_NOTHING,
+        Affiliation,
+        blank=True,
+        null=True,
+        on_delete=models.DO_NOTHING,
     )
 
     can_host_meeting = models.BooleanField(

@@ -24,7 +24,14 @@ class SmokeTest(TestCase):
 
 @pytest.mark.parametrize(
     "test_in, result",
-    [("t", True), ("f", False), ("true", True), ("false", False), ("1", "1"), ("foo", "foo"),],
+    [
+        ("t", True),
+        ("f", False),
+        ("true", True),
+        ("false", False),
+        ("1", "1"),
+        ("foo", "foo"),
+    ],
 )
 def test_settingspy_env_var(monkeypatch, test_in, result):
     monkeypatch.setenv("TEST_VAR", test_in)
@@ -35,7 +42,11 @@ def test_settingspy_env_var(monkeypatch, test_in, result):
 
 @pytest.mark.parametrize(
     "test_in, result",
-    [("", []), ("f@e.com", ["f@e.com"]), ("f@e.com,b@e.com", ["f@e.com", "b@e.com"]),],
+    [
+        ("", []),
+        ("f@e.com", ["f@e.com"]),
+        ("f@e.com,b@e.com", ["f@e.com", "b@e.com"]),
+    ],
 )
 def test_settingspy_env_list(monkeypatch, test_in, result):
     monkeypatch.setenv("TEST_VAR", test_in)

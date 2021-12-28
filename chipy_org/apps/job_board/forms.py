@@ -34,9 +34,19 @@ class JobPostForm(forms.ModelForm):
         }
 
         widgets = {
-            "description": Textarea(attrs={"cols": 60, "rows": 20,}),
+            "description": Textarea(
+                attrs={
+                    "cols": 60,
+                    "rows": 20,
+                }
+            ),
             "contact": forms.HiddenInput(),
-            "how_to_apply": Textarea(attrs={"cols": 60, "rows": 20,}),
+            "how_to_apply": Textarea(
+                attrs={
+                    "cols": 60,
+                    "rows": 20,
+                }
+            ),
         }
 
 

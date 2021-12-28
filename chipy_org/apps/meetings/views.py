@@ -228,7 +228,8 @@ class UpdateRSVP(UpdateView):
         self.object = self.get_object()
         if not self.object.meeting.can_register():
             messages.error(
-                self.request, "Registration for this meeting on is closed.",
+                self.request,
+                "Registration for this meeting on is closed.",
             )
             return HttpResponseRedirect(reverse_lazy("home"))
         return self.render_to_response(self.get_context_data())

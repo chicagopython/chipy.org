@@ -16,7 +16,7 @@ class SubGroup(CommonModel):
     description = models.TextField(blank=True, null=True)
     organizers = models.ManyToManyField(User, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return f"{self.id} | ({self.name})"
 
     class Meta:

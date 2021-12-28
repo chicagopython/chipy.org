@@ -36,7 +36,8 @@ whitenoise = "==5.0.1"
 [dev-packages]
 black = "==19.10b0"
 flake8 = "==3.7.9"
-pylint = "==2.4.4"
+isort = "==5.10.1"
+pylint = "==2.12.2"
 pytest = "==5.4.1"
 pytest-django = "==3.9.0"
 

@@ -1,11 +1,7 @@
 {
     "_meta": {
         "hash": {
-<<<<<<< HEAD
             "sha256": "4a0ac9f64cba6c9f9ad86f6bc645ca2cbb9f7251fc495bf883fcb0645c24edb9"
-=======
-            "sha256": "2cc6a3987d2ca0efaba5ae093ab15e0dc0e4f699184ea5826835ec75c22b9b8c"
->>>>>>> a5cf668 (upgrades isort and pylint)
         },
         "pipfile-spec": 6,
         "requires": {

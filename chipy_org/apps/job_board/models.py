@@ -132,7 +132,7 @@ class JobPost(CommonModel):
         elif self.approval_date:
             self.approval_date = None
 
-        super(JobPost, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @property
     def days_elapsed(self):

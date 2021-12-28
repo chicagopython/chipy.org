@@ -7,7 +7,7 @@ from .models import JobPost
 
 class JobPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(JobPostForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["agree_to_terms"].required = True
 
     class Meta:
@@ -42,7 +42,7 @@ class JobPostForm(forms.ModelForm):
 
 class JobUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(JobUserForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["first_name"].required = True
         self.fields["last_name"].required = True
         self.fields["email"].required = True

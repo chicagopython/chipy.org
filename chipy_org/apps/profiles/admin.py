@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     inlines = (UserProfileInline,)
 
     def get_search_fields(self, request):
-        sfields = super(CustomUserAdmin, self).get_search_fields(request)
+        sfields = super().get_search_fields(request)
         return sfields + ("profile__display_name",)
 
 

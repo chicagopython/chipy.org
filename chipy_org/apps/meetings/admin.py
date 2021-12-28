@@ -63,7 +63,7 @@ class TopicAdmin(admin.ModelAdmin):
 
 class MeetingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(MeetingForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields["meetup_id"].widget = admin.widgets.AdminTextInputWidget()
 

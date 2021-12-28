@@ -60,7 +60,7 @@ class TopicForm(forms.ModelForm):
         )
 
     def save(self, commit=True):
-        instance = super(TopicForm, self).save(commit=commit)
+        instance = super().save(commit=commit)
         user = self.request.user
         if not user.email:
             user.email = self.cleaned_data.get("email")

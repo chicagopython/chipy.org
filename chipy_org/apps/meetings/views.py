@@ -100,7 +100,7 @@ class MeetingDetail(DetailView, InitialRSVPMixin):
         return self.object
 
     def get_context_data(self, **kwargs):
-        context = super(MeetingDetail, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update(kwargs)
         context = self.add_extra_context(context)
         return context
@@ -112,7 +112,7 @@ class ProposeTopic(CreateView):
     success_url = reverse_lazy("home")
 
     def get_form_kwargs(self):
-        kwargs = super(ProposeTopic, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
@@ -271,7 +271,7 @@ class RSVPlist(ListView):
         # rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
         rsvp_yes = self.get_queryset().count()
         context = {"meeting": self.meeting, "guests": (rsvp_yes)}
-        context.update(super(RSVPlist, self).get_context_data(**kwargs))
+        context.update(super().get_context_data(**kwargs))
         return context
 
 
@@ -323,7 +323,7 @@ class RSVPlistCSVBase(RSVPlist):
 class RSVPlistPrivate(RSVPlistCSVBase):
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        return super(RSVPlistPrivate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     private = True
 

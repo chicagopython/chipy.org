@@ -67,7 +67,10 @@ class JobPost(CommonModel):
     )
 
     affiliation = models.ForeignKey(
-        Affiliation, blank=True, null=True, on_delete=models.DO_NOTHING,
+        Affiliation,
+        blank=True,
+        null=True,
+        on_delete=models.DO_NOTHING,
     )
 
     can_host_meeting = models.BooleanField(
@@ -132,7 +135,7 @@ class JobPost(CommonModel):
         elif self.approval_date:
             self.approval_date = None
 
-        super(JobPost, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @property
     def days_elapsed(self):

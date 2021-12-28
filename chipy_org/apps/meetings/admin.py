@@ -63,7 +63,7 @@ class TopicAdmin(admin.ModelAdmin):
 
 class MeetingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(MeetingForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields["meetup_id"].widget = admin.widgets.AdminTextInputWidget()
 
@@ -74,7 +74,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
-        exclude = []
+        exclude = []  # pylint: disable=modelform-uses-exclude
 
 
 class MeetingAdmin(admin.ModelAdmin):

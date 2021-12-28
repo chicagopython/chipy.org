@@ -7,10 +7,14 @@ pytestmark = pytest.mark.django_db
 
 def test_flatblock():
     """
-    render a template with a flatblock to ensure the a compatible version of the flatblocks package is 
+    render a template with a flatblock to ensure the a compatible version of the flatblocks package is
     installed
     """
-    fb = FlatBlock(header="test-header", slug="test-slug", content="test-content",)
+    fb = FlatBlock(
+        header="test-header",
+        slug="test-slug",
+        content="test-content",
+    )
     fb.save()
 
     t = Template(

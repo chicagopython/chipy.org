@@ -353,10 +353,18 @@ LOGGING = {
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "handlers": {
-        "null": {"level": "DEBUG", "class": "logging.NullHandler",},
+        "null": {
+            "level": "DEBUG",
+            "class": "logging.NullHandler",
+        },
         "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "verbose"},
     },
-    "loggers": {"chipy_org": {"handlers": ["console"], "level": "INFO",}},
+    "loggers": {
+        "chipy_org": {
+            "handlers": ["console"],
+            "level": "INFO",
+        }
+    },
 }
 
 

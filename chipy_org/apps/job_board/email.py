@@ -26,8 +26,8 @@ def send_email_to_admin_after_create_job_post(position, company, recipients):
 
 def send_email_to_admin_after_user_deletes_job_post(position, company, recipients):
     """If the user deletes the job post before the admin has a chance to review it,
-       an email is sent to the admin notifying them of this. This way the
-       admin knows that they don't have to look for the post as it no longer exists.
+    an email is sent to the admin notifying them of this. This way the
+    admin knows that they don't have to look for the post as it no longer exists.
     """
     try:
         subject = "ChiPy: User Has Deleted Job Post"

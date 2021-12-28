@@ -100,7 +100,7 @@ class MeetingDetail(DetailView, InitialRSVPMixin):
         return self.object
 
     def get_context_data(self, **kwargs):
-        context = super(MeetingDetail, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update(kwargs)
         context = self.add_extra_context(context)
         return context
@@ -112,7 +112,7 @@ class ProposeTopic(CreateView):
     success_url = reverse_lazy("home")
 
     def get_form_kwargs(self):
-        kwargs = super(ProposeTopic, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
@@ -166,8 +166,8 @@ class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
 
             try:
                 meeting_id = int(meeting_id)
-            except (ValueError, TypeError):
-                raise Http404("The meeting must be an integer")
+            except (ValueError, TypeError) as ex:
+                raise Http404("The meeting must be an integer") from ex
 
             return get_object_or_404(Meeting, pk=meeting_id)
 
@@ -228,7 +228,8 @@ class UpdateRSVP(UpdateView):
         self.object = self.get_object()
         if not self.object.meeting.can_register():
             messages.error(
-                self.request, "Registration for this meeting on is closed.",
+                self.request,
+                "Registration for this meeting on is closed.",
             )
             return HttpResponseRedirect(reverse_lazy("home"))
         return self.render_to_response(self.get_context_data())
@@ -271,7 +272,7 @@ class RSVPlist(ListView):
         # rsvp_yes = RSVPModel.objects.filter(meeting=self.meeting).exclude(response="N").count()
         rsvp_yes = self.get_queryset().count()
         context = {"meeting": self.meeting, "guests": (rsvp_yes)}
-        context.update(super(RSVPlist, self).get_context_data(**kwargs))
+        context.update(super().get_context_data(**kwargs))
         return context
 
 
@@ -323,7 +324,7 @@ class RSVPlistCSVBase(RSVPlist):
 class RSVPlistPrivate(RSVPlistCSVBase):
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        return super(RSVPlistPrivate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     private = True
 

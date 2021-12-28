@@ -20,7 +20,7 @@ class SponsorListView(ListView):
 
     def get_queryset(self):
         return (
-            super(SponsorListView, self)
+            super()
             .get_queryset()
             .filter(sponsors__isnull=False)
             .prefetch_related("sponsors")
@@ -38,7 +38,7 @@ class SponsorListView(ListView):
             meeting_attendees = meeting_attendees + int(meeting.number_rsvps())
 
         sponsor_groups = (
-            super(SponsorListView, self)
+            super()
             .get_queryset()
             .filter(sponsors__isnull=False)
             .prefetch_related("sponsors")

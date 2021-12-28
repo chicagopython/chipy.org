@@ -12,7 +12,9 @@ User = get_user_model()
 class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create(username="chipy",)
+        self.user = User.objects.create(
+            username="chipy",
+        )
 
     def test__profile_list_url__GET(self):
         # SETUP

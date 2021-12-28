@@ -9,7 +9,7 @@ from flatblocks.models import FlatBlock
 
 class CustomFlatpageForm(FlatpageForm):
     def __init__(self, *args, **kwargs):
-        super(CustomFlatpageForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["content"].widget = CKEditorWidget()
 
 
@@ -23,7 +23,7 @@ admin.site.register(FlatPage, CustomFlatPageAdmin)
 
 class CustomFlatBlockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(CustomFlatBlockForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["content"].widget = CKEditorWidget()
 
 

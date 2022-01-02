@@ -1,7 +1,7 @@
 import random
 import string
-from ckeditor.widgets import CKEditorWidget
 
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib import admin
 from django.urls import reverse

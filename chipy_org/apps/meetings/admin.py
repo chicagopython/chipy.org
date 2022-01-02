@@ -1,5 +1,6 @@
 import random
 import string
+from ckeditor.widgets import CKEditorWidget
 
 from django import forms
 from django.contrib import admin
@@ -28,7 +29,15 @@ class TopicInline(admin.StackedInline):
     extra = 0
 
 
+class CustomTopicForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["description"].widget = CKEditorWidget()
+
+
 class TopicAdmin(admin.ModelAdmin):
+    form = CustomTopicForm
+
     list_display = (
         "id",
         "approved",

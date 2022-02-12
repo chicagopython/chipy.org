@@ -264,7 +264,7 @@ class RSVPlist(ListView):
         return (
             RSVPModel.objects.filter(meeting=self.meeting)
             .exclude(response="N")
-            .filter(venue=RSVPModel.IN_PERSON, status=RSVPModel.ACCEPTED)
+            .filter(response=RSVPModel.Responses.IN_PERSON, status=RSVPModel.Statuses.CONFIRMED)
             .order_by("last_name", "first_name")
         )
 

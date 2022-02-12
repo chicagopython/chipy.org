@@ -228,8 +228,7 @@ class UpdateRSVP(UpdateView):
         self.object = self.get_object()
         if not self.object.meeting.can_register():
             messages.error(
-                self.request,
-                "Registration for this meeting on is closed.",
+                self.request, "Registration for this meeting on is closed.",
             )
             return HttpResponseRedirect(reverse_lazy("home"))
         return self.render_to_response(self.get_context_data())
@@ -264,7 +263,7 @@ class RSVPlist(ListView):
         return (
             RSVPModel.objects.filter(meeting=self.meeting)
             .exclude(response="N")
-            .filter(venue=RSVPModel.IN_PERSON, status=RSVPModel.ACCEPTED)
+            .filter(response=RSVPModel.Responses.IN_PERSON, status=RSVPModel.Statuses.CONFIRMED)
             .order_by("last_name", "first_name")
         )
 

@@ -20,26 +20,27 @@
         </div>
         <div class="col-md-4 px-1 pt-1 pb-3">
             {% for group in sponsor_groups %}
-                <div class="row py-3">
+                <div class="row pt-3 pb-1">
                     <h3 class="text-center">{{ group.name }}</h3>
+                </div>
                     {% for sponsor in group.sponsors.all %}
-                    <div class="col-md">
+                    
                         {% if sponsor.logo %}
                         {% thumbnail sponsor.logo "100" crop="center" as im %}
-                            <div class="sponsor-image text-center"  style="margin: auto">
+                            <div class="row py-2 sponsor-image text-center"  style="margin: auto">
                                 <a href="{% url 'sponsor_detail' sponsor.slug %}">
                                     <img src="{{ im.url }}" alt="{{ sponsor.name }}">
                                 </a>
                             </div>
                         {% endthumbnail %}
                         {% else %}
-                            <div class="sponsor-image text-center" style="margin: auto">
+                            <div class="row py-2 sponsor-image text-center" style="margin: auto">
                                 <a href="{% url 'sponsor_detail' sponsor.slug %}">{{ sponsor.name }}</a>
                             </div>
                         {% endif %}
-                    </div>
+                    
                     {% endfor %}
-               </div>
+               
             {% endfor %}
         </div>
     </div>

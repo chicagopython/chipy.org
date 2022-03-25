@@ -14,7 +14,13 @@
       {% for field in form %}
       <div class="fieldWrapper">
         {{ field.errors }}
-        {% if field.name not in form.required %}<label for="id_{{ field.html_name }}">{{ field.label }} (optional)</label>{% else %}{{ field.label_tag }}{% endif %}{{ field }}
+        <div class="row py-2">
+          <div class="col-6">
+            {% if field.name not in form.required %}<label for="id_{{ field.html_name }}">{{ field.label }} (optional)</label>{% else %}{{ field.label_tag }}{% endif %}
+          </div>
+          <div class="col-6">
+            {{ field }}
+          </div>
       </div>
       {% endfor %}
       <p><input type="submit" value="save" id="profile_submit" class="btn btn-primary"/></p>

@@ -11,6 +11,12 @@ class ProfilesList(ListView):
     queryset = User.objects.filter(profile__show=True)
 
 
+class ProfilesListOrganizers(ListView):
+    context_object_name = "organizers"
+    template_name = "profiles/organizers.html"
+    queryset = UserProfile.user_organizers()
+
+
 class ProfileEdit(UpdateView):
     form_class = ProfileForm
     template_name = "profiles/edit.html"

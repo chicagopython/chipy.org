@@ -25,7 +25,6 @@
 
     <h1>Chipy Organizers</h1>
     <div class="container">
-    {% for organizer in organizers %}
       <div class="row text-muted">
         <div class="col-md-4">
           Name
@@ -38,14 +37,17 @@
           Mail/Web Links
         </div>
         <hr>
-        <div class="col-md-4">
+      </div>
+    {% for organizer in organizers %}
+      <div class="row">
+        <div class="col-md-3">
           {{ organizer.profile.display_name }}
           {% if organizer == request.user %}<a href="{% url 'profiles:edit' %}">&#9998;</a></li> {% endif %}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           {% if organizer.profile.bio %} {{ organizer.profile.bio }} {% endif %}
         </div>
-        <div class="col-md-4 text-center">
+        <div class="col-md-3 text-center">
           <span style="font-size:1.3em">
                   {% if organizer.profile.public_email %}<a href="mailto:{{ organizer.profile.public_email }}">&#128234;</a>{% endif %}
           {% if organizer.profile.public_website %}<a href="{{ organizer.profile.public_website }}">&#128279;</a>{% endif %}

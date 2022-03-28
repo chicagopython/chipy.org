@@ -8,5 +8,8 @@ class ProfileForm(ModelForm):
         model = UserProfile
         fields = [
             "display_name",
+            "public_email",
+            "public_website",
+            "bio",
             "show",
         ]

@@ -1,0 +1,66 @@
+{% extends "shiny/slim.html" %}
+
+{% load i18n static %}
+
+{% block head_title %}{% trans "Members" %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+  <div>
+    <h1>Board Members</h1>
+    <ul>
+    {% for organizer in organizers %}
+    {% if organizer.profile.is_board_member %}
+      <li>
+        {{ organizer.profile.display_name }}
+      {% endif %}
+      {% if organizer.profile.is_officer %}
+      - {{ organizer.profile.role }}
+      {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+
+    <h1>Chipy Organizers</h1>
+    <div class="container">
+      <div class="row text-muted">
+        <div class="col-md-4">
+          Name
+        </div>
+
+        <div class="col-md-4">
+          Bio
+        </div>
+        <div class="col-md-4 text-center">
+          Mail/Web Links
+        </div>
+        <hr>
+      </div>
+    {% for organizer in organizers %}
+      <div class="row">
+        <div class="col-md-3">
+          {{ organizer.profile.display_name }}
+          {% if organizer == request.user %}<a href="{% url 'profiles:edit' %}">&#9998;</a></li> {% endif %}
+        </div>
+        <div class="col-md-6">
+          {% if organizer.profile.bio %} {{ organizer.profile.bio }} {% endif %}
+        </div>
+        <div class="col-md-3 text-center">
+          <span style="font-size:1.3em">
+                  {% if organizer.profile.public_email %}<a href="mailto:{{ organizer.profile.public_email }}">&#128234;</a>{% endif %}
+          {% if organizer.profile.public_website %}<a href="{{ organizer.profile.public_website }}">&#128279;</a>{% endif %}
+          </span>
+        </div>
+    </br>
+    {% endfor %}
+
+    <h1>Bylaws</h1>
+
+    <p>For information on who qualifies for organizer status or how our Board
+    functions, see our Bylaws: <a
+    href="https://github.com/chicagopython/bylaws">https://github.com/chicagopython/bylaws</a></p>
+  </div>
+</div>
+{% endblock body %}

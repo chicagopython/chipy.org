@@ -15,6 +15,7 @@ class ProfilesListOrganizers(ListView):
     context_object_name = "organizers"
     template_name = "profiles/organizers.html"
     queryset = UserProfile.user_organizers()
+    ordering = ["profile__display_name"]
 
 
 class ProfileEdit(UpdateView):

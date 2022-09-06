@@ -90,15 +90,16 @@ def test_future_meetings(client):
     response = client.get(reverse("future_meetings"))
     assert response.status_code == 200
 
-    # def test_post_topic_sends_email():
-    #     m = Meeting(
-    #         when=datetime.datetime.now(),
-    #         reg_close_date=datetime.datetime.now(),
-    #         description="Test",
-    #         in_person_capacity=5,
-    #     )
-    #     m.save()
-    #     assert len(Meeting.objects.all()) == 1
+
+def test_post_topic_sends_email():
+    m = Meeting(
+        when=datetime.datetime.now(),
+        reg_close_date=datetime.datetime.now(),
+        description="Test",
+        in_person_capacity=5,
+    )
+    m.save()
+    assert len(Meeting.objects.all()) == 1
 
     t = Topic(
         title="Test Meeting",

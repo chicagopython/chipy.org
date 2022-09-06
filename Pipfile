@@ -31,6 +31,7 @@ six = "==1.14.0"
 social-auth-app-django = "==5.0.0"
 sorl-thumbnail = "==12.7.0"
 whitenoise = "==5.0.1"
+bleach = "==4.1.0"
 
 [dev-packages]
 black = "==21.12b0"

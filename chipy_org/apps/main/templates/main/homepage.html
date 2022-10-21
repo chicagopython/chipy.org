@@ -28,14 +28,13 @@
 
 {% block content %}
 
+<!-- Renders message box unless View declares message_as_modal instead -->
 {% if messages %}
-<div class="container-xl">
-    <div class="row">
-        <div class="col">
-            {% include "_messages.html" %}
-        </div>
-    </div>
-</div><!--closes container-->
+    {% if message_as_modal %}
+        {% include "_modal.html" %}
+    {% else %}
+        {% include "_messages.html" %}
+    {% endif %}
 {% endif %}
 
 <div class="container-xl">

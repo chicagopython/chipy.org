@@ -256,6 +256,7 @@ INSTALLED_APPS = [
     "chipy_org.apps.job_board",
     "chipy_org.apps.meetings",
     "chipy_org.apps.profiles",
+    "chipy_org.apps.slack",
     "chipy_org.apps.sponsors",
     "chipy_org.apps.subgroups",
     "chipy_org.libs",
@@ -337,6 +338,8 @@ NORECAPTCHA_SITE_KEY = env_var("NORECAPTCHA_SITE_KEY")
 NORECAPTCHA_SECRET_KEY = env_var("NORECAPTCHA_SECRET_KEY")
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
+SLACK_URL = "https://chipy.slack.com"
+SLACK_TOKEN = "abc"
 
 LOGGING = {
     "version": 1,

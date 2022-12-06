@@ -1,0 +1,27 @@
+{% extends "shiny/slim.html" %}
+{% load crispy_forms_tags %}
+
+{% block page_header %}CONTACT US{% endblock %}
+
+{% block body %}
+<div class="row">
+  <div class="col-md-8 px-3 pt-1 pb-3">
+    <div class="row-fluid">
+      <div class="module span6">
+        <div id="contact">
+          {% crispy form %}
+        </div>
+      </div>
+    </div><!-- #row-fluid -->
+  </div>
+
+  <div class="col-md-4 px-3 pt-1 pb-3">
+    <div class="module">
+      <h3>Did you know ChiPy has a mailing list?</h3>
+      <p>It's a great place to post a tough question, make an announcement,
+        or leaf through the archives going back to 2005. Get connected with a wealth of resources today!</p>
+      <p><a class="btn btn-primary" href="http://mail.python.org/mailman/listinfo/chicago">Sign Up</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

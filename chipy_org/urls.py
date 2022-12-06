@@ -28,6 +28,7 @@ urlpatterns = [
     path("logout/", LogoutWithRedirectAndMessage.as_view()),
     path("contact/", ContactView.as_view(), name="contact"),
     path("pages/", include("django.contrib.flatpages.urls")),
+    path("slack/", include("chipy_org.apps.slack.urls")),
     path("sponsors/", include("chipy_org.apps.sponsors.urls")),
     path("job-board/", include("chipy_org.apps.job_board.urls")),
 ]

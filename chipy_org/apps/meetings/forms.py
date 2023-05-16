@@ -1,5 +1,3 @@
-import datetime
-
 from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -8,7 +6,7 @@ from django.urls import reverse
 
 from chipy_org.libs.custom_captcha import CustomCaptchaTextInput
 
-from .models import RSVP, Meeting, Presenter, Topic
+from .models import RSVP, Presenter, Topic
 
 
 class TopicForm(forms.ModelForm):

@@ -1,5 +1,5 @@
 {% for message in messages %}
-<div class="container-xl alert {% if message.tags %} {% for tag in message.tags.split %}alert-{{ tag }} {% endfor %}{% endif %} fade show" style="max-width: 50%">
+<div class="container-xl alert {% if message.tags %} {% for tag in message.tags.split %}alert-{{ tag }} {% endfor %}{% endif %} fade show py-2" style="max-width: 50%">
         <div style="float:right">
           <a class="close" href="#" data-bs-dismiss="alert" aria-label="Close">&times;</a>
         </div>

@@ -21,15 +21,11 @@ class TopicForm(forms.ModelForm):
         "length",
     )
 
-    meeting = forms.ModelChoiceField(
-        queryset=Meeting.objects.filter(when__gt=datetime.datetime.now())
-    )
     name = forms.CharField(label="Your Name", required=True)
     email = forms.EmailField(label="Your Email", required=True)
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["meeting"].required = False
         self.fields["description"].required = True
         self.fields["experience_level"].required = True
         self.fields["length"].required = True
@@ -50,7 +46,6 @@ class TopicForm(forms.ModelForm):
             "title",
             "name",
             "email",
-            "meeting",
             "length",
             "experience_level",
             "description",

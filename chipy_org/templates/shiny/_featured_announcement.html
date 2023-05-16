@@ -1,0 +1,10 @@
+{% if featured_announcement %}
+<div class="border px-2 py-3 my-3" style="width: 100%; margin: auto">
+  <h3 class="blue-text text-center">
+    📢 {{ featured_announcement.headline }}
+  </h3>
+    <div class="text-center">
+      {{ featured_announcement.text | safe }}
+    </div>
+</div>
+{% endif %}

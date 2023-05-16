@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader
 from django.views.generic import TemplateView
 
+from chipy_org.apps.announcements.models import Announcement
 from chipy_org.apps.meetings.models import Meeting
 from chipy_org.apps.meetings.views import InitialRSVPMixin
 from chipy_org.apps.sponsors.models import Sponsor
@@ -28,6 +29,7 @@ class Home(TemplateView, InitialRSVPMixin):
         context.update(kwargs)
         context["IS_HOMEPAGE"] = True
         context["featured_sponsor"] = Sponsor.featured_sponsor()
+        context["featured_announcement"] = Announcement.objects.featured()
 
         context = self.add_extra_context(context)
         return context

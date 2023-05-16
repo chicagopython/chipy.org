@@ -28,19 +28,18 @@
 
 {% block content %}
 
-{% if messages %}
+
 <div class="container-xl">
-    <div class="row">
-        <div class="col">
-            {% include "_messages.html" %}
-        </div>
+
+  {% if messages %}
+  <div class="row flex-md-row-reverse">
+    <div class="col-sm-12 my-0">
+        {% include "_messages.html" %}
     </div>
-</div><!--closes container-->
-{% endif %}
+  </div><!--closes container-->
+  {% endif %}
 
-<div class="container-xl">
     <div class="row flex-md-row-reverse">
-
         <div class="col-lg-6 my-4 px-5 pt-3">
             {% include "shiny/_featured_announcement.html" %}
             {% include "shiny/_featured_sponsor.html" %}

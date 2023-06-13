@@ -11,7 +11,7 @@
   <div>
     <h1>Topic</h1>
     {% with topic as talk %}
-      {% include 'meetings/_talk.html' %}
+      {% include 'talks/_talk.html' %}
     {% endwith %}
     <span class="count">{{ object_list|length }} talk{{ object_list|pluralize }}</span>
   </div>

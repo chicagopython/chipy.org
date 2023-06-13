@@ -94,32 +94,6 @@ def test_future_meetings(client):
     assert response.status_code == 200
 
 
-def test_post_topic_sends_email():
-    m = Meeting(
-        when=datetime.datetime.now(),
-        reg_close_date=datetime.datetime.now(),
-        description="Test",
-        in_person_capacity=5,
-    )
-    m.save()
-    assert len(Meeting.objects.all()) == 1
-
-    t = Topic(
-        title="Test Meeting",
-        meeting=m,
-        experience_level="novice",
-        length=10,
-        description="Test Topic",
-    )
-    t.save()
-    assert len(Topic.objects.all()) == 1
-
-    r = ["test@email.com"]
-
-    email.send_meeting_topic_submitted_email(t, r)
-    assert len(mail.outbox) == 1
-
-
 class MeetingTitleTest(TestCase):
     # Tests if 'custom_title' from 'meeting' is available, it'll be used as
     # 'title' for meeting.  If 'custom_title' from 'meeting' isn't available,

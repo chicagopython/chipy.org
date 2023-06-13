@@ -258,6 +258,7 @@ INSTALLED_APPS = [
     "chipy_org.apps.profiles",
     "chipy_org.apps.sponsors",
     "chipy_org.apps.subgroups",
+    "chipy_org.apps.talks",
     "chipy_org.libs",
 ]
 if DEBUG:

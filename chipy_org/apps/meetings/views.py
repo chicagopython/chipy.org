@@ -19,10 +19,9 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .email import send_meeting_topic_submitted_email
-from .forms import RSVPForm, RSVPFormWithCaptcha, TopicForm
+from .forms import RSVPForm, RSVPFormWithCaptcha
 from .models import RSVP as RSVPModel
-from .models import Meeting, Presenter, Topic
+from .models import Meeting
 from .serializers import MeetingSerializer
 from .utils import meetup_meeting_sync
 
@@ -104,36 +103,6 @@ class MeetingDetail(DetailView, InitialRSVPMixin):
         context.update(kwargs)
         context = self.add_extra_context(context)
         return context
-
-
-class ProposeTopic(CreateView):
-    template_name = "meetings/propose_topic.html"
-    form_class = TopicForm
-    success_url = reverse_lazy("home")
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({"request": self.request})
-        return kwargs
-
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(self.request, "Topic has been submitted.")
-        recipients = getattr(settings, "CHIPY_TOPIC_SUBMIT_EMAILS", [])
-        send_meeting_topic_submitted_email(self.object, recipients)
-        return HttpResponseRedirect(self.get_success_url())
-
-
-class MyTopics(ListView):
-    template_name = "meetings/my_topics.html"
-
-    def get_queryset(self):
-        try:
-            presenter = Presenter.objects.filter(user=self.request.user)
-        except Presenter.DoesNotExist:
-            return Topic.objects.none()
-
-        return Topic.objects.filter(presenters__in=presenter)
 
 
 class RSVP(ProcessFormView, ModelFormMixin, TemplateResponseMixin):
@@ -331,21 +300,6 @@ class RSVPlistPrivate(RSVPlistCSVBase):
 
 class RSVPlistHost(RSVPlistCSVBase):
     private = False
-
-
-class PastTopics(ListView):
-    context_object_name = "topics"
-    template_name = "meetings/past_topics.html"
-    queryset = Topic.objects.filter(
-        meeting__when__lt=datetime.date.today(), approved=True
-    ).order_by("-meeting__when")
-
-
-class PastTopic(DetailView):
-    model = Topic
-    template_name = "meetings/past_topic.html"
-    context_object_name = "topic"
-    pk_url_kwarg = "id"
 
 
 class MeetingListAPIView(ListAPIView):

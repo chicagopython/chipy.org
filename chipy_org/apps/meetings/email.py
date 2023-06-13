@@ -16,13 +16,3 @@ def send_rsvp_email(rsvp):
     text_content = plaintext.render(context)
     html_content = htmly.render(context)
     send_email(rsvp.email, subject, text_content, html_content, swallow_errors=True)
-
-
-def send_meeting_topic_submitted_email(topic, recipients):  # pylint: disable=invalid-name
-    plaintext = get_template("meetings/emails/meeting_topic_submitted.txt")
-    htmly = get_template("meetings/emails/meeting_topic_submitted.html")
-    context = {"topic": topic, "site": Site.objects.get_current()}
-    subject = "Chipy: New Meeting Topic Submitted"
-    text_content = plaintext.render(context)
-    html_content = htmly.render(context)
-    send_email(recipients, subject, text_content, html_content, swallow_errors=True)

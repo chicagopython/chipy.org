@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.core.mail import send_mail
 
 logger = logging.getLogger(__name__)
@@ -14,7 +15,7 @@ def send_email_to_admin_after_create_job_post(position, company, recipients):
             " Please review it for approval."
         )
 
-        from_email = "DoNotReply@chipy.org"
+        from_email = settings.DEFAULT_FROM_EMAIL
 
         to_email = recipients
 
@@ -37,7 +38,7 @@ def send_email_to_admin_after_user_deletes_job_post(position, company, recipient
             " You no longer have to review it."
         )
 
-        from_email = "DoNotReply@chipy.org"
+        from_email = settings.DEFAULT_FROM_EMAIL
 
         to_email = recipients
 

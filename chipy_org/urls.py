@@ -30,6 +30,7 @@ urlpatterns = [
     path("pages/", include("django.contrib.flatpages.urls")),
     path("sponsors/", include("chipy_org.apps.sponsors.urls")),
     path("job-board/", include("chipy_org.apps.job_board.urls")),
+    path("talks/", include("chipy_org.apps.talks.urls")),
 ]
 
 # Would love a back tracking url resolver

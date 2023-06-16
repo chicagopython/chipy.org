@@ -4,11 +4,9 @@ import datetime
 import pytest
 from django.conf import global_settings
 from django.contrib.auth import get_user_model
-from django.core import mail
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from .. import email
 from ..models import Meeting, MeetingType, Presenter, Topic, Venue
 
 User = get_user_model()

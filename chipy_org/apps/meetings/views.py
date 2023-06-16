@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import CreateView, ModelFormMixin, ProcessFormView, UpdateView
+from django.views.generic.edit import ModelFormMixin, ProcessFormView, UpdateView
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response

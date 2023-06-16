@@ -11,26 +11,24 @@ pytestmark = pytest.mark.django_db
 
 
 def test_post_topic_sends_email():
-    m = Meeting(
+    meeting = Meeting(
         when=datetime.datetime.now(),
         reg_close_date=datetime.datetime.now(),
         description="Test",
         in_person_capacity=5,
     )
-    m.save()
+    meeting.save()
     assert len(Meeting.objects.all()) == 1
 
-    t = Topic(
+    topic = Topic(
         title="Test Meeting",
-        meeting=m,
+        meeting=meeting,
         experience_level="novice",
         length=10,
         description="Test Topic",
     )
-    t.save()
+    topic.save()
     assert len(Topic.objects.all()) == 1
 
-    r = ["test@email.com"]
-
-    email.send_meeting_topic_submitted_email(t, r)
+    email.send_meeting_topic_submitted_email(topic, ["test@email.com"])
     assert len(mail.outbox) == 1

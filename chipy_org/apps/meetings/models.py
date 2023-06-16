@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import datetime
 import random
+import re
 import string
 
 from ckeditor.fields import RichTextField
@@ -268,6 +269,21 @@ class Topic(CommonModel):
     approved = models.BooleanField(default=False)
 
     objects = TopicsQuerySet.as_manager()
+
+    @property
+    def video_embedded_link(self):
+        if not self.embed_video:
+            return
+
+        # convert https://www.youtube.com/watch?v=gyUuuuZkwv0
+        #      with https://www.youtube.com/embed/gyUuuuZkwv0
+        if self.embed_video.startswith("https://www.youtube.com/watch"):
+            return re.sub(r".*v=(\w+).*", r"http://youtube.com/embed/\g<1>", self.embed_video)
+
+        return self.embed_video
+
+    def video_link(self):
+        return self.embed_video
 
 
 class RSVP(CommonModel):

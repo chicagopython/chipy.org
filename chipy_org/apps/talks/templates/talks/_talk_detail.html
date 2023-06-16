@@ -2,6 +2,7 @@
 
 <div class="talk">
   <span class="title">{{ talk.title }}</span>
+  {% if user.is_staff %}<a class="btn btn-primary mx-2" href="{% url "admin:meetings_topic_change" talk.id %}">Edit</a>{% endif %}
 
   {% for presenter in talk.presenters.all %}
   {% if presenter.user.profile.show %}

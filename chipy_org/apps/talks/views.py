@@ -36,7 +36,7 @@ class PastVideoTopics(ListView):
     context_object_name = "topics"
     template_name = "talks/past_topics.html"
     queryset = Topic.objects.filter(
-        meeting__when__lt=datetime.date.today(), approved=True, embed_video__isnull=False
+        meeting__when__lt=datetime.date.today(), approved=True, embed_video__startswith="https"
     ).order_by("-meeting__when")
     extra_context = {"is_video_only": True}
 

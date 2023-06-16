@@ -32,6 +32,15 @@ class PastTopics(ListView):
     ).order_by("-meeting__when")
 
 
+class PastVideoTopics(ListView):
+    context_object_name = "topics"
+    template_name = "talks/past_topics.html"
+    queryset = Topic.objects.filter(
+        meeting__when__lt=datetime.date.today(), approved=True, embed_video__isnull=False
+    ).order_by("-meeting__when")
+    extra_context = {"is_video_only": True}
+
+
 class PastTopic(DetailView):
     model = Topic
     template_name = "talks/past_topic.html"

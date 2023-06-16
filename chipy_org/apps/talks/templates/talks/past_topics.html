@@ -8,6 +8,11 @@
 <div class="row">
     <div>
         <strong>See Also: </strong>
+        {% if is_video_only %}
+        <a class="btn btn-warning mx-2" href="{% url 'past_topics' %}">Recent Topics</a>
+        {% else %}
+        <a class="btn btn-warning mx-2" href="{% url 'past_video_topics' %}">Video Only Topics</a>
+        {% endif %}
         <a class="btn btn-danger mx-2" href="{% url 'future_meetings' %}">Upcoming Meetings</a>
         <a class="btn btn-primary mx-2"  href="{% url 'past_meetings' %}">Past Meetings</a>
     </div>

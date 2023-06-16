@@ -25,7 +25,9 @@
     {% for talk in topics %}
       {% include 'talks/_talk_list_item.html' %}
     {% endfor %}
-    <span class="count">{{ object_list|length }} talk{{ object_list|pluralize }}</span>
   </div>
 </div>
+
+{% include 'shared/pagination.html' %}
+
 {% endblock body %}

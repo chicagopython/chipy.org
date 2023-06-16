@@ -23,6 +23,8 @@ class MyTopics(ListView):
 
         return Topic.objects.filter(presenters__in=presenter)
 
+    paginate_by = 20
+
 
 class PastTopics(ListView):
     context_object_name = "topics"
@@ -30,6 +32,7 @@ class PastTopics(ListView):
     queryset = Topic.objects.filter(
         meeting__when__lt=datetime.date.today(), approved=True
     ).order_by("-meeting__when")
+    paginate_by = 10
 
 
 class PastVideoTopics(ListView):
@@ -39,6 +42,7 @@ class PastVideoTopics(ListView):
         meeting__when__lt=datetime.date.today(), approved=True, embed_video__startswith="https"
     ).order_by("-meeting__when")
     extra_context = {"is_video_only": True}
+    paginate_by = 10
 
 
 class PastTopic(DetailView):

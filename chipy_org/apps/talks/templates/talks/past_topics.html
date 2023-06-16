@@ -9,7 +9,7 @@
     <div>
         <strong>See Also: </strong>
         {% if is_video_only %}
-        <a class="btn btn-warning mx-2" href="{% url 'past_topics' %}">Recent Topics</a>
+        <a class="btn btn-warning mx-2" href="{% url 'past_topics' %}">All Recent Topics</a>
         {% else %}
         <a class="btn btn-warning mx-2" href="{% url 'past_video_topics' %}">Video Only Topics</a>
         {% endif %}

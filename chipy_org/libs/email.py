@@ -12,7 +12,9 @@ def enforce_list(value):
     return value
 
 
-def send_email(recipients, subject, body, html_body=None, reply_to=None, swallow_errors=False):
+def send_email(  # pylint: disable=too-many-arguments
+    recipients, subject, body, html_body=None, reply_to=None, swallow_errors=False
+):
     """Helper to standardize sending of email"""
     recipients = enforce_list(recipients)
     reply_to = enforce_list(reply_to or [])

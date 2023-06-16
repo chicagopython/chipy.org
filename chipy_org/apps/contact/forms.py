@@ -5,9 +5,9 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
 from django.conf import settings
-from django.core.mail import EmailMessage
 
 from chipy_org.libs.custom_captcha import CustomCaptchaTextInput
+from chipy_org.libs.email import send_email
 
 logger = logging.getLogger(__name__)
 
@@ -32,11 +32,9 @@ class ContactForm(forms.Form):
     captcha = CaptchaField(widget=CustomCaptchaTextInput)
 
     def send_email(self):
-        msg = EmailMessage(
+        send_email(
+            recipients=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
             subject=self.cleaned_data["subject"],
             body=self.cleaned_data["message"],
-            from_email=self.cleaned_data["email"],
-            to=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
             reply_to=[self.cleaned_data["email"]],
         )
-        msg.send()

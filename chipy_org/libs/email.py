@@ -32,7 +32,7 @@ def send_email(  # pylint: disable=too-many-arguments
     else:
         message = EmailMessage(**params)
 
-    logger.exception("Sending email with subject %s", subject)
+    logger.info("Sending email with subject %s", subject)
     try:
         message.send()
     except Exception:

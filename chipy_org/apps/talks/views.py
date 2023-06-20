@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
@@ -50,6 +51,15 @@ class PastTopic(DetailView):
     template_name = "talks/past_topic.html"
     context_object_name = "topic"
     pk_url_kwarg = "id"
+
+
+class PendingTopics(ListView):
+    context_object_name = "topics"
+    template_name = "talks/past_topics.html"
+    queryset = Topic.objects.filter(Q(meeting__isnull=True) | Q(approved=False)).order_by(
+        "-meeting__when"
+    )
+    extra_context = {"show_talk_length": True}
 
 
 class ProposeTopic(CreateView):

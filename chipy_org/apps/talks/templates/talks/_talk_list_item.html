@@ -11,6 +11,9 @@
     {% endif %}
     {% endfor %}
     <div class="topic-date">Date: {% firstof talk.start_time talk.meeting.when %}</div>
+    {% if show_talk_length %}
+    <div class="topic-length">Length: {% firstof talk.length "unknown" %} minutes</div>
+    {% endif %}
     {% if talk.slides_link %}<div><a href="{{ talk.slides_link }}">Slides Link</a></div>{% endif %}
     <div class="description">
       {% if talk.description %}

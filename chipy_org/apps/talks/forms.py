@@ -11,6 +11,7 @@ class TopicForm(forms.ModelForm):
         "title",
         "name",
         "email",
+        "phone",
         "description",
         "experience_level",
         "length",
@@ -18,6 +19,9 @@ class TopicForm(forms.ModelForm):
 
     name = forms.CharField(label="Your Name", required=True)
     email = forms.EmailField(label="Your Email", required=True)
+    phone = forms.CharField(
+        label="Your Phone", required=True, 
+        help_text="In case we need to reach you the day of the event.")
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,6 +45,7 @@ class TopicForm(forms.ModelForm):
             "title",
             "name",
             "email",
+            "phone",
             "length",
             "experience_level",
             "description",
@@ -61,6 +66,7 @@ class TopicForm(forms.ModelForm):
                 user=user,
                 name=self.cleaned_data.get("name"),
                 email=self.cleaned_data.get("email"),
+                phone=self.cleaned_data.get("phone"),
                 release=True,
             )
 

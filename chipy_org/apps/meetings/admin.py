@@ -94,7 +94,11 @@ class MeetingAdmin(admin.ModelAdmin):
         TopicInline,
         MeetingSponsorInline,
     ]
-    readonly_fields = ["created", "modified"]
+    readonly_fields = ["created", "modified", "presenter_mailboxes"]
+
+    @admin.display(description="Presenter Emails")
+    def presenter_mailboxes(self, obj):
+        return ', '.join(obj.get_presenter_mailboxes())
 
     @mark_safe
     def action(self, obj):

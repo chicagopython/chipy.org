@@ -20,8 +20,10 @@ class TopicForm(forms.ModelForm):
     name = forms.CharField(label="Your Name", required=True)
     email = forms.EmailField(label="Your Email", required=True)
     phone = forms.CharField(
-        label="Your Phone", required=True, 
-        help_text="In case we need to reach you the day of the event.")
+        label="Your Phone",
+        required=True,
+        help_text="In case we need to reach you the day of the event.",
+    )
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)

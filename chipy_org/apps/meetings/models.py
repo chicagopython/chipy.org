@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
 
 import datetime
+import itertools
 import random
 import re
 import string
-import itertools
 
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
@@ -176,13 +176,14 @@ class Meeting(CommonModel):
         return self.virtual_capacity > self.number_virtual_rsvps
 
     def get_presenter_mailboxes(self):
-        """Return a list of approved presenter email addresses in RFC 5322 "mailbox" 
-        format. 
+        """Return a list of approved presenter email addresses in RFC 5322 "mailbox"
+        format.
 
         e.g. ["John Doe <john@example.com>", "Jane Doe <jane@example.com>]
         """
-        presenters = list(itertools.chain(
-            *[list(t.presenters.all()) for t in self.topics.filter(approved=True)]))
+        presenters = list(
+            itertools.chain(*[list(t.presenters.all()) for t in self.topics.filter(approved=True)])
+        )
 
         return list(set(p.mailbox for p in presenters))
 
@@ -402,7 +403,6 @@ class RSVP(CommonModel):
 
 @receiver(post_save, sender=RSVP)
 def rsvp_post_save(sender, instance, **kwargs):
-
     # don't run on bulk or raw updates
     if kwargs["raw"]:
         return

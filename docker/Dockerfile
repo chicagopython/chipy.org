@@ -1,4 +1,4 @@
-FROM python:3.8.12
+FROM python:3.9.17
 
 # install os dependencies; clean apt cache
 RUN apt-get update && apt-get install -y \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     zlib1g-dev \
     libpq-dev \
-    python-dev \
+    python3-dev \
     postgresql-client \
     && pip install pipenv \
     && rm -rf /var/lib/apt/lists/*

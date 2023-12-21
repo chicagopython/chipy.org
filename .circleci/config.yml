@@ -25,16 +25,16 @@ jobs:
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python3.9/site-packages"
+            - "/home/circleci/.pyenv"
       - run:
           name: Collect statics
           command: SECRET_KEY=forci python manage.py collectstatic --noinput
       - run:
           name: Run Tests
-          command: pytest
+          command: /home/circleci/.pyenv/versions/3.9.17/bin/pytest
       - run:
           name: Run Linting
-          command: pylint chipy_org/
+          command: /home/circleci/.pyenv/versions/3.9.17/bin/pylint chipy_org/
       - store_test_results:
           path: test-results
       - store_artifacts:

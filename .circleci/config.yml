@@ -3,7 +3,7 @@ jobs:
   build: # required for runs that don't use workflows
     working_directory: ~/circleci-app
     docker:
-      - image: circleci/python:3.9.17
+      - image: cimg/python:3.9.17
         environment:
           ALLOWED_HOSTS: "chipy.org,www.chipy.org,localhost"
           CONNECT_METHOD: http

@@ -3,7 +3,7 @@ from ckeditor.widgets import CKEditorWidget, LazyEncoder
 from django import forms
 from django.forms.renderers import get_default_renderer
 from django.forms.utils import flatatt
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
@@ -16,11 +16,10 @@ class CustomCKEditorWidget(CKEditorWidget):
             renderer = get_default_renderer()
         if value is None:
             value = ""
-        final_attrs = self.build_attrs(self.attrs, attrs, name=name)
+        final_attrs = self.build_attrs(self.attrs, attrs)
         self._set_config()
         external_plugin_resources = [
-            [force_text(a), force_text(b), force_text(c)]
-            for a, b, c in self.external_plugin_resources
+            [force_str(a), force_str(b), force_str(c)] for a, b, c in self.external_plugin_resources
         ]
 
         return mark_safe(
@@ -28,7 +27,7 @@ class CustomCKEditorWidget(CKEditorWidget):
                 "custom_ckeditor/widget.html",
                 {
                     "final_attrs": flatatt(final_attrs),
-                    "value": conditional_escape(force_text(value)),
+                    "value": conditional_escape(force_str(value)),
                     "id": final_attrs["id"],
                     "config": JSON_ENCODE(self.config),
                     "external_plugin_resources": JSON_ENCODE(external_plugin_resources),

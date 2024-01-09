@@ -27,7 +27,7 @@ class TopicSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         if request and request.user.is_staff:
-            return obj.email
+            return obj.reviewer
         else:
             return ''
 

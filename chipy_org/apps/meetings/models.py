@@ -178,6 +178,7 @@ class Topic(CommonModel):
     length = IntervalField(
         format="M", blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
+    reviewer = models.EmailField(max_length=MAX_LENGTH, blank=True, null=True)
     description = models.TextField(
         "Public Description", blank=True, null=True,
         help_text="This will be the public talk description.")

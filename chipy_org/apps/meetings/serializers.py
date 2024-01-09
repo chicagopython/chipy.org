@@ -21,6 +21,15 @@ class PresenterSerializer(serializers.ModelSerializer):
 
 class TopicSerializer(serializers.ModelSerializer):
     presenters = PresenterSerializer(many=True, source='presentors')
+    reviewer = serializers.SerializerMethodField()
+
+    def get_reviewer(self, obj):
+        request = self.context.get('request')
+
+        if request and request.user.is_staff:
+            return obj.email
+        else:
+            return ''
 
     class Meta:
         model = Topic
@@ -28,6 +37,7 @@ class TopicSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'presenters',
+            'reviewer',
             'length',
             'description',
             'embed_video',

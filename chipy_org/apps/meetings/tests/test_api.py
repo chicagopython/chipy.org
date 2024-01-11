@@ -4,15 +4,8 @@ import random
 import string
 
 import pytest
-from django.conf import global_settings
-from django.core import mail
-from django.core.exceptions import ValidationError
-from django.test import override_settings
-from django.urls import reverse
 
-from chipy_org.apps.meetings import email
-from chipy_org.apps.meetings.models import RSVP, Meeting, Venue
-from chipy_org.libs import test_utils
+from chipy_org.apps.meetings.models import Meeting, Venue
 
 pytestmark = pytest.mark.django_db
 
@@ -83,8 +76,8 @@ class TestMeetings:
         assert location["created"] == venue.created.strftime("%Y-%m-%dT%H:%M:%S.%f")
         assert location["modified"] == venue.modified.strftime("%Y-%m-%dT%H:%M:%S.%f")
         assert location["name"] == venue.name
-        assert location["email"] is None  # TODO: We should not share this
-        assert location["phone"] is None  # TODO: We should not share this
+        assert location["email"] is None  # TODO: We should not share this # pylint: disable=W0511
+        assert location["phone"] is None  # TODO: We should not share this # pylint: disable=W0511
         assert location["address"] is None
         assert location["directions"] is None
         assert location["embed_map"] is None

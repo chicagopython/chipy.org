@@ -19,6 +19,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from chipy_org.libs.permissions_classes import IsAPIUser
+
 from .forms import RSVPForm, RSVPFormWithCaptcha
 from .models import RSVP as RSVPModel
 from .models import Meeting
@@ -303,6 +305,8 @@ class RSVPlistHost(RSVPlistCSVBase):
 
 
 class MeetingListAPIView(ListAPIView):
+    permission_classes = (IsAPIUser,)
+
     queryset = Meeting.objects.all()
     serializer_class = MeetingSerializer
 

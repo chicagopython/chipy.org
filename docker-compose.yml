@@ -27,6 +27,7 @@ services:
     depends_on:
       - db
     environment:
+      - MEETINGS_API_SECRET=usethisintest
       - CONNECT_METHOD=http
       - ALLOWED_HOSTS=localhost
       - USE_S3=False

@@ -5,7 +5,7 @@ import string
 
 import pytest
 
-from chipy_org.apps.meetings.models import Meeting, Topic, Venue
+from chipy_org.apps.meetings.models import Meeting, Presenter, Topic, Venue
 
 pytestmark = pytest.mark.django_db
 
@@ -118,3 +118,22 @@ class TestMeetings:
             "pete@example.com",
             "carl@example.com",
         ]
+
+    @staticmethod
+    def test_api_returns_speaker_email(client, venue):
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=venue, in_person_capacity=5
+        )
+        speakerless_topic = Topic.objects.create(title="test topic", meeting=meeting)
+        presenter = Presenter.objects.create()
+        topic = Topic.objects.create(title="test topic", meeting=meeting)
+        topic.presenters.set([presenter])
+
+        response = client.get("/api/meetings/", headers={"Api-Key": "usethisintest"})
+        assert response.status_code == 200
+        record = response.json()[0]
+        assert record["id"] == meeting.id
+
+        topic_1, topic_2 = record["topics"]
+        assert topic_1["presenters"] == []
+        assert topic_2["presenters"][0]["email"] == presenter.email

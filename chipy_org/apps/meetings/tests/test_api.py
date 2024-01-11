@@ -5,7 +5,7 @@ import string
 
 import pytest
 
-from chipy_org.apps.meetings.models import Meeting, Venue
+from chipy_org.apps.meetings.models import Meeting, Topic, Venue
 
 pytestmark = pytest.mark.django_db
 
@@ -82,3 +82,39 @@ class TestMeetings:
         assert location["directions"] is None
         assert location["embed_map"] is None
         assert location["link"] is None
+
+    @staticmethod
+    def test_api_returns_backup_reviewers(client, venue):
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=venue, in_person_capacity=5
+        )
+        topic = Topic.objects.create(title="test topic", meeting=meeting)
+        response = client.get("/api/meetings/", headers={"Api-Key": "usethisintest"})
+
+        assert response.status_code == 200
+        record = response.json()[0]
+        topic = record["topics"][0]
+        assert topic["reviewers"] == [
+            "pete@example.com",
+            "carl@example.com",
+        ]
+
+    @staticmethod
+    def test_api_returns_extra_review_if_specified(client, venue):
+        meeting = Meeting.objects.create(
+            when=datetime.date.today(), where=venue, in_person_capacity=5
+        )
+        topic = Topic.objects.create(
+            title="test topic", meeting=meeting, requested_reviewer="heather@example.com"
+        )
+        response = client.get("/api/meetings/", headers={"Api-Key": "usethisintest"})
+
+        assert response.status_code == 200
+        record = response.json()[0]
+        assert record["id"] == meeting.id
+        topic_record = record["topics"][0]
+        assert topic_record["reviewers"] == [
+            topic.requested_reviewer,
+            "pete@example.com",
+            "carl@example.com",
+        ]

@@ -35,6 +35,7 @@ class TopicSerializer(serializers.ModelSerializer):
             "start_time",
             "approved",
             "license",
+            "reviewers",
         )
         depth = 1
 

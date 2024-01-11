@@ -52,6 +52,7 @@ class TopicForm(forms.ModelForm):
             "experience_level",
             "description",
             "notes",
+            "requested_reviewer",
             "license",
             "slides_link",
         )

@@ -27,6 +27,7 @@ services:
     depends_on:
       - db
     environment:
+      - CHIPY_BACKUP_TALK_REVIEWERS=pete@example.com,carl@example.com
       - MEETINGS_API_SECRET=usethisintest
       - CONNECT_METHOD=http
       - ALLOWED_HOSTS=localhost

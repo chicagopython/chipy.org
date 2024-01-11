@@ -7,6 +7,7 @@ import re
 import string
 
 from ckeditor.fields import RichTextField
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -272,6 +273,17 @@ class Topic(CommonModel):
         help_text="This will be the public talk description.",
     )
 
+    requested_reviewer = models.EmailField(
+        "Reviewer Email",
+        blank=True,
+        null=True,
+        help_text=(
+            "(Optional) If we record this video, we can include an email"
+            "address of a friend or other person to be included in"
+            "our review process"
+        ),
+    )
+
     notes = models.TextField(
         "Private Submission Notes",
         blank=True,
@@ -286,6 +298,14 @@ class Topic(CommonModel):
     approved = models.BooleanField(default=False)
 
     objects = TopicsQuerySet.as_manager()
+
+    @property
+    def reviewers(self):
+        emails = settings.CHIPY_BACKUP_TALK_REVIEWERS[:]
+        if self.requested_reviewer:
+            emails = [self.requested_reviewer] + emails
+        return emails
+
 
     @property
     def video_embedded_link(self):

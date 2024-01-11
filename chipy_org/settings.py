@@ -57,7 +57,10 @@ INTERNAL_IPS = [
 
 ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(",")]
 
+
 MANAGERS = ADMINS
+
+CHIPY_BACKUP_TALK_REVIEWERS = env_list("CHIPY_BACKUP_TALK_REVIEWERS")
 
 CHIPY_TOPIC_SUBMIT_EMAILS = env_var("CHIPY_TOPIC_SUBMIT_EMAILS", "").split(",")
 

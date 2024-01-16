@@ -101,7 +101,12 @@ class Meeting(CommonModel):
     where = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
     # Used for anonymous access to meeting information like RSVPs
     key = models.CharField(max_length=40, unique=True, blank=True)
-    live_stream = models.CharField(max_length=500, null=True, blank=True)
+    live_stream = models.CharField(
+        max_length=500,
+        null=True,
+        blank=True,
+        help_text="url for livestream, no remote participants allowed if not present",
+    )
     meetup_id = models.TextField(blank=True, null=True)
     meeting_type = models.ForeignKey(
         MeetingType,
@@ -165,7 +170,7 @@ class Meeting(CommonModel):
         return self.in_person_capacity != 0
 
     def is_virtual(self):
-        return self.virtual_capacity != 0
+        return bool(self.live_stream and self.virtual_capacity != 0)
 
     def has_in_person_capacity(self):
         return self.in_person_capacity > self.number_in_person_rsvps

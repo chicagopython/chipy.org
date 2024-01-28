@@ -46,6 +46,7 @@ class TopicAdmin(admin.ModelAdmin):
         "get_presenters",
         "meeting",
         "created",
+        "email_presenters",
     )
     readonly_fields = [
         "get_presenters",
@@ -55,6 +56,19 @@ class TopicAdmin(admin.ModelAdmin):
     list_filter = ["approved", "experience_level"]
     search_fields = ["title"]
     filter_horizontal = ["presenters"]
+
+    def email_presenters(self, obj):
+        presenters = obj.presenters.all()
+        to_addresses = ",".join(p.email for p in presenters)
+        names = " and ".join(p.name for p in presenters)
+        title = (obj.title or "").replace("&", "")
+        body = "".join(
+            [f"Greetings {names},%0A%0A", "Thanks for submitting your talk: ", obj.title]
+        )
+
+        return format_html(
+            f"<a href='mailto:{to_addresses}?subject=Speaking at ChiPy - {title}&body={body}'>Email Presenters</a>"
+        )
 
     def get_presenters(self, obj):
         return format_html(

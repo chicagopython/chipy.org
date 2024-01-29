@@ -59,8 +59,8 @@ class TopicAdmin(admin.ModelAdmin):
 
     def email_presenters(self, obj):
         presenters = obj.presenters.all()
-        to_addresses = ",".join(p.email for p in presenters)
-        names = " and ".join(p.name for p in presenters)
+        to_addresses = ",".join(p.email or "" for p in presenters)
+        names = " and ".join(p.name or "" for p in presenters)
         title = (obj.title or "").replace("&", "")
         body = "".join(
             [f"Greetings {names},%0A%0A", "Thanks for submitting your talk: ", obj.title]

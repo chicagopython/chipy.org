@@ -15,6 +15,7 @@ spec:
       labels:
         app: chipy-webserver
     spec:
+      serviceAccountName: chipy
       containers:
       - name: web
         image: chipy:v1
@@ -24,6 +25,9 @@ spec:
             cpu: "250m"
         ports:
         - containerPort: 8000
+        volumeMounts:
+        - name: chipy-static
+          mountPath: /site/proj/staticfiles
         env:
         - name: DEBUG
           value: "True"
@@ -53,26 +57,66 @@ spec:
               name: chipy-webserver-config
               key: ENVELOPE_EMAIL_RECIPIENTS
         - name: SECRET_KEY
-          value: "somesecretkeyfordjangogoeshere"
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: SECRET_KEY
         - name: DATABASE_URL
-          value: "postgres://chipy:insecure@db/chipy"
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: DATABASE_URL
         - name: GOOGLE_OAUTH2_CLIENT_ID
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: GOOGLE_OAUTH2_CLIENT_ID
         - name: GOOGLE_OAUTH2_CLIENT_SECRET
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: GOOGLE_OAUTH2_CLIENT_SECRET
         - name: GITHUB_APP_ID
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: GITHUB_APP_ID
         - name: GITHUB_API_SECRET
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: GITHUB_API_SECRET
         - name: USE_S3
-          value: "False"
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: USE_S3
         - name: AWS_ACCESS_KEY_ID
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: AWS_ACCESS_KEY_ID
         - name: AWS_SECRET_ACCESS_KEY
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: AWS_SECRET_ACCESS_KEY
         - name: AWS_STORAGE_BUCKET_NAME
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: AWS_STORAGE_BUCKET_NAME
         - name: NORECAPTCHA_SITE_KEY
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: NORECAPTCHA_SITE_KEY
         - name: NORECAPTCHA_SECRET_KEY
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: chipy-webserver-secret
+              key: NORECAPTCHA_SECRET_KEY
+      volumes: 
+      - name: chipy-static
+        persistentVolumeClaim:
+          claimName: chipy-web-static

@@ -1,0 +1,20 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+  image: kindest/node:v1.25.3
+  labels:
+    ingress-ready: "true"
+    kubernetes.io/os: linux
+  extraMounts:
+  - hostPath: ./shared-storage
+    containerPath: /var/local-path-provisioner
+- role: worker
+  labels:
+    ingress-ready: "true"
+    kubernetes.io/os: linux
+  image: kindest/node:v1.25.3
+  extraMounts:
+  - hostPath: ./shared-storage
+    containerPath: /var/local-path-provisioner

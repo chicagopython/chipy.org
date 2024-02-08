@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chipy-collectstatic
+spec:
+  parallelism: 1
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: chipy
+      containers:
+      - name: collectstatic
+        image: chipy:v1
+        command: ["./manage.py",  "collectstatic", "--noinput"]
+      restartPolicy: Never
+  backoffLimit: 4
+

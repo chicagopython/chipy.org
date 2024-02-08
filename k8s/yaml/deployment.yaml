@@ -16,12 +16,63 @@ spec:
         app: chipy-webserver
     spec:
       containers:
-        - name: web
-          image: chipy:v1
-          ports:
-            - containerPort: 8000
-          env:
-            - name: CONNECT_METHOD
-              value: http
-            - name: SECURE_SSL_REDIRECT
-              value: "False"
+      - name: web
+        image: chipy:v1
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DEBUG
+          value: "True"
+        - name: CONNECT_METHOD
+          valueFrom:
+            configMapKeyRef:
+              name: chipy-webserver-config
+              key: CONNECT_METHOD
+        - name: SECURE_SSL_REDIRECT
+          valueFrom:
+            configMapKeyRef:
+              name: chipy-webserver-config
+              key: SECURE_SSL_REDIRECT
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: chipy-webserver-config
+              key: ALLOWED_HOSTS
+        - name: EMAIL_BACKEND
+          valueFrom:
+            configMapKeyRef:
+              name: chipy-webserver-config
+              key: EMAIL_BACKEND
+        - name: ENVELOPE_EMAIL_RECIPIENTS
+          valueFrom:
+            configMapKeyRef:
+              name: chipy-webserver-config
+              key: ENVELOPE_EMAIL_RECIPIENTS
+        - name: SECRET_KEY
+          value: "somesecretkeyfordjangogoeshere"
+        - name: DATABASE_URL
+          value: "postgres://chipy:insecure@db/chipy"
+        - name: GOOGLE_OAUTH2_CLIENT_ID
+          value: ""
+        - name: GOOGLE_OAUTH2_CLIENT_SECRET
+          value: ""
+        - name: GITHUB_APP_ID
+          value: ""
+        - name: GITHUB_API_SECRET
+          value: ""
+        - name: USE_S3
+          value: "False"
+        - name: AWS_ACCESS_KEY_ID
+          value: ""
+        - name: AWS_SECRET_ACCESS_KEY
+          value: ""
+        - name: AWS_STORAGE_BUCKET_NAME
+          value: ""
+        - name: NORECAPTCHA_SITE_KEY
+          value: ""
+        - name: NORECAPTCHA_SECRET_KEY
+          value: ""

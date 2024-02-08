@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chipy-webserver-config
+data:
+  CONNECT_METHOD: 'http'
+  SECURE_SSL_REDIRECT: 'False'
+  ALLOWED_HOSTS: "chipy.org,www.chipy.org,localhost"
+  EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
+  ENVELOPE_EMAIL_RECIPIENTS: "admin@example.com"

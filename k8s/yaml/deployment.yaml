@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chipy-web
+  labels:
+    app: chipy-web
+    componant: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chipy-webserver
+  template:
+    metadata:
+      labels:
+        app: chipy-webserver
+    spec:
+      containers:
+        - name: web
+          image: chipy:v1
+          ports:
+            - containerPort: 8000
+          env:
+            - name: CONNECT_METHOD
+              value: http
+            - name: SECURE_SSL_REDIRECT
+              value: "False"

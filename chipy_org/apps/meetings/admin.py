@@ -47,6 +47,7 @@ class TopicAdmin(admin.ModelAdmin):
         "meeting",
         "created",
         "email_presenters",
+        "embed_video",
     )
     readonly_fields = [
         "get_presenters",
@@ -54,7 +55,7 @@ class TopicAdmin(admin.ModelAdmin):
         "created",
     ]
     list_filter = ["approved", "experience_level"]
-    search_fields = ["title"]
+    search_fields = ["title", "presenters__name"]
     filter_horizontal = ["presenters"]
 
     def email_presenters(self, obj):
@@ -112,7 +113,7 @@ class MeetingAdmin(admin.ModelAdmin):
 
     @admin.display(description="Presenter Emails")
     def presenter_mailboxes(self, obj):
-        return ', '.join(obj.get_presenter_mailboxes())
+        return ", ".join(obj.get_presenter_mailboxes())
 
     @mark_safe
     def action(self, obj):

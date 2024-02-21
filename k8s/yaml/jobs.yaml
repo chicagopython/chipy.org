@@ -13,5 +13,5 @@ spec:
         image: chipy:v1
         command: ["./manage.py",  "collectstatic", "--noinput"]
       restartPolicy: Never
-  backoffLimit: 4
+
 

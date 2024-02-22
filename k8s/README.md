@@ -94,6 +94,25 @@ Where...
 - POSTGRES_DB - is the name of the auto-created postgres logical db (i.e. chipy)
 
 
+### (4) Metrics Server (optional)
+
+
+Add repo for metrics-server 
+
+```bash
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+```
+
+Install the metrics server helm chart
+
+```bash
+helm upgrade --install metrics-server metrics-server/metrics-server \
+    --version 3.12.0 \
+    --set apiService.insecureSkipTLSVerify=true \
+    --set-json='args=["--kubelet-insecure-tls=true", "--requestheader-client-ca-file="]' \
+    --namespace kube-system
+```
+
 ## [B] Build and load the docker image into Kind
 
 ```bash

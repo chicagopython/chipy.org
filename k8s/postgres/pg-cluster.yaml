@@ -1,0 +1,30 @@
+kind: "postgresql"
+apiVersion: "acid.zalan.do/v1"
+
+metadata:
+  name: "chipydb"
+  labels:
+    team: acid
+
+spec:
+  teamId: "acid"
+  postgresql:
+    version: "15"
+  numberOfInstances: 1
+  volume:
+    size: "10Gi"
+    storageClass: "standard"
+  users:
+    chipy: []
+  databases:
+    chipy: chipy
+  allowedSourceRanges:
+    # IP ranges to access your cluster go here
+  
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi

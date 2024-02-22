@@ -74,3 +74,5 @@ venv/
 .vscode
 htmlcov
 tags
+
+shared-storage/

@@ -31,6 +31,26 @@ spec:
         env:
         - name: DEBUG
           value: "True"
+
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: chipy.chipydb.credentials.postgresql.acid.zalan.do
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: chipy.chipydb.credentials.postgresql.acid.zalan.do
+              key: password
+        - name: POSTGRES_HOST
+          value: chipydb
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DB
+          value: "chipy"
+        - name: DATABASE_URL
+          value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
+
         - name: CONNECT_METHOD
           valueFrom:
             configMapKeyRef:
@@ -61,11 +81,6 @@ spec:
             secretKeyRef:
               name: chipy-webserver-secret
               key: SECRET_KEY
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: chipy-webserver-secret
-              key: DATABASE_URL
         - name: GOOGLE_OAUTH2_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -116,6 +131,7 @@ spec:
             secretKeyRef:
               name: chipy-webserver-secret
               key: NORECAPTCHA_SECRET_KEY
+
       volumes: 
       - name: chipy-static
         persistentVolumeClaim:

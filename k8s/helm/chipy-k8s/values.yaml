@@ -6,9 +6,48 @@ replicaCount: 1
 
 image:
   repository: chipy
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v1"
+
+
+app:
+  database: 
+    host: "chipydb"
+    port: "5432"
+    name: "chipy"
+    db_secret_name: "chipy.chipydb.credentials.postgresql.acid.zalan.do"
+    db_secret_username_key: "username"
+    db_secret_password_key: "password"
+  env: 
+    DEBUG: "True"
+    CONNECT_METHOD: 'http'
+    ALLOWED_HOSTS: "chipy-k8s.org,chipy.org,www.chipy.org,localhost"
+    EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
+    SECURE_SSL_REDIRECT: 'False'
+    ENVELOPE_EMAIL_RECIPIENTS: "admin@example.com"
+  secret_key: "override-this-key-here"
+  storage:
+    use_s3: "False"
+    aws_access_key_id: ""
+    aws_secret_access_key: ""
+    aws_storage_bucket_name: ""
+  auth:
+    google_oauth2_client_id: ""
+    google_oauth2_client_secret: ""
+    github_app_id: ""
+    github_api_secret: ""
+  captcha:
+    norecaptcha_site_key: ""
+    norecaptcha_secret_key: ""
+  superuser:
+    username: admin
+    password: override-me
+    email: chipy@example.com
+
+volumes:
+  storage_class_name: "standard"
+  size: "2Gi"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -41,8 +80,8 @@ service:
   port: 8000
 
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: "nginx"
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"

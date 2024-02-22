@@ -9,12 +9,10 @@
 kind create cluster -n chipy --config cluster.yaml
 ```
 
-
 ### (2) Install the nginx ingress
 
-
 ```bash
-helm install --namespace ingress-nginx ingress-nginx-release ingress-nginx \
+helm install ingress-nginx-release ingress-nginx \
     --version 4.9.1 \
     --namespace ingress-nginx \
     --create-namespace \
@@ -31,9 +29,9 @@ OR
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 ```
 
-## (3) Postgres
+### (3) Postgres
 
-### Install Postgres Operator
+#### Add the Postgres Helm repos
 
 Add repo for postgres-operator and postgres-operator-ui
 ```bash
@@ -48,11 +46,15 @@ helm repo add postgres-operator-ui-charts \
 ```bash
 # install the postgres-operator
 helm install postgres-operator \
+    --namespace postgres \
+    --create-namespace \
     postgres-operator-charts/postgres-operator \
     --version 1.10.1
 
 # (optional) install the postgres-operator-ui 
 helm install postgres-operator-ui \
+    --namespace postgres \
+    --create-namespace \
     postgres-operator-ui-charts/postgres-operator-ui \
     --version 1.10.1
 ```
@@ -63,7 +65,7 @@ This will help you generate a Custom Resource Definition (CRD) yaml for a postgr
 database. (We already have one for this example... see next step.)
 
 ```bash
-kubectl  port-forward postgres-operator-ui 8080:80
+kubectl port-forward svc/postgres-operator-ui 8080:80
 
 Browse to http://localhost:8080
 ```
@@ -100,17 +102,20 @@ docker build -f ../docker/Dockerfile -t chipy:v1 ../
 kind load -n chipy docker-image chipy:v1
 ```
 
-## Two ways to install
+## [C] Two ways to install
 
-### Install raw yaml version
+### [1] Install raw yaml version
 
 ```bash
 kubectl apply -f ./yaml 
 ```
 
-### Install with Helm
+### [2] Install with Helm
 
-TBD
+```bash
+helm upgrade --install chipy-deploy  helm/chipy-k8s/ 
+
+```
 
 ### Find the connection info for the ingress
 
@@ -179,15 +184,23 @@ kubectl get service \
 30443
 ```
 
-Make a request in a browser
+#### Make a request in a browser
+
+Edit /etc/hosts to map the domain name
 
 ```bash
-curl  -k -v http://172.18.0.4:30080
+172.18.0.3 chipy-k8s.org
 ```
 
-Edit /etc/hosts
+Browse to 
+```
+http://chipy-k8s.org:30080 
+```
+
+OR
+
 ```bash
-172.18.0.4 chipy-k8s.org
+curl  -k -v http://chipy-k8s.org:30080
 ```
 
 

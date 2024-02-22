@@ -1,0 +1,105 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "chipy-k8s.job-collectstatic" . }}
+  labels:
+    {{- include "chipy-k8s.labels" . | nindent 4 }}
+spec:
+  parallelism: 1
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
+      containers:
+      - name: collectstatic
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["./manage.py",  "collectstatic", "--noinput"]
+      restartPolicy: Never
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "chipy-k8s.job-migrate" . }}
+  labels:
+    {{- include "chipy-k8s.labels" . | nindent 4 }}
+spec:
+  parallelism: 1
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
+      containers:
+      - name: migrate
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["./manage.py",  "migrate", "--noinput"]
+        env:
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.app.database.db_secret_name }}"
+                key: "{{ .Values.app.database.db_secret_username_key }}"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.app.database.db_secret_name }}"
+                key: "{{ .Values.app.database.db_secret_password_key }}"
+          - name: POSTGRES_HOST
+            value: "{{ .Values.app.database.host }}"
+          - name: POSTGRES_PORT
+            value: "{{ .Values.app.database.port }}"
+          - name: POSTGRES_DB
+            value: "{{ .Values.app.database.name }}"
+          - name: DATABASE_URL
+            value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
+
+      restartPolicy: Never
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "chipy-k8s.job-superuser" . }}
+  labels:
+    {{- include "chipy-k8s.labels" . | nindent 4 }}
+spec:
+  parallelism: 1
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
+      containers:
+      - name: superuser
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["./manage.py",  "createsuperuser", "--noinput"]
+        env:
+          - name: DJANGO_SUPERUSER_USERNAME
+            value: "{{ .Values.app.superuser.username }}"
+          - name: DJANGO_SUPERUSER_PASSWORD
+            value: "{{ .Values.app.superuser.password }}"
+          - name: DJANGO_SUPERUSER_EMAIL
+            value: "{{ .Values.app.superuser.email }}"
+
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.app.database.db_secret_name }}"
+                key: "{{ .Values.app.database.db_secret_username_key }}"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.app.database.db_secret_name }}"
+                key: "{{ .Values.app.database.db_secret_password_key }}"
+          - name: POSTGRES_HOST
+            value: "{{ .Values.app.database.host }}"
+          - name: POSTGRES_PORT
+            value: "{{ .Values.app.database.port }}"
+          - name: POSTGRES_DB
+            value: "{{ .Values.app.database.name }}"
+          - name: DATABASE_URL
+            value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
+
+      restartPolicy: Never

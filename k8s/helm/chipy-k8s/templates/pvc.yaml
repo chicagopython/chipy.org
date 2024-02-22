@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "chipy-k8s.pvc" . }}
+  labels:
+    {{- include "chipy-k8s.labels" . | nindent 4 }}
+spec:
+  storageClassName: "{{ .Values.volumes.storage_class_name }}"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.volumes.size }}"

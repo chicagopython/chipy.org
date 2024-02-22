@@ -24,6 +24,43 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
+Create name of the secret
+*/}}
+{{- define "chipy-k8s.secret" -}}
+{{- (include "chipy-k8s.fullname" .) }}
+{{- end }}
+
+
+{{/*
+Create name of the PVC
+*/}}
+{{- define "chipy-k8s.pvc" -}}
+{{- (include "chipy-k8s.fullname" .) }}
+{{- end }}
+
+{{/*
+Create name of the job-collectstatic
+*/}}
+{{- define "chipy-k8s.job-collectstatic" -}}
+{{- (include "chipy-k8s.fullname" .) }}-collectstatic
+{{- end }}
+
+{{/*
+Create name of the job-migrate
+*/}}
+{{- define "chipy-k8s.job-migrate" -}}
+{{- (include "chipy-k8s.fullname" .) }}-migrate
+{{- end }}
+
+{{/*
+Create name of the job-superuser
+*/}}
+{{- define "chipy-k8s.job-superuser" -}}
+{{- (include "chipy-k8s.fullname" .) }}-superuser
+{{- end }}
+
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "chipy-k8s.chart" -}}

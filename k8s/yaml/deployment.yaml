@@ -29,8 +29,6 @@ spec:
         - name: chipy-static
           mountPath: /site/proj/staticfiles
         env:
-        - name: DEBUG
-          value: "True"
 
         - name: POSTGRES_USERNAME
           valueFrom:
@@ -76,6 +74,7 @@ spec:
             configMapKeyRef:
               name: chipy-webserver-config
               key: ENVELOPE_EMAIL_RECIPIENTS
+              
         - name: SECRET_KEY
           valueFrom:
             secretKeyRef:

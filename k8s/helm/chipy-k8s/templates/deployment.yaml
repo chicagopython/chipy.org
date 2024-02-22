@@ -27,6 +27,10 @@ spec:
       serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes: 
+      - name: chipy-static
+        persistentVolumeClaim:
+          claimName: {{ include "chipy-k8s.pvc" . }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -37,13 +41,95 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          volumeMounts:
+          - name: chipy-static
+            mountPath: /site/proj/staticfiles
+          env:
+
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.app.database.db_secret_name }}"
+                key: "{{ .Values.app.database.db_secret_username_key }}"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.app.database.db_secret_name }}"
+                key: "{{ .Values.app.database.db_secret_password_key }}"
+          - name: POSTGRES_HOST
+            value: "{{ .Values.app.database.host }}"
+          - name: POSTGRES_PORT
+            value: "{{ .Values.app.database.port }}"
+          - name: POSTGRES_DB
+            value: "{{ .Values.app.database.name }}"
+          - name: DATABASE_URL
+            value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
+          
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: SECRET_KEY
+          - name: GOOGLE_OAUTH2_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: GOOGLE_OAUTH2_CLIENT_ID
+          - name: GOOGLE_OAUTH2_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: GOOGLE_OAUTH2_CLIENT_SECRET
+          - name: GITHUB_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: GITHUB_APP_ID
+          - name: GITHUB_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: GITHUB_API_SECRET
+          - name: USE_S3
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: USE_S3
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_STORAGE_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: AWS_STORAGE_BUCKET_NAME
+          - name: NORECAPTCHA_SITE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: NORECAPTCHA_SITE_KEY
+          - name: NORECAPTCHA_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "chipy-k8s.secret" . }}
+                key: NORECAPTCHA_SECRET_KEY
+
+          {{-  range $name, $item := .Values.app.env }}
+          - name: {{ $name }}
+            value: {{ quote $item }}
+          {{- end }}
           livenessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: http
           readinessProbe:
-            httpGet:
-              path: /
+           tcpSocket:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

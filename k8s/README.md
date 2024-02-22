@@ -37,26 +37,35 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 
 Add repo for postgres-operator and postgres-operator-ui
 ```bash
-helm repo add postgres-operator-charts https://opensource.zalando.com/postgres-operator/charts/postgres-operator
-helm repo add postgres-operator-ui-charts https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
+helm repo add postgres-operator-charts \
+    https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+helm repo add postgres-operator-ui-charts \
+    https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
 ```
 
 #### Run the actual Install of the Postgres Operator
+
 ```bash
 # install the postgres-operator
-helm install postgres-operator postgres-operator-charts/postgres-operator --version 1.10.1
+helm install postgres-operator \
+    postgres-operator-charts/postgres-operator \
+    --version 1.10.1
 
-# install the postgres-operator-ui (optional)
-helm install postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui --version 1.10.1
+# (optional) install the postgres-operator-ui 
+helm install postgres-operator-ui \
+    postgres-operator-ui-charts/postgres-operator-ui \
+    --version 1.10.1
 ```
 
-#### Port forward to UI (optional)
+#### (optional) Port forward to UI 
 
-This will help you generate a Custom Resource Definition (CRD) for a postgres
+This will help you generate a Custom Resource Definition (CRD) yaml for a postgres
 database. (We already have one for this example... see next step.)
 
 ```bash
 kubectl  port-forward postgres-operator-ui 8080:80
+
+Browse to http://localhost:8080
 ```
 
 #### Apply the CRD cluster yaml 
@@ -105,9 +114,23 @@ TBD
 
 ### Find the connection info for the ingress
 
+
+#### Find the IP that you need to connect to
+
+```bash
+kubectl  get node -l node-role.kubernetes.io/control-plane \
+    -o "jsonpath={.items[0].status.addresses[?(@.type=='InternalIP')].address}"
+
+172.18.0.3
+```
+
+OR
+
 ```bash
 docker container inspect chipy-control-plane \
   --format '{{ .NetworkSettings.Networks.kind.IPAddress }}'
+
+172.18.0.3
 ```
 
 OR
@@ -121,22 +144,45 @@ NAME                  STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXT
 chipy-control-plane   Ready    control-plane   22m   v1.25.3   172.18.0.4    <none>        Ubuntu 22.04.1 LTS   5.15.0-94-generic   containerd://1.6.9
 ```
 
-kubectl  get svc -n ingress-nginx ingress-nginx-controller -o yaml
+#### Find the ports that you need to connect to
+
 
 ```yaml
+kubectl  get svc -n ingress-nginx ingress-nginx-controller -o yaml
+```
+
+```yaml
+  ...
+  ...
   ports:
   - appProtocol: http
     name: http
-    nodePort: 32715   # <<<---- this
+    nodePort: 30080   # <<<---- this
     port: 80
     protocol: TCP
     targetPort: http
 ```
 
+OR 
+
+```bash
+kubectl get service \
+    -n ingress-nginx ingress-nginx-release-controller \
+    -o "jsonpath={.spec.ports[0].nodePort}"
+
+30080
+
+kubectl get service \
+    -n ingress-nginx ingress-nginx-release-controller \
+    -o "jsonpath={.spec.ports[1].nodePort}"
+
+30443
+```
+
 Make a request in a browser
 
 ```bash
-curl  -k -v http://172.18.0.4:32715
+curl  -k -v http://172.18.0.4:30080
 ```
 
 Edit /etc/hosts

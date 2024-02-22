@@ -113,6 +113,18 @@ helm upgrade --install metrics-server metrics-server/metrics-server \
     --namespace kube-system
 ```
 
+After a few minutes, the following commands will be available
+
+```bash
+kubectl top nodes
+kubectl top pods -A
+```
+
+Debug:
+```
+kubectl get apiservices | grep metrics
+```
+
 ## [B] Build and load the docker image into Kind
 
 ```bash

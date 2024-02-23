@@ -75,7 +75,7 @@ Browse to http://localhost:8080
 The operator will create a db in the cluster defined in pg-cluster.
 
 ```bash
-kubectl apply -f postgres/pg-cluster.yaml
+kubectl apply -f helm/postgres/templates/pg-cluster.yaml
 ```
 
 This creates k8s secrets for authenticating to the master and standby

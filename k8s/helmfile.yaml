@@ -28,6 +28,7 @@ releases:
     chart: metrics-server/metrics-server
     version: 3.12.0
     namespace: kube-system
+    wait: true
     set: 
       - name: apiService.insecureSkipTLSVerify
         value: "true"
@@ -64,3 +65,10 @@ releases:
     wait: true
     needs:
     - chipy/chipy-postgres
+    - ingress-nginx/ingress-nginx-release
+    set:
+    - name: app.superuser.username
+      value: admin
+    - name: app.superuser.password
+      value: password
+      

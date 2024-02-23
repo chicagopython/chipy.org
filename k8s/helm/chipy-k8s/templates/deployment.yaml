@@ -31,6 +31,17 @@ spec:
       - name: chipy-static
         persistentVolumeClaim:
           claimName: {{ include "chipy-k8s.pvc" . }}
+      initContainers:
+        - name: check-db-ready
+          image: postgres:15.2
+          command: ['sh', '-c', 
+            'until pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} ; 
+            do echo waiting for database; sleep 2; done;']
+          env:
+            - name: POSTGRES_HOST
+              value: "{{ .Values.app.database.host }}"
+            - name: POSTGRES_PORT
+              value: "{{ .Values.app.database.port }}"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

@@ -1,0 +1,66 @@
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx 
+  - name: postgres-operator-charts 
+    url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+  - name: postgres-operator-ui-charts
+    url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+
+releases:
+  - name: ingress-nginx-release
+    chart: ingress-nginx/ingress-nginx
+    namespace: ingress-nginx
+    createNamespace: true
+    version: 4.9.1 
+    set:
+      - name: controller.hostPort.enabled
+        value: "true"
+      - name: controller.service.type
+        value: "NodePort"
+      - name: controller.service.nodePorts.http
+        value: "30080"
+      - name: controller.service.nodePorts.https
+        value: "30443"
+
+  - name: metrics-server
+    chart: metrics-server/metrics-server
+    version: 3.12.0
+    namespace: kube-system
+    set: 
+      - name: apiService.insecureSkipTLSVerify
+        value: "true"
+      - name: args
+        values: 
+          - "--kubelet-insecure-tls=true"
+          - "--requestheader-client-ca-file="
+
+  - name: postgres-operator
+    namespace: postgresql
+    chart: postgres-operator-charts/postgres-operator
+    version: 1.10.1
+    createNamespace: true
+    wait: true
+
+  - name: postgres-operator-ui
+    chart: postgres-operator-ui-charts/postgres-operator-ui 
+    version: 1.10.1
+    namespace: postgresql
+    createNamespace: true
+    needs: 
+    - postgresql/postgres-operator
+
+  - name: chipy-postgres
+    namespace: chipy
+    chart: ./helm/postgres/
+    wait: true
+    needs: 
+    - postgresql/postgres-operator
+
+  - name: chipy-release
+    namespace: chipy
+    chart: ./helm/chipy-k8s/
+    wait: true
+    needs:
+    - chipy/chipy-postgres

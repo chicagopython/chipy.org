@@ -144,7 +144,7 @@ kubectl apply -f ./yaml
 ### [2] Install with Helm
 
 ```bash
-helm upgrade --install chipy-deploy  helm/chipy-k8s/ 
+helm upgrade --install release01  helm/chipy-k8s/ 
 
 ```
 
@@ -243,3 +243,25 @@ kind delete  cluster -n chipy
 
 
 
+## Helmfile Approach
+
+
+### Create the cluster
+
+```bash
+kind create cluster -n chipy --config cluster.yaml
+```
+
+### Build and load the chipy dockerfile
+
+```bash
+docker build -f ../docker/Dockerfile -t chipy:v1 ../
+
+kind load -n chipy docker-image chipy:v1
+```
+
+### Deploy everything
+
+```bash
+./helmfile sync
+```

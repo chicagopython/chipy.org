@@ -311,7 +311,6 @@ class Topic(CommonModel):
             emails = [self.requested_reviewer] + emails
         return emails
 
-
     @property
     def video_embedded_link(self):
         if not self.embed_video:

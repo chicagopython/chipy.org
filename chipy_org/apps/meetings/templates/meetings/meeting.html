@@ -28,7 +28,7 @@
             <a id="where-link" href="#"> {{ meeting.where|default:'N/A'}}</a>
           </p>
 
-          {% if meeting.where %}
+          {% if meeting.where and meeting.is_future %}
 
               {% if meeting.where.directions %}
               <p><strong>Directions:</strong></p>

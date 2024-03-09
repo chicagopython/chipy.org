@@ -7,10 +7,9 @@
     <form action="." method="post">
         
         {% csrf_token %}
-        <input type="submit" value="Yes, Delete" class="btn btn-danger"></input>
+        <input type="submit" name="delete" value="Yes, Delete" class="btn btn-danger"></input>
+        <input type="submit" name="cancel" value="Cancel" class="btn btn-primary"></input>
     
     </form>
-
-        <a href="{% url 'after-submit-job-post' %}" class="btn btn-primary">Cancel</a>
 
 {% endblock body %}

@@ -8,15 +8,6 @@
 
 {% block body_class %}home{% endblock %}
 
-{% block extra_head %}
-    <meta name="description" content="{{ meeting.description|bleach|safe }}">
-
-    <meta property="og:site_name" content="Chicago Python User Group (Chipy)" >
-    <meta property="og:title" content="{{ meeting.title|bleach|safe }}" >
-    <meta property="og:description" content="{{ meeting.description|bleach|safe }}" >
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/1745975?s=800" >
-{% endblock %}
-
 {% block body %}
 <div itemscope itemtype="http://schema.org/Event">
 

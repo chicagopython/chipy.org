@@ -3,19 +3,20 @@
 
 
 <div>
-    <strong>RSVPs</strong>
     {% if curr_meeting.can_register %}
+      <strong>RSVPs</strong>
         {% if curr_meeting.reg_close_date  %}
             <p style="color: red">Registration for this event will close on
                 {{ curr_meeting.reg_close_date|date:"l F j" }} at
                 {{ curr_meeting.reg_close_date|date:"g:i a" }}
             </p>
         {% endif %}
-    {% else %}
+    {% elif curr_meeting.is_future %}
+      <strong>RSVPs</strong>
         <p style="color: red">This event is no longer accepting registrations.</p>
     {% endif %}
     <p>
-        <strong>Current Attendance:</strong><br />
+        <strong>{% if curr_meeting_is_future %}Current {% endif%}Attendance:</strong><br />
         {% if next_meeting.is_in_person %}
         In Person Pythonistas: {{ next_meeting.number_in_person_rsvps}}<br />
         {% endif %}
@@ -25,7 +26,7 @@
     </p>
 
     <div>
-        {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated and curr_meeting.is_future %}
             {% if rsvp %}
                 You have RSVP'd <strong>{{ rsvp.get_response_display | upper }}</strong>
                 {% if curr_meeting.can_register %}

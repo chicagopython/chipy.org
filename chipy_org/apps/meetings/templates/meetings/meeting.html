@@ -28,7 +28,7 @@
             <a id="where-link" href="#"> {{ meeting.where|default:'N/A'}}</a>
           </p>
 
-          {% if meeting.where %}
+          {% if meeting.where and meeting.is_future %}
 
               {% if meeting.where.directions %}
               <p><strong>Directions:</strong></p>
@@ -37,9 +37,6 @@
 
               <p>
                 {{ meeting.where.address }}<br>
-                {% if meeting.where.directions %}
-                  {{ meeting.where.directions }}<br>
-                {% endif %}
                 {% if meeting.where.phone %}
                   {{ meeting.where.phone }}<br>
                 {% endif %}
@@ -54,6 +51,7 @@
       </div>
 
   </div>
+  {% if meeting.topics.active %}
   <div class="row-fluid">
 
       <div class="module span12">
@@ -79,6 +77,7 @@
        </div>
 
     </div><!-- #row-fluid -->
+    {% endif %}
 
 </div>
 

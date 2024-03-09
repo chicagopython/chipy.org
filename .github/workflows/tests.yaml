@@ -1,0 +1,31 @@
+name: Run test suite
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build and run the Docker containers
+      run: |
+        cp docker/docker.env.sample docker/docker.env
+        docker-compose up --build -d
+
+    - name: Run pytest in Docker container
+      run: |
+        docker-compose exec -t web pytest -v chipy_org/

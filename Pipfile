@@ -34,7 +34,7 @@ whitenoise = "==5.0.1"
 bleach = "==4.1.0"
 
 [dev-packages]
-black = "==21.12b0"
+black = "*"
 flake8 = "==4.0.1"
 isort = "==5.10.1"
 pylint = "==2.12.2"

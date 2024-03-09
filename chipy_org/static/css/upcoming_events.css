@@ -118,11 +118,11 @@
 }
 
 .event-container-inactive a {
-    color: #34abc9;
+    color: #b6d9e3;
 }
 
 .event-container-inactive a:hover {
-    color: #007896;
+    color: #34abc9;
 }
 
 /* Normal text */
@@ -166,8 +166,15 @@ a.meeting-title-text {
 }
 
 /* this rsvp button shows up in desktop/tablet and larger phone size */
-.rsvp-right-button {
+.rsvp-right-button, .rsvp-past-right-button {
     display: block;
+}
+
+.rsvp-past-right-button {
+  background-color: #849aa3;
+}
+.rsvp-past-right-button:hover {
+  background-color: #849aa3;
 }
 
 a, a:hover{

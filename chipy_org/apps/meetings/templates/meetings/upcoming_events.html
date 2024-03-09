@@ -39,6 +39,8 @@
                             <a href="{% url 'meeting' event.meeting.id %}">
                                 <button class="btn btn-primary mx-2 rsvp-right-button">RSVP</button>
                             </a>
+                            {% else %}
+                                <button class="btn btn-primary mx-2 rsvp-past-right-button">PAST</button>
                             {% endif %}
 
                         </div><!--closes d-flex justify content between-->

@@ -1,0 +1,2 @@
+class TestMeeting:
+    pass

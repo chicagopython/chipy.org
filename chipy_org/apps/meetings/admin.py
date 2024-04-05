@@ -40,7 +40,7 @@ class TopicAdmin(admin.ModelAdmin):
 
     list_display = (
         "id",
-        "approved",
+        "status",
         "title",
         "experience_level",
         "get_presenters",
@@ -54,7 +54,7 @@ class TopicAdmin(admin.ModelAdmin):
         "modified",
         "created",
     ]
-    list_filter = ["approved", "experience_level"]
+    list_filter = ["status", "experience_level", "length"]
     search_fields = ["title", "presenters__name"]
     filter_horizontal = ["presenters"]
 

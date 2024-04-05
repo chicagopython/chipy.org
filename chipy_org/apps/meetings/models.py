@@ -247,6 +247,22 @@ class TopicsQuerySet(models.QuerySet):
 
 
 class Topic(CommonModel):
+
+    class StatusChoice:
+        SUBMITTED = "submitted"
+        COORDINATING = "coordinating"
+        CONFIRMED = "confirmed"
+        DECLINED = "declined"
+        # What if we tried but a topic never happened
+        FAILED = "failed"
+        ALL = (
+            (SUBMITTED, SUBMITTED),
+            (COORDINATING, COORDINATING),
+            (CONFIRMED, CONFIRMED),
+            (DECLINED, DECLINED),
+            (FAILED, FAILED),
+        )
+
     def __str__(self):
         return self.title
 
@@ -301,6 +317,9 @@ class Topic(CommonModel):
     slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
     approved = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=50, choices=StatusChoice.ALL, null=True, blank=True, default="submitted"
+    )
 
     objects = TopicsQuerySet.as_manager()
 

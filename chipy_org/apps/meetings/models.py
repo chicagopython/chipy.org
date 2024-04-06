@@ -249,14 +249,15 @@ class TopicsQuerySet(models.QuerySet):
 class Topic(CommonModel):
 
     class StatusChoice:
-        SUBMITTED = "submitted"
-        COORDINATING = "coordinating"
-        CONFIRMED = "confirmed"
-        DECLINED = "declined"
-        # What if we tried but a topic never happened
-        FAILED = "failed"
+        SUBMITTED = "submitted"  # initial
+        BACKLOG = "backlog"  # we are keeping it if we run out
+        COORDINATING = "coordinating"  # starting planning
+        CONFIRMED = "confirmed"  # on the calendar (final state unless failed)
+        DECLINED = "declined"  # we did not pursue
+        FAILED = "failed"  # What if we tried but never happened
         ALL = (
             (SUBMITTED, SUBMITTED),
+            (BACKLOG, BACKLOG),
             (COORDINATING, COORDINATING),
             (CONFIRMED, CONFIRMED),
             (DECLINED, DECLINED),

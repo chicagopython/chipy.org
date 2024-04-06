@@ -15,9 +15,11 @@
 {% for meeting in meeting_list %}
 <div>
   <h4>
-    {{ meeting.when | date:"Y-m-d" }} 
-    <a href="{% url 'meeting' meeting.id %}">view</a> / 
-    <a href="{% url 'admin:meetings_meeting_change' object_id=meeting.id %}">edit</a>
+    {{ meeting.when | date:"Y-m-d" }}
+    <a href="{% url 'meeting' meeting.id %}">view</a>
+    {% if perms.meetings.change_meeting %}
+    / <a href="{% url 'admin:meetings_meeting_change' object_id=meeting.id %}">edit</a>
+    {% endif %}
   </h4>
 
   <div class="container">

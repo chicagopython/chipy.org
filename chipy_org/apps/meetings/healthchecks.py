@@ -90,7 +90,7 @@ def _length_check(meeting):
     )
     length = total + (5 * count if count < 4 else 2.5 * count)
     message = f"{length} minutes of programming"
-    if count >= 80:
+    if length >= 80:
         level = "success"
     elif length <= 30 and meeting.when < datetime.datetime.now() + datetime.timedelta(days=120):
         level = "warning"

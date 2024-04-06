@@ -1,17 +1,8 @@
 {% extends "shiny/slim.html" %}
 {% load static thumbnail %}
-{% block page_header %}UPCOMING MEETINGS{% endblock %}
+{% block page_header %}__MAIN__ Meeting Dashboard{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div>
-        <strong>See Also: </strong>
-        <a class="btn btn-danger mx-2" href="{% url 'past_meetings' %}">Past Meetings</a>
-        <a class="btn btn-primary mx-2"  href="{% url 'past_topics' %}">All Recent Topics</a>
-    </div>
-</div>
-
-<hr>
 {% for meeting in meeting_list %}
 <div>
   <h4>

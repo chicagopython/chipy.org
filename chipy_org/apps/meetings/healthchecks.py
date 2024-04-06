@@ -94,7 +94,7 @@ def _length_check(meeting):
         level = "success"
     elif length <= 30 and meeting.when < datetime.datetime.now() + datetime.timedelta(days=120):
         level = "warning"
-    if length <= 40 and meeting.when < datetime.datetime.now() + datetime.timedelta(days=90):
+    elif length <= 40 and meeting.when < datetime.datetime.now() + datetime.timedelta(days=90):
         level = "danger"
     else:
         level = "secondary"

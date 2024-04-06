@@ -276,6 +276,9 @@ class Topic(CommonModel):
         help_text="This will be the public title for your talk.", max_length=MAX_LENGTH
     )
     presenters = models.ManyToManyField(Presenter, blank=True)
+    status = models.CharField(
+        max_length=50, choices=StatusChoice.ALL, null=True, blank=True, default="submitted"
+    )
     meeting = models.ForeignKey(
         Meeting,
         blank=True,
@@ -322,9 +325,6 @@ class Topic(CommonModel):
     )
     slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
-    status = models.CharField(
-        max_length=50, choices=StatusChoice.ALL, null=True, blank=True, default="submitted"
-    )
 
     objects = TopicsQuerySet.as_manager()
 

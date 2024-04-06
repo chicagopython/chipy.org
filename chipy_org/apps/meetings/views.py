@@ -6,6 +6,7 @@ import logging
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -82,6 +83,18 @@ class FutureMeetings(ListView):
         when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("when")
     paginate_by = 5
+
+
+class MeetingStatus(PermissionRequiredMixin, ListView):
+    permission_required = "meetings.view_meeting"
+
+    def handle_no_permission(self):
+        return redirect(reverse_lazy("home"))
+
+    template_name = "meetings/meetings_status.html"
+    queryset = Meeting.objects.filter(
+        meeting_type=None, when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
+    ).order_by("when")
 
 
 class PastMeetings(ListView):

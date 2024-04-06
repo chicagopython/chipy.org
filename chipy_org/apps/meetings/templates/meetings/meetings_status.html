@@ -1,0 +1,37 @@
+{% extends "shiny/slim.html" %}
+{% load static thumbnail %}
+{% block page_header %}UPCOMING MEETINGS{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div>
+        <strong>See Also: </strong>
+        <a class="btn btn-danger mx-2" href="{% url 'past_meetings' %}">Past Meetings</a>
+        <a class="btn btn-primary mx-2"  href="{% url 'past_topics' %}">All Recent Topics</a>
+    </div>
+</div>
+
+<hr>
+{% for meeting in meeting_list %}
+<div>
+  <h4>
+    {{ meeting.when | date:"Y-m-d" }} 
+    <a href="{% url 'meeting' meeting.id %}">view</a> / 
+    <a href="{% url 'admin:meetings_meeting_change' object_id=meeting.id %}">edit</a>
+  </h4>
+
+  <div class="container">
+      <div class="row">
+  {% for check_status in meeting.health_checks %}
+          <div class="col alert alert-{{check_status.level}} border" role="alert">
+            <h4 class="alert-heading">{{check_status.category}}</h4>
+            <p>{{ check_status.detail }}</p>
+          </div>
+  {% endfor %}
+      </div>
+    </div>
+</div>
+<hr>
+{% endfor %}
+
+{% endblock body %}

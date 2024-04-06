@@ -5,6 +5,7 @@ import itertools
 import random
 import re
 import string
+from dataclasses import dataclass
 
 from ckeditor.fields import RichTextField
 from django.conf import settings
@@ -211,6 +212,12 @@ class Meeting(CommonModel):
         if self.meeting_type and self.meeting_type.default_title:
             return self.meeting_type.default_title
         return "ChiPy __Main__ Meeting"  # quasi default title for the main meeting
+
+    @property
+    def health_checks(self):
+        from .healthchecks import perform_health_check
+
+        return perform_health_check(self)
 
 
 class Presenter(CommonModel):

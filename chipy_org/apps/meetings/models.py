@@ -322,7 +322,6 @@ class Topic(CommonModel):
     )
     slides_link = models.URLField(blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
-    approved = models.BooleanField(default=False)
     status = models.CharField(
         max_length=50, choices=StatusChoice.ALL, null=True, blank=True, default="submitted"
     )

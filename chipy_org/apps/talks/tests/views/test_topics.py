@@ -37,7 +37,7 @@ class TestPastTopics:
     def test_cannot_see_past_topics_only_approved(client):
         topic = Topic.objects.create(
             title="Some python talk",
-            approved=True,
+            status=Topic.StatusChoice.CONFIRMED,
         )
         response = client.get(reverse("past_topics"))
         assert response.status_code == 200
@@ -55,7 +55,9 @@ class TestPastTopics:
 
     @staticmethod
     def test_can_see_past_topics_approved_and_assigned_to_a_meeting(client, meeting):
-        topic = Topic.objects.create(title="Some python talk", approved=True, meeting=meeting)
+        topic = Topic.objects.create(
+            title="Some python talk", status=Topic.StatusChoice.CONFIRMED, meeting=meeting
+        )
         response = client.get(reverse("past_topics"))
         assert response.status_code == 200
         assert topic.title.encode("utf-8").lower() in response.content.lower()
@@ -83,7 +85,7 @@ class TestPendingTopics:
     def test_can_see_past_topics_only_approved(staff_client):
         topic = Topic.objects.create(
             title="Some python talk",
-            approved=True,
+            status=Topic.StatusChoice.CONFIRMED,
         )
         response = staff_client.get(reverse("pending_topics"))
         assert response.status_code == 200
@@ -101,7 +103,9 @@ class TestPendingTopics:
 
     @staticmethod
     def test_cannot_see_past_topics_approved_and_assigned_to_a_meeting(staff_client, meeting):
-        topic = Topic.objects.create(title="Some python talk", approved=True, meeting=meeting)
+        topic = Topic.objects.create(
+            title="Some python talk", status=Topic.StatusChoice.CONFIRMED, meeting=meeting
+        )
         response = staff_client.get(reverse("pending_topics"))
         assert response.status_code == 200
         assert not topic.title.encode("utf-8").lower() in response.content.lower()

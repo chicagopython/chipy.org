@@ -23,7 +23,7 @@ class TopicSerializer(serializers.ModelSerializer):
             "embed_video",
             "slides_link",
             "start_time",
-            "approved",
+            "status",
             "license",
             "reviewers",
         )

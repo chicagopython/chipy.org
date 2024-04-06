@@ -31,7 +31,7 @@ class PastTopics(ListView):
     context_object_name = "topics"
     template_name = "talks/past_topics.html"
     queryset = Topic.objects.filter(
-        meeting__when__lt=datetime.date.today(), approved=True
+        meeting__when__lt=datetime.date.today(), status=Topic.StatusChoice.CONFIRMED
     ).order_by("-meeting__when")
     paginate_by = 10
 
@@ -40,7 +40,9 @@ class PastVideoTopics(ListView):
     context_object_name = "topics"
     template_name = "talks/past_topics.html"
     queryset = Topic.objects.filter(
-        meeting__when__lt=datetime.date.today(), approved=True, embed_video__startswith="https"
+        meeting__when__lt=datetime.date.today(),
+        status=Topic.StatusChoice.CONFIRMED,
+        embed_video__startswith="https",
     ).order_by("-meeting__when")
     extra_context = {"is_video_only": True}
     paginate_by = 10
@@ -56,9 +58,9 @@ class PastTopic(DetailView):
 class PendingTopics(ListView):
     context_object_name = "topics"
     template_name = "talks/past_topics.html"
-    queryset = Topic.objects.filter(Q(meeting__isnull=True) | Q(approved=False)).order_by(
-        "-meeting__when"
-    )
+    queryset = Topic.objects.filter(
+        Q(meeting__isnull=True) | ~Q(status=Topic.StatusChoice.CONFIRMED)
+    ).order_by("-meeting__when")
     extra_context = {"show_talk_length": True}
 
 

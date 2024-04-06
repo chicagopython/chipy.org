@@ -103,7 +103,7 @@ class Command(BaseCommand):
                 length=10,
                 title=f"Saponification - Part {count}",
                 description=f"Saponification - Part {count}",
-                approved=True,
+                status=meetings.models.Topic.StatusChoice.CONFIRMED,
             )
             topic.presenters.set((presenter,))
 

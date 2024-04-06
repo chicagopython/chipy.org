@@ -16,7 +16,7 @@
 <div>
 <h3><a href="{% url 'meeting' meeting.id %}">{{ meeting }}</a></h3>
 {% for topic in meeting.topics.all %}
-  {% if topic.approved %}
+  {% if topic.is_approved %}
     <div class="topic">
       <strong>{{ topic.title }}</strong><br />
       {% if topic.length %}

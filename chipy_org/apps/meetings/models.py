@@ -188,7 +188,12 @@ class Meeting(CommonModel):
         e.g. ["John Doe <john@example.com>", "Jane Doe <jane@example.com>]
         """
         presenters = list(
-            itertools.chain(*[list(t.presenters.all()) for t in self.topics.filter(approved=True)])
+            itertools.chain(
+                *[
+                    list(t.presenters.all())
+                    for t in self.topics.filter(status=Topic.StatusChoice.APPROVED)
+                ]
+            )
         )
 
         return list(set(p.mailbox for p in presenters))
@@ -243,7 +248,7 @@ EXPERIENCE_LEVELS = (
 
 class TopicsQuerySet(models.QuerySet):
     def active(self):
-        return self.filter(approved=True).order_by("start_time")
+        return self.filter(status=Topic.StatusChoice.CONFIRMED).order_by("start_time")
 
 
 class Topic(CommonModel):
@@ -323,6 +328,10 @@ class Topic(CommonModel):
     )
 
     objects = TopicsQuerySet.as_manager()
+
+    @property
+    def is_approved(self):
+        return self.status == self.StatusChoice.CONFIRMED
 
     @property
     def reviewers(self):

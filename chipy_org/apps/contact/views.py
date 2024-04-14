@@ -10,10 +10,12 @@ class ContactView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        try:
-            form.send_email()
-            messages.success(self.request, "Your message has been sent to Chipy's organizers")
-        except Exception:
-            messages.error(self.request, "Your message was NOT sent to Chipy's organizers")
-
+        if self.request.user.is_authenticated:
+            try:
+                form.send_email()
+                messages.success(self.request, "Your message has been sent to Chipy's organizers")
+            except Exception:
+                messages.error(self.request, "Your message was NOT sent to Chipy's organizers")
+        else:
+            messages.error(self.request, "Must authenticate to send emails")
         return super().form_valid(form)

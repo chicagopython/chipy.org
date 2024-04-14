@@ -9,7 +9,11 @@
     <div class="row-fluid">
       <div class="module span6">
         <div id="contact">
-          {% crispy form %}
+          {% if user.is_authenticated %}
+            {% crispy form %}
+          {% else %}
+            <p>To contact the ChiPy Organizers, please log in first! Use the Blue Button above to login with either a Google or Github account. It's super quick and then you can send a message. </p>
+          {% endif %}
         </div>
       </div>
     </div><!-- #row-fluid -->

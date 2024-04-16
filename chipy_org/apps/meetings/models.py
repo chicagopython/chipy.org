@@ -204,7 +204,7 @@ class Meeting(CommonModel):
             itertools.chain(
                 *[
                     list(t.presenters.all())
-                    for t in self.topics.filter(status=Topic.StatusChoice.APPROVED)
+                    for t in self.topics.filter(status=Topic.StatusChoice.CONFIRMED)
                 ]
             )
         )

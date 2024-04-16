@@ -22,6 +22,26 @@ def health_check(fn):
 
 
 @health_check
+def _status(meeting):
+    level = None
+    if meeting.status == "published":
+        level = "success"
+        message = "Meeting published"
+    else:
+        message = "Meeting not published"
+
+    if not level:
+        if meeting.when < datetime.datetime.now() + datetime.timedelta(days=60):
+            level = "danger"
+        elif meeting.when < datetime.datetime.now() + datetime.timedelta(days=90):
+            level = "warning"
+        else:
+            level = "secondary"
+
+    return HealthCheckResult(level, "Publish", message)
+
+
+@health_check
 def _location_check(meeting):
     level = "secondary"
 
@@ -34,6 +54,9 @@ def _location_check(meeting):
         level = "danger"
     elif meeting.when < datetime.datetime.now() + datetime.timedelta(days=90):
         level = "warning"
+    else:
+        level = "secondary"
+
     return HealthCheckResult(level, "Location", "No location for meeting")
 
 
@@ -52,6 +75,23 @@ def _meetup_check(meeting):
         level = "secondary"
 
     return HealthCheckResult(level, "Meetup", "No meetup_id")
+
+
+@health_check
+def _attendance_confirmed(meeting):
+    if meeting.capacity_verified:
+        return HealthCheckResult("success", "Capacity", "Verified")
+
+    if meeting.when < datetime.datetime.now() + datetime.timedelta(days=60):
+        level = "danger"
+    elif meeting.when < datetime.datetime.now() + datetime.timedelta(days=90):
+        level = "warning"
+    else:
+        level = "secondary"
+
+    return HealthCheckResult(
+        level, "Capacity", f"Not verified ({meeting.in_person_capacity} in person)"
+    )
 
 
 @health_check

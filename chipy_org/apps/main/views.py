@@ -19,7 +19,9 @@ class Home(TemplateView, InitialRSVPMixin):
 
     def get_meeting(self):
         return (
-            Meeting.objects.filter(when__gt=datetime.datetime.now() - datetime.timedelta(hours=6))
+            Meeting.objects.filter(
+                status="published", when__gt=datetime.datetime.now() - datetime.timedelta(hours=6)
+            )
             .order_by("when")
             .first()
         )

@@ -80,7 +80,7 @@ class InitialRSVPMixin(metaclass=abc.ABCMeta):
 class FutureMeetings(ListView):
     template_name = "meetings/future_meetings.html"
     queryset = Meeting.objects.filter(
-        when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
+        status="published", when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("when")
     paginate_by = 5
 
@@ -100,7 +100,7 @@ class MeetingStatus(PermissionRequiredMixin, ListView):
 class PastMeetings(ListView):
     template_name = "meetings/past_meetings.html"
     queryset = Meeting.objects.filter(
-        when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+        status="published", when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
     ).order_by("-when")
     paginate_by = 5
 
@@ -340,11 +340,11 @@ class UpcomingEvents(TemplateView):
         data = super().get_context_data(**kwargs)
 
         upcoming_events = Meeting.objects.filter(
-            when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
+            status="published", when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
         ).order_by("when")[:5]
 
         all_past_events = Meeting.objects.filter(
-            when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
+            status="published", when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
         ).order_by("-when")
 
         if upcoming_events.count() > 1:

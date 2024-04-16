@@ -91,12 +91,23 @@ class MeetingType(CommonModel):
 
 
 class Meeting(CommonModel):
+    class Status:
+        DRAFT = "draft"
+        PUBLISHED = "published"
+        ARCHIVED = "archived"
+        ALL = (
+            (DRAFT, DRAFT),
+            (PUBLISHED, PUBLISHED),
+            (ARCHIVED, ARCHIVED),
+        )
+
     def __str__(self):
         if self.where:
             return f"{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
 
         return f"{self.when} location TBD"
 
+    status = models.CharField(max_length=50, choices=Status.ALL, default="submitted")
     when = models.DateTimeField()
     reg_close_date = models.DateTimeField("Registration Close Date", blank=True, null=True)
     where = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
@@ -135,6 +146,7 @@ class Meeting(CommonModel):
     virtual_capacity = models.PositiveSmallIntegerField(
         blank=True, null=True, help_text="Leave blank for no maximum"
     )
+    capacity_verified = models.BooleanField(default=False)
 
     def can_register(self):
         can_reg = True

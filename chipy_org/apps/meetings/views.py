@@ -269,11 +269,13 @@ class RSVPlistCSVBase(RSVPlist):
                 "Last Name",
                 "First Name",
                 "Email",
+                "Added",
             ]
         else:
             yield [
                 "Last Name",
                 "First Name",
+                "Added",
             ]
 
         for item in rsvp:
@@ -284,11 +286,13 @@ class RSVPlistCSVBase(RSVPlist):
                     item.last_name,
                     item.first_name,
                     item.email,
+                    item.created,
                 ]
             else:
                 row = [
                     item.last_name,
                     item.first_name,
+                    item.created,
                 ]
 
             yield row

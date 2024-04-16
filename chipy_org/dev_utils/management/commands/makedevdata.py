@@ -111,8 +111,7 @@ class Command(BaseCommand):
 
         # Add a bunch of past meetings too for pagination testing
         for _ in range(10):
-            meeting_id = "".join(
-                random.choices(string.ascii_lowercase + string.digits, k=40))
+            meeting_id = "".join(random.choices(string.ascii_lowercase + string.digits, k=40))
             random_days_ago = random.randint(10, 30)
             meeting_date = now - timedelta(days=random_days_ago)
             meeting_description = f"Dev meeting{random.randint(1000, 2000)}"

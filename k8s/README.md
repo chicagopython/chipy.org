@@ -20,7 +20,16 @@ This portion of the codebase was created in support of the following talk:
 The companion Slide Deck for this is here:
 https://docs.google.com/presentation/d/1bRXCyvZkoG3J5aahS6osK3tAJ3FHp3NGxHqvpITjoFQ/edit#slide=id.g2d0d1017bd1_0_237
 
-## Requirements
+## COMPONENTS THAT WILL BE INSTALLED INTO THE CLUSTER
+
+- The Nginx Ingress Controller to manage and route traffic into the cluster
+- The Metrics Server to monitor CPU/RAM and other metrics in the cluster
+- The PostgreSQL Operator to spawn PostgreSQL databases in the cluster
+- (optional) The PostgreSQL Operator UI to configure the PostgreSQL Operator
+- A running instance of the PostgreSQL database for use by the ChiPy website.
+- The ChiPy Django application
+
+## REQUIREMENTS
 
 You will need:
 
@@ -47,7 +56,7 @@ you can get to the UI using kubernetes port-forwarding [see APPENDIX B]
 
 #### (1) Create the kind cluster with a given config
 
-[Kind](https://kind.sigs.k8s.io/) is a project that lest you run Kubernetes inside of Docker. It will be used for this tutorial, so you will need to install it.
+[Kind](https://kind.sigs.k8s.io/) is a project that lets you run Kubernetes inside of Docker. It will be used for this tutorial, so you will need to install it.
 
 ```bash
 kind create cluster -n chipy --config cluster.yaml
@@ -55,8 +64,8 @@ kind create cluster -n chipy --config cluster.yaml
 
 #### (2) Install the Nginx ingress
 
-You can install the Nginx Ingress server via Helm as below. Here, we customize
-some of the variable inputs using the `--set` flags, so we can tune it for kind.
+You can install the Nginx Ingress Controller via Helm as below. Here, we customize
+some of the variable inputs using the `--set` Helm flags, so we can tune it for kind.
 
 ```bash
 helm install ingress-nginx-release ingress-nginx \

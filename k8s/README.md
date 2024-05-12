@@ -5,10 +5,20 @@ Kubernetes.
 
 1) Install the ChiPy into the cluster piece-by-piece
 
-    - using raw Kubernetes yaml
-    - using local Helm charts
+    - using raw Kubernetes yaml (see ./yaml/ directory)
+    - using local Helm charts (see ./helm/ directory)
 
 2) Install the everything into the cluster in one shot using Helmfile
+   (see helmfile.yaml)
+
+This portion of the codebase was created in support of the following talk:
+
+    Shipping ChiPy: Running ChiPy.org on a Kubernetes Cluster
+    By: Joe Jasinski 
+    https://www.chipy.org/meetings/248/
+
+The companion Slide Deck for this is here:
+https://docs.google.com/presentation/d/1bRXCyvZkoG3J5aahS6osK3tAJ3FHp3NGxHqvpITjoFQ/edit#slide=id.g2d0d1017bd1_0_237
 
 ## Requirements
 
@@ -279,7 +289,10 @@ kind load -n chipy docker-image chipy:v1
 
 #### Deploy everything
 
-There are a number of ways to install the Helmfile command, which typically comes
+To install all the Helm charts needed for this application, which includes the
+chipy.org and all of its dependencies, run the following.
+
+Note: There are a number of ways to install the Helmfile command, which typically comes
 as a static binary that you can download from the Helmfile github repo. However,
 to make things easier, I have created a "./helmfile" script, which runs Helmfile
 via a Docker container. That way, you do not have to install Helmfile locally.

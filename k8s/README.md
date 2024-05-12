@@ -40,11 +40,12 @@ You will need:
   the Kind Kubernetes distribution.
 - A recent version of "Kind" from [the Kind website](https://kind.sigs.k8s.io/docs/user/quick-start/#installation).
   This is a simple Kubernetes distribution useful for development and testing.
-  I'm using v0.17.0.
+  Kind lets you run a multi-node Kubernetes cluster inside of Docker on a
+  single development machine. I'm using version v0.17.0.
 - A recent copy of Helm from [the Helm website](https://helm.sh/docs/intro/install/).
   Helm is a package manager for Kubernetes applications that helps you group,
   package and install Kubernetes applications.
-  I'm using v3.14.3, though anything greater than v3 should work.
+  I'm using version v3.14.3, though anything greater than v3 should work.
 
 This tutorial works best on Linux, though you can run it on OSX. I need to
 figure out some of the routing for Docker Desktop on OSX to get to the UI, but
@@ -56,7 +57,7 @@ you can get to the UI using kubernetes port-forwarding (see [APPENDIX B](#append
 
 #### (1) Create the kind cluster with a given config
 
-[Kind](https://kind.sigs.k8s.io/) is a project that lets you run Kubernetes inside of Docker. It will be used for this tutorial, so you will need to install it.
+Create a local Kubernetes cluster with [Kind](https://kind.sigs.k8s.io/).
 
 ```bash
 kind create cluster -n chipy --config cluster.yaml

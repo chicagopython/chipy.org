@@ -160,7 +160,7 @@ by the `kubectl top` command, by metrics collector/aggregators like Prometheus,
 and can be used by the pod autoscaler.
 
 Add repo for metrics-server. This does not actually install the metrics server,
-make makes it available for installing via Helm.
+but makes it available for installing via Helm.
 
 ```bash
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/

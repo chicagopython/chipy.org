@@ -1,35 +1,76 @@
+# Define a deployment for the ChiPy Django web application. This
+# deployment will generate pods containing the ChiPy codebase
+# and will always strive to maintain the number of pods defined
+# below in "replicas"
+
+# This is the current resource group and version for a deployment 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # The name of the deployment will be "chipy-web"
   name: chipy-web
+  # Add some labels for the deployment as desired
   labels:
     app: chipy-web
-    componant: web
+    component: web
 spec:
+  # This deployment will maintain 2 replicas of the pod specified below
   replicas: 2
+  # This selector should uniquely select the labels for the pod
+  # that are defined below in the "template" section. Deployment's selectormatchLabels
+  # key always needs to explicitly select the pods that it creates. 
   selector:
     matchLabels:
       app: chipy-webserver
+  # This section defines the pod template; the deployment will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
     metadata:
+      # and NOT the deployment itself. 
+      # This labels section needs to include all of the labels as defined in the
+      # deployment's selector.matchLables defined above, so that the deployment
+      # is linked to the pods that it creates. It CAN include additional labels as well.
+      # https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
       labels:
         app: chipy-webserver
+    # This spec spec section inside of the "template" key defines the specification
+    # for the Pod, and NOT the deployment. 
     spec:
+      # Set a service account "owner" for this pod so we can control this pod's
+      # access to the kubernetes API.
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       serviceAccountName: chipy
+      # This is the list of containers that will run inside of this pod.
       containers:
       - name: web
+        # This defines the docker image that will be used by this container
         image: chipy:v1
+        # This optional section defines the min and max CPU/RAM that this container
+        # is allowed to use. This helps k8s assign the pod to a node with enough 
+        # CPU or RAM available.
+        # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
         resources:
           requests:
             memory: "64Mi"
-            cpu: "250m"
+            cpu: "250m"   # 250 "milli-CPUs"; 1/4 of a CPU core
+          limits:
+            memory: "2Gi"
+            cpu: "1"
         ports:
+        # This defines the ports that this pod will expose to the rest of the
+        # cluster.
         - containerPort: 8000
+        # Given the previously defined "chipy-static" volume from the "volumes"
+        # section of the pod spec, mount that volume into the pod into the
+        # /site/proj/staticfiles/ directory
         volumeMounts:
         - name: chipy-static
           mountPath: /site/proj/staticfiles
         env:
-
+        # Expose environment variables to the pod based on the k8s secret
+        # that contains the postgres creds. 
+        # https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-a-container-environment-variable-with-data-from-a-single-secret
         - name: POSTGRES_USERNAME
           valueFrom:
             secretKeyRef:
@@ -40,15 +81,20 @@ spec:
             secretKeyRef:
               name: chipy.chipydb.credentials.postgresql.acid.zalan.do
               key: password
+        # hard-code environment variables
         - name: POSTGRES_HOST
           value: chipydb
         - name: POSTGRES_PORT
           value: "5432"
         - name: POSTGRES_DB
           value: "chipy"
+        # Build a DATABASE_URL secret based on other environment variables 
+        # defined in this pod. This sets us construct a database url expected
+        # by Django.
         - name: DATABASE_URL
           value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
-
+        # Expose environment variables to the pod based on the k8s configmap
+        # 'chipy-webserver-config' that contains various configurations. 
         - name: CONNECT_METHOD
           valueFrom:
             configMapKeyRef:
@@ -131,7 +177,11 @@ spec:
               name: chipy-webserver-secret
               key: NORECAPTCHA_SECRET_KEY
 
-      volumes: 
+      volumes:
+      # Define a name "chipy-static" that is only used to refer to this volume 
+      # within this pod specification
       - name: chipy-static
         persistentVolumeClaim:
+          # Lookup the Persistant Volume Claim to be used by this pod
+          # https://kubernetes.io/docs/concepts/storage/persistent-volumes/
           claimName: chipy-web-static

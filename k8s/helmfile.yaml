@@ -10,10 +10,15 @@ repositories:
 
 releases:
   - name: ingress-nginx-release
+    # specify the helm repo and Helm Chart name to deploy
     chart: ingress-nginx/ingress-nginx
+    # use this version of the Helm chart
+    version: 4.9.1
+    # set the k8s namespace to deploy this Helm Chart to
     namespace: ingress-nginx
+    # if the 'ingress-nginx' namespace does not exist, create it
     createNamespace: true
-    version: 4.9.1 
+    # pass in Helm values file overrides to this Helm chart
     set:
       - name: controller.hostPort.enabled
         value: "true"
@@ -25,10 +30,15 @@ releases:
         value: "30443"
 
   - name: metrics-server
+    # specify the helm repo and Helm Chart name to deploy
     chart: metrics-server/metrics-server
+    # use this version of the Helm chart
     version: 3.12.0
+    # set the k8s namespace to deploy this Helm Chart to
     namespace: kube-system
+    # wait for this Chart to install before moving on
     wait: true
+    # pass in Helm values file overrides to this Helm chart
     set: 
       - name: apiService.insecureSkipTLSVerify
         value: "true"
@@ -38,34 +48,57 @@ releases:
           - "--requestheader-client-ca-file="
 
   - name: postgres-operator
-    namespace: postgresql
+    # specify the helm repo and Helm Chart name to deploy
     chart: postgres-operator-charts/postgres-operator
+    # use this version of the Helm chart
     version: 1.10.1
+    # set the k8s namespace to deploy this Helm Chart to
+    namespace: postgresql
+    # if the 'postgresql' namespace does not exist, create it
     createNamespace: true
+    # wait for this Chart to install before moving on
     wait: true
 
   - name: postgres-operator-ui
+    # specify the helm repo and Helm Chart name to deploy
     chart: postgres-operator-ui-charts/postgres-operator-ui 
+    # use this version of the Helm chart
     version: 1.10.1
+    # set the k8s namespace to deploy this Helm Chart to
     namespace: postgresql
+    # if the 'postgresql' namespace does not exist, create it
     createNamespace: true
+    # wait for the 'postgres-operator' chart in the 'postgresql' namespace
+    # to be deployed before deploying this.
     needs: 
     - postgresql/postgres-operator
 
   - name: chipy-postgres
-    namespace: chipy
+    # Deploy the postgresql Custom Resource Helm Chart that we defined locally
+    # so that the Postgresql Operator will create a postgresql database
+    # Deploy the chart located in the following directory.
     chart: ./helm/postgres/
+    # Deploy to a namespace named 'chipy'
+    namespace: chipy
     wait: true
+    # wait for the 'postgres-operator' chart in the 'postgresql' namespace
+    # to be deployed before deploying this.
     needs: 
     - postgresql/postgres-operator
 
   - name: chipy-release
+    # Deploy to a namespace named 'chipy'
     namespace: chipy
+    # Deploy our local ChiPy Helm Chart
     chart: ./helm/chipy-k8s/
     wait: true
+    # wait for the 'postgres-operator' chart in the 'postgresql' namespace and
+    # the 'ingress-nginx-release' chart in the 'ingress-nginx' namespace
+    # to be deployed before deploying this.
     needs:
     - chipy/chipy-postgres
     - ingress-nginx/ingress-nginx-release
+    # pass in Helm values file overrides to this Helm chart
     set:
     - name: app.superuser.username
       value: admin

@@ -1,14 +1,26 @@
+# This defines a Persistent Volume Claim (PVC) for the ChiPy website
+# that will be used to store static and uploaded media.
+# A PVC is an applications request (claim) for some storage. 
+# In this case, the Kind distribution has a "provisioner" which
+# will see this PVC and automatically create a Persistent Volume (PV)
+# that will satisfy this claim. The PV represents a block of 
+# actual storage provisioned somewhere.
+# https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  # This will be the name of the PVC
   name: chipy-web-static
   labels:
     # insert any desired labels to identify your claim
     app: test
 spec:
+  # This defines what "type" of storage to use. 
+  # https://kubernetes.io/docs/concepts/storage/storage-classes/
   storageClassName: standard
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
+      # defines how much storage to allocate
       storage: 2Gi

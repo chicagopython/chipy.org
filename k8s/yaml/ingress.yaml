@@ -1,17 +1,29 @@
+# This defines the an Ingress resource for ChiPy, which defines how traffic should
+# be routed from outside of the cluster to the ChiPy k8s service. This Ingress
+# resource is a routing specification that is used by an Ingress Controller, which
+# actually does the routing work.
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  # This will be the name of the configmap
   name: chipy-ingress
   annotations:
+    # The Nginx-ingress controller will look for this annotation and this
+    # is what tells the Ingress Controller to manage this route
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
   - http:
       paths:
       - pathType: Prefix
+        # This is the url path that the ingress will match. Traffic under this path will get 
+        # directed to the service defined below
         path: /
         backend:
           service:
+            # specify the name of the chipy k8s service that this should route to
             name: chipy
+            # specify the port on the service that traffic will be routed to
             port:
               number: 8000

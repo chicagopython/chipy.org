@@ -1,4 +1,9 @@
 {{/*
+This file contains a bunch of Helm Go template "functions" that can be used
+throughout the chart and help make things DRY.
+*/}}
+
+{{/*
 Expand the name of the chart.
 */}}
 {{- define "chipy-k8s.name" -}}
@@ -24,7 +29,8 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Create name of the secret
+Create name of the secret that we can use in secrets.yaml and anywhere that
+the secret is used.
 */}}
 {{- define "chipy-k8s.secret" -}}
 {{- (include "chipy-k8s.fullname" .) }}
@@ -32,7 +38,8 @@ Create name of the secret
 
 
 {{/*
-Create name of the PVC
+Create name of the PVC that we can use in pvc.yaml and anywhere that
+the PVC is used.
 */}}
 {{- define "chipy-k8s.pvc" -}}
 {{- (include "chipy-k8s.fullname" .) }}

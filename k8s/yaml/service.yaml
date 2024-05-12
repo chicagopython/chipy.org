@@ -1,3 +1,7 @@
+# Define a service for the ChiPy app so that traffic sent to it
+# can be sent to any of the pods associated with the ChiPy 
+# django app deployment
+# https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,5 +11,8 @@ spec:
     app: chipy-webserver
   ports:
   - protocol: TCP
+    # This is the port that the service should expose. Traffic
+    # sent to this service and port will get directed to targetPort
     port: 80
+    # The port in the pod that this service will direct traffic to
     targetPort: 8000 

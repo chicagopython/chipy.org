@@ -1,15 +1,38 @@
+# Define a service for the ChiPy app so that traffic sent to it
+# can be sent to any of the pods associated with the ChiPy 
+# django app deployment
+# https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/
 apiVersion: v1
 kind: Service
 metadata:
+  # Get the name of the service from an include from _helpers.tpl,
+  # which will generate the name based on Helm chart name.
+  # This name will be the "DNS" name that other pods can
+  # refer to the ChiPy Django app deployment by.
   name: {{ include "chipy-k8s.fullname" . }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
 spec:
+  # The type of service defines if this service will only be
+  # visible inside the cluster (ClusterIP), or if it will be exposed as
+  # a port on each node (NodePort). Since the ingress will
+  # handle the external connection, this can be internal only ClusterIP.
   type: {{ .Values.service.type }}
+  # This defines the ports that this service should expose and 
+  # route to the pods that this service selects. 
   ports:
-    - port: {{ .Values.service.port }}
+    - name: http
+      # This is the port that the service should expose. Traffic
+      # sent to this service and port will get directed to targetPort
+      port: {{ .Values.service.port }}
+      # The port in the pod that this service will direct traffic to
+      # Note: normally this is a numeric port, but it can also refer to
+      # a "named" port defined here (for DRY purposes.)
       targetPort: http
       protocol: TCP
-      name: http
+      
+  # This defines the pod lables that this service will look for
+  # to associate this service with a group of pods. 
   selector:
     {{- include "chipy-k8s.selectorLabels" . | nindent 4 }}

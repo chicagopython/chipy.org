@@ -1,8 +1,11 @@
+# Set a k8s configmap for various configurations in the ChiPy app
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  # This will be the name of the configmap
   name: chipy-webserver-config
 data:
+  # Set the data for this configmap
   CONNECT_METHOD: 'http'
   SECURE_SSL_REDIRECT: 'False'
   ALLOWED_HOSTS: "chipy-k8s.org,chipy.org,www.chipy.org,localhost"

@@ -1,3 +1,8 @@
+# This defines the an Ingress resource for ChiPy, which defines how traffic should
+# be routed from outside of the cluster to the ChiPy k8s service. This Ingress
+# resource is a routing specification that is used by an Ingress Controller, which
+# actually does the routing work.
+---
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "chipy-k8s.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
@@ -15,7 +20,9 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
+  # Get the name of the ingress from a variable defined above 
   name: {{ $fullName }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -24,9 +31,11 @@ metadata:
   {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  # Define the ingress controller that will manage this ingress resource 
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
   {{- if .Values.ingress.tls }}
+  # optionally terminate TLS here
   tls:
     {{- range .Values.ingress.tls }}
     - hosts:
@@ -38,10 +47,14 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
+    # specify a hostname that must be in the url request (host header) for it to match
+    # this rule
     - host: {{ .host | quote }}
       http:
         paths:
           {{- range .paths }}
+          # This is the url path that the ingress will match. Traffic under this path will get 
+          # directed to the service defined below
           - path: {{ .path }}
             {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
             pathType: {{ .pathType }}
@@ -49,10 +62,13 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
+                # specify the name of the chipy k8s service that this should route to
                 name: {{ $fullName }}
+                # specify the port on the service that traffic will be routed to
                 port:
                   number: {{ $svcPort }}
               {{- else }}
+              # old kubernetes syntax
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
               {{- end }}

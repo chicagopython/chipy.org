@@ -1,18 +1,34 @@
+# Create a job for running the Django collectstatic management command
 apiVersion: batch/v1
 kind: Job
 metadata:
+  # This will be the name of the job
   name: chipy-collectstatic
+# This defines the specification for the Job
 spec:
+  # Only one copy of this job can run at a time
   parallelism: 1
+  # If we fail 3 times, then consider job failed
   backoffLimit: 3
+  # This section defines the pod template; the job will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
+    # This spec section inside of the "template" key defines the specification
+    # for the Pod, and NOT the Job. 
     spec:
       serviceAccountName: chipy
       containers:
       - name: collectstatic
+        # use this docker image to run the container
         image: chipy:v1
+        # define the command this container will run inside of the
+        # docker image.
         command: ["./manage.py",  "collectstatic", "--noinput"]
         env:
+        # Expose environment variables to the pod based on the k8s secret
+        # that contains the postgres creds. 
+        # https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-a-container-environment-variable-with-data-from-a-single-secret
         - name: POSTGRES_USERNAME
           valueFrom:
             secretKeyRef:
@@ -23,32 +39,51 @@ spec:
             secretKeyRef:
               name: chipy.chipydb.credentials.postgresql.acid.zalan.do
               key: password
+        # Set hard-coded environment variables
         - name: POSTGRES_HOST
           value: chipydb
         - name: POSTGRES_PORT
           value: "5432"
         - name: POSTGRES_DB
           value: "chipy"
+        # Build a DATABASE_URL secret based on other environment variables 
+        # defined in this pod. This sets us construct a database url expected
+        # by Django.
         - name: DATABASE_URL
           value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
       restartPolicy: Never
 
 ---
+# Create a job for running the Django migrate management command
 apiVersion: batch/v1
 kind: Job
 metadata:
+  # This will be the name of the job
   name: chipy-migrate
 spec:
+  # Only one copy of this job can run at a time
   parallelism: 1
+  # If we fail 3 times, then consider job failed
   backoffLimit: 3
+  # This section defines the pod template; the job will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
+    # This spec section inside of the "template" key defines the specification
+    # for the Pod, and NOT the Job. 
     spec:
+      # Set a service account "owner" for this pod so we can control this pod's
+      # access to the kubernetes API.
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       serviceAccountName: chipy
       containers:
       - name: migrate
         image: chipy:v1
         command: ["./manage.py",  "migrate", "--noinput"]
         env:
+        # Expose environment variables to the pod based on the k8s secret
+        # that contains the postgres creds. 
+        # https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-a-container-environment-variable-with-data-from-a-single-secret
         - name: POSTGRES_USERNAME
           valueFrom:
             secretKeyRef:
@@ -59,12 +94,16 @@ spec:
             secretKeyRef:
               name: chipy.chipydb.credentials.postgresql.acid.zalan.do
               key: password
+        # Set hard-coded environment variables
         - name: POSTGRES_HOST
           value: chipydb
         - name: POSTGRES_PORT
           value: "5432"
         - name: POSTGRES_DB
           value: "chipy"
+        # Build a DATABASE_URL secret based on other environment variables 
+        # defined in this pod. This sets us construct a database url expected
+        # by Django.
         - name: DATABASE_URL
           value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
       restartPolicy: Never

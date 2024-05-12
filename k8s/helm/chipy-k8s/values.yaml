@@ -12,21 +12,30 @@ image:
 
 
 app:
-  database: 
+  database:
+    # the database host (service) name in the cluster
     host: "chipydb"
+    # the port that postgres should listen on
     port: "5432"
+    # the logical postgres db name that should be used by chipy app and jobs
     name: "chipy"
+    # the name of the k8s secret that will hold the pg username and password
     db_secret_name: "chipy.chipydb.credentials.postgresql.acid.zalan.do"
+    # the key in the above k8s secret containing the pg username
     db_secret_username_key: "username"
+    # the key in the above k8s secret containing the pg password
     db_secret_password_key: "password"
-  env: 
+  env:
+    # additional environment variables that will added to the chipy we pod
     DEBUG: "True"
     CONNECT_METHOD: 'http'
     ALLOWED_HOSTS: "chipy-k8s.org,chipy.org,www.chipy.org,localhost"
     EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
     SECURE_SSL_REDIRECT: 'False'
     ENVELOPE_EMAIL_RECIPIENTS: "admin@example.com"
+  # The SESSION_KEY needed by Django for signing sessions
   secret_key: "override-this-key-here"
+  # hard-coded Django configuration defaults.
   storage:
     use_s3: "False"
     aws_access_key_id: ""
@@ -40,11 +49,14 @@ app:
   captcha:
     norecaptcha_site_key: ""
     norecaptcha_secret_key: ""
+  # the superuser that will get created by the createsuperuser job
   superuser:
     username: admin
     password: override-me
     email: chipy@example.com
 
+# The size and type of the PV and PVC that will be
+# created by this app
 volumes:
   storage_class_name: "standard"
   size: "2Gi"
@@ -75,6 +87,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# The type and port that the chipy web service should listen on
 service:
   type: ClusterIP
   port: 8000

@@ -1,8 +1,18 @@
 {{- if .Values.autoscaling.enabled }}
+# Enable deployment autoscaling
+# This monitors the CPU and RAM of pods that are associated
+# with the scaleTargetRef deployment. If the CPU/RAM reaches
+# a given threashold, then update the replicas in the deployment
+# so that more pods are created. Do the reverse if the CPU/RAM usag
+# goes down.
+# https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
+  # Get the name of the hpa from an include from _helpers.tpl, 
+  # which will generate the name based on Helm chart name.
   name: {{ include "chipy-k8s.fullname" . }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
 spec:
@@ -10,16 +20,20 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "chipy-k8s.fullname" . }}
+  # set the minimum number of pod replicas that should always be present
   minReplicas: {{ .Values.autoscaling.minReplicas }}
+  # set the max number of pod replicas that can be scaled to by this hpa
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
     {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    # add a pod if the pod CPU percent exceeds the targetCPUUtilizationPercentage
     - type: Resource
       resource:
         name: cpu
         targetAverageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
     {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    # add a pod if the RAM percent exceeds the targetMemoryUtilizationPercentage
     - type: Resource
       resource:
         name: memory

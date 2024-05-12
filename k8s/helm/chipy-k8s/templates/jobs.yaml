@@ -1,52 +1,102 @@
+---
+# Create a job for running the Django collectstatic management command
 apiVersion: batch/v1
 kind: Job
 metadata:
+  # Get the name of the job from an include from _helpers.tpl,
+  # which will generate the name based on Helm chart name.
   name: {{ include "chipy-k8s.job-collectstatic" . }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
 spec:
+  # Only one copy of this job can run at a time
   parallelism: 1
+  # If we fail 3 times, then consider job failed
   backoffLimit: 3
+  # This section defines the pod template; the job will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
     spec:
+      # Set a service account "owner" for this pod so we can control this pod's
+      # access to the kubernetes API.
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
+      # This is the list of "main" containers that will run inside of this pod.
       containers:
       - name: collectstatic
+        # use this docker image to run the container
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        # This defines what should happen if a docker image is not present on 
+        # the node that the pod is running on. 
+        # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        # define the command this container will run inside of the
+        # docker image.
         command: ["./manage.py",  "collectstatic", "--noinput"]
       restartPolicy: Never
 
 ---
+# Create a job for running the Django migrate management command
 apiVersion: batch/v1
 kind: Job
 metadata:
+  # Get the name of the job from an include from _helpers.tpl,
+  # which will generate the name based on Helm chart name.
   name: {{ include "chipy-k8s.job-migrate" . }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
 spec:
+  # Only one copy of this job can run at a time
   parallelism: 1
+  # If we fail 3 times, then consider job failed
   backoffLimit: 3
+  # This section defines the pod template; the job will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
     spec:
+      # Set a service account "owner" for this pod so we can control this pod's
+      # access to the kubernetes API.
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
+      # Init containers are a list of containers that will execute before the
+      # "main" container runs. Once the init container returns successfully 
+      # (exit code 0), the main containers will run. This init container is 
+      # used to ensure that the database is available before running the job.
+      # https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
       initContainers:
         - name: check-db-ready
+          # define the docker image that will be used by this init container
           image: postgres:15.2
+          # define the command that this init container will run inside of the
+          # docker image.
           command: ['sh', '-c', 
             'until pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} ; 
             do echo waiting for database; sleep 2; done;']
+          # Set environment variables that will be used by the init containter
           env:
             - name: POSTGRES_HOST
               value: "{{ .Values.app.database.host }}"
             - name: POSTGRES_PORT
               value: "{{ .Values.app.database.port }}"
+      # This is the list of "main" containers that will run inside of this pod.
       containers:
       - name: migrate
+        # This defines the docker image that will be used by this container
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        # This defines what should happen if a docker image is not present on 
+        # the node that the pod is running on. 
+        # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        # This defines the command that will run inside of the pod
         command: ["./manage.py",  "migrate", "--noinput"]
         env:
+          # Expose environment variables to the pod based on the k8s secret
+          # that contains the postgres creds. 
+          # https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-a-container-environment-variable-with-data-from-a-single-secret
           - name: POSTGRES_USERNAME
             valueFrom:
               secretKeyRef:
@@ -57,54 +107,88 @@ spec:
               secretKeyRef:
                 name: "{{ .Values.app.database.db_secret_name }}"
                 key: "{{ .Values.app.database.db_secret_password_key }}"
+          # Read postgres secrets from the values.yaml file
           - name: POSTGRES_HOST
             value: "{{ .Values.app.database.host }}"
           - name: POSTGRES_PORT
             value: "{{ .Values.app.database.port }}"
           - name: POSTGRES_DB
             value: "{{ .Values.app.database.name }}"
+          # Build a DATABASE_URL secret based on other environment variables 
+          # defined in this pod. This sets us construct a database url expected
+          # by Django.
           - name: DATABASE_URL
             value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
 
       restartPolicy: Never
 
 ---
+# Create a job for running the Django createsuperuser management command
 apiVersion: batch/v1
 kind: Job
 metadata:
+  # Get the name of the job from an include from _helpers.tpl,
+  # which will generate the name based on Helm chart name.
   name: {{ include "chipy-k8s.job-superuser" . }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
 spec:
+  # Only one copy of this job can run at a time
   parallelism: 1
+  # If we fail 3 times, then consider job failed
   backoffLimit: 3
+  # This section defines the pod template; the job will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
     spec:
+      # Set a service account "owner" for this pod so we can control this pod's
+      # access to the kubernetes API.
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
+      # Init containers are a list of containers that will execute before the
+      # "main" container runs. Once the init container returns successfully 
+      # (exit code 0), the main containers will run. This init container is 
+      # used to ensure that the database is available before running the job.
+      # https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
       initContainers:
         - name: check-db-ready
+          # define the docker image that will be used by this init container
           image: postgres:15.2
+          # define the command that this init container will run inside of the
+          # docker image.
           command: ['sh', '-c', 
             'until pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} ; 
             do echo waiting for database; sleep 2; done;']
+          # Set environment variables that will be used by the init containter
           env:
             - name: POSTGRES_HOST
               value: "{{ .Values.app.database.host }}"
             - name: POSTGRES_PORT
               value: "{{ .Values.app.database.port }}"
+      # This is the list of "main" containers that will run inside of this pod.
       containers:
       - name: superuser
+        # This defines the docker image that will be used by this container
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        # This defines what should happen if a docker image is not present on 
+        # the node that the pod is running on. 
+        # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        # This defines the command that will run inside of the pod
         command: ["./manage.py",  "createsuperuser", "--noinput"]
         env:
+          # Read postgres secrets from the values.yaml file
           - name: DJANGO_SUPERUSER_USERNAME
             value: "{{ .Values.app.superuser.username }}"
           - name: DJANGO_SUPERUSER_PASSWORD
             value: "{{ .Values.app.superuser.password }}"
           - name: DJANGO_SUPERUSER_EMAIL
             value: "{{ .Values.app.superuser.email }}"
-
+          # Expose environment variables to the pod based on the k8s secret
+          # that contains the postgres creds. 
+          # https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-a-container-environment-variable-with-data-from-a-single-secret
           - name: POSTGRES_USERNAME
             valueFrom:
               secretKeyRef:
@@ -115,12 +199,16 @@ spec:
               secretKeyRef:
                 name: "{{ .Values.app.database.db_secret_name }}"
                 key: "{{ .Values.app.database.db_secret_password_key }}"
+          # Read postgres secrets from the values.yaml file
           - name: POSTGRES_HOST
             value: "{{ .Values.app.database.host }}"
           - name: POSTGRES_PORT
             value: "{{ .Values.app.database.port }}"
           - name: POSTGRES_DB
             value: "{{ .Values.app.database.name }}"
+          # Build a DATABASE_URL secret based on other environment variables 
+          # defined in this pod. This sets us construct a database url expected
+          # by Django.
           - name: DATABASE_URL
             value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
 

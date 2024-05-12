@@ -1,7 +1,37 @@
+# This config file is used by Kind to create a kind Kubernetes cluster with given
+# defaults.
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+## optional docker image proxy cache. Must run the docker registry commands from the README.md.
+## See APPENDIX A in the README.md
+# containerdConfigPatches:
+# - |-
+#   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+#     endpoint = ["http://proxy-docker-hub:5000"]
+# - |-
+#   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.k8s.io"]
+#     endpoint = ["http://proxy-registry-k8s-io:5000"]
+# - |-
+#   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.opensource.zalan.do"]
+#     endpoint = ["http://proxy-registry-opensource-zalan-do:5000"]
+# - |-
+#   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."ghcr.io"]
+#     endpoint = ["http://proxy-ghcr-io:5000"]
+
+networking:
+  # Allow any interface on this machine to connect to the kubernetes API server
+  apiServerAddress: 0.0.0.0
+  # apiServerAddress: "127.0.0.1"
+  # Set the default port for the Kubernetes API server to 6443.
+  apiServerPort: 6443
+# This configures a cluster with 3 nodes: 1 control-plane node and 2 worker nodes.
 nodes:
 - role: control-plane
+  # This sets the Kubernetes version for the Kind cluster, by specifying the
+  # Node docker image. 
+  image: kindest/node:v1.25.3
+  # This applies extra configuration to the kublet on the control-plane node.
+  # This adds an additional label needed by the Nginx ingress controller.
   kubeadmConfigPatches:
   - |
     kind: InitConfiguration
@@ -16,18 +46,32 @@ nodes:
     hostPort: 443
     protocol: TCP
 - role: worker
+  # This sets the Kubernetes version for the Kind cluster, by specifying the
+  # Node docker image. 
   image: kindest/node:v1.25.3
+  # Set some labels on the kubernetes worker node
   labels:
     ingress-ready: "true"
     kubernetes.io/os: linux
+  # Create a volume mount to the local machine into this worker node so that
+  # the "local path" storage provisioner can write persistent files needed by PV
+  # and PVCs. The Local Path provisioner is a storage provisioner implementation
+  # used by Kind to allowing a simple means to store persistent files.
   extraMounts:
   - hostPath: ./shared-storage
     containerPath: /var/local-path-provisioner
 - role: worker
+  # This sets the Kubernetes version for the Kind cluster, by specifying the
+  # Node docker image. 
+  image: kindest/node:v1.25.3
+  # Set some labels on the kubernetes worker node
   labels:
     ingress-ready: "true"
     kubernetes.io/os: linux
-  image: kindest/node:v1.25.3
+  # Create a volume mount to the local machine into this worker node so that
+  # the "local path" storage provisioner can write persistent files needed by PV
+  # and PVCs. The Local Path provisioner is a storage provisioner implementation
+  # used by Kind to allowing a simple means to store persistent files.
   extraMounts:
   - hostPath: ./shared-storage
     containerPath: /var/local-path-provisioner

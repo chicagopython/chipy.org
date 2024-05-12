@@ -1,62 +1,124 @@
+# Define a deployment for the ChiPy Django web application. This
+# deployment will generate pods containing the ChiPy codebase
+# and will always strive to maintain the number of pods defined
+# below in "replicas"
+
+# This is the current resource group and version for a deployment 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # Get the name of the deployment from an include from _helpers.tpl, 
+  # which will generate the name based on Helm chart name.
   name: {{ include "chipy-k8s.fullname" . }}
+  # Include a standard set of labels from the _helpers.tpl
   labels:
     {{- include "chipy-k8s.labels" . | nindent 4 }}
+# This defines the specification for the Deployment
 spec:
+  # If we are not using autoscaling (autoscaling.enabled is set false in values file)
+  # then explicitly set the replica count.
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
+      # Include a set of labels from _helpers.tpl that will select the pods
+      # that are defined below in the "template" section. Deployment's selectormatchLabels
+      # key always needs to explicitly select the pods that it creates. This
+      # template function include makes sure that they always match.
       {{- include "chipy-k8s.selectorLabels" . | nindent 6 }}
+  # This section defines the pod template; the deployment will create pods
+  # as defined in this section. The keys under this template section are essentially
+  # a Pod yaml template definition as is, without the apiVersion and kind
   template:
     metadata:
+      # Allow the user to supply a dictionary of podannotations from the values file
+      # https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      # These are lables that are added to the Pods that this deployment creates
+      # and NOT the deployment itself. 
+      # This labels section needs to include all of the labels as defined in the
+      # deployment's selector.matchLables defined above, so that the deployment
+      # is linked to the pods that it creates. It CAN include additional labels as well.
+      # https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
       labels:
         {{- include "chipy-k8s.selectorLabels" . | nindent 8 }}
+    # This spec section inside of the "template" key defines the specification
+    # for the Pod, and NOT the deployment. 
     spec:
+      # If you are pulling form a private docker registry, this will allow you
+      # to authenticate with that registry
+      # https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets-1
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      # Set a service account "owner" for this pod so we can control this pod's
+      # access to the kubernetes API.
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       serviceAccountName: {{ include "chipy-k8s.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # Define a list of volumes that the containers in this pod can have access to
+      # https://kubernetes.io/docs/concepts/storage/volumes/
       volumes: 
+      # Define a name "chipy-static" that is only used to refer to this volume 
+      # within this pod specification
       - name: chipy-static
         persistentVolumeClaim:
+          # Lookup the Persistant Volume Claim to be used by this pod
+          # https://kubernetes.io/docs/concepts/storage/persistent-volumes/
           claimName: {{ include "chipy-k8s.pvc" . }}
+      # Init containers are a list of containers that will execute before the
+      # "main" container runs. Once the init container returns successfully 
+      # (exit code 0), the main containers will run. This init container is 
+      # used to ensure that the database is available before running the website.
+      # https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
       initContainers:
         - name: check-db-ready
+          # define the docker image that will be used by this init container
           image: postgres:15.2
+          # define the command that this init container will run inside of the
+          # docker image.
           command: ['sh', '-c', 
             'until pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} ; 
             do echo waiting for database; sleep 2; done;']
+          # Set environment variables that will be used by the init containter
           env:
             - name: POSTGRES_HOST
               value: "{{ .Values.app.database.host }}"
             - name: POSTGRES_PORT
               value: "{{ .Values.app.database.port }}"
+      # This is the list of "main" containers that will run inside of this pod.
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          # This defines the docker image that will be used by this container
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          # This defines what should happen if a docker image is not present on 
+          # the node that the pod is running on. 
+          # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # This defines the ports that this pod will expose to the rest of the
+          # cluster.
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          # Given the previously defined "chipy-static" volume from the "volumes"
+          # section of the pod spec, mount that volume into the pod into the
+          # /site/proj/staticfiles/ directory
           volumeMounts:
           - name: chipy-static
             mountPath: /site/proj/staticfiles
           env:
-
+          # Expose environment variables to the pod based on the k8s secret
+          # that contains the postgres creds. 
+          # https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-a-container-environment-variable-with-data-from-a-single-secret
           - name: POSTGRES_USERNAME
             valueFrom:
               secretKeyRef:
@@ -67,15 +129,19 @@ spec:
               secretKeyRef:
                 name: "{{ .Values.app.database.db_secret_name }}"
                 key: "{{ .Values.app.database.db_secret_password_key }}"
+          # Read postgres secrets from the values.yaml file
           - name: POSTGRES_HOST
             value: "{{ .Values.app.database.host }}"
           - name: POSTGRES_PORT
             value: "{{ .Values.app.database.port }}"
           - name: POSTGRES_DB
             value: "{{ .Values.app.database.name }}"
+          # Build a DATABASE_URL secret based on other environment variables 
+          # defined in this pod. This sets us construct a database url expected
+          # by Django.
           - name: DATABASE_URL
             value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
-          
+          # Set environment variables for various other secrets in secrets.yaml
           - name: SECRET_KEY
             valueFrom:
               secretKeyRef:
@@ -131,28 +197,58 @@ spec:
               secretKeyRef:
                 name: {{ include "chipy-k8s.secret" . }}
                 key: NORECAPTCHA_SECRET_KEY
-
+          # Allow passing in arbitrary key/value pairs defined in a values file
+          # override. This allows users to customize environment variables made
+          # available to the pod.
           {{-  range $name, $item := .Values.app.env }}
           - name: {{ $name }}
             value: {{ quote $item }}
           {{- end }}
+          # Check the pod passes a given "liveness" condition. If it fails 5 consecutive,
+          # times, kill and restart the pod. This probe just checks that
+          # the "http" port (as defined in the ports section above) is listening.
+          # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
           livenessProbe:
             tcpSocket:
               port: http
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 5
+          # Check the pod passes a given "readiness" condition. If it passes,
+          # make the IP of this pod available to any associated k8s service (endpoint), 
+          # so that triaffic can be routed to it. This probe just checks that
+          # the "http" port (as defined in the ports section above) is listening.
+          # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
           readinessProbe:
-           tcpSocket:
+            tcpSocket:
               port: http
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 1
+          # Allow the Helm chart to specify the minimum and maximum CPU/RAM that
+          # this container needs.
+          # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      # Force the pod to be schedulable on certain nodes with the below selectors.
+      # This would be useful if admins want to target specific nodes for the pod
+      # to run on, such as nodes from different regsions, nodes with GPUs, or
+      # nodes of a different size. 
+      # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.affinity }}
+      # Allow setting of pod affinity rules. This is similar to node selector, but
+      # provices more flexibility.
+      # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
+      # Allow the pod to run on "tainted" nodes.
+      # https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

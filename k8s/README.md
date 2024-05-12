@@ -3,12 +3,12 @@
 The following demonstrates several ways that you can deploy the ChiPy website on
 Kubernetes.
 
-1) Install the ChiPy into the cluster piece-by-piece
+1) [Install the ChiPy into the cluster piece-by-piece](#install-the-cluster-piece-by-piece)
 
     - using raw Kubernetes yaml (see ./yaml/ directory)
     - using local Helm charts (see ./helm/ directory)
 
-2) Install the everything into the cluster in one shot using Helmfile
+2) [Install the everything into the cluster in one shot using Helmfile](#install-everything-in-one-shot-using-helmfile)
    (see helmfile.yaml)
 
 This portion of the codebase was created in support of the following talk:
@@ -48,7 +48,7 @@ You will need:
 
 This tutorial works best on Linux, though you can run it on OSX. I need to
 figure out some of the routing for Docker Desktop on OSX to get to the UI, but
-you can get to the UI using kubernetes port-forwarding [see APPENDIX B]
+you can get to the UI using kubernetes port-forwarding (see [APPENDIX B](#appendix-b-port-forward-to-get-to-the-kubernetes-ui-on-osx))
 
 ## INSTALL THE CLUSTER PIECE-BY-PIECE
 
@@ -173,7 +173,7 @@ Where...
 
 #### (4) Metrics Server (optional)
 
-This installs the kubernetes metrics server, which monitors the CPU/RAM for 
+This installs the kubernetes metrics server, which monitors the CPU/RAM for
 pods and nodes in a k8s cluster. The metrics that this generates can be used
 by the `kubectl top` command, by metrics collector/aggregators like Prometheus,
 and can be used by the pod autoscaler.
@@ -337,7 +337,7 @@ In order to connect to the cluster as though we were connecting to it externally
 we need to find the IP address of one of the nodes. Here are 3 ways to do that.
 
 Note: the below steps identify the IP node address to use to connect to the ingress. This should work for Linux users. However, for OSX users, there is an
-additional networking layer involved. You can port-forward to the chipy webserver service instead to view the site. See APPENDIX B
+additional networking layer involved. You can port-forward to the chipy webserver service instead to view the site. See [APPENDIX B](#appendix-b-port-forward-to-get-to-the-kubernetes-ui-on-osx)
 
 #### Find the IP that you need to connect to
 

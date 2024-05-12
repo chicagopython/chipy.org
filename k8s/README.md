@@ -253,7 +253,7 @@ helm upgrade --install release01  helm/chipy-k8s/
 ### [C] VIEW THE CHIPY WEBSITE IN A BROWSER
 
 To connect to the cluster in a browser, see the section below
-"Connect to the Cluster in a Browser"
+"[Connect to the Cluster in a Browser](#connect-to-the-cluster-in-a-browser)"
 
 ### [D] DELETE THE CLUSTER WHEN DONE
 
@@ -314,7 +314,7 @@ via a Docker container. That way, you do not have to install Helmfile locally.
 ### [C] VIEW THE CHIPY WEBSITE IN A BROWSER
 
 To connect to the cluster in a browser, see the section below
-"Connect to the Cluster in a Browser"
+"[Connect to the Cluster in a Browser](#connect-to-the-cluster-in-a-browser)"
 
 ### [D] DELETE EVERYTHING TO CLEAN UP
 

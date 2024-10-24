@@ -9,67 +9,67 @@ setup_env:
 	cp -n docker/docker.env.sample docker/docker.env || true
 
 build:
-	docker-compose build
+	docker compose build
 
 run:
-	docker-compose up
+	docker compose up
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 up-services:
-	docker-compose up -d db
+	docker compose up -d db
 
 down:
-	docker-compose down
+	docker compose down
 
 
 shell:
 	@echo "Opening shell in docker container"
 	@echo "Use this shell to run python and django commands normally"
-	@docker-compose exec web bash
+	@docker compose exec web bash
 
 psql:
-	@docker-compose exec db psql chipy chipy
+	@docker compose exec db psql chipy chipy
 
 resetdb:
-	@docker-compose exec db psql chipy chipy -c "drop schema if exists public cascade;"
-	@docker-compose exec db psql chipy chipy -c "create schema public;"
+	@docker compose exec db psql chipy chipy -c "drop schema if exists public cascade;"
+	@docker compose exec db psql chipy chipy -c "create schema public;"
 
 web: run
 
 migrate:
-	docker-compose exec web python manage.py migrate
+	docker compose exec web python manage.py migrate
 
 migrations:
-	docker-compose exec web python manage.py makemigrations
+	docker compose exec web python manage.py makemigrations
 
 tag:
 	echo Making tag $(date_tag)
 	git tag -m $(date_tag) $(date_tag)
 
 test:
-	docker-compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
+	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
 lint:
-	docker-compose exec web pylint -j 0 chipy_org/
+	docker compose exec web pylint -j 0 chipy_org/
 
 format:
-	docker-compose exec web isort .
-	docker-compose exec web black .
+	docker compose exec web isort .
+	docker compose exec web black .
 
 format-check:
-	docker-compose exec web isort --check-only .
-	docker-compose exec web black --diff .
+	docker compose exec web isort --check-only .
+	docker compose exec web black --diff .
 
 setup: setup_env build
 
 superuser:
-	docker-compose exec web ./manage.py createsuperuser
+	docker compose exec web ./manage.py createsuperuser
 
 tail-logs:
-	docker-compose logs -f web
+	docker compose logs -f web
 
 
 dev-data:
-	docker-compose exec web python manage.py makedevdata
+	docker compose exec web python manage.py makedevdata

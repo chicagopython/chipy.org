@@ -25,6 +25,7 @@ jobs:
       run: |
         cp docker/docker.env.sample docker/docker.env
         docker compose up --build -d
+        docker compose exec web python manage.py test
 
     - name: Run pytest in Docker container
       run: |

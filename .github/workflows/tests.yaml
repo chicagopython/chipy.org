@@ -25,7 +25,7 @@ jobs:
       run: |
         cp docker/docker.env.sample docker/docker.env
         docker compose up --build -d
-        docker compose exec web python manage.py collectstatic
+        docker compose exec web yes | python manage.py collectstatic
 
     - name: Run pytest in Docker container
       run: |

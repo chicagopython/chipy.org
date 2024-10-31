@@ -6,12 +6,12 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "Chipy Website"
+name = "chipy_website"
 dynamic = [
     "version",
 ]
 description = "The ChiPy Website"
-license = { text = "MIT License" }
+objects.license = { text = "MIT License" }
 requires-python = ">=3.9.0"
 authors = [
     { name = "ChiPy Web Guild", email = "chicago-organizers@python.org" },

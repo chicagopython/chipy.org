@@ -50,6 +50,7 @@ tag:
 
 test:
 	docker compose up -d
+	docker compose exec web python manage.py collectstatic --noinput
 	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
 lint:

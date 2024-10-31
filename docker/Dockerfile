@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     python3-dev \
     postgresql-client \
-    && pip install -U pipenv \
+    && pip install pipenv==2023.6.26 \
     && rm -rf /var/lib/apt/lists/*
 
 # environment variables needed

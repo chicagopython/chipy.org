@@ -49,7 +49,7 @@ tag:
 	git tag -m $(date_tag) $(date_tag)
 
 test:
-	docker compose exec web python manage.py collectstatic --noinput
+	docker compose up -d
 	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
 lint:

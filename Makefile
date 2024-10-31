@@ -6,7 +6,7 @@ help:
 
 setup_env:
 	## Copy but don't overwrite the docker env
-	cp -n docker/docker.env.sample docker/docker.env || true
+	cp --update=none docker/docker.env.sample docker/docker.env || true
 
 build:
 	docker compose build
@@ -49,8 +49,8 @@ tag:
 	git tag -m $(date_tag) $(date_tag)
 
 test:
-	docker compose exec web python manage.py collectstatic 
-	docker compose exec web pytest -vv chipy_org/ -o cache_dir=/var/app/.my_cache_dir
+	docker compose exec web python manage.py collectstatic --noinput
+	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
 lint:
 	docker compose exec web pylint -j 0 chipy_org/

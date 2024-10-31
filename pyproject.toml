@@ -1,15 +1,12 @@
 [build-system]
 requires = [
     "hatchling >= 1.10.0",
-    "hatch-vcs",
 ]
 build-backend = "hatchling.build"
 
 [project]
 name = "chipy_website"
-dynamic = [
-    "version",
-]
+version="2.4.0"
 description = "The ChiPy Website"
 objects.license = { text = "MIT License" }
 requires-python = ">=3.9.0"
@@ -67,9 +64,6 @@ dev = [
     "pytest==6.2.5",
     "pytest-django==4.5.2",
 ]
-
-[tool.hatch.version]
-source = "vcs"
 
 [tool.hatch.build.targets.wheel]
 packages = [

@@ -59,8 +59,8 @@ dev = [
     "black",
     "flake8",
     "isort",
-    "pylint==2.12.2",
-    "pylint-django==2.4.4",
+    "pylint",
+    "pylint-django",
     "pytest~=7.0",
     "pytest-django~=4.9",
 ]

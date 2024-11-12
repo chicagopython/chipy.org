@@ -22,7 +22,7 @@ class MyTopics(ListView):
         except Presenter.DoesNotExist:
             return Topic.objects.none()
 
-        return Topic.objects.filter(presenters__in=presenter)
+        return Topic.objects.filter(presenters__in=presenter).order_by("start_time")
 
     paginate_by = 20
 

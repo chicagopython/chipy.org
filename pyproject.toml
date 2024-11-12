@@ -24,7 +24,7 @@ classifiers = [
 #    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "boto3==1.20.26",
+    "boto3~=1.35",
     "crispy-bootstrap5~=0.6",
     "dj-database-url==0.5.0",
     "django~=4.1",

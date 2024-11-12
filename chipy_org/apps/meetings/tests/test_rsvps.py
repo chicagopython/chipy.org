@@ -149,7 +149,6 @@ class MeetingsTest(test_utils.AuthenticatedTest):
             )
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_rsvp_works_for_anonymous_user(client, meeting_can_register):
     response = client.post(
         reverse("rsvp"),
@@ -163,25 +162,21 @@ def test_rsvp_works_for_anonymous_user(client, meeting_can_register):
     assert response.status_code == 200
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_rsvp_fails_gracefully_with_missing_data(client, meeting_can_register):
     response = client.post(reverse("rsvp"), data={"meeting": meeting_can_register.id})
     assert response.status_code == 200
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_can_get_rsvp_update_view_for_meeting_with_open_registration(client, rsvp_can_update):
     response = client.get(reverse("update_rsvp_with_key", args=[rsvp_can_update.key]))
     assert response.status_code == 200
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_cannot_get_rsvp_update_view_for_past_meeting(client, rsvp_meeting_in_past):
     response = client.get(reverse("update_rsvp_with_key", args=[rsvp_meeting_in_past.key]))
     assert response.status_code == 302
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_cannot_get_rsvp_update_view_for_closed_meeting(client, rsvp_cannot_update):
     response = client.get(reverse("update_rsvp_with_key", args=[rsvp_cannot_update.key]))
     assert response.status_code == 302

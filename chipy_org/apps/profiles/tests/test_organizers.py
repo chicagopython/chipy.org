@@ -9,7 +9,6 @@ from ..models import UserProfile
 pytestmark = pytest.mark.django_db
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_organizers_page_displayed(client):
     public_information = {
         "bio": "Wild for acorns",
@@ -29,7 +28,6 @@ def test_organizers_page_displayed(client):
         assert value in stringified_content
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_organizers_non_organizer_show_up_incorrectly(client):
     User.objects.create(first_name="Paul", last_name="Blart")
     response = client.get(reverse("profiles:organizers"))

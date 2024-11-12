@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     python3-dev \
     postgresql-client \
-    && pip install pipenv \
     && rm -rf /var/lib/apt/lists/*
 
 # environment variables needed
@@ -25,9 +24,8 @@ WORKDIR ${SITE_DIR}
 RUN install -d proj/ var/log/ htdocs/ htdocs/static/
 
 # Install python packages
-ADD Pipfile ${SITE_DIR}Pipfile
-ADD Pipfile.lock ${SITE_DIR}Pipfile.lock
-RUN pipenv install --dev --system
+ADD pyproject.toml ${SITE_DIR}pyproject.toml
+RUN pip install -e .[dev]
 RUN pip install uwsgi
 
 COPY docker/ ${SITE_DIR}docker/

@@ -24,8 +24,8 @@ jobs:
     - name: Build and run the Docker containers
       run: |
         cp docker/docker.env.sample docker/docker.env
-        docker-compose up --build -d
+        docker compose up --build -d
 
     - name: Run pytest in Docker container
       run: |
-        docker-compose exec -t web pytest -v chipy_org/
+        docker compose exec -t web pytest -v chipy_org/

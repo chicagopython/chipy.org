@@ -13,14 +13,14 @@ def enforce_list(value):
 
 
 def send_email(  # pylint: disable=too-many-arguments
-    recipients, subject, body, html_body=None, reply_to=None, swallow_errors=False
+    recipients, subject, body, html_body=None, reply_to=None, swallow_errors=False, from_email=settings.DEFAULT_FROM_EMAIL
 ):
     """Helper to standardize sending of email"""
     recipients = enforce_list(recipients)
     reply_to = enforce_list(reply_to or [])
 
     params = {
-        "from_email": settings.DEFAULT_FROM_EMAIL,
+        "from_email": from_email,
         "to": recipients,
         "subject": subject,
         "body": body,

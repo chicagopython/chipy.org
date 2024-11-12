@@ -37,4 +37,5 @@ class ContactForm(forms.Form):
             subject=self.cleaned_data["subject"],
             body=self.cleaned_data["message"],
             reply_to=[self.cleaned_data["email"]],
+            from_email=self.cleaned_data["email"],
         )

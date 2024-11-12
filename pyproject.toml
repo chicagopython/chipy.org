@@ -9,7 +9,7 @@ name = "chipy_website"
 version="2.4.0"
 description = "The ChiPy Website"
 objects.license = { text = "MIT License" }
-requires-python = ">=3.9.0"
+requires-python = ">=3.11.10"
 authors = [
     { name = "ChiPy Web Guild", email = "chicago-organizers@python.org" },
 ]
@@ -18,9 +18,9 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
-#    "Programming Language :: Python :: 3.10", # TODO: upgrade python
-#    "Programming Language :: Python :: 3.11",
-#    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.10", 
+    "Programming Language :: Python :: 3.11",
+#    "Programming Language :: Python :: 3.12",# TODO: upgrade python
 #    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
@@ -44,7 +44,7 @@ dependencies = [
     "gunicorn==20.0.4",
     "pillow~=9.0",
     "probablepeople==0.5.4",
-    "psycopg2-binary==2.8.4",
+    "psycopg2-binary~=2.9",
     "python-openid2==3.2",
     "requests==2.26.0",
     "six==1.14.0",

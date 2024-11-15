@@ -75,7 +75,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = "America/Chicago"
 USE_TZ = False
 
 # Language code for this installation. All choices can be found here:

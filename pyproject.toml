@@ -41,7 +41,7 @@ dependencies = [
     "django-simple-captcha==0.5.20",
     "django-storages>=1.13",
     "djangorestframework~=3.14",
-    "gunicorn==20.0.4",
+    "gunicorn==22.0.0",
     "pillow~=9.0",
     "probablepeople==0.5.4",
     "psycopg2-binary~=2.9",

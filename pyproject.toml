@@ -46,7 +46,7 @@ dependencies = [
     "probablepeople==0.5.4",
     "psycopg2-binary~=2.9",
     "python-openid2==3.2",
-    "requests==2.26.0",
+    "requests==2.32.2",
     "six==1.14.0",
     "social-auth-app-django==5.0.0",
     "sorl-thumbnail~=12.10",

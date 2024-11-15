@@ -1,7 +1,5 @@
 [build-system]
-requires = [
-    "hatchling >= 1.10.0",
-]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
@@ -23,35 +21,36 @@ classifiers = [
 #    "Programming Language :: Python :: 3.12",# TODO: upgrade python
 #    "Programming Language :: Python :: 3.13",
 ]
+
 dependencies = [
-    "boto3~=1.35",
-    "crispy-bootstrap5~=0.6",
-    "dj-database-url==0.5.0",
-    "django~=4.1",
-    "django-admin-tools~=0.9.0",
-    "django-bleach==0.6.1",
+    "boto3",
+    "crispy-bootstrap5",
+    "dj-database-url",
+    "django",
+    "django-admin-tools",
+    "django-bleach",
     "django-ckeditor",
-    "django-crispy-forms~=1.13",
+    "django-crispy-forms",
     "django-extensions",
-    "django-flatblocks~=1.0.0",
-    "django-grappelli~=2.14.0",
-    "django-gravatar2==1.4.4",
-    "django-honeypot==0.8.0",
-    "django-ical==1.7.0",
-    "django-simple-captcha==0.5.20",
-    "django-storages>=1.13",
-    "djangorestframework~=3.14",
-    "gunicorn==20.0.4",
-    "pillow~=9.0",
-    "probablepeople==0.5.4",
-    "psycopg2-binary~=2.9",
-    "python-openid2==3.2",
-    "requests==2.26.0",
-    "six==1.14.0",
-    "social-auth-app-django==5.0.0",
-    "sorl-thumbnail~=12.10",
-    "whitenoise==5.0.1",
-    "bleach==4.1.0",
+    "django-flatblocks",
+    "django-grappelli",
+    "django-gravatar2",
+    "django-honeypot",
+    "django-ical",
+    "django-simple-captcha",
+    "django-storages",
+    "djangorestframework",
+    "gunicorn",
+    "pillow",
+    "probablepeople",
+    "psycopg2-binary",
+    "python-openid2",
+    "requests",
+    "six",
+    "social-auth-app-django",
+    "sorl-thumbnail",
+    "whitenoise",
+    "bleach",
 ]
 
 [project.optional-dependencies]
@@ -61,8 +60,8 @@ dev = [
     "isort",
     "pylint",
     "pylint-django",
-    "pytest~=7.0",
-    "pytest-django~=4.9",
+    "pytest",
+    "pytest-django",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -7,7 +7,7 @@ from django.urls import reverse
 pytestmark = pytest.mark.django_db
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STORAGES=global_settings.STORAGES)
 class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -55,7 +55,6 @@ def test_settingspy_env_list(monkeypatch, test_in, result):
     assert settings.env_list("TEST_VAR") == result
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_logout_redirects_to_home(client):
     response = client.post("/logout/", follow=True)
     assert response.status_code == 200

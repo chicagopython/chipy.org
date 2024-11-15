@@ -11,7 +11,7 @@ pytestmark = pytest.mark.django_db
 
 @pytest.fixture(autouse=True)
 def with_static_files():
-    with override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE):
+    with override_settings(STORAGES=global_settings.STORAGES):
         yield
 
 

@@ -33,5 +33,5 @@ def enable_db_access_for_all_tests(db):  # pylint: disable=invalid-name
 
 @pytest.fixture(autouse=True)
 def with_static_files():
-    with override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE):
+    with override_settings(STORAGES=global_settings.STORAGES):
         yield

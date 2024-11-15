@@ -8,7 +8,7 @@ from django.urls import reverse
 User = get_user_model()
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STORAGES=global_settings.STORAGES)
 class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()

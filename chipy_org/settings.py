@@ -76,7 +76,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = "US/Central"
-
+USE_TZ = False
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -108,7 +108,6 @@ if USE_S3:
     AWS_HEADERS = {
         "Cache-Control": "max-age=86400",
     }
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
     # STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     # these next two aren't used, but staticfiles will complain without them
     # STATIC_URL = f"https://{os.environ['AWS_STORAGE_BUCKET_NAME']}.s3.amazonaws.com/static/"
@@ -217,7 +216,7 @@ GITHUB_EXTRA_DATA = [
 ]
 # End of Python Social Auth Settings
 
-SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
+SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
 
 INSTALLED_APPS = [
     # Admin Tools
@@ -371,9 +370,10 @@ LOGGING = {
     },
 }
 
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
+STORAGES = {
+    "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
 
 CKEDITOR_CONFIGS = {
     "default": {

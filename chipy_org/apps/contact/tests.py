@@ -7,7 +7,6 @@ from .forms import ContactForm
 
 
 @pytest.mark.django_db
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_chipy_contact_form():  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
 
@@ -28,7 +27,6 @@ def test_chipy_contact_form():  # pylint: disable=redefined-outer-name
 
 
 @pytest.mark.django_db
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
 def test_chipy_contact_view(client):  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
 
@@ -45,5 +43,7 @@ def test_chipy_contact_view(client):  # pylint: disable=redefined-outer-name
         follow=True,
     )
     assert response.status_code == 200
+
+
 #    assert b"Your message has been sent to" in response.content
 #    assert len(mail.outbox) == 1

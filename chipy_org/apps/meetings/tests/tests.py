@@ -14,7 +14,7 @@ User = get_user_model()
 pytestmark = pytest.mark.django_db
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STORAGES=global_settings.STORAGES)
 class SmokeTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -73,7 +73,7 @@ class SmokeTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STORAGES=global_settings.STORAGES)
 def test_future_meetings(client):
     test_venue = Venue.objects.create(name="Test")
     upcoming_meeting, _ = Meeting.objects.get_or_create(
@@ -134,7 +134,7 @@ class MeetingTitleTest(TestCase):
         self.assertEqual(meeting.title, "Main Custom Title")
 
 
-@override_settings(STATICFILES_STORAGE=global_settings.STATICFILES_STORAGE)
+@override_settings(STORAGES=global_settings.STORAGES)
 def test_my_talks_with_multiple_presenters_with_same_user(client):
     user = User.objects.create(
         username="chipy",

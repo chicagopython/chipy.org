@@ -24,8 +24,8 @@ WORKDIR ${SITE_DIR}
 RUN install -d proj/ var/log/ htdocs/ htdocs/static/
 
 # Install python packages
-ADD pyproject.toml ${SITE_DIR}pyproject.toml
-RUN pip install -e .[dev]
+ADD dev-requirements.txt ${SITE_DIR}
+RUN pip install -r dev-requirements.txt
 RUN pip install uwsgi
 
 COPY docker/ ${SITE_DIR}docker/

@@ -48,7 +48,7 @@ dependencies = [
     "python-openid2==3.2",
     "requests==2.26.0",
     "six==1.14.0",
-    "social-auth-app-django==5.0.0",
+    "social-auth-app-django==5.4.1",
     "sorl-thumbnail~=12.10",
     "whitenoise==5.0.1",
     "bleach==4.1.0",

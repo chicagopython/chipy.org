@@ -56,8 +56,8 @@
 
                 {% if next_meeting %}
 
-                    {% if next_meeting.description %}
-                    <p itemprop="description">Description: {{ next_meeting.description|truncatewords:80|safe }}</p>
+                    {% if next_meeting.description2 %}
+                    <p itemprop="description">Description: {{ next_meeting.description2|truncatewords:80|safe }}</p>
                     {% endif %}
 
                     <p><strong>When: </strong> {{ next_meeting.when|default:'N/A'}}</p>
@@ -129,7 +129,7 @@
                 </div>
                 {% endif %}
                 <p>
-                  {{ topic.description|bleach|truncatewords_html:80|safe }}
+                  {{ topic.description2|bleach|truncatewords_html:80|safe }}
                     <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
                 </p>
             </div>

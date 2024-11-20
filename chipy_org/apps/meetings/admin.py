@@ -98,6 +98,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
+        widgets = {'description2': TinyMCE()}
         exclude = []  # pylint: disable=modelform-uses-exclude
 
 
@@ -169,8 +170,12 @@ class RSVPAdmin(admin.ModelAdmin):
         "status",
     ]
 
-
+class MeetingTypeForm(forms.ModelForm):
+    class Meta:
+        widgets = {'description2': TinyMCE()}
+    
 class MeetingTypeAdmin(admin.ModelAdmin):
+    form = MeetingTypeForm
     list_display = ["id", "name", "slug"]
     prepopulated_fields = {"slug": ("name",)}
 

@@ -32,7 +32,7 @@ class TopicInline(admin.StackedInline):
 class CustomTopicForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["description"].widget = TinyMCE()
+        self.fields["description2"].widget = TinyMCE()
 
 
 class TopicAdmin(admin.ModelAdmin):

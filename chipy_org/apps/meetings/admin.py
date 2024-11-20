@@ -1,7 +1,7 @@
 import random
 import string
 
-from ckeditor.widgets import CKEditorWidget
+from tinymce.widgets import TinyMCE
 from django import forms
 from django.contrib import admin
 from django.urls import reverse
@@ -32,7 +32,7 @@ class TopicInline(admin.StackedInline):
 class CustomTopicForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["description"].widget = CKEditorWidget()
+        self.fields["description"].widget = TinyMCE()
 
 
 class TopicAdmin(admin.ModelAdmin):

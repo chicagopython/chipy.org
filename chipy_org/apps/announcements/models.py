@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-from ckeditor.fields import RichTextField
 from django.db import models
 from django.utils import timezone
 
@@ -26,7 +25,6 @@ class AnnouncementQuerySet(models.QuerySet):
 
 class Announcement(CommonModel):
     headline = models.TextField(max_length="100")
-    text = RichTextField(blank=True, null=True)
     text2 = models.TextField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(

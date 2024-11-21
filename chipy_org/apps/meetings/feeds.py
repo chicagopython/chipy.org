@@ -23,7 +23,7 @@ class MeetingFeed(ICalFeed):
             if topic.presenters.count() > 0:
                 presenter_name = topic.presenters.all()[0].name
 
-            description += f"{topic.title} by {presenter_name}\n{topic.description}\n\n"
+            description += f"{topic.title} by {presenter_name}\n{topic.description2}\n\n"
         return description
 
     def item_link(self, item):

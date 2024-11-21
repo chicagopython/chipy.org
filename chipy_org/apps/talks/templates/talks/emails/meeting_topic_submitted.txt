@@ -5,4 +5,4 @@ A meeting topic has been submitted:
  Presenters: {% for presenter in topic.presenters.all %}{{ presenter.name}} ({{ presenter.email }}) - {{ presenter.user.id  }} {% endfor %}
  Meeting: {{ topic.meeting }}
  Length: {{ topic.length }}
- Description: {{ topic.description|safe }}
+ Description: {{ topic.description2|safe }}

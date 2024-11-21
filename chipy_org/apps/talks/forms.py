@@ -12,7 +12,7 @@ class TopicForm(forms.ModelForm):
         "name",
         "email",
         "phone",
-        "description",
+        "description2",
         "experience_level",
         "length",
     )

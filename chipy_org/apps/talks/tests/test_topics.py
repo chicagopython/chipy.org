@@ -14,7 +14,7 @@ def test_post_topic_sends_email():
     meeting = Meeting(
         when=datetime.datetime.now(),
         reg_close_date=datetime.datetime.now(),
-        description="Test",
+        description2="Test",
         in_person_capacity=5,
     )
     meeting.save()
@@ -25,7 +25,7 @@ def test_post_topic_sends_email():
         meeting=meeting,
         experience_level="novice",
         length=10,
-        description="Test Topic",
+        description2="Test Topic",
     )
     topic.save()
     assert len(Topic.objects.all()) == 1

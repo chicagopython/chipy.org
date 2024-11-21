@@ -6,7 +6,6 @@ import random
 import re
 import string
 
-from ckeditor.fields import RichTextField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -16,7 +15,6 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 
-from chipy_org.libs.custom_ckeditor import CustomRichTextField
 from chipy_org.libs.models import CommonModel
 
 from .email import send_rsvp_email
@@ -79,7 +77,6 @@ class MeetingType(CommonModel):
     name = models.CharField(max_length=64)
     default_title = models.CharField(max_length=64, null=True, blank=True)
     slug = models.SlugField(max_length=64, unique=True)
-    description = RichTextField(blank=True, null=True)
     description2 = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -140,7 +137,6 @@ class Meeting(CommonModel):
             "will show up as the title of the event."
         ),
     )
-    description = RichTextField(blank=True, null=True)
     description2 = models.TextField(blank=True, null=True)
 
     in_person_capacity = models.PositiveSmallIntegerField(null=False)
@@ -317,10 +313,9 @@ class Topic(CommonModel):
     license = models.CharField(max_length=50, choices=LICENSE_CHOISES, default="CC BY")
     length = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
-    description = CustomRichTextField(
-        blank=True,
-        null=True,
-        help_text="This will be the public talk description.",
+    description2 = models.TextField(
+        blank=True, null=True,
+        help_text="This will be the public talk description."
     )
     description2 = models.TextField(blank=True, null=True, help_text="This will be the public talk description.")
 

@@ -27,7 +27,6 @@ class TopicForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["description"].required = True
         self.fields["description2"].required = True
         self.fields["experience_level"].required = True
         self.fields["length"].required = True
@@ -52,7 +51,6 @@ class TopicForm(forms.ModelForm):
             "phone",
             "length",
             "experience_level",
-            "description",
             "description2",
             "notes",
             "requested_reviewer",

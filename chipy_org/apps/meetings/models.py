@@ -317,6 +317,7 @@ class Topic(CommonModel):
         blank=True, null=True,
         help_text="This will be the public talk description."
     )
+    description2 = models.TextField(blank=True, null=True, help_text="This will be the public talk description.")
 
     requested_reviewer = models.EmailField(
         "Reviewer Email",

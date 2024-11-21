@@ -1,7 +1,7 @@
 import random
 import string
 
-from ckeditor.widgets import CKEditorWidget
+from tinymce.widgets import TinyMCE
 from django import forms
 from django.contrib import admin
 from django.urls import reverse
@@ -32,7 +32,7 @@ class TopicInline(admin.StackedInline):
 class CustomTopicForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["description"].widget = CKEditorWidget()
+        self.fields["description2"].widget = TinyMCE()
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -98,6 +98,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
+        widgets = {'description2': TinyMCE()}
         exclude = []  # pylint: disable=modelform-uses-exclude
 
 
@@ -169,8 +170,12 @@ class RSVPAdmin(admin.ModelAdmin):
         "status",
     ]
 
-
+class MeetingTypeForm(forms.ModelForm):
+    class Meta:
+        widgets = {'description2': TinyMCE()}
+    
 class MeetingTypeAdmin(admin.ModelAdmin):
+    form = MeetingTypeForm
     list_display = ["id", "name", "slug"]
     prepopulated_fields = {"slug": ("name",)}
 

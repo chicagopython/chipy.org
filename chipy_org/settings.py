@@ -247,6 +247,7 @@ INSTALLED_APPS = [
     "social_django",
     "sorl.thumbnail",
     "storages",
+    "tinymce",
     # theme
     "crispy_forms",
     "crispy_bootstrap5",

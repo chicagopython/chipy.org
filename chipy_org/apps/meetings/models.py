@@ -5,7 +5,6 @@ import itertools
 import random
 import re
 import string
-from dataclasses import dataclass
 
 from ckeditor.fields import RichTextField
 from django.conf import settings
@@ -81,6 +80,7 @@ class MeetingType(CommonModel):
     default_title = models.CharField(max_length=64, null=True, blank=True)
     slug = models.SlugField(max_length=64, unique=True)
     description = RichTextField(blank=True, null=True)
+    description2 = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.id} | ({self.name})"
@@ -141,6 +141,7 @@ class Meeting(CommonModel):
         ),
     )
     description = RichTextField(blank=True, null=True)
+    description2 = models.TextField(blank=True, null=True)
 
     in_person_capacity = models.PositiveSmallIntegerField(null=False)
     virtual_capacity = models.PositiveSmallIntegerField(
@@ -321,6 +322,7 @@ class Topic(CommonModel):
         null=True,
         help_text="This will be the public talk description.",
     )
+    description2 = models.TextField(blank=True, null=True, help_text="This will be the public talk description.")
 
     requested_reviewer = models.EmailField(
         "Reviewer Email",

@@ -2,7 +2,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
 from django.urls import reverse
-
+from tinymce.widgets import TinyMCE
 from ..meetings.models import Presenter, Topic
 
 
@@ -12,7 +12,7 @@ class TopicForm(forms.ModelForm):
         "name",
         "email",
         "phone",
-        "description",
+        "description2",
         "experience_level",
         "length",
     )
@@ -28,6 +28,7 @@ class TopicForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["description"].required = True
+        self.fields["description2"].required = True
         self.fields["experience_level"].required = True
         self.fields["length"].required = True
         self.fields["email"].initial = request.user.email
@@ -43,6 +44,7 @@ class TopicForm(forms.ModelForm):
 
     class Meta:
         model = Topic
+        widgets = {'description2': TinyMCE()}
         fields = (
             "title",
             "name",
@@ -51,6 +53,7 @@ class TopicForm(forms.ModelForm):
             "length",
             "experience_level",
             "description",
+            "description2",
             "notes",
             "requested_reviewer",
             "license",

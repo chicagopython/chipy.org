@@ -39,6 +39,7 @@ dependencies = [
     "django-ical",
     "django-simple-captcha",
     "django-storages",
+    "django-tinymce",
     "djangorestframework",
     "gunicorn",
     "pillow",
@@ -62,6 +63,7 @@ dev = [
     "pylint-django",
     "pytest",
     "pytest-django",
+    "uwsgi",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -1,4 +1,4 @@
-from ckeditor.widgets import CKEditorWidget
+from tinymce.widgets import TinyMCE
 from django import forms
 from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin, FlatpageForm
@@ -10,7 +10,7 @@ from flatblocks.models import FlatBlock
 class CustomFlatpageForm(FlatpageForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["content"].widget = CKEditorWidget()
+        self.fields["content"].widget = TinyMCE()
 
 
 class CustomFlatPageAdmin(FlatPageAdmin):
@@ -24,7 +24,7 @@ admin.site.register(FlatPage, CustomFlatPageAdmin)
 class CustomFlatBlockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["content"].widget = CKEditorWidget()
+        self.fields["content"].widget = TinyMCE()
 
 
 class CustomFlatBlockAdmin(FlatBlockAdmin):

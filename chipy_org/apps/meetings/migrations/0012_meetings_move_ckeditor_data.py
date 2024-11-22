@@ -31,6 +31,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(forward_meetings),
-        migrations.RunPython(forward_meeting_types),
+        # migrations.RunPython(forward_meetings),
+        # migrations.RunPython(forward_meeting_types),
     ]

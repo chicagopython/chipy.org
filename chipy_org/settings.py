@@ -236,7 +236,6 @@ INSTALLED_APPS = [
     "django.forms",
     # Third party
     "captcha",
-    "ckeditor",
     "django_bleach",
     "django_gravatar",
     "django_ical",
@@ -373,30 +372,4 @@ LOGGING = {
 STORAGES = {
     "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
-}
-
-CKEDITOR_CONFIGS = {
-    "default": {
-        "toolbar": "Custom",
-        "toolbar_Custom": [
-            ["Bold", "Italic", "Underline"],
-            [
-                "NumberedList",
-                "BulletedList",
-                "-",
-                "Outdent",
-                "Indent",
-                "-",
-                "JustifyLeft",
-                "JustifyCenter",
-                "JustifyRight",
-                "JustifyBlock",
-            ],
-            ["Link", "Unlink"],
-            ["RemoveFormat", "Source"],
-        ],
-        "display": None,
-        "width": "100%",
-        "contentsCss": "/static/css/custom_contents.css",
-    },
 }

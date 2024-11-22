@@ -29,7 +29,6 @@ dependencies = [
     "django",
     "django-admin-tools",
     "django-bleach",
-    "django-ckeditor",
     "django-crispy-forms",
     "django-extensions",
     "django-flatblocks",

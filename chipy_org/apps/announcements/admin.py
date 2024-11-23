@@ -8,7 +8,7 @@ from .models import Announcement
 class CustomAnnoucementForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["text2"].widget = TinyMCE()
+        self.fields["text"].widget = TinyMCE()
 
 
 class AnnouncementAdmin(admin.ModelAdmin):

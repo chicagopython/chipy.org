@@ -25,7 +25,7 @@ class AnnouncementQuerySet(models.QuerySet):
 
 class Announcement(CommonModel):
     headline = models.TextField(max_length="100")
-    text2 = models.TextField(blank=True, null=True)
+    text = models.TextField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(
         default=True, help_text="Has this announcement been published yet?"

@@ -19,8 +19,8 @@
 
           <hr />
 
-          {% if meeting.description2 %}
-          <p itemprop="description">{{ meeting.description2|bleach|safe }}</p>
+          {% if meeting.description %}
+          <p itemprop="description">{{ meeting.description|bleach|safe }}</p>
           {% endif %}
 
           <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
@@ -70,7 +70,7 @@
                   {% if topic.length%}
                     Length: {{ topic.length}} Minutes<br />
                   {% endif %}
-                  Description: {{ topic.description2|bleach|safe }}
+                  Description: {{ topic.description|bleach|safe }}
                 </li>
               {% endfor %}
             </ul>

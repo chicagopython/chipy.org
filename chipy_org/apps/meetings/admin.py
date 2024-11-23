@@ -32,7 +32,7 @@ class TopicInline(admin.StackedInline):
 class CustomTopicForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["description2"].widget = TinyMCE()
+        self.fields["description"].widget = TinyMCE()
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -98,7 +98,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
-        widgets = {'description2': TinyMCE()}
+        widgets = {'description': TinyMCE()}
         exclude = []  # pylint: disable=modelform-uses-exclude
 
 
@@ -172,7 +172,7 @@ class RSVPAdmin(admin.ModelAdmin):
 
 class MeetingTypeForm(forms.ModelForm):
     class Meta:
-        widgets = {'description2': TinyMCE()}
+        widgets = {'description': TinyMCE()}
     
 class MeetingTypeAdmin(admin.ModelAdmin):
     form = MeetingTypeForm

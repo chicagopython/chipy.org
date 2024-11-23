@@ -19,7 +19,7 @@ class TopicSerializer(serializers.ModelSerializer):
             "title",
             "presenters",
             "length",
-            "description2",
+            "description",
             "embed_video",
             "slides_link",
             "start_time",

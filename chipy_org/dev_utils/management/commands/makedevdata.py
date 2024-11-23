@@ -63,7 +63,7 @@ class Command(BaseCommand):
         for k, v in times.items():
             announcements.models.Announcement.objects.update_or_create(
                 headline=f"Dev Headline - {k}",
-                text2="Dev Announcement",
+                text="Dev Announcement",
                 active=True,
                 end_date=v,
             )
@@ -91,7 +91,7 @@ class Command(BaseCommand):
             meeting, _ = meetings.models.Meeting.objects.update_or_create(
                 where=venue,
                 when=v + timedelta(days=7),
-                description2=f"Dev Meeting {k}".title(),
+                description=f"Dev Meeting {k}".title(),
                 reg_close_date=(v + timedelta(days=6)),
                 key=f"dev{count:037}",
                 in_person_capacity=5,
@@ -102,7 +102,7 @@ class Command(BaseCommand):
                 experience_level="novice",
                 length=10,
                 title=f"Saponification - Part {count}",
-                description2=f"Saponification - Part {count}",
+                description=f"Saponification - Part {count}",
                 status=meetings.models.Topic.StatusChoice.CONFIRMED,
             )
             topic.presenters.set((presenter,))
@@ -120,7 +120,7 @@ class Command(BaseCommand):
             meeting, _ = meetings.models.Meeting.objects.update_or_create(
                 where=venue,
                 when=meeting_date,
-                description2=meeting_description,
+                description=meeting_description,
                 reg_close_date=meeting_registration_end,
                 key=meeting_id,
                 in_person_capacity=5,

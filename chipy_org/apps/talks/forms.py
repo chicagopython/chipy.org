@@ -12,7 +12,7 @@ class TopicForm(forms.ModelForm):
         "name",
         "email",
         "phone",
-        "description2",
+        "description",
         "experience_level",
         "length",
     )
@@ -27,7 +27,7 @@ class TopicForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["description2"].required = True
+        self.fields["description"].required = True
         self.fields["experience_level"].required = True
         self.fields["length"].required = True
         self.fields["email"].initial = request.user.email
@@ -43,7 +43,7 @@ class TopicForm(forms.ModelForm):
 
     class Meta:
         model = Topic
-        widgets = {'description2': TinyMCE()}
+        widgets = {'description': TinyMCE()}
         fields = (
             "title",
             "name",
@@ -51,7 +51,7 @@ class TopicForm(forms.ModelForm):
             "phone",
             "length",
             "experience_level",
-            "description2",
+            "description",
             "notes",
             "requested_reviewer",
             "license",

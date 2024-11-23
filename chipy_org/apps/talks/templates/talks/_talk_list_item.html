@@ -16,8 +16,8 @@
     {% endif %}
     {% if talk.slides_link %}<div><a href="{{ talk.slides_link }}">Slides Link</a></div>{% endif %}
     <div class="description">
-      {% if talk.description2 %}
-      {{ talk.description2|bleach|safe }}
+      {% if talk.description %}
+      {{ talk.description|bleach|safe }}
       {% endif %}
     </div>
   </div>

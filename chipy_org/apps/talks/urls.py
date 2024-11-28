@@ -2,8 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.urls import path
 
-from .views import (MyTopics, PastTopic, PastTopics, PastVideoTopics,
-                    PendingTopics, ProposeTopic)
+from .views import MyTopics, PastTopic, PastTopics, PastVideoTopics, PendingTopics, ProposeTopic
 
 urlpatterns = [
     path("topics/propose/", login_required(ProposeTopic.as_view()), name="propose_topic"),

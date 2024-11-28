@@ -1,9 +1,17 @@
 from django.urls import include, path, re_path
 
 from .feeds import MeetingFeed
-from .views import (RSVP, FutureMeetings, MeetingDetail, MeetingStatus,
-                    PastMeetings, RSVPlistHost, RSVPlistPrivate,
-                    UpcomingEvents, UpdateRSVP)
+from .views import (
+    RSVP,
+    FutureMeetings,
+    MeetingDetail,
+    MeetingStatus,
+    PastMeetings,
+    RSVPlistHost,
+    RSVPlistPrivate,
+    UpcomingEvents,
+    UpdateRSVP,
+)
 
 urlpatterns = [
     path("", FutureMeetings.as_view(), name="future_meetings"),

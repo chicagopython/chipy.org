@@ -1,7 +1,13 @@
 from django.urls import path
 
-from .views import (AfterSubmitJobPost, JobPostDetail, JobPostList,
-                    create_job_post, delete_job_post, update_job_post)
+from .views import (
+    AfterSubmitJobPost,
+    JobPostDetail,
+    JobPostList,
+    create_job_post,
+    delete_job_post,
+    update_job_post,
+)
 
 urlpatterns = [
     path(r"create/", create_job_post, name="create-job-post"),

@@ -3,6 +3,7 @@ from crispy_forms.layout import Submit
 from django import forms
 from django.urls import reverse
 from tinymce.widgets import TinyMCE
+
 from ..meetings.models import Presenter, Topic
 
 

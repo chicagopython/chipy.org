@@ -1,10 +1,10 @@
-from tinymce.widgets import TinyMCE
 from django import forms
 from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin, FlatpageForm
 from django.contrib.flatpages.models import FlatPage
 from flatblocks.admin import FlatBlockAdmin
 from flatblocks.models import FlatBlock
+from tinymce.widgets import TinyMCE
 
 
 class CustomFlatpageForm(FlatpageForm):

@@ -1,12 +1,12 @@
 import random
 import string
 
-from tinymce.widgets import TinyMCE
 from django import forms
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from tinymce.widgets import TinyMCE
 
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 

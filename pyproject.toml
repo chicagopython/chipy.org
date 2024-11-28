@@ -69,23 +69,6 @@ exclude = [
     "*.pyx",
 ]
 
-[tool.black]
-line-length = 100
-target-version = ['py39']
-exclude = '''
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.pytest_cache
-  | \.vscode
-  | dist
-  | migrations
-  | venv
-)/
-'''
-
 [tool.isort]
 atomic = true
 include_trailing_comma = true
@@ -95,6 +78,7 @@ skip = 'manage.py'
 skip_glob = '**/migrations/*'
 
 [tool.ruff]
+line-length = 100
 exclude = [
     ".git",
     ".mypy_cache",
@@ -119,7 +103,7 @@ line-length = 88
 indent-width = 4
 
 # Assume Python 3.9
-target-version = "py39"
+target-version = "py311"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

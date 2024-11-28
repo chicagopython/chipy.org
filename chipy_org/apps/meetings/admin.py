@@ -1,12 +1,12 @@
 import random
 import string
 
-from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from tinymce.widgets import TinyMCE
 
 from chipy_org.apps.sponsors.admin import MeetingSponsorInline
 
@@ -28,11 +28,17 @@ class TopicInline(admin.StackedInline):
     ]
     extra = 0
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'description':
+            kwargs['widget'] = TinyMCE()
+        return super().formfield_for_dbfield(db_field,**kwargs)
+
 
 class CustomTopicForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["description"].widget = CKEditorWidget()
+    class Meta:
+        model=Topic
+        widgets = {"description": TinyMCE()}
+        exclude = []
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -86,11 +92,6 @@ class TopicAdmin(admin.ModelAdmin):
 
 
 class MeetingForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.fields["meetup_id"].widget = admin.widgets.AdminTextInputWidget()
-
     def clean_key(self):
         if not self.cleaned_data["key"]:
             return "".join(random.choice(string.digits + string.ascii_lowercase) for x in range(40))
@@ -98,6 +99,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
+        widgets = {'description': TinyMCE(), "metup_id":admin.widgets.AdminTextInputWidget()}
         exclude = []  # pylint: disable=modelform-uses-exclude
 
 
@@ -169,8 +171,12 @@ class RSVPAdmin(admin.ModelAdmin):
         "status",
     ]
 
-
+class MeetingTypeForm(forms.ModelForm):
+    class Meta:
+        widgets = {'description': TinyMCE()}
+    
 class MeetingTypeAdmin(admin.ModelAdmin):
+    form = MeetingTypeForm
     list_display = ["id", "name", "slug"]
     prepopulated_fields = {"slug": ("name",)}
 

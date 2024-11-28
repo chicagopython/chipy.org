@@ -79,6 +79,8 @@ skip_glob = '**/migrations/*'
 
 [tool.ruff]
 line-length = 100
+indent-width = 4
+target-version = "py311"
 exclude = [
     ".git",
     ".mypy_cache",
@@ -97,13 +99,6 @@ exclude = [
     "tests",  
     "migrations",
 ]
-
-# Same as Black.
-line-length = 88
-indent-width = 4
-
-# Assume Python 3.9
-target-version = "py311"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

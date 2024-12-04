@@ -55,13 +55,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "flake8",
     "freezegun",
-    "isort",
     "pre-commit",
-    "pylint",
-    "pylint-django",
     "pytest==6.2.5",
     "pytest-django==4.5.2",
     "uwsgi",

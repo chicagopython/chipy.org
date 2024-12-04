@@ -29,7 +29,6 @@ dependencies = [
     "django",
     "django-admin-tools",
     "django-bleach",
-    "django-ckeditor",
     "django-crispy-forms",
     "django-extensions",
     "django-flatblocks",
@@ -39,6 +38,7 @@ dependencies = [
     "django-ical",
     "django-simple-captcha",
     "django-storages",
+    "django-tinymce",
     "djangorestframework",
     "gunicorn",
     "pillow",
@@ -62,6 +62,7 @@ dev = [
     "pylint-django",
     "pytest",
     "pytest-django",
+    "uwsgi",
 ]
 
 [tool.hatch.build.targets.wheel]

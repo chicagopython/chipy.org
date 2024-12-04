@@ -95,6 +95,8 @@ doublemetaphone==1.1
     # via probablepeople
 flake8==7.1.1
     # via chipy_website (pyproject.toml)
+freezegun==1.5.1
+    # via chipy_website (pyproject.toml)
 gunicorn==23.0.0
     # via chipy_website (pyproject.toml)
 icalendar==6.0.1
@@ -175,6 +177,7 @@ python-dateutil==2.9.0.post0
     # via
     #   botocore
     #   django-recurrence
+    #   freezegun
     #   icalendar
 python-openid2==3.2
     # via chipy_website (pyproject.toml)

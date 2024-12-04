@@ -18,13 +18,7 @@ class Home(TemplateView, InitialRSVPMixin):
     template_name = "main/homepage.html"
 
     def get_meeting(self):
-        return (
-            Meeting.objects.filter(
-                status="published", when__gt=datetime.datetime.now() - datetime.timedelta(hours=6)
-            )
-            .order_by("when")
-            .first()
-        )
+        return Meeting.objects.next_meeting()
 
     def get_context_data(self, **kwargs):
         context = {}
@@ -32,7 +26,7 @@ class Home(TemplateView, InitialRSVPMixin):
         context["IS_HOMEPAGE"] = True
         context["featured_sponsor"] = Sponsor.featured_sponsor()
         context["featured_announcement"] = Announcement.objects.featured()
-
+        context["future_meetings"] = Meeting.objects.future_published()
         context = self.add_extra_context(context)
         return context
 

@@ -57,6 +57,7 @@ dependencies = [
 dev = [
     "black",
     "flake8",
+    "freezegun",
     "isort",
     "pylint",
     "pylint-django",

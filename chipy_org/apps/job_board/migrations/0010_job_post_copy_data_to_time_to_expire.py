@@ -2,6 +2,7 @@ import datetime
 
 from django.db import migrations, models
 
+
 def copy_duration_from_days_to_expire_to_time_to_expire(apps, schema_editor):
     JobPost = apps.get_model('job_board', 'JobPost')
     for job_post in JobPost.objects.all():

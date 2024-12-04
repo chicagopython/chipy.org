@@ -1,7 +1,9 @@
 import datetime
 import itertools
+
 import pytest
 from freezegun import freeze_time
+
 from chipy_org.apps.meetings.models import Meeting, MeetingType
 
 pytestmark = pytest.mark.django_db

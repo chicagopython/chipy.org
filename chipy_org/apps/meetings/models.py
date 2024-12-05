@@ -87,6 +87,52 @@ class MeetingType(CommonModel):
         verbose_name_plural = "Meeting Types"
 
 
+class MeetingQuerySet(models.QuerySet):
+
+    def future_published(self, grace_period=3):
+        """
+        Get published meetings that are in the future, with a 3 hour grace period
+        to account for any in-progress meeting.
+        """
+        return self.filter(
+            status="published", 
+            when__gt=(
+                datetime.datetime.now() - datetime.timedelta(hours=grace_period))
+        ).order_by("when")
+
+    def future_published_main(self, grace_period=3):
+        """
+        Get future __main__ meetings that have been published
+        """
+        return self.future_published(grace_period=grace_period).filter(meeting_type=None)
+
+    def past_published(self, grace_period=3):
+        """Get published meetings that are in the past, with a 3 hour grace period
+        to account for any in-progress meeting.
+        """
+        return self.filter(
+            status="published", 
+            when__lt=(datetime.datetime.now() - datetime.timedelta(hours=grace_period))
+        ).order_by("-when")
+
+    def past_year_published(self, ):
+        """
+        Get published meetings within the past year
+        """
+        return self.filter(
+            status="published",
+            when__range=((
+                datetime.date.today() - 
+                datetime.timedelta(days=365), datetime.date.today()))
+        )
+
+    def next_meeting(self):
+        """
+        Get the next meeting
+        """
+        return self.future_published().first()
+
+
 class Meeting(CommonModel):
     class Status:
         DRAFT = "draft"
@@ -100,7 +146,8 @@ class Meeting(CommonModel):
 
     def __str__(self):
         if self.where:
-            return f"{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
+            custom_title = f"{self.custom_title}: " if self.custom_title else ""
+            return f"{custom_title}{self.when:%a, %b %d %Y at %I:%M %p} at {self.where.name}"
 
         return f"{self.when} location TBD"
 
@@ -227,6 +274,8 @@ class Meeting(CommonModel):
         from .healthchecks import perform_health_check
 
         return perform_health_check(self)
+
+    objects = MeetingQuerySet.as_manager()
 
 
 class Presenter(CommonModel):

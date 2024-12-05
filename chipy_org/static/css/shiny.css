@@ -52,6 +52,11 @@ h5 {
   background-color: #f6f6f6;
 }
 
+.background-tinted-hl {
+  background-color: hsl(202, 91%, 92%);
+}
+
+
 a {
   font-weight: 700;
   color: #007896;

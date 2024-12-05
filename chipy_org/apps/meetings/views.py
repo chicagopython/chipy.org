@@ -65,7 +65,7 @@ class InitialRSVPMixin(metaclass=abc.ABCMeta):
     def add_extra_context(self, context):
         meeting = self.get_meeting()
         context["next_meeting"] = meeting
-
+        
         if meeting:
             self.get_initial(meeting)
             context["form"] = self.get_form(request=self.request, initial=self.initial)
@@ -79,9 +79,7 @@ class InitialRSVPMixin(metaclass=abc.ABCMeta):
 
 class FutureMeetings(ListView):
     template_name = "meetings/future_meetings.html"
-    queryset = Meeting.objects.filter(
-        status="published", when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
-    ).order_by("when")
+    queryset = Meeting.objects.future_published()
     paginate_by = 5
 
 
@@ -92,16 +90,12 @@ class MeetingStatus(PermissionRequiredMixin, ListView):
         return redirect(reverse_lazy("home"))
 
     template_name = "meetings/meetings_status.html"
-    queryset = Meeting.objects.filter(
-        meeting_type=None, when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
-    ).order_by("when")
+    queryset = Meeting.objects.future_published_main()
 
 
 class PastMeetings(ListView):
     template_name = "meetings/past_meetings.html"
-    queryset = Meeting.objects.filter(
-        status="published", when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
-    ).order_by("-when")
+    queryset = Meeting.objects.past_published()
     paginate_by = 5
 
 
@@ -343,13 +337,9 @@ class UpcomingEvents(TemplateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
 
-        upcoming_events = Meeting.objects.filter(
-            status="published", when__gt=datetime.datetime.now() - datetime.timedelta(hours=3)
-        ).order_by("when")[:5]
+        upcoming_events = Meeting.objects.future_published()[:5]
 
-        all_past_events = Meeting.objects.filter(
-            status="published", when__lt=datetime.datetime.now() - datetime.timedelta(hours=3)
-        ).order_by("-when")
+        all_past_events = Meeting.objects.past_published()
 
         if upcoming_events.count() > 1:
             past_events = all_past_events[:1]

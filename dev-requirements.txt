@@ -93,6 +93,8 @@ doublemetaphone==1.1
     # via probablepeople
 filelock==3.16.1
     # via virtualenv
+freezegun==1.5.1
+    # via chipy_website (pyproject.toml)
 gunicorn==23.0.0
     # via chipy_website (pyproject.toml)
 icalendar==6.0.1
@@ -153,6 +155,7 @@ python-dateutil==2.9.0.post0
     # via
     #   botocore
     #   django-recurrence
+    #   freezegun
     #   icalendar
 python-openid2==3.2
     # via chipy_website (pyproject.toml)
@@ -195,10 +198,10 @@ urllib3==2.2.3
     # via
     #   botocore
     #   requests
-virtualenv==20.28.0
-    # via pre-commit
 uwsgi==2.0.28
     # via chipy_website (pyproject.toml)
+virtualenv==20.28.0
+    # via pre-commit
 webencodings==0.5.1
     # via
     #   bleach

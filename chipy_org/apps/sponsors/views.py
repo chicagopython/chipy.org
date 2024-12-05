@@ -30,9 +30,7 @@ class SponsorListView(ListView):
 
     def get_context_data(self, **kwargs):  # pylint: disable=arguments-differ
 
-        meeting_queryset = Meeting.objects.all().filter(
-            when__range=((date.today() - datetime.timedelta(days=365), date.today()))
-        )
+        meeting_queryset = Meeting.objects.past_year_published()
         meeting_attendees = 0
         for meeting in meeting_queryset:
             meeting_attendees = meeting_attendees + int(meeting.number_rsvps())

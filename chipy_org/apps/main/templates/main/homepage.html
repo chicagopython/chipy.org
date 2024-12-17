@@ -50,7 +50,8 @@
                   <h3 id="next-event"
                       style="cursor: pointer"
                       onclick="window.location='{% url 'meeting' next_meeting.id %}'">
-                      NEXT EVENT: {{ next_meeting.title | upper }}
+                      <div class="text-left red-text">NEXT EVENT</div>
+                      <div>{{ next_meeting.title | upper }}</div>
                   </h3>
                 {% endif %}
 
@@ -97,6 +98,7 @@
                     {% endif %}
 
                     {% include "shiny/_rsvp.html" with curr_meeting=next_meeting %}
+                    <p><a href="{{ next_meeting.get_absolute_url }}">details</a></p>
                 {% endif %}
         </div> <!--closes column-->
 
@@ -140,7 +142,37 @@
 {% endwith %}
 
 
-    <!--PARTICIPATE SECTION STARTS -->
+<!-- UPCOMING SECTION STARTS -->
+{% with next_meetings=future_meetings|slice:"1:3" %}
+{% if next_meetings %}
+<div class="background-tinted-hl">
+    <div class="container-xl">
+        <div class="row flex-md-row">
+            <h3 id="upcoming" class="my-4 px-5 pt-3 red-text text-center">UPCOMING EVENTS</h3>
+                
+                {% for meeting in next_meetings %}
+                <div class="col-lg-6 my-4 px-5 ">
+                        <h4 style="cursor: pointer"
+                            onclick="window.location='{{ meeting.get_absolute_url }}'">{{ meeting.title | upper}}
+                        </h4>
+                        <p><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
+                        <p itemprop="address"><strong>Where: </strong>
+                        <a id="where-link"> {{ meeting.where|default:'N/A'}}</a>
+                    </p>
+                    <p>{{ meeting.where.address }}</p>
+                    <p><a href="{{ meeting.get_absolute_url }}">details</a></p>
+                </div>
+                {% endfor %}
+
+        </div>
+        
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+<!--UPCOMING SECTION ENDS -->
+
+<!--PARTICIPATE SECTION STARTS -->
 <div class="background-tinted">
     <div class="container-xl">
         <div class="row py-5 ">

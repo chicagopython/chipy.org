@@ -16,7 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10", 
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 #    "Programming Language :: Python :: 3.12",# TODO: upgrade python
 #    "Programming Language :: Python :: 3.13",
@@ -55,6 +55,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "freezegun",
     "pre-commit",
     "pytest==6.2.5",
     "pytest-django==4.5.2",
@@ -97,7 +98,7 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
-    "tests",  
+    "tests",
     "migrations",
 ]
 

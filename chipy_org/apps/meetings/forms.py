@@ -5,6 +5,7 @@ from django.urls import reverse
 from django_recaptcha.fields import ReCaptchaField
 
 from chipy_org.libs.custom_captcha import CrispyReCaptchaV2Checkbox
+
 from .models import RSVP
 
 

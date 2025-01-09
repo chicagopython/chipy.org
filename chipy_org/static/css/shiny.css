@@ -337,3 +337,8 @@ ul.no-bullets {
 .form-label {
   font-weight: bold;
 }
+
+.crispy-captcha {
+    border: none;
+    padding: 0px;
+}

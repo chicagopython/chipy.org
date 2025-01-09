@@ -1,22 +1,29 @@
 import pytest
-from django.conf import global_settings
 from django.core import mail
-from django.test import override_settings
-
 from .forms import ContactForm
 
 
+from unittest.mock import patch
+
+from django_recaptcha.client import RecaptchaResponse
+
+@pytest.fixture
+def mocked_captcha():
+    mocked_submit = patch("django_recaptcha.fields.client.submit")
+    mocked_submit.return_value = RecaptchaResponse(is_valid=True)
+    yield
+
+
 @pytest.mark.django_db
-def test_chipy_contact_form():  # pylint: disable=redefined-outer-name
+def test_chipy_contact_form(mocked_captcha):  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
 
     form_data = {
         "email": "test@test.com",
+        "g-recaptcha-response": "PASSED",
         "message": "test message",
         "sender": "test",
         "subject": "test subject",
-        "captcha_0": "dummy",
-        "captcha_1": "PASSED",
     }
 
     form = ContactForm(form_data)
@@ -26,7 +33,6 @@ def test_chipy_contact_form():  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 1
 
 
-@pytest.mark.django_db
 def test_chipy_contact_view(client):  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
 
@@ -37,8 +43,6 @@ def test_chipy_contact_view(client):  # pylint: disable=redefined-outer-name
             "message": "test message",
             "sender": "test",
             "subject": "test subject",
-            "captcha_0": "dummy",
-            "captcha_1": "PASSED",
         },
         follow=True,
     )

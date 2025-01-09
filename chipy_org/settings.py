@@ -235,10 +235,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.forms",
     # Third party
-    "captcha",
     "django_bleach",
     "django_gravatar",
     "django_ical",
+    'django_recaptcha',
     "flatblocks",
     "gunicorn",
     "honeypot",
@@ -335,8 +335,8 @@ BLEACH_ALLOWED_PROTOCOLS = ["http", "https", "data"]
 BLEACH_ALLOWED_STYLES = ["font-family", "font-weight", "text-decoration", "font-variant"]
 BLEACH_STRIP_TAGS = True
 
-NORECAPTCHA_SITE_KEY = env_var("NORECAPTCHA_SITE_KEY")
-NORECAPTCHA_SECRET_KEY = env_var("NORECAPTCHA_SECRET_KEY")
+RECAPTCHA_PUBLIC_KEY = env_var("NORECAPTCHA_SITE_KEY")
+RECAPTCHA_PRIVATE_KEY = env_var("NORECAPTCHA_SECRET_KEY")
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 
@@ -373,3 +373,7 @@ STORAGES = {
     "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
 }
+
+SILENCED_SYSTEM_CHECKS = []
+if DEBUG:
+    SILENCED_SYSTEM_CHECKS += ['django_recaptcha.recaptcha_test_key_error']

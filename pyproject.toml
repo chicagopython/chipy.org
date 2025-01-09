@@ -36,7 +36,7 @@ dependencies = [
     "django-gravatar2",
     "django-honeypot",
     "django-ical",
-    "django-simple-captcha",
+    "django-recaptcha",
     "django-storages",
     "django-tinymce",
     "djangorestframework",

@@ -166,7 +166,7 @@ regardless you can deploy a feature branch with the following command:
     git push heroku feature/mybranch:master
 
 
-## Alternate Local Development
+## Alternate Local Development - NOT AVAILABLE - PIPENV REMOVED
 
 You can use `make up-services` to start the background services
 locally. Then, if you copy `docker/docker.env` to `.env` you can

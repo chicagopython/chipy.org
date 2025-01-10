@@ -1,4 +1,4 @@
-FROM python:3.11.10
+FROM python:3.13.1-slim
 
 # install os dependencies; clean apt cache
 RUN apt-get update && apt-get install -y \

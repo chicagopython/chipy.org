@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "chipy_website"
-version="2.4.0"
+version="2.5.0"
 description = "The ChiPy Website"
 objects.license = { text = "MIT License" }
-requires-python = ">=3.11.10"
+requires-python = ">=3.13.1"
 authors = [
     { name = "ChiPy Web Guild", email = "chicago-organizers@python.org" },
 ]
@@ -18,15 +18,15 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-#    "Programming Language :: Python :: 3.12",# TODO: upgrade python
-#    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
     "boto3",
     "crispy-bootstrap5",
     "dj-database-url",
-    "django",
+    "django==5.1.4",
     "django-admin-tools",
     "django-bleach",
     "django-crispy-forms",
@@ -57,8 +57,8 @@ dependencies = [
 dev = [
     "freezegun",
     "pre-commit",
-    "pytest==6.2.5",
-    "pytest-django==4.5.2",
+    "pytest",
+    "pytest-django",
     "uwsgi",
 ]
 
@@ -82,7 +82,7 @@ skip_glob = '**/migrations/*'
 [tool.ruff]
 line-length = 100
 indent-width = 4
-target-version = "py311"
+target-version = "py313"
 exclude = [
     ".git",
     ".mypy_cache",

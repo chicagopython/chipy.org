@@ -29,10 +29,15 @@ class ContactForm(forms.Form):
     captcha = ReCaptchaField(widget=CrispyReCaptchaV2Checkbox, label="")
 
     def send_email(self):
+        # NOTE: from_email MUST be the verified SendGrid email address
+        # which should always be set in settings.DEFAULT_FROM_EMAIL
+        # SendGrid will NOT send an email from a random unverified email address.
+        # send_email has this value set as a default, and it should not be overwritten.
+        # reply_to is set as the requester's email so that when an  organizer replies
+        # the reply goes to the email entered by the user in the contact form.
         send_email(
             recipients=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
             subject=self.cleaned_data["subject"],
             body=self.cleaned_data["message"],
             reply_to=[self.cleaned_data["email"]],
-            from_email=self.cleaned_data["email"],
         )

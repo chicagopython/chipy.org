@@ -1,10 +1,22 @@
 from unittest.mock import patch
 
 import pytest
+from django.contrib.auth.models import User
 from django.core import mail
 from django_recaptcha.client import RecaptchaResponse
 
 from .forms import ContactForm
+
+
+@pytest.fixture
+def user():
+    return User.objects.get_or_create(username="test_user")[0]
+
+
+@pytest.fixture
+def authenticated_client(client, user):
+    client.force_login(user)
+    return client
 
 
 @pytest.fixture
@@ -33,13 +45,14 @@ def test_chipy_contact_form(mocked_captcha):  # pylint: disable=redefined-outer-
     assert len(mail.outbox) == 1
 
 
-def test_chipy_contact_view(client):  # pylint: disable=redefined-outer-name
+@pytest.mark.django_db
+def test_chipy_contact_view(authenticated_client):  # pylint: disable=redefined-outer-name
     assert len(mail.outbox) == 0
-
-    response = client.post(
+    response = authenticated_client.post(
         "/contact/",
         {
             "email": "test@test.com",
+            "g-recaptcha-response": "PASSED",
             "message": "test message",
             "sender": "test",
             "subject": "test subject",
@@ -48,5 +61,5 @@ def test_chipy_contact_view(client):  # pylint: disable=redefined-outer-name
     )
     assert response.status_code == 200
 
-#    assert b"Your message has been sent to" in response.content
-#    assert len(mail.outbox) == 1
+    assert b"Your message has been sent to" in response.content
+    assert len(mail.outbox) == 1

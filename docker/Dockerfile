@@ -25,7 +25,7 @@ RUN install -d proj/ var/log/ htdocs/ htdocs/static/
 
 # Install python packages
 ADD dev-requirements.txt ${SITE_DIR}
-ARG CACHEBUST=1 
+ARG CACHEBUST=1
 RUN --mount=type=cache,mode=0755,target=/root/.cache/pip pip install -r dev-requirements.txt
 
 COPY docker/ ${SITE_DIR}docker/

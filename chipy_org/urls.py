@@ -19,7 +19,6 @@ urlpatterns = [
     path("accounts/login/", django.contrib.auth.views.LoginView.as_view()),
     path("login/", TemplateView.as_view(template_name="login.html")),
     path("grappelli/", include("grappelli.urls")),
-    path("captcha/", include("captcha.urls")),
     path("meetings/", include("chipy_org.apps.meetings.urls")),
     path("groups/", include("chipy_org.apps.subgroups.urls")),
     path("announcements/", include("chipy_org.apps.announcements.urls")),

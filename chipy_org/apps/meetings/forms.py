@@ -1,10 +1,10 @@
-from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
 from django.urls import reverse
+from django_recaptcha.fields import ReCaptchaField
 
-from chipy_org.libs.custom_captcha import CustomCaptchaTextInput
+from chipy_org.libs.custom_captcha import CrispyReCaptchaV2Checkbox
 
 from .models import RSVP
 
@@ -64,4 +64,4 @@ class RSVPForm(forms.ModelForm):
 
 
 class RSVPFormWithCaptcha(RSVPForm):
-    captcha = CaptchaField(widget=CustomCaptchaTextInput)
+    captcha = ReCaptchaField(widget=CrispyReCaptchaV2Checkbox, label="")

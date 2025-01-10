@@ -1,19 +1,15 @@
 import logging
 
-from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
 from django.conf import settings
+from django_recaptcha.fields import ReCaptchaField
 
-from chipy_org.libs.custom_captcha import CustomCaptchaTextInput
+from chipy_org.libs.custom_captcha import CrispyReCaptchaV2Checkbox
 from chipy_org.libs.email import send_email
 
 logger = logging.getLogger(__name__)
-
-
-# class CustomCaptchaTextInput(CaptchaTextInput):
-#     template_name = "contact/custom_field.html"
 
 
 class ContactForm(forms.Form):
@@ -21,6 +17,7 @@ class ContactForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit("submit", "Send Email"))
+        self.fields["captcha"].label = False
 
     sender = forms.CharField(max_length=256, label="From")
     email = forms.EmailField(max_length=256)
@@ -29,7 +26,7 @@ class ContactForm(forms.Form):
         max_length=2000,
         widget=forms.Textarea(attrs=dict(cols=19, rows=10, placeholder="2000 character limit")),
     )
-    captcha = CaptchaField(widget=CustomCaptchaTextInput)
+    captcha = ReCaptchaField(widget=CrispyReCaptchaV2Checkbox, label="")
 
     def send_email(self):
         send_email(

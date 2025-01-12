@@ -1,5 +1,5 @@
 {% extends 'shiny/site_base.html' %}
-{% load bleach_tags %}
+{% load nh3_tags %}
 {% load static %}
 
 {% block background-pic-header %}
@@ -131,7 +131,7 @@
                 </div>
                 {% endif %}
                 <p>
-                  {{ topic.description|bleach|truncatewords_html:80|safe }}
+                  {{ topic.description|nh3|truncatewords_html:80|safe }}
                     <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
                 </p>
             </div>

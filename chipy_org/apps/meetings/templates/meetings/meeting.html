@@ -2,7 +2,7 @@
 
 {% load i18n static %}
 
-{% load bleach_tags %}
+{% load nh3_tags %}
 
 {% block head_title %}{% trans "Topic" %}{% endblock %}
 
@@ -20,7 +20,7 @@
           <hr />
 
           {% if meeting.description %}
-          <p itemprop="description">{{ meeting.description|bleach|safe }}</p>
+          <p itemprop="description">{{ meeting.description|nh3|safe }}</p>
           {% endif %}
 
           <p itemprop="startDate" content="{{ meeting.when|date:"Y-m-dTG-m" }}"><strong>When: </strong> {{ meeting.when|default:'N/A'}}</p>
@@ -70,7 +70,7 @@
                   {% if topic.length%}
                     Length: {{ topic.length}} Minutes<br />
                   {% endif %}
-                  Description: {{ topic.description|bleach|safe }}
+                  Description: {{ topic.description|nh3|safe }}
                 </li>
               {% endfor %}
             </ul>

@@ -28,7 +28,6 @@ dependencies = [
     "dj-database-url",
     "django==5.1.4",
     "django-admin-tools",
-    "django-bleach",
     "django-crispy-forms",
     "django-extensions",
     "django-flatblocks",
@@ -41,6 +40,7 @@ dependencies = [
     "django-tinymce",
     "djangorestframework",
     "gunicorn",
+    "nh3",
     "pillow",
     "probablepeople",
     "psycopg2-binary",
@@ -50,7 +50,6 @@ dependencies = [
     "social-auth-app-django",
     "sorl-thumbnail",
     "whitenoise",
-    "bleach",
 ]
 
 [project.optional-dependencies]

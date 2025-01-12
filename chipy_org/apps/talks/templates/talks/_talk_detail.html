@@ -1,4 +1,4 @@
-{% load bleach_tags %}
+{% load nh3_tags %}
 
 <div class="talk">
   <span class="title">{{ talk.title }}</span>
@@ -16,7 +16,7 @@
   <hr/>
   <div class="description">
     {% if talk.description %}
-    {{ talk.description|bleach|safe }}
+    {{ talk.description|nh3|safe }}
     {% endif %}
   </div>
 

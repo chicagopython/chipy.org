@@ -1,6 +1,6 @@
 {% extends "shiny/slim.html" %}
 
-{% load i18n static thumbnail bleach_tags %}
+{% load i18n static thumbnail nh3_tags %}
 
 {% block page_header %}OUR SPONSORS{% endblock %}
 
@@ -22,7 +22,7 @@
 
 <div>
   <br />
-  {{ sponsor.description | bleach | safe}}
+  {{ sponsor.description | nh3 | safe}}
 
   {% if sponsor.url %}
   <br />

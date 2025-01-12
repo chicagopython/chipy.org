@@ -6,10 +6,6 @@
 #
 asgiref==3.8.1
     # via django
-bleach[css]==5.0.1
-    # via
-    #   chipy_website (pyproject.toml)
-    #   django-bleach
 boto3==1.35.96
     # via chipy_website (pyproject.toml)
 botocore==1.35.96
@@ -39,7 +35,6 @@ django==5.1.4
     #   chipy_website (pyproject.toml)
     #   crispy-bootstrap5
     #   dj-database-url
-    #   django-bleach
     #   django-crispy-forms
     #   django-extensions
     #   django-honeypot
@@ -51,8 +46,6 @@ django==5.1.4
     #   djangorestframework
     #   social-auth-app-django
 django-admin-tools==0.9.3
-    # via chipy_website (pyproject.toml)
-django-bleach==3.1.0
     # via chipy_website (pyproject.toml)
 django-crispy-forms==2.3
     # via
@@ -94,6 +87,8 @@ jmespath==1.0.1
     #   botocore
 lxml==5.3.0
     # via python-openid2
+nh3==0.2.20
+    # via chipy_website (pyproject.toml)
 oauthlib==3.2.2
     # via
     #   requests-oauthlib
@@ -134,7 +129,6 @@ s3transfer==0.10.4
     # via boto3
 six==1.17.0
     # via
-    #   bleach
     #   chipy_website (pyproject.toml)
     #   python-dateutil
     #   python-openid2
@@ -146,8 +140,6 @@ sorl-thumbnail==12.11.0
     # via chipy_website (pyproject.toml)
 sqlparse==0.5.3
     # via django
-tinycss2==1.1.1
-    # via bleach
 typing-extensions==4.12.2
     # via dj-database-url
 tzdata==2024.2
@@ -156,9 +148,5 @@ urllib3==2.3.0
     # via
     #   botocore
     #   requests
-webencodings==0.5.1
-    # via
-    #   bleach
-    #   tinycss2
 whitenoise==6.8.2
     # via chipy_website (pyproject.toml)

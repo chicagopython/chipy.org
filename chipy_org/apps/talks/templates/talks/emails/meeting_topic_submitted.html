@@ -1,4 +1,4 @@
-{% load bleach_tags %}
+{% load nh3_tags %}
 
 <p>A meeting topic has been submitted:<p>
 
@@ -7,4 +7,4 @@
 <p>Presenters: {% for presenter in topic.presenters.all %}{{ presenter.name }} ({{ presenter.email }}) - {{ presenter.user.id }} {% endfor %}</p>
 <p>Meeting: {{ topic.meeting }}</p>
 <p>Length: {{ topic.length }}</p>
-<p>Description: {{ topic.description|bleach|safe }}</p>
+<p>Description: {{ topic.description|nh3|safe }}</p>

@@ -1,5 +1,5 @@
 {% load static %}
-{% load bleach_tags %}
+{% load nh3_tags %}
 <div class="talk row">
   <div class="col col-md-8 col-sm-9 col-xs-10">
     <span class="title"><a href="{% url 'past_topic' talk.id %}">{{ talk.title }}</a></span>
@@ -17,7 +17,7 @@
     {% if talk.slides_link %}<div><a href="{{ talk.slides_link }}">Slides Link</a></div>{% endif %}
     <div class="description">
       {% if talk.description %}
-      {{ talk.description|bleach|safe }}
+      {{ talk.description|nh3|safe }}
       {% endif %}
     </div>
   </div>

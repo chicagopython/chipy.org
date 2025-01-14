@@ -34,7 +34,7 @@ distlib==0.3.9
     # via virtualenv
 dj-database-url==2.3.0
     # via chipy_website (pyproject.toml)
-django==5.1.4
+django==5.1.5
     # via
     #   chipy_website (pyproject.toml)
     #   crispy-bootstrap5

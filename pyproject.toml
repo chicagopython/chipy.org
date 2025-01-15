@@ -90,7 +90,7 @@ exclude = [
     ".pytest_cache",
     ".pytype",
     ".ruff_cache",
-    ".venv/",
+    ".venv",
     ".vscode",
     "__pypackages__",
     "_build",

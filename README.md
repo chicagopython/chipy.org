@@ -93,19 +93,16 @@ If you would like to run tests for the app, run the following:
 
     make test
 
-Chipy.org uses Pylint to encourage good software development techniques.
-All Pylint checks must pass before merging code.
-If you would like to run the Pylint linting process, run the following:
-
-    make lint
-
-Chipy.org uses Black to have consistently formatted code. We also use isort to
-arrange import statements correctly. Code must be formatted before merging code.
+Chipy.org uses ruff to have consistently formatted code. We also use isort to
+arrange import statements correctly. Code should be formatted before merging code.
 If you would like to format code, run the following:
 
     make format
 
-Note: the command `make format` overwrites your files. Also, that command will format your entire local repo, not only the files that you may have created or edited. As a result, if it formats old, unformatted code, that will show up as a diff in your pull request. To see a preview of what formatted code would look without overwriting your files, run the following:
+Note: the command `make format` overwrites your files. 
+Also, that command will format your entire local repo, not only the files that you may have created or edited. 
+As a result, if it formats old, unformatted code, that will show up as a diff in your pull request. 
+To see a preview of what formatted code would look without overwriting your files, run the following:
 
     make format-check
 
@@ -160,3 +157,25 @@ regardless you can deploy a feature branch with the following command:
     # Deploy feature branch
     git push heroku feature/mybranch:master
 
+### Installing a new Package
+
+We use the pip-tools to manage our python dependencies.
+You will need a virtual environment using the correct python version and have pip-tools installed to update packages.
+
+To add a new python package add the package to the pyproject.toml.
+Now run the following from the project directory:
+
+    # Updates requirements.txt
+    pip-compile --output-file=requirements.txt pyproject.toml
+
+    # Update dev-requirments.txt
+    pip-compile --extra=dev --output-file=dev-requirements.txt pyproject.toml
+
+These `pip-compile` commands will update the requirements.txt and dev-requirements.txt respectively.
+If you are using a local .venv to help your editor support completions, run this command to sync the dev-requirments.
+
+    # Syncs the packages in the active pip-env
+    pip-sync dev-requirements.txt
+
+That's the basics.
+If you need to manage packages beyond this please see the `pip-tools` documentation at https://github.com/jazzband/pip-tools

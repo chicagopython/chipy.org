@@ -375,3 +375,10 @@ STORAGES = {
 SILENCED_SYSTEM_CHECKS = []
 if DEBUG:
     SILENCED_SYSTEM_CHECKS += ['django_recaptcha.recaptcha_test_key_error']
+
+from warnings import filterwarnings
+
+filterwarnings(
+    "ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated."
+)
+FORMS_URLFIELD_ASSUME_HTTPS = True

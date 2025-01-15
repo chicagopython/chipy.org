@@ -6,13 +6,13 @@ from .models import Announcement
 
 
 class CustomAnnoucementForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["text"].widget = TinyMCE()
-
+    class Meta:
+        model = Announcement
+        widgets = {"text": TinyMCE()}
+        exclude = []
 
 class AnnouncementAdmin(admin.ModelAdmin):
-    form = CustomAnnoucementForm     
+    form = CustomAnnoucementForm
     list_display = ["id", "active", "end_date", "headline", "created"]
     search_fields = [
         "id",

@@ -152,11 +152,6 @@ people deploying the site to Heroku.
     # Set environment variable on Heroku
     heroku config:set DEBUG=False
 
-### Tagging
-
-This repo uses date-based tagging as it is not a library (normally semver). To
-create a new tag run `make tag`. Tags should be created at every deploy.
-
 ### Heroku Testing
 
 It is recommended that you deploy to a personal Heroku account to test, but
@@ -165,12 +160,3 @@ regardless you can deploy a feature branch with the following command:
     # Deploy feature branch
     git push heroku feature/mybranch:master
 
-
-## Alternate Local Development - NOT AVAILABLE - PIPENV REMOVED
-
-You can use `make up-services` to start the background services
-locally. Then, if you copy `docker/docker.env` to `.env` you can
-use pipenv to run the service locally: `pipenv run python manage.py runserver`.
-
-If you develop locally you are on your own! All contributions must work in
-docker. This path requires Python and Pipenv installation knowledge.

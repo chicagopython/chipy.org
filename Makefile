@@ -1,6 +1,3 @@
-.PHONY: help
-date_tag=$(shell date +%Y%m%d%H%M)
-
 help:
 	@echo "Type make, then hit tab to see make options"
 
@@ -43,10 +40,6 @@ migrate:
 
 migrations:
 	docker compose exec web python manage.py makemigrations
-
-tag:
-	echo Making tag $(date_tag)
-	git tag -m $(date_tag) $(date_tag)
 
 test:
 	docker compose up -d

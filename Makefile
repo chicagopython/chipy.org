@@ -46,14 +46,14 @@ test:
 	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
 format:
-	docker compose exec web isort .
-	docker compose exec web ruff format .
 	docker compose exec web ruff check --fix .
+	docker compose exec web ruff format .
+	docker compose exec web isort .
 
 format-check:
-	docker compose exec web isort --check-only .
-	docker compose exec web ruff format --check .
 	docker compose exec web ruff check .
+	docker compose exec web ruff format --check .
+	docker compose exec web isort --check-only .
 
 setup: setup_env build
 

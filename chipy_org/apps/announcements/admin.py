@@ -11,6 +11,7 @@ class CustomAnnoucementForm(forms.ModelForm):
         widgets = {"text": TinyMCE()}
         exclude = []
 
+
 class AnnouncementAdmin(admin.ModelAdmin):
     form = CustomAnnoucementForm
     list_display = ["id", "active", "end_date", "headline", "created"]

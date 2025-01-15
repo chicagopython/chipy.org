@@ -29,14 +29,14 @@ class TopicInline(admin.StackedInline):
     extra = 0
 
     def formfield_for_dbfield(self, db_field, **kwargs):
-        if db_field.name == 'description':
-            kwargs['widget'] = TinyMCE()
-        return super().formfield_for_dbfield(db_field,**kwargs)
+        if db_field.name == "description":
+            kwargs["widget"] = TinyMCE()
+        return super().formfield_for_dbfield(db_field, **kwargs)
 
 
 class CustomTopicForm(forms.ModelForm):
     class Meta:
-        model=Topic
+        model = Topic
         widgets = {"description": TinyMCE()}
         exclude = []
 
@@ -99,7 +99,7 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
-        widgets = {'description': TinyMCE(), "metup_id":admin.widgets.AdminTextInputWidget()}
+        widgets = {"description": TinyMCE(), "metup_id": admin.widgets.AdminTextInputWidget()}
         exclude = []  # pylint: disable=modelform-uses-exclude
 
 
@@ -171,10 +171,12 @@ class RSVPAdmin(admin.ModelAdmin):
         "status",
     ]
 
+
 class MeetingTypeForm(forms.ModelForm):
     class Meta:
-        widgets = {'description': TinyMCE()}
-    
+        widgets = {"description": TinyMCE()}
+
+
 class MeetingTypeAdmin(admin.ModelAdmin):
     form = MeetingTypeForm
     list_display = ["id", "name", "slug"]

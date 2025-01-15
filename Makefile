@@ -20,7 +20,6 @@ up-services:
 down:
 	docker compose down
 
-
 shell:
 	@echo "Opening shell in docker container"
 	@echo "Use this shell to run python and django commands normally"
@@ -46,16 +45,15 @@ test:
 	docker compose exec web python manage.py collectstatic --noinput
 	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
-lint:
-	docker compose exec web pylint -j 0 chipy_org/
-
 format:
 	docker compose exec web isort .
-	docker compose exec web black .
+	docker compose exec web ruff format .
+	docker compose exec web ruff check --fix .
 
 format-check:
 	docker compose exec web isort --check-only .
-	docker compose exec web black --diff .
+	docker compose exec web ruff format --check .
+	docker compose exec web ruff check .
 
 setup: setup_env build
 

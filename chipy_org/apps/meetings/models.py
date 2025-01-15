@@ -88,16 +88,14 @@ class MeetingType(CommonModel):
 
 
 class MeetingQuerySet(models.QuerySet):
-
     def future_published(self, grace_period=3):
         """
         Get published meetings that are in the future, with a 3 hour grace period
         to account for any in-progress meeting.
         """
         return self.filter(
-            status="published", 
-            when__gt=(
-                datetime.datetime.now() - datetime.timedelta(hours=grace_period))
+            status="published",
+            when__gt=(datetime.datetime.now() - datetime.timedelta(hours=grace_period)),
         ).order_by("when")
 
     def future_published_main(self, grace_period=3):
@@ -111,19 +109,21 @@ class MeetingQuerySet(models.QuerySet):
         to account for any in-progress meeting.
         """
         return self.filter(
-            status="published", 
-            when__lt=(datetime.datetime.now() - datetime.timedelta(hours=grace_period))
+            status="published",
+            when__lt=(datetime.datetime.now() - datetime.timedelta(hours=grace_period)),
         ).order_by("-when")
 
-    def past_year_published(self, ):
+    def past_year_published(
+        self,
+    ):
         """
         Get published meetings within the past year
         """
         return self.filter(
             status="published",
-            when__range=((
-                datetime.date.today() - 
-                datetime.timedelta(days=365), datetime.date.today()))
+            when__range=(
+                (datetime.date.today() - datetime.timedelta(days=365), datetime.date.today())
+            ),
         )
 
     def next_meeting(self):
@@ -180,8 +180,7 @@ class Meeting(CommonModel):
         null=True,
         blank=True,
         help_text=(
-            "If you fill out this field, this 'custom_title'"
-            "will show up as the title of the event."
+            "If you fill out this field, this 'custom_title'will show up as the title of the event."
         ),
     )
     description = models.TextField(blank=True, null=True)
@@ -317,7 +316,6 @@ class TopicsQuerySet(models.QuerySet):
 
 
 class Topic(CommonModel):
-
     class StatusChoice:
         SUBMITTED = "submitted"  # initial
         BACKLOG = "backlog"  # we are keeping it if we run out
@@ -349,7 +347,7 @@ class Topic(CommonModel):
         blank=True,
         null=True,
         related_name="topics",
-        help_text=("Please select the meeting that you'd like to " "target your talk for."),
+        help_text=("Please select the meeting that you'd like to target your talk for."),
         on_delete=models.CASCADE,
     )
     experience_level = models.CharField(
@@ -363,10 +361,11 @@ class Topic(CommonModel):
     length = models.IntegerField(blank=True, null=True)
     embed_video = models.TextField(blank=True, null=True)
     description = models.TextField(
-        blank=True, null=True,
-        help_text="This will be the public talk description."
+        blank=True, null=True, help_text="This will be the public talk description."
     )
-    description = models.TextField(blank=True, null=True, help_text="This will be the public talk description.")
+    description = models.TextField(
+        blank=True, null=True, help_text="This will be the public talk description."
+    )
 
     requested_reviewer = models.EmailField(
         "Reviewer Email",

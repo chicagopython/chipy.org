@@ -5,7 +5,6 @@ from .models import Affiliation, JobPost
 
 
 class JobPostAdmin(admin.ModelAdmin):
-
     list_display = (
         "position",
         "id",

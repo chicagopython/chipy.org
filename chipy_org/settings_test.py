@@ -1,5 +1,4 @@
-# pylint: disable=unused-wildcard-import,wildcard-import
-from .settings import *
+from .settings import *  # noqa: F403
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:", "TEST": {}}}
 DEBUG = True
@@ -9,8 +8,8 @@ ENVELOPE_EMAIL_RECIPIENTS = [
     "admin@example.com",
 ]
 
-if "chipy_org.dev_utils" not in INSTALLED_APPS:
-    INSTALLED_APPS.append("chipy_org.dev_utils")
+if "chipy_org.dev_utils" not in INSTALLED_APPS:  # noqa: F405
+    INSTALLED_APPS.append("chipy_org.dev_utils")  # noqa: F405
 
 SECRET_KEY = "somesecretkeyfordjangogoeshere"
 SECURE_SSL_REDIRECT = False

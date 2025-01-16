@@ -30,7 +30,7 @@ urlpatterns = [
     path("sponsors/", include("chipy_org.apps.sponsors.urls")),
     path("job-board/", include("chipy_org.apps.job_board.urls")),
     path("talks/", include("chipy_org.apps.talks.urls")),
-    path('tinymce/', include('tinymce.urls')),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 # Would love a back tracking url resolver

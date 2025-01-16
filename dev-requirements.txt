@@ -93,6 +93,8 @@ idna==3.10
     # via requests
 iniconfig==2.0.0
     # via pytest
+isort==5.13.2
+    # via chipy_website (pyproject.toml)
 jmespath==1.0.1
     # via
     #   boto3
@@ -156,6 +158,8 @@ requests==2.32.3
     #   social-auth-core
 requests-oauthlib==2.0.0
     # via social-auth-core
+ruff==0.9.1
+    # via chipy_website (pyproject.toml)
 s3transfer==0.10.4
     # via boto3
 six==1.17.0

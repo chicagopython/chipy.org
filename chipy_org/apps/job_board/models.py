@@ -50,7 +50,6 @@ class Affiliation(CommonModel):
 
 
 class JobPost(CommonModel):
-
     __original_status = None
 
     company_name = models.CharField(max_length=MAX_LENGTH)
@@ -123,7 +122,6 @@ class JobPost(CommonModel):
         return f"{self.position} at {self.company_name}"
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
-
         if self.status == "AP":
             # If post is approved and the approval_date hasn't been set yet,
             # set the approval_date.
@@ -139,7 +137,6 @@ class JobPost(CommonModel):
 
     @property
     def days_elapsed(self):
-
         # computes days elapsed from when job post is put in 'approved' status
         if self.status == "AP" and self.approval_date:
             current_datetime = datetime.datetime.now()
@@ -155,7 +152,6 @@ class JobPost(CommonModel):
 
     @property
     def expiration_date(self):
-
         # expiration_date shows up as a field in the admin panel.
         # If post is approved and the approval_date is set,
         # compute the expiration_date.

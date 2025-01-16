@@ -22,15 +22,12 @@ from .models import JobPost
 
 @login_required
 def create_job_post(request):
-
     if request.method == "POST":
-
         job_post = JobPost(contact=request.user)
         job_post_form = JobPostForm(request.POST, instance=job_post)
         job_user_form = JobUserForm(request.POST, instance=request.user)
 
         if job_post_form.is_valid() and job_user_form.is_valid():
-
             job_post_form.save()
             job_user_form.save()
 
@@ -61,20 +58,16 @@ def create_job_post(request):
 
 @login_required
 def update_job_post(request, pk):  # pylint: disable=invalid-name
-
     job_post = get_object_or_404(JobPost, pk=pk)
 
     # Make sure that the user owns this post.
     # If the use didn't create this post, they won't have permission to update it.
     if job_post.contact == request.user:
-
         if request.method == "POST":
-
             job_post_form = JobPostForm(request.POST, instance=job_post)
             job_user_form = JobUserForm(request.POST, instance=request.user)
 
             if job_post_form.is_valid() and job_user_form.is_valid():
-
                 job_post_form.save()
                 job_user_form.save()
 
@@ -83,7 +76,6 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
                 )
 
         else:
-
             job_post_form = JobPostForm(instance=job_post)
             job_user_form = JobUserForm(instance=request.user)
 
@@ -98,7 +90,6 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
         )
 
     else:
-
         # Permission to see this page is denied since the person trying to
         # access it isn't the correct user.
         raise PermissionDenied()
@@ -106,14 +97,11 @@ def update_job_post(request, pk):  # pylint: disable=invalid-name
 
 @login_required
 def delete_job_post(request, pk):  # pylint: disable=invalid-name
-
     job_post = get_object_or_404(JobPost, pk=pk)
 
     # Make sure that the user owns this post and has the right to delete it.
     if job_post.contact == request.user:
-
         if request.method == "POST":
-
             # If the user deletes the job post before the admin approves/rejects it, send an
             # email to the admin telling them this.
             if job_post.status == "SU":
@@ -129,25 +117,21 @@ def delete_job_post(request, pk):  # pylint: disable=invalid-name
             )
 
         else:
-
             return render(request, "job_board/delete_job_post.html", {"job_post": job_post})
 
     else:
-
         # Permission to see this page is denied since the person trying to
         # access it isn't the correct user.
         raise PermissionDenied()
 
 
 class AfterSubmitJobPost(LoginRequiredMixin, ListView):
-
     model = JobPost
     context_object_name = "job_posts"
     template_name = "job_board/after_submit_job_post.html"
     paginate_by = 6
 
     def get(self, request, *args, **kwargs):
-
         action = request.GET.get("action")
 
         if action == "create":
@@ -210,7 +194,6 @@ class JobPostDetail(DetailView):
 
 
 def url_with_query_string(path, **kwargs):
-
     # This function is meant to be used with reverse() and kwargs
     # to create url with query string parameters.
     # For example,

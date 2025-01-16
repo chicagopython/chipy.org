@@ -38,7 +38,6 @@ class SponsorGroup(models.Model):
 
 
 class Sponsor(models.Model):
-
     name = models.CharField(max_length=80)
     slug = models.SlugField(max_length=80)
     url = models.URLField(blank=True, null=True)

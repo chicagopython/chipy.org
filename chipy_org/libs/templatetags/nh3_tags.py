@@ -46,7 +46,7 @@ def get_nh3_default_options() -> dict[str, Any]:
             if setting == "NH3_ALLOWED_TAGS":
                 attr = set(attr)
             if setting == "NH3_ALLOWED_URL_SCHEMES":
-                attr = set(attr)    
+                attr = set(attr)
             if setting == "NH3_ALLOWED_ATTRIBUTES":
                 attr = set(attr)
 

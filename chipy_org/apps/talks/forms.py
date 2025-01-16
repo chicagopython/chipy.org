@@ -44,7 +44,7 @@ class TopicForm(forms.ModelForm):
 
     class Meta:
         model = Topic
-        widgets = {'description': TinyMCE()}
+        widgets = {"description": TinyMCE()}
         fields = (
             "title",
             "name",

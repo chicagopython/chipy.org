@@ -55,6 +55,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "freezegun",
+    "isort",
+    "ruff",
     "pre-commit",
     "pytest",
     "pytest-django",
@@ -76,7 +78,7 @@ include_trailing_comma = true
 line_length = 100
 multi_line_output = 3
 skip = 'manage.py'
-skip_glob = '**/migrations/*'
+skip_glob = ["*/.venv/*", "*/migrations/*"]
 
 [tool.ruff]
 line-length = 100

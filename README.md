@@ -169,10 +169,10 @@ Now run the following from the project directory:
     pip-compile --output-file=requirements.txt pyproject.toml
 
     # Update dev-requirments.txt
-    pip-compile --extra=dev --output-file=dev-requirements.txt pyproject.toml
+    pip-compile --constraint=requirements.txt --extra=dev --output-file=dev-requirements.txt pyproject.toml
 
 These `pip-compile` commands will update the requirements.txt and dev-requirements.txt respectively.
-If you are using a local .venv to help your editor support completions, run this command to sync the dev-requirments.
+If you are using a local .venv to help your editor support completions, run this command to sync the dev-requirements.
 
     # Syncs the packages in the active pip-env
     pip-sync dev-requirements.txt

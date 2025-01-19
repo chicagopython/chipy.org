@@ -63,6 +63,5 @@ superuser:
 tail-logs:
 	docker compose logs -f web
 
-
 dev-data:
 	docker compose exec web python manage.py makedevdata

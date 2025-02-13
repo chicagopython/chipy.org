@@ -5,7 +5,6 @@ from chipy_org.libs.models import CommonModel
 
 
 class SubGroup(CommonModel):
-
     name = models.CharField(max_length=64)
     image = models.ImageField(
         upload_to="group_images",

@@ -16,7 +16,6 @@ class Command(BaseCommand):
     help = "Adds initial data to the site for development and testing purposes."
 
     def handle(self, *args, **options):
-
         if not settings.DEBUG:
             print(
                 """

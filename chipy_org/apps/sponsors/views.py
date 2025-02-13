@@ -1,6 +1,3 @@
-import datetime
-from datetime import date
-
 from django.views.generic import DetailView, ListView
 
 from ..meetings.models import Meeting
@@ -29,7 +26,6 @@ class SponsorListView(ListView):
         )
 
     def get_context_data(self, **kwargs):  # pylint: disable=arguments-differ
-
         meeting_queryset = Meeting.objects.past_year_published()
         meeting_attendees = 0
         for meeting in meeting_queryset:

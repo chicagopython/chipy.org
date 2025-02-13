@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+from warnings import filterwarnings
 
 import dj_database_url
 
@@ -237,7 +238,7 @@ INSTALLED_APPS = [
     # Third party
     "django_gravatar",
     "django_ical",
-    'django_recaptcha',
+    "django_recaptcha",
     "flatblocks",
     "gunicorn",
     "honeypot",
@@ -331,7 +332,7 @@ NH3_ALLOWED_TAGS = [
 ]
 NH3_ALLOWED_ATTRIBUTES = ["href", "title", "style", "rel", "img", "src", "alt"]
 NH3_ALLOWED_URL_SCHEMES = ["http", "https", "data"]
-NH3_STRIP_COMMENTS = True # default, listed here for documentation
+NH3_STRIP_COMMENTS = True  # default, listed here for documentation
 
 RECAPTCHA_PUBLIC_KEY = env_var("NORECAPTCHA_SITE_KEY")
 RECAPTCHA_PRIVATE_KEY = env_var("NORECAPTCHA_SECRET_KEY")
@@ -374,4 +375,7 @@ STORAGES = {
 
 SILENCED_SYSTEM_CHECKS = []
 if DEBUG:
-    SILENCED_SYSTEM_CHECKS += ['django_recaptcha.recaptcha_test_key_error']
+    SILENCED_SYSTEM_CHECKS += ["django_recaptcha.recaptcha_test_key_error"]
+
+filterwarnings("ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated.")
+FORMS_URLFIELD_ASSUME_HTTPS = True

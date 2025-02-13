@@ -1,6 +1,3 @@
-.PHONY: help
-date_tag=$(shell date +%Y%m%d%H%M)
-
 help:
 	@echo "Type make, then hit tab to see make options"
 
@@ -23,7 +20,6 @@ up-services:
 down:
 	docker compose down
 
-
 shell:
 	@echo "Opening shell in docker container"
 	@echo "Use this shell to run python and django commands normally"
@@ -44,25 +40,20 @@ migrate:
 migrations:
 	docker compose exec web python manage.py makemigrations
 
-tag:
-	echo Making tag $(date_tag)
-	git tag -m $(date_tag) $(date_tag)
-
 test:
 	docker compose up -d
 	docker compose exec web python manage.py collectstatic --noinput
 	docker compose exec web pytest -v chipy_org/ -o cache_dir=/var/app/.my_cache_dir
 
-lint:
-	docker compose exec web pylint -j 0 chipy_org/
-
 format:
+	docker compose exec web ruff check --fix .
+	docker compose exec web ruff format .
 	docker compose exec web isort .
-	docker compose exec web black .
 
 format-check:
+	docker compose exec web ruff check .
+	docker compose exec web ruff format --check .
 	docker compose exec web isort --check-only .
-	docker compose exec web black --diff .
 
 setup: setup_env build
 
@@ -71,7 +62,6 @@ superuser:
 
 tail-logs:
 	docker compose logs -f web
-
 
 dev-data:
 	docker compose exec web python manage.py makedevdata

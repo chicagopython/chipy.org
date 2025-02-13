@@ -1,6 +1,5 @@
 import abc
 import csv
-import datetime
 import logging
 
 from django.conf import settings
@@ -65,7 +64,7 @@ class InitialRSVPMixin(metaclass=abc.ABCMeta):
     def add_extra_context(self, context):
         meeting = self.get_meeting()
         context["next_meeting"] = meeting
-        
+
         if meeting:
             self.get_initial(meeting)
             context["form"] = self.get_form(request=self.request, initial=self.initial)

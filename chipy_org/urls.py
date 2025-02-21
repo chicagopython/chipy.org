@@ -1,6 +1,7 @@
 import django.contrib.auth.views
 import django.views
 from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
@@ -31,22 +32,22 @@ urlpatterns = [
     path("job-board/", include("chipy_org.apps.job_board.urls")),
     path("talks/", include("chipy_org.apps.talks.urls")),
     path("tinymce/", include("tinymce.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Would love a back tracking url resolver
 urlpatterns += [
     path("api/meetings/", MeetingListAPIView.as_view()),
     path("api/meetings/<int:meeting_id>/meetup/sync", MeetingMeetupSync.as_view()),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.SERVE_MEDIA:
     urlpatterns += [
         path(
-            r"media/<path:path>",
+            "media/<path:path>",
             django.views.static.serve,
             {"document_root": settings.MEDIA_ROOT, "show_indexes": True},
         ),
     ]
     urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = chipy_org.apps.main.views.custom_404

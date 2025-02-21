@@ -10,11 +10,7 @@ from chipy_org.libs.models import CommonModel
 MAX_LENGTH = 100
 NUM_DAYS_T0_EXPIRE = 60
 
-STATUS_CHOICES = [
-    ("SU", "Submitted"),
-    ("AP", "Approved"),
-    ("RE", "Rejected"),
-]
+STATUS_CHOICES = [("SU", "Submitted"), ("AP", "Approved"), ("RE", "Rejected"), ("NA", "Filled")]
 
 LOCATION_CHOICES = [
     ("CH", "Chicago"),
@@ -117,6 +113,9 @@ class JobPost(CommonModel):
     is_from_recruiting_agency = models.BooleanField(
         default=False, verbose_name="Is this posting from a recruiting agency?"
     )
+
+    is_filled = models.BooleanField(default=False)
+    filled_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.position} at {self.company_name}"

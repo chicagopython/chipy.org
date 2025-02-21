@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+from pathlib import Path
 from warnings import filterwarnings
 
 import dj_database_url
@@ -60,6 +61,12 @@ ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(
 
 
 MANAGERS = ADMINS
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CHIPY_BACKUP_TALK_REVIEWERS = env_list("CHIPY_BACKUP_TALK_REVIEWERS")
 
@@ -239,6 +246,7 @@ INSTALLED_APPS = [
     "django_gravatar",
     "django_ical",
     "django_recaptcha",
+    "custom_flatpages",
     "flatblocks",
     "gunicorn",
     "honeypot",
@@ -334,8 +342,9 @@ NH3_ALLOWED_ATTRIBUTES = ["href", "title", "style", "rel", "img", "src", "alt"]
 NH3_ALLOWED_URL_SCHEMES = ["http", "https", "data"]
 NH3_STRIP_COMMENTS = True  # default, listed here for documentation
 
-RECAPTCHA_PUBLIC_KEY = env_var("NORECAPTCHA_SITE_KEY")
-RECAPTCHA_PRIVATE_KEY = env_var("NORECAPTCHA_SECRET_KEY")
+RECAPTCHA_PUBLIC_KEY = "6LeRWNoqAAAAAAGajL9POxfb3HQ7Ymee0mwArQcF"
+RECAPTCHA_PRIVATE_KEY = "6LeRWNoqAAAAAD70FP1pnTD1TG5DjA8B9qjbDJWh"
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 

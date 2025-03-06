@@ -30,7 +30,7 @@ defusedxml==0.8.0rc2
     #   social-auth-core
 dj-database-url==2.3.0
     # via chipy_website (pyproject.toml)
-django==5.1.5
+django==5.1.7
     # via
     #   chipy_website (pyproject.toml)
     #   crispy-bootstrap5

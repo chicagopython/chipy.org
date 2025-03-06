@@ -19,8 +19,10 @@ from .email import (
 )
 from .models import JobPost
 
+
 def get_queryset(self):
     return self.filter_by_show_filled(JobPost.objects.all())
+
 
 def filter_by_show_filled(self, queryset):
     """Applies the 'show_filled' filter based on request parameters."""

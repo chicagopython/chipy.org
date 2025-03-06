@@ -10,6 +10,8 @@
 
     {% if flatpage.header_image %}
         <img src="{{ flatpage.header_image.url }}" alt="{{ flatpage.title }} Header Image" class="flatpage-header-image">
+    {% else %}
+        <img src="{% static 'images/default_flatpage.jpg' %}" alt="Default Header Image" class="flatpage-header-image">
     {% endif %}
 
     <div class="flatpage">

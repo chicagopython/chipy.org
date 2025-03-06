@@ -71,6 +71,24 @@ CHICAGO_ORGANIZER_EMAILS = env_var("CHICAGO_ORGANIZER_EMAILS", "").split(",")
 DATABASES = {"default": dj_database_url.config(default="postgres://localhost:5432/chipy_org")}
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:", "TEST": {}}}
+DDEBUG = True
+ADMINS = ["admin@chipy.org"]
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ENVELOPE_EMAIL_RECIPIENTS = [
+    "admin@example.com",
+]
+
+
+
+SECRET_KEY = "somesecretkeyfordjangogoeshere"
+SECURE_SSL_REDIRECT = False
+
+NORECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+NORECAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+
+CAPTCHA_TEST_MODE = True
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -261,6 +279,8 @@ INSTALLED_APPS = [
     "chipy_org.apps.subgroups",
     "chipy_org.apps.talks",
     "chipy_org.libs",
+    #Poll.config 
+    'polls',
 ]
 if DEBUG:
     INSTALLED_APPS.append("chipy_org.dev_utils")
@@ -334,8 +354,20 @@ NH3_ALLOWED_ATTRIBUTES = ["href", "title", "style", "rel", "img", "src", "alt"]
 NH3_ALLOWED_URL_SCHEMES = ["http", "https", "data"]
 NH3_STRIP_COMMENTS = True  # default, listed here for documentation
 
-RECAPTCHA_PUBLIC_KEY = env_var("NORECAPTCHA_SITE_KEY")
-RECAPTCHA_PRIVATE_KEY = env_var("NORECAPTCHA_SECRET_KEY")
+# Fetch the keys and ensure they're strings
+RECAPTCHA_PUBLIC_KEY = str(os.getenv("NORECAPTCHA_SITE_KEY", "6Le_I9IqAAAAAKO9hELN4TsF0nxZSa1OmXgvnAWi"))
+RECAPTCHA_PRIVATE_KEY = str(os.getenv("NORECAPTCHA_SECRET_KEY", "6Le_I9IqAAAAAEFc5BHaQlo4SmwZSvKmQoj1Vew3"))
+
+# Debugging: Check if keys are loading correctly
+print(f"Loaded RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY!r}") 
+
+# Ensure it raises an error only if it's explicitly None (not just empty)
+if RECAPTCHA_PRIVATE_KEY is None or RECAPTCHA_PRIVATE_KEY == "":
+    raise ValueError("RECAPTCHA_PRIVATE_KEY must be a valid non-empty string")
+
+
+if not isinstance(RECAPTCHA_PRIVATE_KEY, str):
+    raise ValueError("RECAPTCHA_PRIVATE_KEY must be a string")
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 

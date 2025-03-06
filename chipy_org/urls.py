@@ -31,6 +31,9 @@ urlpatterns = [
     path("job-board/", include("chipy_org.apps.job_board.urls")),
     path("talks/", include("chipy_org.apps.talks.urls")),
     path("tinymce/", include("tinymce.urls")),
+    
+    path("polls/", include("polls.urls")),
+    path("admin/", admin.site.urls),
 ]
 
 # Would love a back tracking url resolver

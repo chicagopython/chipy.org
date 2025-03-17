@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+from pathlib import Path
 from warnings import filterwarnings
 
 import dj_database_url
@@ -61,6 +62,12 @@ ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(
 
 MANAGERS = ADMINS
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 CHIPY_BACKUP_TALK_REVIEWERS = env_list("CHIPY_BACKUP_TALK_REVIEWERS")
 
 CHIPY_TOPIC_SUBMIT_EMAILS = env_var("CHIPY_TOPIC_SUBMIT_EMAILS", "").split(",")
@@ -116,7 +123,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-USE_S3 = env_var("USE_S3", True)
+USE_S3 = env_var("USE_S3", False)
 
 if USE_S3:
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
@@ -257,6 +264,7 @@ INSTALLED_APPS = [
     "django_gravatar",
     "django_ical",
     "django_recaptcha",
+    "custom_flatpages",
     "flatblocks",
     "gunicorn",
     "honeypot",
@@ -354,20 +362,8 @@ NH3_ALLOWED_ATTRIBUTES = ["href", "title", "style", "rel", "img", "src", "alt"]
 NH3_ALLOWED_URL_SCHEMES = ["http", "https", "data"]
 NH3_STRIP_COMMENTS = True  # default, listed here for documentation
 
-# Fetch the keys and ensure they're strings
-RECAPTCHA_PUBLIC_KEY = str(os.getenv("NORECAPTCHA_SITE_KEY", "6Le_I9IqAAAAAKO9hELN4TsF0nxZSa1OmXgvnAWi"))
-RECAPTCHA_PRIVATE_KEY = str(os.getenv("NORECAPTCHA_SECRET_KEY", "6Le_I9IqAAAAAEFc5BHaQlo4SmwZSvKmQoj1Vew3"))
-
-# Debugging: Check if keys are loading correctly
-print(f"Loaded RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY!r}") 
-
-# Ensure it raises an error only if it's explicitly None (not just empty)
-if RECAPTCHA_PRIVATE_KEY is None or RECAPTCHA_PRIVATE_KEY == "":
-    raise ValueError("RECAPTCHA_PRIVATE_KEY must be a valid non-empty string")
-
-
-if not isinstance(RECAPTCHA_PRIVATE_KEY, str):
-    raise ValueError("RECAPTCHA_PRIVATE_KEY must be a string")
+RECAPTCHA_PUBLIC_KEY = env_var("NORECAPTCHA_SITE_KEY")
+RECAPTCHA_PRIVATE_KEY = env_var("NORECAPTCHA_SECRET_KEY")
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 

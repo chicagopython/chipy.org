@@ -1,47 +1,28 @@
 {% extends "job_board/base.html" %}
 
 {% block body %}
-
 <h2>
     {% if job_post.is_sponsor %}
         Featured:
     {% endif %}
+    {{ job_post.position }} at {{ job_post.company_name }}
+</h2>
 
-    {{job_post.position}} at {{job_post.company_name}}</h2>
+<p><b>Location:</b> {{ job_post.get_location_display }}</p>
+<p><b>Job Type:</b> {{ job_post.get_job_type_display }}</p>
+<p><b>Description:</b> {{ job_post.description|linebreaks }}</p>
+<p><b>Company Website:</b> <a href="{{ job_post.company_website }}" target="_blank">{{ job_post.company_website }}</a></p>
+<p><b>Job Posted by:</b> {{ job_post.contact.first_name }} {{ job_post.contact.last_name }}</p>
 
-<p>
-
-<b>Location:</b> {{job_post.get_location_display}}  
-
-<p>
-
-<b>Job Type:</b> {{job_post.get_job_type_display}}
-
-<p>
-
-<b>Description:</b> {{ job_post.description|linebreaks }}
-
-<p>
-
-<b>Company Website:</b> {{job_post.company_website}}
-
-<p>
-
-<b>Job Posted by:</b> {{job_post.contact.first_name}} {{job_post.contact.last_name}}
-
-<p>
 {% if job_post.is_from_recruiting_agency %}
-    <b>This posting is from a recruiting agency.</b>
+    <p><b>This posting is from a recruiting agency.</b></p>
 {% endif %}
 
 {% if job_post.affiliation %}
-    <p><b>This posting is affiliated with</b> <a href="{{job_post.affiliation.url}}">{{ job_post.affiliation.description }}</a>
+    <p><b>This posting is affiliated with</b> 
+    <a href="{{ job_post.affiliation.url }}">{{ job_post.affiliation.description }}</a></p>
 {% endif %}
 
-<p>
-
-<b>How To Apply:</b> {{ job_post.how_to_apply|linebreaks }}
-
-
+<p><b>How To Apply:</b> {{ job_post.how_to_apply|linebreaks }}</p>
 
 {% endblock body %}

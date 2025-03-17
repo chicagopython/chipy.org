@@ -87,7 +87,6 @@ ENVELOPE_EMAIL_RECIPIENTS = [
 ]
 
 
-
 SECRET_KEY = "somesecretkeyfordjangogoeshere"
 SECURE_SSL_REDIRECT = False
 
@@ -287,8 +286,8 @@ INSTALLED_APPS = [
     "chipy_org.apps.subgroups",
     "chipy_org.apps.talks",
     "chipy_org.libs",
-    #Poll.config 
-    'polls',
+    # Poll.config
+    "polls",
 ]
 if DEBUG:
     INSTALLED_APPS.append("chipy_org.dev_utils")

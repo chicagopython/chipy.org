@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+from pathlib import Path
 from warnings import filterwarnings
 
 import dj_database_url
@@ -61,6 +62,12 @@ ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(
 
 MANAGERS = ADMINS
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 CHIPY_BACKUP_TALK_REVIEWERS = env_list("CHIPY_BACKUP_TALK_REVIEWERS")
 
 CHIPY_TOPIC_SUBMIT_EMAILS = env_var("CHIPY_TOPIC_SUBMIT_EMAILS", "").split(",")
@@ -70,6 +77,23 @@ CHICAGO_ORGANIZER_EMAILS = env_var("CHICAGO_ORGANIZER_EMAILS", "").split(",")
 # dj_database_url will pull from the DATABASE_URL environment variable
 DATABASES = {"default": dj_database_url.config(default="postgres://localhost:5432/chipy_org")}
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:", "TEST": {}}}
+DDEBUG = True
+ADMINS = ["admin@chipy.org"]
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ENVELOPE_EMAIL_RECIPIENTS = [
+    "admin@example.com",
+]
+
+
+SECRET_KEY = "somesecretkeyfordjangogoeshere"
+SECURE_SSL_REDIRECT = False
+
+NORECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+NORECAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+
+CAPTCHA_TEST_MODE = True
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -98,7 +122,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-USE_S3 = env_var("USE_S3", True)
+USE_S3 = env_var("USE_S3", False)
 
 if USE_S3:
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
@@ -239,6 +263,7 @@ INSTALLED_APPS = [
     "django_gravatar",
     "django_ical",
     "django_recaptcha",
+    "custom_flatpages",
     "flatblocks",
     "gunicorn",
     "honeypot",
@@ -261,6 +286,8 @@ INSTALLED_APPS = [
     "chipy_org.apps.subgroups",
     "chipy_org.apps.talks",
     "chipy_org.libs",
+    # Poll.config
+    "polls",
 ]
 if DEBUG:
     INSTALLED_APPS.append("chipy_org.dev_utils")

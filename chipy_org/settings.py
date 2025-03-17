@@ -105,7 +105,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-USE_S3 = env_var("USE_S3", True)
+USE_S3 = env_var("USE_S3", False)
 
 if USE_S3:
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
@@ -342,9 +342,8 @@ NH3_ALLOWED_ATTRIBUTES = ["href", "title", "style", "rel", "img", "src", "alt"]
 NH3_ALLOWED_URL_SCHEMES = ["http", "https", "data"]
 NH3_STRIP_COMMENTS = True  # default, listed here for documentation
 
-RECAPTCHA_PUBLIC_KEY = "6LeRWNoqAAAAAAGajL9POxfb3HQ7Ymee0mwArQcF"
-RECAPTCHA_PRIVATE_KEY = "6LeRWNoqAAAAAD70FP1pnTD1TG5DjA8B9qjbDJWh"
-SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
+RECAPTCHA_PUBLIC_KEY = os.getenv("NORECAPTCHA_SITE_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("NORECAPTCHA_SECRET_KEY")
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 

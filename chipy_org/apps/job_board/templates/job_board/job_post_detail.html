@@ -1,21 +1,6 @@
 {% extends "job_board/base.html" %}
 
 {% block body %}
-
-<a href="?show_filled=true">Show Filled Jobs</a>
-
-<ul>
-    {% for job in jobs %}
-        <li>{{ job.title }} - 
-            {% if job.is_filled %}
-                Filled on {{ job.filled_date }}
-            {% else %}
-                Open
-            {% endif %}
-        </li>
-    {% endfor %}
-</ul>
-
 <h2>
     {% if job_post.is_sponsor %}
         Featured:

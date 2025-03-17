@@ -2,6 +2,7 @@
 # Django settings for account project
 
 import os
+from pathlib import Path
 from warnings import filterwarnings
 
 import dj_database_url
@@ -31,7 +32,7 @@ def env_list(key, defaults=None, delimiter=","):
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = env_var("DEBUG", False)
+DEBUG = env_var("DEBUG", True)
 
 ALLOWED_HOSTS = [
     "chipy.org",
@@ -60,6 +61,12 @@ ADMINS = [(admin.split("@")[0], admin) for admin in env_var("ADMINS", "").split(
 
 
 MANAGERS = ADMINS
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CHIPY_BACKUP_TALK_REVIEWERS = env_list("CHIPY_BACKUP_TALK_REVIEWERS")
 
@@ -108,9 +115,9 @@ if USE_S3:
     AWS_HEADERS = {
         "Cache-Control": "max-age=86400",
     }
-    # STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
     # these next two aren't used, but staticfiles will complain without them
-    # STATIC_URL = f"https://{os.environ['AWS_STORAGE_BUCKET_NAME']}.s3.amazonaws.com/static/"
+    STATIC_URL = f"https://{os.environ['AWS_STORAGE_BUCKET_NAME']}.s3.amazonaws.com/static/"
 else:
     MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, "mediafiles"))
 
@@ -334,8 +341,9 @@ NH3_ALLOWED_ATTRIBUTES = ["href", "title", "style", "rel", "img", "src", "alt"]
 NH3_ALLOWED_URL_SCHEMES = ["http", "https", "data"]
 NH3_STRIP_COMMENTS = True  # default, listed here for documentation
 
-RECAPTCHA_PUBLIC_KEY = env_var("NORECAPTCHA_SITE_KEY")
-RECAPTCHA_PRIVATE_KEY = env_var("NORECAPTCHA_SECRET_KEY")
+RECAPTCHA_PUBLIC_KEY = os.getenv("NORECAPTCHA_SITE_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("NORECAPTCHA_SECRET_KEY")
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 
 MEETUP_API_KEY = env_var("MEETUP_API_KEY")
 

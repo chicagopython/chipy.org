@@ -20,6 +20,18 @@ from .email import (
 from .models import JobPost
 
 
+def get_queryset(self):
+    return self.filter_by_show_filled(JobPost.objects.all())
+
+
+def filter_by_show_filled(self, queryset):
+    """Applies the 'show_filled' filter based on request parameters."""
+    show_filled = self.request.GET.get("show_filled")
+    if show_filled:
+        return queryset
+    return queryset.filter(is_filled=False)
+
+
 @login_required
 def create_job_post(request):
     if request.method == "POST":
@@ -169,7 +181,7 @@ class JobPostList(ListView):
     template_name = "job_board/job_post_list.html"
     ordering = ("-is_sponsor", "-approval_date")
     paginate_by = 8
-    queryset = JobPost.approved_and_active
+    queryset = JobPost.approved_and_active.filter(is_filled=False)
 
 
 class JobPostDetail(DetailView):

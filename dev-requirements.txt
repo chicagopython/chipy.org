@@ -120,10 +120,6 @@ djangorestframework==3.15.2
     # via
     #   -c requirements.txt
     #   chipy_website (pyproject.toml)
-doublemetaphone==1.1
-    # via
-    #   -c requirements.txt
-    #   probablepeople
 filelock==3.16.1
     # via virtualenv
 freezegun==1.5.1
@@ -181,14 +177,6 @@ pluggy==1.5.0
     # via pytest
 pre-commit==4.0.1
     # via chipy_website (pyproject.toml)
-probableparsing==0.0.1
-    # via
-    #   -c requirements.txt
-    #   probablepeople
-probablepeople==0.5.6
-    # via
-    #   -c requirements.txt
-    #   chipy_website (pyproject.toml)
 psycopg2-binary==2.9.10
     # via
     #   -c requirements.txt
@@ -207,10 +195,6 @@ pytest==8.3.4
     #   pytest-django
 pytest-django==4.9.0
     # via chipy_website (pyproject.toml)
-python-crfsuite==0.9.11
-    # via
-    #   -c requirements.txt
-    #   probablepeople
 python-dateutil==2.9.0.post0
     # via
     #   -c requirements.txt

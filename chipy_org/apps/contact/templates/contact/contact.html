@@ -1,4 +1,6 @@
 {% extends "shiny/slim.html" %}
+{% load crispy_forms_tags %}
+
 
 {% block page_header %}CONTACT US{% endblock %}
 
@@ -11,7 +13,7 @@
           {% if user.is_authenticated %}
             <form action="/contact/" method="post">
               {% csrf_token %}
-              {{ form }}
+              {{ form|crispy }}
               <input type="submit" value="Send Email">
             </form>
           {% else %}

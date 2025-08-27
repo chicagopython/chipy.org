@@ -15,7 +15,7 @@ class ContactForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields["captcha"].label = False
 
-    sender = forms.CharField(max_length=256, label="From")
+    sender = forms.CharField(max_length=256, label="Name")
     email = forms.EmailField(max_length=256)
     subject = forms.CharField(max_length=256)
     message = forms.CharField(

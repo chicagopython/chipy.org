@@ -1,6 +1,7 @@
 {% extends "shiny/slim.html" %}
 {% load crispy_forms_tags %}
 
+
 {% block page_header %}CONTACT US{% endblock %}
 
 {% block body %}
@@ -10,7 +11,11 @@
       <div class="module span6">
         <div id="contact">
           {% if user.is_authenticated %}
-            {% crispy form %}
+            <form action="/contact/" method="post">
+              {% csrf_token %}
+              {{ form|crispy }}
+              <input type="submit" value="Send Email">
+            </form>
           {% else %}
             <p>To contact the ChiPy Organizers, please log in first! Use the Blue Button above to login with either a Google or Github account. It's super quick and then you can send a message. </p>
           {% endif %}

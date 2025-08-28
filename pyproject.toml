@@ -42,7 +42,6 @@ dependencies = [
     "gunicorn",
     "nh3",
     "pillow",
-    "probablepeople",
     "psycopg2-binary",
     "python-openid2",
     "requests",

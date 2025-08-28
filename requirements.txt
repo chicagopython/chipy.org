@@ -73,8 +73,6 @@ django-tinymce==4.1.0
     # via chipy_website (pyproject.toml)
 djangorestframework==3.15.2
     # via chipy_website (pyproject.toml)
-doublemetaphone==1.1
-    # via probablepeople
 gunicorn==23.0.0
     # via chipy_website (pyproject.toml)
 icalendar==6.1.0
@@ -97,18 +95,12 @@ packaging==24.2
     # via gunicorn
 pillow==11.1.0
     # via chipy_website (pyproject.toml)
-probableparsing==0.0.1
-    # via probablepeople
-probablepeople==0.5.6
-    # via chipy_website (pyproject.toml)
 psycopg2-binary==2.9.10
     # via chipy_website (pyproject.toml)
 pycparser==2.22
     # via cffi
 pyjwt==2.10.1
     # via social-auth-core
-python-crfsuite==0.9.11
-    # via probablepeople
 python-dateutil==2.9.0.post0
     # via
     #   botocore

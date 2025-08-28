@@ -16,7 +16,7 @@ class ContactForm(forms.Form):
         self.fields["captcha"].label = False
 
     sender = forms.CharField(max_length=256, label="Name")
-    email = forms.EmailField(max_length=256)
+    email = forms.CharField(max_length=256, label="Email")
     subject = forms.CharField(max_length=256)
     message = forms.CharField(
         max_length=2000,
@@ -31,9 +31,10 @@ class ContactForm(forms.Form):
         # send_email has this value set as a default, and it should not be overwritten.
         # reply_to is set as the requester's email so that when an  organizer replies
         # the reply goes to the email entered by the user in the contact form.
+        body_text = self.cleaned_data["email"] + " wrote:\n\n" + self.cleaned_data["message"]
         send_email(
             recipients=getattr(settings, "ENVELOPE_EMAIL_RECIPIENTS", []),
             subject=self.cleaned_data["subject"],
-            body=self.cleaned_data["message"],
+            body=body_text,
             reply_to=[self.cleaned_data["email"]],
         )

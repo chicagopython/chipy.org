@@ -26,7 +26,7 @@ dependencies = [
     "boto3",
     "crispy-bootstrap5",
     "dj-database-url",
-    "django==5.1.5",
+    "django==5.1.8",
     "django-admin-tools",
     "django-crispy-forms",
     "django-extensions",

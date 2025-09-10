@@ -1,7 +1,26 @@
 from django.contrib.auth.models import User
+from django.contrib.flatpages.models import FlatPage
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+class CustomFlatPage(FlatPage):
+    HEADER_IMAGE_CHOICES = [("chicago-bg.jpg", "Header 1")]
+
+    header_image = models.CharField(
+        max_length=255,
+        choices=HEADER_IMAGE_CHOICES,
+        blank=True,
+        null=True,
+        help_text="Select a header image for this page.",
+    )
+
+    def get_header_image_url(self):
+        """Returns the full URL of the selected header image."""
+        if self.header_image:
+            return f"/static/images/{self.header_image}"
+        return "/static/images/default.jpg"
 
 
 class UserProfile(models.Model):

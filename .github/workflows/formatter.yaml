@@ -16,10 +16,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python 3.13.1
-      uses: actions/setup-python@v2
+    - name: Set up Python
+      uses: actions/setup-python@v6
       with:
-        python-version: 3.13.1
+        python-version-file: '.python-version'
 
     - name: Install pip
       run: |

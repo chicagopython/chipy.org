@@ -8,6 +8,8 @@ asgiref==3.8.1
     # via
     #   -c requirements.txt
     #   django
+asttokens==3.0.0
+    # via stack-data
 boto3==1.35.96
     # via
     #   -c requirements.txt
@@ -40,6 +42,8 @@ cryptography==44.0.0
     #   -c requirements.txt
     #   python-openid2
     #   social-auth-core
+decorator==5.2.1
+    # via ipython
 defusedxml==0.8.0rc2
     # via
     #   -c requirements.txt
@@ -120,6 +124,8 @@ djangorestframework==3.15.2
     # via
     #   -c requirements.txt
     #   chipy_website (pyproject.toml)
+executing==2.2.1
+    # via stack-data
 filelock==3.16.1
     # via virtualenv
 freezegun==1.5.1
@@ -140,8 +146,14 @@ idna==3.10
     #   requests
 iniconfig==2.0.0
     # via pytest
+ipython==9.6.0
+    # via chipy_website (pyproject.toml)
+ipython-pygments-lexers==1.1.1
+    # via ipython
 isort==5.13.2
     # via chipy_website (pyproject.toml)
+jedi==0.19.2
+    # via ipython
 jmespath==1.0.1
     # via
     #   -c requirements.txt
@@ -151,6 +163,8 @@ lxml==5.3.0
     # via
     #   -c requirements.txt
     #   python-openid2
+matplotlib-inline==0.1.7
+    # via ipython
 nh3==0.2.20
     # via
     #   -c requirements.txt
@@ -167,6 +181,10 @@ packaging==24.2
     #   -c requirements.txt
     #   gunicorn
     #   pytest
+parso==0.8.5
+    # via jedi
+pexpect==4.9.0
+    # via ipython
 pillow==11.1.0
     # via
     #   -c requirements.txt
@@ -177,14 +195,24 @@ pluggy==1.5.0
     # via pytest
 pre-commit==4.0.1
     # via chipy_website (pyproject.toml)
+prompt-toolkit==3.0.52
+    # via ipython
 psycopg2-binary==2.9.10
     # via
     #   -c requirements.txt
     #   chipy_website (pyproject.toml)
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.3
+    # via stack-data
 pycparser==2.22
     # via
     #   -c requirements.txt
     #   cffi
+pygments==2.19.2
+    # via
+    #   ipython
+    #   ipython-pygments-lexers
 pyjwt==2.10.1
     # via
     #   -c requirements.txt
@@ -250,6 +278,12 @@ sqlparse==0.5.3
     # via
     #   -c requirements.txt
     #   django
+stack-data==0.6.3
+    # via ipython
+traitlets==5.14.3
+    # via
+    #   ipython
+    #   matplotlib-inline
 typing-extensions==4.12.2
     # via
     #   -c requirements.txt
@@ -267,6 +301,8 @@ uwsgi==2.0.28
     # via chipy_website (pyproject.toml)
 virtualenv==20.28.1
     # via pre-commit
+wcwidth==0.2.14
+    # via prompt-toolkit
 whitenoise==6.8.2
     # via
     #   -c requirements.txt

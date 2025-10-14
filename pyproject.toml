@@ -55,6 +55,7 @@ dependencies = [
 dev = [
     "freezegun",
     "isort",
+    "ipython",
     "ruff",
     "pre-commit",
     "pytest",

@@ -26,6 +26,11 @@ shell: ## open a shell in the application container
 	@echo "Use this shell to run python and django commands normally"
 	@docker compose exec web bash
 
+shell-plus: ## open a shell-plus in the application container
+	@echo "Opening shell-plus in docker container"
+	@echo "Use this shell-plus to run python and django commands normally"
+	@docker compose exec web python manage.py shell_plus
+
 psql: ## open a psql shell in the database container
 	@docker compose exec db psql chipy chipy
 

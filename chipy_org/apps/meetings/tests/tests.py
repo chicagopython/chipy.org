@@ -72,6 +72,58 @@ class SmokeTest(TestCase):
         # CHECK
         self.assertEqual(response.status_code, 200)
 
+    def test_meeting_detail_shows_presenter_bio(self):
+        """Test that presenter bios appear on meeting detail page"""
+        # Create presenter with bio
+        presenter = Presenter.objects.create(
+            name="Test Speaker",
+            email="speaker@example.com",
+            bio="This is a test bio for the speaker."
+        )
+
+        # Create topic and associate with meeting and presenter
+        topic = Topic.objects.create(
+            title="Test Topic with Bio",
+            status=Topic.StatusChoice.CONFIRMED
+        )
+        topic.presenters.add(presenter)
+        self.meeting.topics.add(topic)
+
+        # TEST
+        response = self.client.get(reverse("meeting", args=[self.meeting.id]))
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test Speaker Bio:")
+        self.assertContains(response, "This is a test bio for the speaker.")
+        self.assertContains(response, "Test Topic with Bio")
+
+    def test_meeting_detail_no_bio_display(self):
+        """Test that no bio section appears when presenter has no bio"""
+        # Create presenter without bio
+        presenter = Presenter.objects.create(
+            name="Speaker No Bio",
+            email="nobio@example.com"
+        )
+
+        # Create topic and associate with meeting and presenter
+        topic = Topic.objects.create(
+            title="Test Topic No Bio",
+            status=Topic.StatusChoice.CONFIRMED
+        )
+        topic.presenters.add(presenter)
+        self.meeting.topics.add(topic)
+
+        # TEST
+        response = self.client.get(reverse("meeting", args=[self.meeting.id]))
+
+        # CHECK
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test Topic No Bio")
+        self.assertContains(response, "Speaker No Bio")
+        # Should not contain bio section
+        self.assertNotContains(response, "Speaker No Bio Bio:")
+
 
 @override_settings(STORAGES=global_settings.STORAGES)
 def test_future_meetings(client):

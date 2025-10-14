@@ -4,7 +4,7 @@ import itertools
 import pytest
 from freezegun import freeze_time
 
-from chipy_org.apps.meetings.models import Meeting, MeetingType
+from chipy_org.apps.meetings.models import Meeting, MeetingType, Presenter
 
 pytestmark = pytest.mark.django_db
 
@@ -146,3 +146,28 @@ def test__Meeting__queryset__next_meeting__after_grace_period(
     assert Meeting.objects.next_meeting().key == 'future_meeting1', (
         "3 hours after 'present' meeting has started, we no longer consider it present"
     )
+
+
+def test_presenter_bio_field():
+    """Test that Presenter model bio field works correctly"""
+    presenter = Presenter.objects.create(
+        name="Test Speaker",
+        email="test@example.com",
+        bio="This is a test bio for the speaker."
+    )
+
+    assert presenter.bio == "This is a test bio for the speaker."
+    assert presenter.bio is not None
+
+    # Test that bio can be None/blank
+    presenter_no_bio = Presenter.objects.create(
+        name="Speaker No Bio",
+        email="nobio@example.com"
+    )
+    assert presenter_no_bio.bio is None
+
+    # Test that bio can be updated
+    presenter.bio = "Updated bio content"
+    presenter.save()
+    presenter.refresh_from_db()
+    assert presenter.bio == "Updated bio content"

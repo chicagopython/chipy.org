@@ -3,7 +3,7 @@ help:
 
 setup_env:
 	## Copy but don't overwrite the docker env
-	cp --update=none docker/docker.env.sample docker/docker.env || true
+	[ -f docker/docker.env ] || cp docker/docker.env.sample docker/docker.env
 
 build:
 	docker compose build

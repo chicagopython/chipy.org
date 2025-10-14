@@ -43,8 +43,8 @@ web: run ## alias for run
 migrate: ## run migrations
 	docker compose exec web python manage.py migrate
 
-migrations: ## create migrations
-	docker compose exec web python manage.py makemigrations
+migrations: ## create migrations name="name_of_migration"
+	docker compose exec web python manage.py makemigrations -n "$(name)"
 
 test: ## run tests
 	docker compose up -d

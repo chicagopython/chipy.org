@@ -1,5 +1,6 @@
 {% extends "shiny/slim.html" %}
 {% load static thumbnail %}
+{% load nh3_tags %}
 {% block page_header %}UPCOMING MEETINGS{% endblock %}
 
 {% block body %}
@@ -29,7 +30,12 @@
       Experience Level: {{ topic.get_experience_level_display }}<br />
       {% endif %}
       {% if topic.slides_link %}<a href="{{ topic.slides_link }}">Slides Link</a>{% endif %}<br />
-      {{ topic.description|safe }}
+      <strong>Description:</strong> {{ topic.description|nh3|safe }}<br />
+      {% for presenter in topic.presenters.all %}
+        {% if presenter.bio %}
+          <strong>{{ presenter.name }} Bio:</strong> {{ presenter.bio|nh3|safe }}<br />
+        {% endif %}
+      {% endfor %}
     </div>
   {% endif %}
 {% endfor %}

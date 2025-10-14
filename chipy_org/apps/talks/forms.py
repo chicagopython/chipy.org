@@ -28,7 +28,7 @@ class TopicForm(forms.ModelForm):
     bio = forms.CharField(
         label="Speaker Bio (displayed publicly)",
         required=True,
-        widget=forms.Textarea(attrs={'rows': 4, 'cols': 50})
+        widget=forms.Textarea(attrs={"rows": 4, "cols": 50}),
     )
 
     def __init__(self, request, *args, **kwargs):

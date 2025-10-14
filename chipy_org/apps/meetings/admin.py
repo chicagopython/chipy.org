@@ -97,7 +97,9 @@ class TopicAdmin(admin.ModelAdmin):
         for presenter in obj.presenters.all():
             if presenter.bio:
                 # Truncate long bios for list display
-                bio_preview = presenter.bio[:100] + "..." if len(presenter.bio) > 100 else presenter.bio
+                bio_preview = (
+                    presenter.bio[:100] + "..." if len(presenter.bio) > 100 else presenter.bio
+                )
                 bios.append(f"<strong>{presenter.name}:</strong> {bio_preview}")
 
         if not bios:

@@ -131,12 +131,12 @@
                 </div>
                 {% endif %}
                 <p>
-                  {% if topic.description|nh3|wordcount > 85 %}
-                  {{ topic.description|nh3|truncatewords_html:80|safe }}
+                {% if topic.description|nh3|wordcount > 85 %}
+                    {{ topic.description|nh3|truncatewords_html:80|safe }}
                     <a href="{% url 'meeting' next_meeting.pk %}">Learn more details</a>
-                  {% else %}
+                {% else %}
                     {{ topic.description|nh3|safe }}
-                  {% endif %}  
+                {% endif %}  
                 </p>
             </div>
         {% endfor %}

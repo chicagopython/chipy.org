@@ -98,7 +98,7 @@
                     {% endif %}
 
                     {% include "shiny/_rsvp.html" with curr_meeting=next_meeting %}
-                    <p><a href="{{ next_meeting.get_absolute_url }}">details</a></p>
+                    
                 {% endif %}
         </div> <!--closes column-->
 
@@ -132,7 +132,7 @@
                 {% endif %}
                 <p>
                   {{ topic.description|nh3|truncatewords_html:80|safe }}
-                    <a href="{% url 'meeting' next_meeting.pk %}">Learn more</a>
+                    <a href="{% url 'meeting' next_meeting.pk %}">Learn more details</a>
                 </p>
             </div>
         {% endfor %}

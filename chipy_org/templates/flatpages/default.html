@@ -1,7 +1,15 @@
 {% extends "shiny/slim.html" %}
-{% block page_header %}{{ flatpage.title | upper }}{% endblock %}
+
+{% block page_header %}
+  {{ flatpage.title | upper }}
+{% endblock %}
+
 {% block body %}
+  <div class="page-header" style="background-image: url('{{ flatpage.get_header_image_url }}');">
+    <h1>{{ flatpage.title | upper }}</h1>
+  </div>
+
   <div class="content">
-  {{ flatpage.content }}
-  </div>  
+    {{ flatpage.content }}
+  </div>
 {% endblock %}

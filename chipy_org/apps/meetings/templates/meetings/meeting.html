@@ -70,7 +70,13 @@
                   {% if topic.length%}
                     Length: {{ topic.length}} Minutes<br />
                   {% endif %}
-                  Description: {{ topic.description|nh3|safe }}
+                  <br />
+                  <strong>Description:</strong> {{ topic.description|nh3|safe }}
+                  {% for presenter in topic.presenters.all %}
+                    {% if presenter.bio %}
+                      <strong>{{ presenter.name }} Bio:</strong> {{ presenter.bio|nh3|safe }}<br />
+                    {% endif %}
+                  {% endfor %}
                 </li>
               {% endfor %}
             </ul>

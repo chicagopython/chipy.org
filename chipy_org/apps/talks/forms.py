@@ -25,6 +25,11 @@ class TopicForm(forms.ModelForm):
         required=True,
         help_text="In case we need to reach you the day of the event.",
     )
+    bio = forms.CharField(
+        label="Speaker Bio (displayed publicly)",
+        required=True,
+        widget=forms.Textarea(attrs={"rows": 4, "cols": 50}),
+    )
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,6 +58,7 @@ class TopicForm(forms.ModelForm):
             "length",
             "experience_level",
             "description",
+            "bio",
             "notes",
             "requested_reviewer",
             "license",
@@ -72,6 +78,7 @@ class TopicForm(forms.ModelForm):
                 name=self.cleaned_data.get("name"),
                 email=self.cleaned_data.get("email"),
                 phone=self.cleaned_data.get("phone"),
+                bio=self.cleaned_data.get("bio"),
                 release=True,
             )
 

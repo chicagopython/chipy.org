@@ -50,6 +50,7 @@ class TopicAdmin(admin.ModelAdmin):
         "title",
         "experience_level",
         "get_presenters",
+        "get_presenter_bios",
         "meeting",
         "created",
         "email_presenters",
@@ -57,6 +58,7 @@ class TopicAdmin(admin.ModelAdmin):
     )
     readonly_fields = [
         "get_presenters",
+        "get_presenter_bios",
         "modified",
         "created",
     ]
@@ -89,6 +91,23 @@ class TopicAdmin(admin.ModelAdmin):
         )
 
     get_presenters.short_description = "Presenter Links"
+
+    def get_presenter_bios(self, obj):
+        bios = []
+        for presenter in obj.presenters.all():
+            if presenter.bio:
+                # Truncate long bios for list display
+                bio_preview = (
+                    presenter.bio[:100] + "..." if len(presenter.bio) > 100 else presenter.bio
+                )
+                bios.append(f"<strong>{presenter.name}:</strong> {bio_preview}")
+
+        if not bios:
+            return "No bios available"
+
+        return format_html("<br>".join(bios))
+
+    get_presenter_bios.short_description = "Presenter Bios"
 
 
 class MeetingForm(forms.ModelForm):

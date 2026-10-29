@@ -1,4 +1,4 @@
-from django.urls import include, path, re_path
+from django.urls import path, re_path
 
 from .feeds import MeetingFeed
 from .views import (
@@ -15,7 +15,6 @@ from .views import (
 
 urlpatterns = [
     path("", FutureMeetings.as_view(), name="future_meetings"),
-    path("admin_tools/", include("admin_tools.urls")),
     path("status/", MeetingStatus.as_view(), name="meeting_status"),
     path("ical/", MeetingFeed(), name="ical_feed"),
     path("past/", PastMeetings.as_view(), name="past_meetings"),

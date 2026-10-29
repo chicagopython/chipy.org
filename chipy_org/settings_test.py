@@ -3,7 +3,7 @@ from .settings import *  # noqa: F403
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:", "TEST": {}}}
 DEBUG = True
 ADMINS = ["admin@chipy.org"]
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+MAILERS = {"default": "django.core.mail.backends.console.EmailBackend"}
 ENVELOPE_EMAIL_RECIPIENTS = [
     "admin@example.com",
 ]

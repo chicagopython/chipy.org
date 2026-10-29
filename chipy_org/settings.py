@@ -151,7 +151,6 @@ TEMPLATES = [
                 "social_django.context_processors.login_redirect",
             ],
             "loaders": [
-                "admin_tools.template_loaders.Loader",
                 "django.template.loaders.filesystem.Loader",
                 "django.template.loaders.app_directories.Loader",
             ],
@@ -219,11 +218,6 @@ GITHUB_EXTRA_DATA = [
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
 
 INSTALLED_APPS = [
-    # Admin Tools
-    "admin_tools",
-    "admin_tools.theming",
-    "admin_tools.menu",
-    "admin_tools.dashboard",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -283,12 +277,18 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 ENVELOPE_EMAIL_RECIPIENTS = env_var("ENVELOPE_EMAIL_RECIPIENTS", "").split(",")
 
-EMAIL_BACKEND = env_var("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
-EMAIL_HOST = env_var("EMAIL_HOST", "smtp.sendgrid.net")
-EMAIL_HOST_USER = env_var("EMAIL_HOST_USER", env_var("SENDGRID_USERNAME", None))
-EMAIL_HOST_PASSWORD = env_var("EMAIL_HOST_PASSWORD", env_var("SENDGRID_PASSWORD", None))
-EMAIL_PORT = int(env_var("EMAIL_PORT", 587))
-EMAIL_USE_TLS = env_var("EMAIL_USE_TLS", True)
+MAILERS = {
+    "default": {
+        "BACKEND": env_var("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend"),
+        "OPTIONS": {
+            "host": env_var("EMAIL_HOST", "smtp.sendgrid.net"),
+            "user": env_var("EMAIL_HOST_USER", env_var("SENDGRID_USERNAME", None)),
+            "password": env_var("EMAIL_HOST_PASSWORD", env_var("SENDGRID_PASSWORD", None)),
+            # True will set port
+            "use_tls": env_var("EMAIL_USE_TLS", True),
+        },
+    }
+}
 
 DEFAULT_FROM_EMAIL = env_var("DEFAULT_FROM_EMAIL", "DoNotReply@chipy.org")
 HONEYPOT_FIELD_NAME = "email2"
